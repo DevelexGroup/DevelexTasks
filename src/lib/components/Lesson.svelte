@@ -23,8 +23,26 @@
 	let errorMessages: string[] = [];
 	let state: 'load' | 'ready' | 'error' = 'load';
 
+	/**
+	 * @type {GazeInput<GazeInputConfigWithFixations>}
+	 * The gaze input object that will be used to interact with the gaze data.
+	 * Currently always GazePoint and do not allow custom configuration yet.
+	 */
 	let gazeInput: GazeInput<GazeInputConfigWithFixations>;
+
+	/**
+	 * @type {GazeInteractionScreenFixation}
+	 * This fixation event detector always return the screen coordinates of the fixation.
+	 * No elements are returned, it serves as a base for the following detector.
+	 */
 	let gazeInteractionScreenFixation: GazeInteractionScreenFixation;
+
+	/**
+	 * @type {GazeInteractionObjectSetFixation}
+	 * This fixation event detector always return an array of registered elements (aois) that were fixated on.
+	 * They can overlap, so the array can contain multiple elements.
+	 * When no element is fixated, the array is empty.
+	 */
 	let gazeInteractionObjectSetFixation: GazeInteractionObjectSetFixation;
 
 	const initGaze = async () => {
@@ -62,7 +80,7 @@
 {#if state === 'load'}
 	<LessonLoad />
 {:else if state === 'ready'}
-	<slot {gazeInput} />
+	<slot gazeFixationEmitter={gazeInteractionObjectSetFixation} />
 {:else if state === 'error'}
 	<LessonError {errorMessages} />
 {/if}
