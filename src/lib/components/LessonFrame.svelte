@@ -2,6 +2,5 @@
 	export let gazeInput: string;
 </script>
 
-<main class="flex h-screen w-screen flex-col items-center justify-center">
-	<slot {gazeInput} />
-</main>
+<!-- Preparation for the lesson progress bar -->
+<slot {gazeInput} />
