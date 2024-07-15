@@ -1,20 +1,14 @@
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+# develex-task
 
 ## Developing
+
+The project uses a private npm package develex-core, so you need to configure npm to use the GitLab registry. You can do this by running the following commands:
+
+```bash
+npm config set -- //gitlab.ics.muni.cz/:_authToken=YOUR_AUTH_TOKEN
+
+npm config set @473783:registry=https://gitlab.ics.muni.cz/api/v4/projects/7015/packages/npm/
+```
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
