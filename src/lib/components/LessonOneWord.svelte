@@ -21,9 +21,9 @@
 <div
 	id={`${FIXATION_WORD}-${index}`}
 	bind:this={element}
-	class="inline-flex h-20 w-48 items-center justify-center rounded-md border border-gray-100 bg-gray-50 text-3xl {$sentenceWord ==
+	class="inline-flex h-20 w-48 items-center justify-center rounded-md text-[32px] {$sentenceWord ==
 	index
-		? 'text-red-500'
+		? 'text-green-700'
 		: 'text-gray-700'}"
 >
 	{word}

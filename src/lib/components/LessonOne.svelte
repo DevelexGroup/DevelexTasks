@@ -29,7 +29,7 @@
 		<div
 			in:fade={inOptions}
 			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-center space-x-4"
+			class="flex w-screen max-w-7xl items-center justify-center space-x-0.5"
 		>
 			{#each sentences[$sentence] as word, index}
 				<LessonOneWord {registerElement} {unregisterElement} {index} {word} />

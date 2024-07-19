@@ -32,7 +32,9 @@ export const zeroLevelProgress = writable(0);
 export const zeroLevelComplete = derived(zeroLevelProgress, $zeroLevelProgress => $zeroLevelProgress >= words.length - 1);
 
 export const nextZeroLevel = () => {
-  zeroLevelProgress.update(n => n + 1);
+  setTimeout(() => {
+    zeroLevelProgress.update(n => n + 1);
+  }, 300);
 };
 
 
@@ -49,8 +51,9 @@ export const words = [
 ];
 
 export const sentences = [
-  ["Máma", "mele", "maso"],
-  ["Žízala", "žužle", "žízalu", "v", "louži"]
+  ["Máma", "mele", "maso."],
+  ["Malý", "osmiletý", "chlapec", "Adam", "stál", "u okna."],
+  ["Adam", "sledoval", "silnici", "vedoucí", "k jejich", "domu."]
 ];
 
 export const FIXATION_EYE = "fixation-eye";

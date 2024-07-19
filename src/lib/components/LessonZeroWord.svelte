@@ -20,7 +20,7 @@
 <div
 	bind:this={element}
 	{id}
-	class="inline-flex h-20 w-48 items-center justify-center rounded-md border border-gray-100 bg-gray-50 text-3xl text-gray-700"
+	class="inline-flex h-20 w-48 items-center justify-center rounded-md text-[32px] text-gray-700"
 >
 	{words[$zeroLevelProgress]}
 </div>

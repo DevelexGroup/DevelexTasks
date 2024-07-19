@@ -6,8 +6,7 @@
 		level,
 		nextSentenceWord,
 		nextZeroLevel,
-		sentenceWord,
-		sentenceWordComplete
+		sentenceWord
 	} from '$lib/stores/level';
 	import LessonZero from './LessonZero.svelte';
 	import LessonOne from './LessonOne.svelte';
@@ -46,8 +45,10 @@
 	});
 </script>
 
-{#if $level == 0}
-	<LessonZero {registerElement} {unregisterElement} {validateFixation} />
-{:else if $level == 1}
-	<LessonOne {registerElement} {unregisterElement} {validateFixation} />
-{/if}
+<div class="font-serif">
+	{#if $level == 0}
+		<LessonZero {registerElement} {unregisterElement} {validateFixation} />
+	{:else if $level == 1}
+		<LessonOne {registerElement} {unregisterElement} {validateFixation} />
+	{/if}
+</div>
