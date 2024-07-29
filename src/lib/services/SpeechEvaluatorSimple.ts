@@ -15,6 +15,9 @@ export class SpeechEvaluatorSimple implements ISpeechEvaluator {
 		// Normalize the spoken word
 		let normalizedTranscript = transcript.trim().toLowerCase();
 
+		// remove all , and . from the transcript
+		normalizedTranscript = normalizedTranscript.replace(/[,.]/g, '');
+
 		// If has more letters than target word, only compare the last letters
 		const targetWordLength = this.targetWord.length;
 		const spokenWordLength = normalizedTranscript.length;
