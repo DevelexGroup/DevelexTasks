@@ -28,10 +28,10 @@ export interface ISpeechRecognition extends Emitter<ISpeechRecognitionEventMappi
  * recognition.off('speech', handler);
  */
 export type ISpeechRecognitionEventMapping = {
-	speech: (e: ISpeechRecognitionResult) => void;
-	error: (e: ISpeechRecognitionError) => void;
-	start: (e: ISpeechRecognitionStart) => void;
-	end: (e: ISpeechRecognitionEnd) => void;
+	speech: ISpeechRecognitionResult;
+	error: ISpeechRecognitionError;
+	start: ISpeechRecognitionStart;
+	end: ISpeechRecognitionEnd;
 };
 
 export interface ISpeechRecognitionEvent {

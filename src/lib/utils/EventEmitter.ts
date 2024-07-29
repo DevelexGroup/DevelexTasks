@@ -1,4 +1,6 @@
-export type EventMap = Record<string, unknown>;
+export type EventMap = {
+	[eventName: string]: unknown;
+};
 export type EventKey<T extends EventMap> = string & keyof T;
 export type EventReceiver<T> = (params: T) => void;
 

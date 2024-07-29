@@ -1,5 +1,8 @@
-import { CustomEventEmitter } from '$lib/utils/EventEmitter';
-import type { ISpeechRecognition, ISpeechRecognitionEvent } from '../interfaces/ISpeechRecognition';
+import { Emitter } from '$lib/utils/EventEmitter';
+import type {
+	ISpeechRecognition,
+	ISpeechRecognitionEventMapping
+} from '../interfaces/ISpeechRecognition';
 
 /**
  * A service for using the Web Speech API for speech recognition.
@@ -7,7 +10,7 @@ import type { ISpeechRecognition, ISpeechRecognitionEvent } from '../interfaces/
  * On some browsers, like Chrome, using Speech Recognition on a web page involves a server-based recognition engine. Your audio is sent to a web service for recognition processing, so it won't work offline.
  */
 export class SpeechRecognitionMdn
-	extends CustomEventEmitter<ISpeechRecognitionEvent>
+	extends Emitter<ISpeechRecognitionEventMapping>
 	implements ISpeechRecognition
 {
 	private recognition: SpeechRecognition;
@@ -20,57 +23,32 @@ export class SpeechRecognitionMdn
 		this.recognition.interimResults = true;
 		this.recognition.lang = 'cs-CZ';
 		this.recognition.maxAlternatives = 10;
+
 		this.recognition.onstart = () => {
-			console.log('Microphone access granted.');
-		};
-
-		// Handle other events like onend, onaudiostart, etc.
-		this.recognition.onspeechstart = () => {
-			console.log('Speech has been detected.');
-		};
-
-		this.recognition.onspeechend = () => {
-			console.log('Speech has stopped.');
+			this.emit('start', { type: 'start', timestamp: Date.now() });
 		};
 
 		this.recognition.onend = () => {
-			console.log('Microphone access ended.');
+			this.emit('end', { type: 'end', timestamp: Date.now() });
 		};
 
-		this.recognition.onaudiostart = () => {
-			console.log('Audio capture started.');
+		this.recognition.onerror = (event) => {
+			this.emit('error', { type: 'error', timestamp: Date.now(), error: event.error });
 		};
 
-		this.recognition.onaudioend = () => {
-			console.log('Audio capture ended.');
-		};
-
-		this.recognition.onsoundstart = () => {
-			console.log('Sound has started.');
-		};
-
-		this.recognition.onsoundend = () => {
-			console.log('Sound has ended.');
-		};
-
-		this.recognition.onspeechstart = () => {
-			console.log('Speech has started.');
-		};
-
-		this.recognition.onspeechend = () => {
-			console.log('Speech has ended.');
-		};
-
-		this.recognition.onnomatch = () => {
-			console.log('No match found.');
-		};
-
-		this.recognition.onresult = (event) => {
-			console.log('onresult', event);
-		};
-
-		this.recognition.onnomatch = (event) => {
-			console.log('No match found.', event);
+		this.recognition.onresult = (event: SpeechRecognitionEvent) => {
+			const { results, resultIndex } = event;
+			const relevantResults = results[resultIndex];
+			const values = Array.from(relevantResults).map((result) => ({
+				transcript: result.transcript,
+				confidence: result.confidence
+			}));
+			this.emit('speech', {
+				type: 'speech',
+				timestamp: event.timeStamp,
+				values,
+				isFinal: relevantResults.isFinal
+			});
 		};
 	}
 
