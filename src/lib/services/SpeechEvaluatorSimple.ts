@@ -2,10 +2,15 @@ import type { ISpeechRecognitionResult } from '$lib/interfaces/ISpeechRecognitio
 import type { ISpeechEvaluator, ISpeechEvaluatorResult } from '../interfaces/ISpeechEvaluator';
 
 export class SpeechEvaluatorSimple implements ISpeechEvaluator {
-	public targetWord: string;
-
+	private _targetWord: string;
+	get targetWord(): string {
+		return this._targetWord;
+	}
+	set targetWord(value: string) {
+		this._targetWord = this.normalizeWord(value);
+	}
 	constructor(targetWord: string = '') {
-		this.targetWord = this.normalizeWord(targetWord);
+		this._targetWord = this.normalizeWord(targetWord);
 	}
 
 	evaluateSpeech(input: ISpeechRecognitionResult): ISpeechEvaluatorResult {
