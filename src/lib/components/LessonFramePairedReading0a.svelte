@@ -1,11 +1,54 @@
 <script lang="ts">
 	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
+	import {
+		FIXATION_EYE,
+		FIXATION_WORD,
+		level,
+		nextSentenceWord,
+		nextZeroLevel,
+		sentenceWord
+	} from '$lib/stores/level';
+	import LessonZero from './LessonZero.svelte';
+	import LessonOne from './LessonOne.svelte';
 
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 
-	/**
-	 * gazeFixationEmitter.register(element, settings) to register an element as an AOI.
-	 * you can either set callback in register method...
-	 * or catch the event with gazeFixationEmitter.on('fixationSet' | 'fixationSetStart' | 'fixationSetEnd', (event) => {})
-	 */
+	let validateFixation = true;
+
+	const registerElement = (element: HTMLElement) => {
+		gazeFixationEmitter.register(element, {
+			bufferSize: 10
+		});
+	};
+
+	const unregisterElement = (element: HTMLElement) => {
+		gazeFixationEmitter.unregister(element);
+	};
+
+	gazeFixationEmitter.on('fixationSetEnd', (event) => {
+		const { target } = event;
+
+		if (!Array.isArray(target) || target.length <= 0) {
+			return;
+		}
+
+		if (target.some((t) => t.id === FIXATION_EYE)) {
+			validateFixation = false;
+		} else if (target.some((t) => t.id === FIXATION_WORD)) {
+			validateFixation = true;
+			nextZeroLevel();
+		} else if (target.some((t) => t.id === `${FIXATION_WORD}-${$sentenceWord}`)) {
+			if (nextSentenceWord()) {
+				validateFixation = true;
+			}
+		}
+	});
 </script>
+
+<div class="font-serif">
+	{#if $level == 0}
+		<LessonZero {registerElement} {unregisterElement} {validateFixation} />
+	{:else if $level == 1}
+		<LessonOne {registerElement} {unregisterElement} {validateFixation} />
+	{/if}
+</div>
