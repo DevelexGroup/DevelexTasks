@@ -5,7 +5,7 @@ export class SpeechEvaluatorSimple implements ISpeechEvaluator {
 	public targetWord: string;
 
 	constructor(targetWord: string = '') {
-		this.targetWord = targetWord.toLowerCase(); // Normalize the target word
+		this.targetWord = this.normalizeWord(targetWord);
 	}
 
 	evaluateSpeech(input: ISpeechRecognitionResult): ISpeechEvaluatorResult {
@@ -13,10 +13,7 @@ export class SpeechEvaluatorSimple implements ISpeechEvaluator {
 		const { transcript, confidence } = input.values[0];
 
 		// Normalize the spoken word
-		let normalizedTranscript = transcript.trim().toLowerCase();
-
-		// remove all , and . from the transcript
-		normalizedTranscript = normalizedTranscript.replace(/[,.]/g, '');
+		let normalizedTranscript = this.normalizeWord(transcript);
 
 		// If has more letters than target word, only compare the last letters
 		const targetWordLength = this.targetWord.length;
@@ -37,5 +34,9 @@ export class SpeechEvaluatorSimple implements ISpeechEvaluator {
 			timestamp: input.timestamp,
 			evaluationConfidence: 1 // Always 1 for simple comparison
 		};
+	}
+
+	private normalizeWord(word: string): string {
+		return word.trim().toLowerCase().replace(/[,.]/g, '');
 	}
 }
