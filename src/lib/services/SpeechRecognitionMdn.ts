@@ -1,6 +1,11 @@
 import { CustomEventEmitter } from '$lib/utils/EventEmitter';
 import type { ISpeechRecognition, ISpeechRecognitionEvent } from '../interfaces/ISpeechRecognition';
 
+/**
+ * A service for using the Web Speech API for speech recognition.
+ * In each browser, the API functionality may vary, so it's important to check the compatibility of the API in the browser you're targeting.
+ * On some browsers, like Chrome, using Speech Recognition on a web page involves a server-based recognition engine. Your audio is sent to a web service for recognition processing, so it won't work offline.
+ */
 export class SpeechRecognitionMdn
 	extends CustomEventEmitter<ISpeechRecognitionEvent>
 	implements ISpeechRecognition
@@ -62,9 +67,10 @@ export class SpeechRecognitionMdn
 
 		this.recognition.onresult = (event) => {
 			console.log('onresult', event);
-			console.log('Transcript:', event.results[event.results.length - 1][0].transcript);
-			console.log('Confidence:', event.results[event.results.length - 1][0].confidence);
-			console.log('Alternative:', event.results[event.results.length - 1][1].transcript);
+		};
+
+		this.recognition.onnomatch = (event) => {
+			console.log('No match found.', event);
 		};
 	}
 

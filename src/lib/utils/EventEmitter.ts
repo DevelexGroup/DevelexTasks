@@ -1,31 +1,58 @@
-type CustomEventListener<T> = (data: T) => void;
+export type EventMap = Record<string, unknown>;
+export type EventKey<T extends EventMap> = string & keyof T;
+export type EventReceiver<T> = (params: T) => void;
 
-export class CustomEventEmitter<T> {
-	private listeners: CustomEventListener<T>[] = [];
+/**
+ * Abstract class representing an event emitter with orderCategory support.
+ * OrderCategory is a number that determines the order in which event handlers are executed.
+ * It is crucial for the correct execution of advanced gaze interaction logic.
+ * @template T - The event map type.
+ */
+export abstract class Emitter<T extends EventMap> {
+	/**
+	 * Object storing event handlers for each event.
+	 */
+	handlers: {
+		[K in keyof T]?: Array<{
+			fn: EventReceiver<T[K]>;
+			priority: number;
+		}>;
+	} = {};
 
 	/**
-	 * Register an event listener
-	 * @param listener - The listener function to be called when the event is emitted
+	 * Registers an event handler for the specified event.
+	 * @param eventName - The name of the event.
+	 * @param fn - The event handler function.
+	 * @param priority - The priority category (higher number means higher priority).
 	 */
-	on(listener: CustomEventListener<T>): void {
-		this.listeners.push(listener);
+	on<K extends EventKey<T>>(eventName: K, fn: EventReceiver<T[K]>, priority: number = 0): void {
+		const handler = { fn, priority };
+		this.handlers[eventName] = this.handlers[eventName] || [];
+		this.handlers[eventName].push(handler);
+		// Sort handlers by priority
+		this.handlers[eventName].sort((a, b) => b.priority - a.priority);
 	}
 
 	/**
-	 * Remove an event listener
-	 * @param listener - The listener function to be removed
+	 * Unregisters an event handler for the specified event.
+	 * @param eventName - The name of the event.
+	 * @param fn - The event handler function.
 	 */
-	off(listener: CustomEventListener<T>): void {
-		this.listeners = this.listeners.filter((l) => l !== listener);
+	off<K extends EventKey<T>>(eventName: K, fn: EventReceiver<T[K]>): void {
+		if (this.handlers[eventName]) {
+			this.handlers[eventName] = this.handlers[eventName].filter((handler) => handler.fn !== fn);
+		}
 	}
 
 	/**
-	 * Emit an event, calling all registered listeners with the given data
-	 * @param data - The data to pass to each listener
+	 * Emits an event with the specified name and parameters.
+	 * Event handlers are executed in descending order of priority.
+	 * @param eventName - The name of the event to emit.
+	 * @param params - The parameters to pass to the event handlers.
 	 */
-	emit(data: T): void {
-		for (const listener of this.listeners) {
-			listener(data);
+	emit<K extends EventKey<T>>(eventName: K, params: T[K]): void {
+		if (this.handlers[eventName]) {
+			this.handlers[eventName].forEach((handler) => handler.fn(params));
 		}
 	}
 }
