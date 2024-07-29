@@ -6,6 +6,7 @@ export interface ISpeechEvaluatorResult {
 	targetWord: string;
 	recognitionConfidence: number;
 	evaluationConfidence: number;
+	timestamp: number;
 }
 
 /**

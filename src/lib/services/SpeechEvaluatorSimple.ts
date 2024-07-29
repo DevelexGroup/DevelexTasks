@@ -1,7 +1,7 @@
 import type { ISpeechRecognitionResult } from '$lib/interfaces/ISpeechRecognition';
 import type { ISpeechEvaluator, ISpeechEvaluatorResult } from '../interfaces/ISpeechEvaluator';
 
-export class SimpleSpeechEvaluator implements ISpeechEvaluator {
+export class SpeechEvaluatorSimple implements ISpeechEvaluator {
 	public targetWord: string;
 
 	constructor(targetWord: string = '') {
@@ -31,6 +31,7 @@ export class SimpleSpeechEvaluator implements ISpeechEvaluator {
 			spokenWord: normalizedTranscript,
 			targetWord: this.targetWord,
 			recognitionConfidence: confidence,
+			timestamp: input.timestamp,
 			evaluationConfidence: 1 // Always 1 for simple comparison
 		};
 	}
