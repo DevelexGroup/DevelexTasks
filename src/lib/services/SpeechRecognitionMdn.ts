@@ -13,10 +13,12 @@ export class SpeechRecognitionMdn
 	extends Emitter<ISpeechRecognitionEventMapping>
 	implements ISpeechRecognition
 {
+	public isOn: boolean;
 	private recognition: SpeechRecognition;
 
 	constructor() {
 		super();
+		this.isOn = false;
 		const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 		this.recognition = new SpeechRecognition();
 		this.recognition.continuous = true;
@@ -25,10 +27,12 @@ export class SpeechRecognitionMdn
 		this.recognition.maxAlternatives = 10;
 
 		this.recognition.onstart = () => {
+			this.isOn = true;
 			this.emit('start', { type: 'start', timestamp: Date.now() });
 		};
 
 		this.recognition.onend = () => {
+			this.isOn = false;
 			this.emit('end', { type: 'end', timestamp: Date.now() });
 		};
 
@@ -37,6 +41,7 @@ export class SpeechRecognitionMdn
 		};
 
 		this.recognition.onresult = (event: SpeechRecognitionEvent) => {
+			console.warn('onresult', event);
 			const { results, resultIndex } = event;
 			const relevantResults = results[resultIndex];
 			const values = Array.from(relevantResults).map((result) => ({
@@ -45,7 +50,7 @@ export class SpeechRecognitionMdn
 			}));
 			this.emit('speech', {
 				type: 'speech',
-				timestamp: event.timeStamp,
+				timestamp: Date.now(),
 				values,
 				isFinal: relevantResults.isFinal
 			});
