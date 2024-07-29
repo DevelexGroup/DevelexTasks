@@ -8,6 +8,10 @@ export interface ISpeechEvaluatorResult {
 	evaluationConfidence: number;
 }
 
+/**
+ * Interface representing a speech evaluator that compares the recognized speech to a target word.
+ * The target word should be
+ */
 export interface ISpeechEvaluator {
 	targetWord: string;
 	evaluateSpeech(recognitionResult: ISpeechRecognitionResult): ISpeechEvaluatorResult;

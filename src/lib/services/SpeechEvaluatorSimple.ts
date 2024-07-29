@@ -4,7 +4,7 @@ import type { ISpeechEvaluator, ISpeechEvaluatorResult } from '../interfaces/ISp
 export class SimpleSpeechEvaluator implements ISpeechEvaluator {
 	public targetWord: string;
 
-	constructor(targetWord: string) {
+	constructor(targetWord: string = '') {
 		this.targetWord = targetWord.toLowerCase(); // Normalize the target word
 	}
 
@@ -13,7 +13,15 @@ export class SimpleSpeechEvaluator implements ISpeechEvaluator {
 		const { transcript, confidence } = input.values[0];
 
 		// Normalize the spoken word
-		const normalizedTranscript = transcript.trim().toLowerCase();
+		let normalizedTranscript = transcript.trim().toLowerCase();
+
+		// If has more letters than target word, only compare the last letters
+		const targetWordLength = this.targetWord.length;
+		const spokenWordLength = normalizedTranscript.length;
+
+		if (spokenWordLength > targetWordLength) {
+			normalizedTranscript = normalizedTranscript.substring(spokenWordLength - targetWordLength);
+		}
 
 		// Simple comparison
 		const isCorrect = normalizedTranscript === this.targetWord;
