@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { LessonConfig } from '$lib/types/lesson';
-	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
 	import { derived, writable } from 'svelte/store';
 	import LessonCompleted from './LessonCompleted.svelte';
 	import { fly } from 'svelte/transition';
+	import LessonMistake from './LessonMistake.svelte';
 
 	/**
 	 * @type {LessonConfig}
@@ -12,15 +12,7 @@
 	 */
 	export let lessonConfigResult: LessonConfig;
 
-	/**
-	 * @type {GazeInteractionObjectSetFixation}
-	 * This fixation event detector always return an array of registered elements (aois) that were fixated on.
-	 * They can overlap, so the array can contain multiple elements.
-	 * When no element is fixated, the array is empty.
-	 */
-	export let gazeInteractionObjectSetFixation: GazeInteractionObjectSetFixation;
-
-	let state: 'round' | 'error' | 'complete' = 'round';
+	let state: 'round' | 'mistake' | 'complete' = 'round';
 
 	/**
 	 * Lesson Track Logic
@@ -54,7 +46,7 @@
 		>
 			<svelte:component
 				this={lessonConfigResult.component}
-				gazeFixationEmitter={gazeInteractionObjectSetFixation}
+				{...lessonConfigResult.props}
 				currentContent={lessonConfigResult.content[$lessonProgress]}
 				on:lessonSuccess={() => {
 					if ($lessonComplete) {
@@ -63,6 +55,9 @@
 					} else {
 						lessonProgress.update((n) => n + 1);
 					}
+				}}
+				on:lessonMistake={() => {
+					state = 'mistake';
 				}}
 			/>
 		</div>
@@ -74,5 +69,17 @@
 		out:fly={flyOut}
 	>
 		<LessonCompleted />
+	</div>
+{:else if state === 'mistake'}
+	<div
+		class="absolute inset-0 left-0 top-0 flex h-full w-full items-center justify-center"
+		in:fly={flyIn}
+		out:fly={flyOut}
+	>
+		<LessonMistake
+			on:lessonMistakeRepeat={() => {
+				state = 'round';
+			}}
+		/>
 	</div>
 {/if}
