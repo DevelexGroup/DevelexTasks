@@ -4,6 +4,7 @@
 	import type { LessonConfig } from '$lib/types/lesson';
 	import { fly } from 'svelte/transition';
 	import LessonFrame from './LessonFrame.svelte';
+	import { onDestroy } from 'svelte';
 
 	/**
 	 * @type {Promise<LessonConfig>}
@@ -23,12 +24,13 @@
 
 	const flyIn = { y: '100%', duration: 750, opacity: 0, delay: 500 };
 	const flyOut = { duration: 200, opacity: 0 };
-</script>
 
-<svelte:window
-	on:error|capture={handleError}
-	on:unhandledrejection|capture={(e) => handleError(e.reason)}
-/>
+	onDestroy(() => {
+		lessonConfig.then((lessonConfigResult) => {
+			lessonConfigResult.deInit();
+		});
+	});
+</script>
 
 <div class="relative flex h-screen w-screen items-center justify-center overflow-hidden">
 	{#await lessonConfig}
@@ -49,10 +51,7 @@
 				<LessonError {errorMessages} />
 			</div>
 		{:else}
-			<LessonFrame
-				{lessonConfigResult}
-				gazeInteractionObjectSetFixation={lessonConfigResult.gazeInteractionObjectSetFixation}
-			/>
+			<LessonFrame {lessonConfigResult} />
 		{/if}
 	{:catch catchedError}
 		<div

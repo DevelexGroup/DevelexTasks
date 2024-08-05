@@ -34,6 +34,12 @@
 		gazeInteractionObjectSetFixation.connect(gazeInteractionScreenFixation);
 		await gazeInput.connect();
 		await gazeInput.start();
+
+		const deInit = () => {
+			gazeInput.stop();
+			gazeInput.disconnect();
+		};
+
 		return {
 			component: LessonTaskPairedReadingOneContent,
 			content: [
@@ -41,7 +47,10 @@
 				['Jsou', 'jen', 'malí', 'zločinci'],
 				['Nejlepší', 'je', 'dát', 'je', 'do', 'pracovních', 'táborů']
 			],
-			gazeInteractionObjectSetFixation
+			props: {
+				gazeFixationEmitter: gazeInteractionObjectSetFixation
+			},
+			deInit
 		};
 	};
 
