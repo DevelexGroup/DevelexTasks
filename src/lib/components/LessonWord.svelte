@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { words, zeroLevelProgress } from '$lib/stores/level';
 	import { onDestroy, onMount } from 'svelte';
 
+	export let isHighlighted: boolean = false;
+	export let word: string;
 	export let id: string;
 	export let registerElement: (element: HTMLElement) => void;
 	export let unregisterElement: (element: HTMLElement) => void;
@@ -18,9 +19,11 @@
 </script>
 
 <div
-	bind:this={element}
 	{id}
-	class="inline-flex h-20 w-48 items-center justify-center rounded-md text-[32px] text-gray-700"
+	bind:this={element}
+	class="inline-flex h-20 w-48 items-center justify-center rounded-md text-[32px] {isHighlighted
+		? 'text-green-700'
+		: 'text-gray-700'}"
 >
-	{words[$zeroLevelProgress]}
+	{word}
 </div>

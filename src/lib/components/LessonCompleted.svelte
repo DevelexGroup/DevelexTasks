@@ -5,9 +5,9 @@
 
 <div
 	in:fade={{ duration: 250 }}
-	class="flex w-screen max-w-7xl flex-col items-center justify-center gap-4"
+	class="flex h-full w-full flex-col items-center justify-center gap-4 bg-green-50"
 >
-	<h1 class="text-3xl text-gray-700">One Level Complete</h1>
+	<h1 class="text-3xl text-gray-700">Lesson Completed</h1>
 
 	<div
 		class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-green-200 bg-gray-100"
@@ -15,5 +15,5 @@
 		<Icon icon="material-symbols:thumb-up-outline-rounded" class="h-8 w-8 text-green-500" />
 	</div>
 
-	<p class="text-lg text-gray-700">You have completed the one level.</p>
+	<p class="text-lg text-gray-700">You have completed the level.</p>
 </div>

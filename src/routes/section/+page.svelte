@@ -2,4 +2,4 @@
 	import Button from '$lib/components/Button.svelte';
 </script>
 
-<Button href="/lesson/paired-reading">Paired Reading</Button>
+<Button href="/section/paired-reading">Paired Reading</Button>
