@@ -14,16 +14,15 @@ export class WordReaderSynthesis implements IWordReader {
 	}
 
 	read(words: { id: string; text: string }[]): Promise<void> {
-		const utterance = new SpeechSynthesisUtterance();
-		utterance.text = words.map((word) => word.text).join(' ');
+		this.utterance.text = words.map((word) => word.text).join(' ');
 		return new Promise((resolve, reject) => {
-			utterance.onend = () => {
+			this.utterance.onend = () => {
 				resolve();
 			};
-			utterance.onerror = (e) => {
+			this.utterance.onerror = (e) => {
 				reject(e);
 			};
-			speechSynthesis.speak(utterance);
+			speechSynthesis.speak(this.utterance);
 		});
 	}
 
