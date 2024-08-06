@@ -9,7 +9,7 @@
 	} from '@473783/develex-core';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';
 	import LessonTaskPairedReadingZeroVoiceContent from '$lib/components/LessonTaskPairedReadingZeroVoiceContent.svelte';
-	import type { LessonConfig } from '$lib/types/lesson';
+	import type { LessonConfig, LessonConfigPairedReadingZeroVoice } from '$lib/types/lesson';
 	import { onMount } from 'svelte';
 	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
@@ -42,7 +42,7 @@
 			gazeInput.disconnect();
 		};
 
-		return {
+		const lessonConfig: LessonConfigPairedReadingZeroVoice = {
 			component: LessonTaskPairedReadingZeroVoiceContent,
 			content: ['Jsou', 'jen', 'malí', 'zločinci'],
 			props: {
@@ -52,6 +52,8 @@
 			},
 			deInit
 		};
+
+		return lessonConfig;
 	};
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
 </script>

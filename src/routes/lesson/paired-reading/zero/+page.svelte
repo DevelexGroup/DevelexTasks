@@ -9,7 +9,7 @@
 	} from '@473783/develex-core';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';
 	import LessonTaskPairedReadingZeroContent from '$lib/components/LessonTaskPairedReadingZeroContent.svelte';
-	import type { LessonConfig } from '$lib/types/lesson';
+	import type { LessonConfig, LessonConfigPairedReadingZero } from '$lib/types/lesson';
 	import { onMount } from 'svelte';
 
 	/**
@@ -40,7 +40,7 @@
 			gazeInput.disconnect();
 		};
 
-		return {
+		const lessonConfig: LessonConfigPairedReadingZero = {
 			component: LessonTaskPairedReadingZeroContent,
 			content: ['Jsou', 'jen', 'malí', 'zločinci'],
 			props: {
@@ -48,6 +48,8 @@
 			},
 			deInit
 		};
+
+		return lessonConfig;
 	};
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
 </script>

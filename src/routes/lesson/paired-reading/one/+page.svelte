@@ -9,7 +9,7 @@
 	} from '@473783/develex-core';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';
 	import LessonTaskPairedReadingOneContent from '$lib/components/LessonTaskPairedReadingOneContent.svelte';
-	import type { LessonConfig } from '$lib/types/lesson';
+	import type { LessonConfig, LessonConfigPairedReadingOne } from '$lib/types/lesson';
 	import { onMount } from 'svelte';
 
 	/**
@@ -40,7 +40,7 @@
 			gazeInput.disconnect();
 		};
 
-		return {
+		const lessonConfig: LessonConfigPairedReadingOne = {
 			component: LessonTaskPairedReadingOneContent,
 			content: [
 				['Malé', 'děti', 'nejsou', 'roztomilé'],
@@ -52,6 +52,8 @@
 			},
 			deInit
 		};
+
+		return lessonConfig;
 	};
 
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
