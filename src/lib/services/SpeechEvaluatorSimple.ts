@@ -14,25 +14,43 @@ export class SpeechEvaluatorSimple implements ISpeechEvaluator {
 	}
 
 	evaluateSpeech(input: ISpeechRecognitionResult): ISpeechEvaluatorResult {
-		// Extract the first transcript and confidence from the recognition result
-		const { transcript, confidence } = input.values[0];
+		let isAtLeastOneCorrect = false;
+		let normalizedTranscript = '';
+		let confidence = 0;
 
-		// Normalize the spoken word
-		let normalizedTranscript = this.normalizeWord(transcript);
+		for (const value of input.values) {
+			const { transcript } = value;
 
-		// If has more letters than target word, only compare the last letters
-		const targetWordLength = this.targetWord.length;
-		const spokenWordLength = normalizedTranscript.length;
+			// Normalize the spoken word
+			let localNormalizedTranscript = this.normalizeWord(transcript);
 
-		if (spokenWordLength > targetWordLength) {
-			normalizedTranscript = normalizedTranscript.substring(spokenWordLength - targetWordLength);
+			// If has more letters than target word, only compare the last letters
+			const targetWordLength = this.targetWord.length;
+			const spokenWordLength = localNormalizedTranscript.length;
+
+			if (spokenWordLength > targetWordLength) {
+				localNormalizedTranscript = localNormalizedTranscript.substring(
+					spokenWordLength - targetWordLength
+				);
+			}
+
+			const isCorrect = localNormalizedTranscript === this.targetWord;
+
+			if (value.confidence > confidence) {
+				confidence = value.confidence;
+				normalizedTranscript = localNormalizedTranscript;
+			}
+
+			if (isCorrect) {
+				isAtLeastOneCorrect = true;
+				confidence = value.confidence;
+				normalizedTranscript = localNormalizedTranscript;
+				break;
+			}
 		}
 
-		// Simple comparison
-		const isCorrect = normalizedTranscript === this.targetWord;
-
 		return {
-			isCorrect,
+			isCorrect: isAtLeastOneCorrect,
 			spokenWord: normalizedTranscript,
 			targetWord: this.targetWord,
 			recognitionConfidence: confidence,

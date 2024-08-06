@@ -21,7 +21,7 @@
 <div
 	{id}
 	bind:this={element}
-	class="inline-flex h-20 w-48 items-center justify-center rounded-md text-[32px] {isHighlighted
+	class="inline-flex h-24 items-center justify-center rounded-md text-[32px] {isHighlighted
 		? 'text-green-700'
 		: 'text-gray-700'}"
 >
