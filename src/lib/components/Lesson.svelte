@@ -32,6 +32,8 @@
 	});
 </script>
 
+<svelte:window on:error={handleError} />
+
 <div class="relative flex h-screen w-screen items-center justify-center overflow-hidden">
 	{#await lessonConfig}
 		<div

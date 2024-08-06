@@ -3,9 +3,8 @@
 		GazeDataPointWithFixation,
 		GazeInteractionObjectSetFixation
 	} from '@473783/develex-core';
-	import { derived, writable } from 'svelte/store';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import { writable } from 'svelte/store';
+	import { createEventDispatcher, onDestroy } from 'svelte';
 	import LessonWord from './LessonWord.svelte';
 	import LessonCross from './LessonCross.svelte';
 	import type { IWordReader } from '$lib/interfaces/IWordReader';
@@ -17,8 +16,9 @@
 	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 	import { retry } from '$lib/utils/retry';
 	import LessonLayoutPairedReading from './LessonLayoutPairedReading.svelte';
+	import type { LessonWordType } from '$lib/types/lesson';
 
-	export let currentContent: { text: string; id: string }[][];
+	export let currentContent: LessonWordType[][];
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let wordReader: IWordReader;
 	export let speechEvaluator: ISpeechEvaluator;
@@ -28,6 +28,10 @@
 	 * Should highlight the words when reading?
 	 */
 	export let shouldHighlightWords: boolean;
+
+	let isHiglightTime = false;
+
+	// check whether the speech recognition is on
 
 	/**
 	 * --------------------------
@@ -71,6 +75,7 @@
 	 * --------------------------
 	 * --------------------------
 	 * End of the types  to fix.
+	 * Start of the actual code.
 	 * --------------------------
 	 * --------------------------
 	 */
@@ -83,6 +88,7 @@
 		lessonSuccess: void;
 		lessonMistake: void;
 		lessonComplete: void;
+		lessonFail: void;
 	}>();
 
 	const startSpeechEvaluation = (phraseToBeSaid: string) => {
@@ -128,7 +134,7 @@
 
 	const registerElement = (element: HTMLElement) => {
 		gazeFixationEmitter.register(element, {
-			bufferSize: 25
+			bufferSize: 150
 		});
 	};
 
@@ -146,9 +152,6 @@
 		fixationsFromStartToSpeechEnd.push(event);
 	});
 
-	const inOptions = { duration: 750, delay: 200 };
-	const outOptions = { duration: 200 };
-
 	const evaluateWhetherFixationsWithinTolerance = (
 		fixations: GazeInteractionObjectSetFixationEvent[],
 		sentenceId: string,
@@ -158,6 +161,8 @@
 		const fixationsInsideTheSentence = fixations.filter((fixation) =>
 			fixation.target.some((t) => t.id.includes(sentenceId))
 		);
+		console.log('Fixations inside the sentence', fixationsInsideTheSentence);
+		console.log('Fixations.', fixations);
 		const numberOfFixationsOutsideTheSentence =
 			fixations.length - fixationsInsideTheSentence.length;
 		return numberOfFixationsOutsideTheSentence <= tolerance;
@@ -189,7 +194,7 @@
 		const isSuccesfulGazingPattern = evaluateWhetherFixationsWithinTolerance(
 			fixationsFromStartToSpeechEnd,
 			`${SENTENCE_PREFIX + $taskSentenceIndex}`,
-			2
+			4
 		);
 
 		if (!isSuccesfulGazingPattern) throw new Error('User did not fixate on the content properly.');
@@ -198,21 +203,31 @@
 	};
 
 	const startProcess = async () => {
+		isHiglightTime = shouldHighlightWords;
 		try {
 			for await (const sentence of currentContent) {
-				await retry(() => evaluateSentence(sentence), { retries: 3, delay: 0 }); // child can retry 3 times without failing the lesson
+				await retry(() => evaluateSentence(sentence), {
+					retries: 3,
+					delay: 5000,
+					onRetry: () => dispatch('lessonMistake')
+				}); // child can retry 3 times without failing the lesson
+				dispatch('lessonSuccess');
+				await waitForTimeout(100); // Wait for the content to be read
 			}
-			dispatch('lessonSuccess');
+			dispatch('lessonComplete');
 		} catch (error) {
 			console.warn('Lesson mistake', error);
-			dispatch('lessonMistake');
+			dispatch('lessonFail');
 		} finally {
 			console.log('Lesson complete');
 		}
 	};
 
 	$: if (!validateFixation) {
-		startProcess();
+		dispatch('lessonSuccess');
+		setTimeout(() => {
+			startProcess();
+		}, 500);
 	}
 
 	onDestroy(() => {
@@ -230,7 +245,7 @@
 					{registerElement}
 					{unregisterElement}
 					word={word.text}
-					isHighlighted={sentenceIndex === $taskSentenceIndex && shouldHighlightWords}
+					isHighlighted={sentenceIndex === $taskSentenceIndex && isHiglightTime}
 				/>
 			{/each}
 		{/each}

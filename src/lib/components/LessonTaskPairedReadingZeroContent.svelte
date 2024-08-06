@@ -1,23 +1,21 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
 	import LessonCross from './LessonCross.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
 	import LessonWord from './LessonWord.svelte';
+	import LessonLayoutPairedReading from './LessonLayoutPairedReading.svelte';
 
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let currentContent: string;
 
 	const FIXATION_EYE = 'fixation-eye';
 	const FIXATION_WORD = 'fixation-word';
-	const inOptions = { duration: 750, delay: 200 };
-	const outOptions = { duration: 200 };
 
 	let validateFixation = true;
 
 	const registerElement = (element: HTMLElement) => {
 		gazeFixationEmitter.register(element, {
-			bufferSize: 25
+			bufferSize: 150
 		});
 	};
 
@@ -34,12 +32,12 @@
 
 		if (target.some((t) => t.id === FIXATION_EYE)) {
 			validateFixation = false;
+			dispatch('lessonSuccess');
 			return;
 		}
 
 		if (target.some((t) => t.id === FIXATION_WORD)) {
 			if (validateFixation) return;
-			validateFixation = true;
 			nextZeroLevel();
 		}
 	});
@@ -52,37 +50,14 @@
 
 	const nextZeroLevel = () => {
 		setTimeout(() => {
-			dispatch('lessonSuccess');
+			dispatch('lessonComplete');
 		}, 300);
 	};
 </script>
 
-<div class="lesson-stack flex w-full max-w-7xl items-center justify-center">
-	{#if validateFixation}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-start"
-		>
-			<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} />
-		</div>
-	{:else}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-center"
-		>
-			<LessonWord {registerElement} {unregisterElement} word={currentContent} id={FIXATION_WORD} />
-		</div>
-	{/if}
-</div>
-
-<style>
-	.lesson-stack {
-		display: grid;
-	}
-
-	.lesson-stack > * {
-		grid-area: 1 / 1;
-	}
-</style>
+<LessonLayoutPairedReading {validateFixation}>
+	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} slot="cross-fix" />
+	<svelte:fragment slot="word-area">
+		<LessonWord {registerElement} {unregisterElement} word={currentContent} id={FIXATION_WORD} />
+	</svelte:fragment>
+</LessonLayoutPairedReading>

@@ -4,10 +4,16 @@ import type { IWordReader } from '$lib/interfaces/IWordReader';
 import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
 import type { SvelteComponent } from 'svelte';
 
+export type LessonWordType = {
+	text: string;
+	id: string;
+};
+
 export type LessonSvelteComponentEvents = {
 	lessonSuccess: CustomEvent<void>;
 	lessonMistake: CustomEvent<void>;
 	lessonComplete: CustomEvent<void>;
+	lessonFail: CustomEvent<void>;
 };
 
 export type LessonSvelteComponentBase = typeof SvelteComponent<

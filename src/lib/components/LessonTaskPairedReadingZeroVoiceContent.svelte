@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
 	import LessonCross from './LessonCross.svelte';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
@@ -11,6 +10,7 @@
 	} from '$lib/interfaces/ISpeechRecognition';
 	import { writable } from 'svelte/store';
 	import { waitForCondition } from '$lib/utils/waitForCondition';
+	import LessonLayoutPairedReading from './LessonLayoutPairedReading.svelte';
 
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let currentContent: string;
@@ -19,8 +19,6 @@
 
 	const FIXATION_EYE = 'fixation-eye';
 	const FIXATION_WORD = 'fixation-word';
-	const inOptions = { duration: 750, delay: 200 };
-	const outOptions = { duration: 200 };
 
 	let validateFixation = true;
 
@@ -34,7 +32,7 @@
 
 	const registerElement = (element: HTMLElement) => {
 		gazeFixationEmitter.register(element, {
-			bufferSize: 25
+			bufferSize: 150
 		});
 	};
 
@@ -58,6 +56,7 @@
 			 * Resulting to the actual round can begin and the user can start reading the now visible content.
 			 */
 			validateFixation = false;
+			dispatch('lessonSuccess');
 			return;
 		}
 
@@ -74,6 +73,7 @@
 		lessonSuccess: void;
 		lessonMistake: void;
 		lessonComplete: void;
+		lessonFail: void;
 	}>();
 
 	const startSpeechEvaluation = (phraseToBeSaid: string) => {
@@ -83,8 +83,9 @@
 	};
 
 	const evaluateSpeech = (event: ISpeechRecognitionResult) => {
-		const { isCorrect } = speechEvaluator.evaluateSpeech(event);
-		if (isCorrect) {
+		const evaluation = speechEvaluator.evaluateSpeech(event);
+		console.warn(event, evaluation);
+		if (evaluation.isCorrect) {
 			hasSaidPhrase.set(true);
 		}
 	};
@@ -106,7 +107,7 @@
 			// Second countdown: wait for the phrase or timeout
 			await waitForCondition(hasSaidPhrase, 5000);
 
-			dispatch('lessonSuccess');
+			dispatch('lessonComplete');
 		} catch (error) {
 			console.error(error);
 			dispatch('lessonMistake');
@@ -121,32 +122,9 @@
 	}
 </script>
 
-<div class="lesson-stack flex w-full max-w-7xl items-center justify-center">
-	{#if validateFixation}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-start"
-		>
-			<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} />
-		</div>
-	{:else}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-center"
-		>
-			<LessonWord {registerElement} {unregisterElement} word={currentContent} id={FIXATION_WORD} />
-		</div>
-	{/if}
-</div>
-
-<style>
-	.lesson-stack {
-		display: grid;
-	}
-
-	.lesson-stack > * {
-		grid-area: 1 / 1;
-	}
-</style>
+<LessonLayoutPairedReading {validateFixation}>
+	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} slot="cross-fix" />
+	<svelte:fragment slot="word-area">
+		<LessonWord {registerElement} {unregisterElement} word={currentContent} id={FIXATION_WORD} />
+	</svelte:fragment>
+</LessonLayoutPairedReading>
