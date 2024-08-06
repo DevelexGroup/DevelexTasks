@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Loader from './Loader.svelte';
 </script>
 
-<p>Hoot hoot! I am preparing the lesson for you. Please wait a moment.</p>
+<div class="flex h-full w-full flex-col items-center justify-center gap-4 bg-gray-400">
+	<Loader />
+</div>

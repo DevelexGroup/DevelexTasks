@@ -18,7 +18,7 @@
 		</div>
 	{/if}
 	<div
-		class="col-start-2 flex w-auto max-w-7xl flex-wrap items-center justify-center gap-12 transition-all"
+		class="col-start-2 flex w-auto max-w-7xl flex-wrap items-center justify-center gap-x-12 transition-all"
 		class:opacity-0={validateFixation}
 	>
 		<div class="flex w-auto max-w-7xl flex-wrap gap-x-12">

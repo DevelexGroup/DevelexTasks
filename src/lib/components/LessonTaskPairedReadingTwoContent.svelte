@@ -1,8 +1,7 @@
 <script lang="ts">
 	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
 	import { derived, writable, get } from 'svelte/store';
-	import { createEventDispatcher } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import LessonWord from './LessonWord.svelte';
 	import LessonCross from './LessonCross.svelte';
 	import type { IWordReader } from '$lib/interfaces/IWordReader';
@@ -12,6 +11,7 @@
 		ISpeechRecognitionResult
 	} from '$lib/interfaces/ISpeechRecognition';
 	import { waitForCondition } from '$lib/utils/waitForCondition';
+	import LessonLayoutPairedReading from './LessonLayoutPairedReading.svelte';
 
 	export let currentContent: string[];
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
@@ -26,24 +26,15 @@
 		lessonSuccess: void;
 		lessonMistake: void;
 		lessonComplete: void;
+		lessonFail: void;
 	}>();
 
-	const startSpeechEvaluation = (phraseToBeSaid: string) => {
-		speechRecognition.start();
-		speechEvaluator.targetWord = phraseToBeSaid;
-		speechRecognition.on('speech', evaluateSpeech);
-	};
-
 	const evaluateSpeech = (event: ISpeechRecognitionResult) => {
-		const { isCorrect } = speechEvaluator.evaluateSpeech(event);
-		if (isCorrect) {
+		const evaluation = speechEvaluator.evaluateSpeech(event);
+		console.warn(event, evaluation);
+		if (evaluation.isCorrect) {
 			hasSaidPhrase.set(true);
 		}
-	};
-
-	const stopSpeechEvaluation = () => {
-		speechRecognition.stop();
-		speechRecognition.off('speech', evaluateSpeech);
 	};
 
 	const sentenceWordIndex = writable(0);
@@ -74,7 +65,7 @@
 
 	const registerElement = (element: HTMLElement) => {
 		gazeFixationEmitter.register(element, {
-			bufferSize: 25
+			bufferSize: 150
 		});
 	};
 
@@ -102,80 +93,61 @@
 		}
 	});
 
-	const inOptions = { duration: 750, delay: 200 };
-	const outOptions = { duration: 200 };
-
 	const startProcess = async () => {
 		try {
-			for (let index = 0; index < currentContent.length; index++) {
-				const word = currentContent[index];
-				wordReader.read([
-					{
-						text: word,
-						id: index.toString()
-					}
-				]); // TODO: Rework this to content to be actually object with id and text
-
-				// First countdown: wait for fixation or timeout
-				await waitForCondition(isFixating, 5000);
-
+			for await (const word of currentContent) {
 				// Reset fixation store for the next phase
 				isFixating.set(false);
 
-				// Start speech evaluation - whether the user has said the phrase
-				startSpeechEvaluation(word);
+				wordReader.read([
+					{
+						text: word,
+						id: '0'
+					}
+				]);
+
+				// First countdown: wait for fixation or timeout
+				await waitForCondition(isFixating, 5000);
+				dispatch('lessonSuccess');
+
+				hasSaidPhrase.set(false);
+
+				speechEvaluator.targetWord = word;
 
 				// Second countdown: wait for the phrase or timeout
-				await waitForCondition(hasSaidPhrase, 5000);
-
-				// Reset phrase store for the next phase
-				stopSpeechEvaluation();
-				hasSaidPhrase.set(false);
+				await waitForCondition(hasSaidPhrase, 8000);
 			}
-			dispatch('lessonSuccess');
-			console.log('Lesson success');
+			dispatch('lessonComplete');
+			console.log('Lesson complete');
 		} catch (error) {
 			console.warn('Lesson mistake');
-			dispatch('lessonMistake');
+			dispatch('lessonFail');
 		} finally {
 			console.log('Lesson complete');
 		}
 	};
 
 	$: if (!validateFixation) {
+		dispatch('lessonSuccess');
 		startProcess();
 	}
+
+	onMount(() => {
+		speechRecognition.start();
+		speechRecognition.on('speech', evaluateSpeech);
+	});
+
+	onDestroy(() => {
+		speechRecognition.off('speech', evaluateSpeech);
+	});
 </script>
 
-<div class="lesson-stack flex w-full max-w-7xl items-center justify-center">
-	{#if validateFixation}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-start"
-		>
-			<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} />
-		</div>
-	{:else}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-center space-x-0.5"
-		>
-			{#each currentContent as word, index}
-				<!-- In comparison to L1, it does not use highligting. Otherwise, it is basically the same component -->
-				<LessonWord id={`${FIXATION_WORD}-${index}`} {registerElement} {unregisterElement} {word} />
-			{/each}
-		</div>
-	{/if}
-</div>
-
-<style>
-	.lesson-stack {
-		display: grid;
-	}
-
-	.lesson-stack > * {
-		grid-area: 1 / 1;
-	}
-</style>
+<LessonLayoutPairedReading {validateFixation}>
+	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} slot="cross-fix" />
+	<svelte:fragment slot="word-area">
+		{#each currentContent as word, index}
+			<!-- In comparison to L1, it does not use highligting. Otherwise, it is basically the same component -->
+			<LessonWord id={`${FIXATION_WORD}-${index}`} {registerElement} {unregisterElement} {word} />
+		{/each}
+	</svelte:fragment>
+</LessonLayoutPairedReading>

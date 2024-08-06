@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
 	import LessonCross from './LessonCross.svelte';
 	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
 	import { derived, get, writable } from 'svelte/store';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy } from 'svelte';
 	import LessonWord from './LessonWord.svelte';
+	import LessonLayoutPairedReading from './LessonLayoutPairedReading.svelte';
 
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let currentContent: string[];
@@ -19,13 +19,11 @@
 	}>();
 
 	const sentenceWordIndex = writable(0);
-	const sentenceWordComplete = derived(
-		sentenceWordIndex,
-		($sentenceWordIndex) => $sentenceWordIndex >= currentContent.length - 1
-	);
 	const nextSentenceWord = (): boolean => {
-		if (get(sentenceWordComplete)) {
-			dispatch('lessonSuccess');
+		const isLastWord = get(sentenceWordIndex) >= currentContent.length - 1;
+		if (isLastWord) {
+			dispatch('lessonComplete');
+			gazeFixationEmitter.off('fixationSetEnd', onFixationSetEnd);
 			return true;
 		}
 
@@ -38,7 +36,7 @@
 
 	const registerElement = (element: HTMLElement) => {
 		gazeFixationEmitter.register(element, {
-			bufferSize: 25
+			bufferSize: 150
 		});
 	};
 
@@ -46,9 +44,8 @@
 		gazeFixationEmitter.unregister(element);
 	};
 
-	gazeFixationEmitter.on('fixationSetEnd', (event) => {
+	const onFixationSetEnd = (event) => {
 		const { target } = event;
-		console.log(target);
 
 		if (!Array.isArray(target) || target.length <= 0) {
 			return;
@@ -56,6 +53,7 @@
 
 		if (target.some((t) => t.id === FIXATION_EYE)) {
 			validateFixation = false;
+			dispatch('lessonSuccess');
 			return;
 		}
 
@@ -63,46 +61,26 @@
 			if (validateFixation) return;
 			nextSentenceWord();
 		}
-	});
+	};
 
-	const inOptions = { duration: 750, delay: 200 };
-	const outOptions = { duration: 200 };
+	gazeFixationEmitter.on('fixationSetEnd', onFixationSetEnd);
+
+	onDestroy(() => {
+		gazeFixationEmitter.off('fixationSetEnd', onFixationSetEnd);
+	});
 </script>
 
-<div class="lesson-stack flex w-full max-w-7xl items-center justify-center">
-	{#if validateFixation}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-start"
-		>
-			<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} />
-		</div>
-	{:else}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-screen max-w-7xl items-center justify-center space-x-0.5"
-		>
-			{#each currentContent as word, index}
-				<LessonWord
-					id={`${FIXATION_WORD}-${index}`}
-					{registerElement}
-					{unregisterElement}
-					{word}
-					isHighlighted={index === $sentenceWordIndex}
-				/>
-			{/each}
-		</div>
-	{/if}
-</div>
-
-<style>
-	.lesson-stack {
-		display: grid;
-	}
-
-	.lesson-stack > * {
-		grid-area: 1 / 1;
-	}
-</style>
+<LessonLayoutPairedReading {validateFixation}>
+	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} slot="cross-fix" />
+	<svelte:fragment slot="word-area">
+		{#each currentContent as word, index}
+			<LessonWord
+				id={`${FIXATION_WORD}-${index}`}
+				{registerElement}
+				{unregisterElement}
+				{word}
+				isHighlighted={index === $sentenceWordIndex}
+			/>
+		{/each}
+	</svelte:fragment>
+</LessonLayoutPairedReading>

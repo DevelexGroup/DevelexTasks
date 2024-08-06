@@ -231,7 +231,8 @@ const lessonConfigThree: Promise<LessonConfig> = new Promise((resolve) => {
 				gazeFixationEmitter,
 				speechRecognition,
 				speechEvaluator,
-				wordReader
+				wordReader,
+				shouldHighlightWords: true
 			},
 			deInit
 		};

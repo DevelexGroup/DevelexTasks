@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { fade } from 'svelte/transition';
+	import Button from './Button.svelte';
 </script>
 
 <div
@@ -15,5 +16,6 @@
 		<Icon icon="material-symbols:thumb-up-outline-rounded" class="h-8 w-8 text-green-500" />
 	</div>
 
-	<p class="text-lg text-gray-700">You have completed the level.</p>
+	<p class="mb-4 text-lg text-gray-700">You have completed the level.</p>
+	<Button href="/section/paired-reading">Back to Lessons</Button>
 </div>

@@ -7,10 +7,11 @@
 		GazeInteractionScreenFixation,
 		GazeInteractionObjectSetFixation
 	} from '@473783/develex-core';
-	import { inputCreationConfig } from '$lib/stores/gazeConfig';
+	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
 	import LessonTaskPairedReadingOneContent from '$lib/components/LessonTaskPairedReadingOneContent.svelte';
 	import type { LessonConfig, LessonConfigPairedReadingOne } from '$lib/types/lesson';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 
 	/**
 	 * In the future, it can query for a specific lesson configuration.
@@ -28,6 +29,12 @@
 		}));
 		const gazeInput: GazeInput<GazeInputConfigWithFixations> =
 			createGazeInput($inputCreationConfig);
+		const windowconfig = get(inputWindowFieldsConfig);
+		if (windowconfig) {
+			gazeInput.setWindowCalibration(windowconfig.mouse, windowconfig.window);
+		} else {
+			console.error('No window config');
+		}
 		const gazeInteractionScreenFixation = new GazeInteractionScreenFixation();
 		const gazeInteractionObjectSetFixation = new GazeInteractionObjectSetFixation();
 		gazeInteractionScreenFixation.connect(gazeInput);
