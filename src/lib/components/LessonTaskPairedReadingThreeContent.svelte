@@ -16,6 +16,7 @@
 	} from '$lib/interfaces/ISpeechRecognition';
 	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 	import { retry } from '$lib/utils/retry';
+	import LessonLayoutPairedReading from './LessonLayoutPairedReading.svelte';
 
 	export let currentContent: { text: string; id: string }[][];
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
@@ -219,39 +220,19 @@
 	});
 </script>
 
-<div class="lesson-stack grid w-full max-w-7xl auto-cols-auto items-center justify-center">
-	{#if validateFixation}
-		<div
-			in:fade={inOptions}
-			out:fade={outOptions}
-			class="flex w-24 max-w-7xl items-center justify-start"
-		>
-			<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} />
-		</div>
-	{/if}
-	<div
-		class="col-start-2 flex w-auto max-w-7xl flex-wrap items-center justify-center gap-12 transition-all"
-		class:opacity-0={validateFixation}
-	>
-		<div class="flex w-auto max-w-7xl flex-wrap gap-x-12">
-			{#each currentContent as sentence, sentenceIndex}
-				{#each sentence as word, wordIndex}
-					<LessonWord
-						id={`${FIXATION_WORD}-${SENTENCE_PREFIX + sentenceIndex}-${wordIndex}`}
-						{registerElement}
-						{unregisterElement}
-						word={word.text}
-						isHighlighted={sentenceIndex === $taskSentenceIndex && shouldHighlightWords}
-					/>
-				{/each}
+<LessonLayoutPairedReading {validateFixation}>
+	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} slot="cross-fix" />
+	<svelte:fragment slot="word-area">
+		{#each currentContent as sentence, sentenceIndex}
+			{#each sentence as word, wordIndex}
+				<LessonWord
+					id={`${FIXATION_WORD}-${SENTENCE_PREFIX + sentenceIndex}-${wordIndex}`}
+					{registerElement}
+					{unregisterElement}
+					word={word.text}
+					isHighlighted={sentenceIndex === $taskSentenceIndex && shouldHighlightWords}
+				/>
 			{/each}
-		</div>
-	</div>
-</div>
-
-<style>
-	.lesson-stack {
-		display: grid;
-		grid-template-columns: 6rem /* w-24 in tailwind */ 1fr;
-	}
-</style>
+		{/each}
+	</svelte:fragment>
+</LessonLayoutPairedReading>
