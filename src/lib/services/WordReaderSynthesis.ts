@@ -26,4 +26,12 @@ export class WordReaderSynthesis implements IWordReader {
 			speechSynthesis.speak(utterance);
 		});
 	}
+
+	abort(): void {
+		try {
+			speechSynthesis.cancel();
+		} catch (error) {
+			console.error(error);
+		}
+	}
 }

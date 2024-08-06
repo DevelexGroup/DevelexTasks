@@ -16,8 +16,8 @@ import type { Emitter } from '$lib/utils/EventEmitter';
  */
 export interface ISpeechRecognition extends Emitter<ISpeechRecognitionEventMapping> {
 	isOn: boolean;
-	start(): void;
-	stop(): void;
+	start(): Promise<void>;
+	stop(): Promise<void>;
 }
 
 /**

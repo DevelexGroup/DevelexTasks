@@ -4,7 +4,7 @@
 		GazeInteractionObjectSetFixation
 	} from '@473783/develex-core';
 	import { derived, writable } from 'svelte/store';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import LessonWord from './LessonWord.svelte';
 	import LessonCross from './LessonCross.svelte';
@@ -14,7 +14,8 @@
 		ISpeechRecognition,
 		ISpeechRecognitionResult
 	} from '$lib/interfaces/ISpeechRecognition';
-	import { waitForCondition } from '$lib/utils/waitForCondition';
+	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
+	import { retry } from '$lib/utils/retry';
 
 	export let currentContent: { text: string; id: string }[][];
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
@@ -79,15 +80,17 @@
 	}>();
 
 	const startSpeechEvaluation = (phraseToBeSaid: string) => {
-		speechRecognition.start();
+		if (!speechRecognition.isOn) {
+			speechRecognition.start();
+		}
 		speechEvaluator.targetWord = phraseToBeSaid;
 		speechRecognition.on('speech', evaluateSpeech);
 	};
 
 	const evaluateSpeech = (event: ISpeechRecognitionResult) => {
-		const { isCorrect } = speechEvaluator.evaluateSpeech(event);
-		console.warn(event);
-		if (isCorrect) {
+		const evaluation = speechEvaluator.evaluateSpeech(event);
+		console.warn(event, evaluation);
+		if (evaluation.isCorrect) {
 			hasSaidPhrase.set(true);
 		}
 	};
@@ -111,10 +114,8 @@
 
 	/**
 	 * States of the task.
-	 * isFixating: Indicates if the user has fixated on the content.
 	 * hasSaidPhrase: Indicates if the user has said the phrase.
 	 */
-	const isFixating = writable(false);
 	const hasSaidPhrase = writable(false);
 	let fixationsFromStartToSpeechEnd: GazeInteractionObjectSetFixationEvent[] = [];
 
@@ -133,13 +134,6 @@
 
 		if (target.some((t) => t.id === FIXATION_EYE)) {
 			validateFixation = false;
-		}
-
-		// if fixated on the first word of the current sentence, set isFixating to true
-		if (target.some((t) => t.id === `${FIXATION_WORD}-${SENTENCE_PREFIX + $taskSentenceIndex}-0`)) {
-			if (!validateFixation) {
-				isFixating.set(true);
-			}
 		}
 
 		fixationsFromStartToSpeechEnd.push(event);
@@ -163,28 +157,26 @@
 	};
 
 	const evaluateSentence = async (sentence: { text: string; id: string }[]) => {
+		try {
+			wordReader.abort();
+		} catch (error) {
+			console.warn('Error aborting word reader', error);
+		}
 		wordReader.read(sentence);
 
-		// First countdown: wait for fixation or timeout
-		await waitForCondition(isFixating, 5000);
-		console.log('User has fixated on the content.');
-
+		// Starting the speech evaluation, resetting the states
+		hasSaidPhrase.set(false);
 		fixationsFromStartToSpeechEnd = [];
-
-		// Reset fixation store for the next phase
-		isFixating.set(false);
 
 		// Start speech evaluation - whether the user has said the phrase
 		const sentencePhrase = sentence.map((word) => word.text).join(' ');
 		startSpeechEvaluation(sentencePhrase);
 
+		await waitForTimeout(1000); // Wait for the content to be read
+
 		// Second countdown: wait for the phrase or timeout
 		await waitForCondition(hasSaidPhrase, 7000);
 		console.log('User has said the phrase.');
-
-		// Reset phrase store for the next phase
-		stopSpeechEvaluation();
-		hasSaidPhrase.set(false);
 
 		// Evaluate whether the user fixated maximum 2 times outside the sentence
 		const isSuccesfulGazingPattern = evaluateWhetherFixationsWithinTolerance(
@@ -201,7 +193,7 @@
 	const startProcess = async () => {
 		try {
 			for await (const sentence of currentContent) {
-				await evaluateSentence(sentence);
+				await retry(() => evaluateSentence(sentence), { retries: 3, delay: 0 });
 			}
 			dispatch('lessonSuccess');
 		} catch (error) {
@@ -209,13 +201,16 @@
 			dispatch('lessonMistake');
 		} finally {
 			console.log('Lesson complete');
-			stopSpeechEvaluation();
 		}
 	};
 
 	$: if (!validateFixation) {
 		startProcess();
 	}
+
+	onDestroy(() => {
+		stopSpeechEvaluation();
+	});
 </script>
 
 <div class="lesson-stack grid w-full max-w-7xl auto-cols-auto items-center justify-center">

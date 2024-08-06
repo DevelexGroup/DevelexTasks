@@ -41,7 +41,6 @@ export class SpeechRecognitionMdn
 		};
 
 		this.recognition.onresult = (event: SpeechRecognitionEvent) => {
-			console.warn('onresult', event);
 			const { results, resultIndex } = event;
 			const relevantResults = results[resultIndex];
 			const values = Array.from(relevantResults).map((result) => ({
@@ -57,11 +56,29 @@ export class SpeechRecognitionMdn
 		};
 	}
 
-	start(): void {
-		this.recognition.start();
+	start(): Promise<void> {
+		return new Promise((resolve) => {
+			this.recognition.start();
+			this.recognition.addEventListener(
+				'start',
+				() => {
+					resolve();
+				},
+				{ once: true }
+			);
+		});
 	}
 
-	stop(): void {
-		this.recognition.stop();
+	stop(): Promise<void> {
+		return new Promise((resolve) => {
+			this.recognition.stop();
+			this.recognition.addEventListener(
+				'end',
+				() => {
+					resolve();
+				},
+				{ once: true }
+			);
+		});
 	}
 }
