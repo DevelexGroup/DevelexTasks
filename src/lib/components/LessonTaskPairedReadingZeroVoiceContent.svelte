@@ -24,11 +24,6 @@
 
 	let validateFixation = true;
 
-	console.log('currentContent', currentContent);
-	console.log('speechEvaluator', speechEvaluator);
-	console.log('speechRecognition', speechRecognition);
-	console.log('gazeFixationEmitter', gazeFixationEmitter);
-
 	/**
 	 * States of the task.
 	 * isFixating: Indicates if the user has fixated on the content.
@@ -123,7 +118,6 @@
 	// Watcher for validateFixation changes
 	$: if (!validateFixation) {
 		startProcess();
-		dispatch('lessonComplete');
 	}
 </script>
 

@@ -1,5 +1,6 @@
 import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
 import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
+import type { IWordReader } from '$lib/interfaces/IWordReader';
 import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
 import type { SvelteComponent } from 'svelte';
 
@@ -8,6 +9,17 @@ export type LessonSvelteComponentEvents = {
 	lessonMistake: CustomEvent<void>;
 	lessonComplete: CustomEvent<void>;
 };
+
+export type LessonSvelteComponentBase = typeof SvelteComponent<
+	{
+		// Props
+		/**
+		 * The text to display.
+		 */
+		currentContent: unknown;
+	},
+	LessonSvelteComponentEvents
+>;
 
 export type LessonSvelteComponentPairedReadingZeroVoice = typeof SvelteComponent<
 	{
@@ -47,34 +59,33 @@ export type LessonSvelteComponentPairedReadingOne = typeof SvelteComponent<
 	LessonSvelteComponentEvents
 >;
 
+export type LessonSvelteComponentPairedReadingTwo = typeof SvelteComponent<
+	{
+		gazeFixationEmitter: GazeInteractionObjectSetFixation;
+		currentContent: string[];
+		wordReader: IWordReader;
+		speechEvaluator: ISpeechEvaluator;
+		speechRecognition: ISpeechRecognition;
+	},
+	LessonSvelteComponentEvents
+>;
+
+export type LessonConfigBase<T extends LessonSvelteComponentBase> = {
+	component: T;
+	content: Array<T['prototype']['$$prop_def']['currentContent']>;
+	props: T['prototype']['$$prop_def'];
+	deInit: () => void;
+};
+
+export type LessonConfigPairedReadingZero =
+	LessonConfigBase<LessonSvelteComponentPairedReadingZero>;
+
+export type LessonConfigPairedReadingOne = LessonConfigBase<LessonSvelteComponentPairedReadingOne>;
+
+export type LessonConfigPairedReadingZeroVoice =
+	LessonConfigBase<LessonSvelteComponentPairedReadingZeroVoice>;
+
 export type LessonConfig =
 	| LessonConfigPairedReadingZero
 	| LessonConfigPairedReadingOne
 	| LessonConfigPairedReadingZeroVoice;
-
-export type LessonConfigPairedReadingZero = {
-	component: LessonSvelteComponentPairedReadingZero;
-	content: Array<
-		LessonSvelteComponentPairedReadingZero['prototype']['$$prop_def']['currentContent']
-	>;
-	props: LessonSvelteComponentPairedReadingZero['prototype']['$$prop_def'];
-	deInit: () => void;
-};
-
-export type LessonConfigPairedReadingOne = {
-	component: LessonSvelteComponentPairedReadingOne;
-	content: Array<
-		LessonSvelteComponentPairedReadingOne['prototype']['$$prop_def']['currentContent']
-	>;
-	props: LessonSvelteComponentPairedReadingOne['prototype']['$$prop_def'];
-	deInit: () => void;
-};
-
-export type LessonConfigPairedReadingZeroVoice = {
-	component: LessonSvelteComponentPairedReadingZeroVoice;
-	content: Array<
-		LessonSvelteComponentPairedReadingZeroVoice['prototype']['$$prop_def']['currentContent']
-	>;
-	props: LessonSvelteComponentPairedReadingZeroVoice['prototype']['$$prop_def'];
-	deInit: () => void;
-};
