@@ -70,6 +70,17 @@ export type LessonSvelteComponentPairedReadingTwo = typeof SvelteComponent<
 	LessonSvelteComponentEvents
 >;
 
+export type LessonSvelteComponentPairedReadingThree = typeof SvelteComponent<
+	{
+		gazeFixationEmitter: GazeInteractionObjectSetFixation;
+		currentContent: { text: string; id: string }[][];
+		wordReader: IWordReader;
+		speechEvaluator: ISpeechEvaluator;
+		speechRecognition: ISpeechRecognition;
+	},
+	LessonSvelteComponentEvents
+>;
+
 export type LessonConfigBase<T extends LessonSvelteComponentBase> = {
 	component: T;
 	content: Array<T['prototype']['$$prop_def']['currentContent']>;
@@ -85,7 +96,14 @@ export type LessonConfigPairedReadingOne = LessonConfigBase<LessonSvelteComponen
 export type LessonConfigPairedReadingZeroVoice =
 	LessonConfigBase<LessonSvelteComponentPairedReadingZeroVoice>;
 
+export type LessonConfigPairedReadingTwo = LessonConfigBase<LessonSvelteComponentPairedReadingTwo>;
+
+export type LessonConfigPairedReadingThree =
+	LessonConfigBase<LessonSvelteComponentPairedReadingThree>;
+
 export type LessonConfig =
 	| LessonConfigPairedReadingZero
 	| LessonConfigPairedReadingOne
-	| LessonConfigPairedReadingZeroVoice;
+	| LessonConfigPairedReadingZeroVoice
+	| LessonConfigPairedReadingTwo
+	| LessonConfigPairedReadingThree;
