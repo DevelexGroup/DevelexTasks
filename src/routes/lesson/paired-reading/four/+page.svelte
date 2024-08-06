@@ -146,7 +146,7 @@
 				speechRecognition: new SpeechRecognitionMdn(),
 				speechEvaluator: new SpeechEvaluatorSimple(),
 				wordReader: new WordReaderSynthesis(),
-				shouldHighlightWords: true
+				shouldHighlightWords: false
 			},
 			deInit
 		};

@@ -77,6 +77,7 @@ export type LessonSvelteComponentPairedReadingThree = typeof SvelteComponent<
 		wordReader: IWordReader;
 		speechEvaluator: ISpeechEvaluator;
 		speechRecognition: ISpeechRecognition;
+		shouldHighlightWords: boolean;
 	},
 	LessonSvelteComponentEvents
 >;

@@ -24,6 +24,11 @@
 	export let speechRecognition: ISpeechRecognition;
 
 	/**
+	 * Should highlight the words when reading?
+	 */
+	export let shouldHighlightWords: boolean;
+
+	/**
 	 * --------------------------
 	 * --------------------------
 	 * Types to fix.
@@ -97,6 +102,7 @@
 
 	const stopSpeechEvaluation = () => {
 		try {
+			wordReader.abort();
 			speechRecognition.stop();
 			speechRecognition.off('speech', evaluateSpeech);
 		} catch (error) {
@@ -193,7 +199,7 @@
 	const startProcess = async () => {
 		try {
 			for await (const sentence of currentContent) {
-				await retry(() => evaluateSentence(sentence), { retries: 3, delay: 0 });
+				await retry(() => evaluateSentence(sentence), { retries: 3, delay: 0 }); // child can retry 3 times without failing the lesson
 			}
 			dispatch('lessonSuccess');
 		} catch (error) {
@@ -235,7 +241,7 @@
 						{registerElement}
 						{unregisterElement}
 						word={word.text}
-						isHighlighted={sentenceIndex === $taskSentenceIndex}
+						isHighlighted={sentenceIndex === $taskSentenceIndex && shouldHighlightWords}
 					/>
 				{/each}
 			{/each}

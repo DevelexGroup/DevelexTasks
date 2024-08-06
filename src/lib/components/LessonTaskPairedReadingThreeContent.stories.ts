@@ -144,6 +144,47 @@ export const Default: Story = {
 		gazeFixationEmitter: gazeFixationEmitter,
 		speechRecognition: speechRecognition,
 		speechEvaluator: speechEvaluator,
-		wordReader: wordReader
+		wordReader: wordReader,
+		shouldHighlightWords: true
+	}
+};
+
+export const LevelFour: Story = {
+	args: {
+		currentContent: [
+			[
+				{
+					text: 'Máma',
+					id: '1'
+				},
+				{
+					text: 'má',
+					id: '2'
+				},
+				{
+					text: 'maso.',
+					id: '3'
+				}
+			],
+			[
+				{
+					text: 'Táta',
+					id: '4'
+				},
+				{
+					text: 'mele',
+					id: '5'
+				},
+				{
+					text: 'květiny.',
+					id: '6'
+				}
+			]
+		],
+		gazeFixationEmitter: gazeFixationEmitter,
+		speechRecognition: speechRecognition,
+		speechEvaluator: speechEvaluator,
+		wordReader: wordReader,
+		shouldHighlightWords: false
 	}
 };
