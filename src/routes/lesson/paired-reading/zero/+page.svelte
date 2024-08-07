@@ -12,6 +12,8 @@
 	import type { LessonConfig, LessonConfigPairedReadingZero } from '$lib/types/lesson';
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
+	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
+	import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
 
 	/**
 	 * In the future, it can query for a specific lesson configuration.
@@ -49,9 +51,12 @@
 
 		const lessonConfig: LessonConfigPairedReadingZero = {
 			component: LessonTaskPairedReadingZeroContent,
-			content: ['Jsou', 'jen', 'malí', 'zločinci'],
+			content: ['Jsou', 'jen', 'malí', 'zločinci', 'a', 'zločinci', 'jsou', 'zločinci'],
 			props: {
-				gazeFixationEmitter: gazeInteractionObjectSetFixation
+				gazeFixationEmitter: gazeInteractionObjectSetFixation,
+				speechRecognition: new SpeechRecognitionMdn(),
+				speechEvaluator: new SpeechEvaluatorSimple(),
+				shouldListenForVoice: false
 			},
 			deInit
 		};

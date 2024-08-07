@@ -12,6 +12,7 @@
 	} from '$lib/interfaces/ISpeechRecognition';
 	import { waitForCondition } from '$lib/utils/waitForCondition';
 	import LessonLayoutPairedReading from './LessonLayoutPairedReading.svelte';
+	import { retry } from '$lib/utils/retry';
 
 	export let currentContent: string[];
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
@@ -96,26 +97,32 @@
 	const startProcess = async () => {
 		try {
 			for await (const word of currentContent) {
-				// Reset fixation store for the next phase
-				isFixating.set(false);
+				await retry(
+					async () => {
+						wordReader.read([
+							{
+								text: word,
+								id: '0'
+							}
+						]);
 
-				wordReader.read([
+						await waitForCondition(isFixating, 3000);
+						dispatch('lessonSuccess');
+
+						hasSaidPhrase.set(false);
+
+						speechEvaluator.targetWord = word;
+
+						await waitForCondition(hasSaidPhrase, 5000);
+					},
 					{
-						text: word,
-						id: '0'
+						retries: 3,
+						delay: 5000,
+						onRetry: () => {
+							dispatch('lessonMistake');
+						}
 					}
-				]);
-
-				// First countdown: wait for fixation or timeout
-				await waitForCondition(isFixating, 5000);
-				dispatch('lessonSuccess');
-
-				hasSaidPhrase.set(false);
-
-				speechEvaluator.targetWord = word;
-
-				// Second countdown: wait for the phrase or timeout
-				await waitForCondition(hasSaidPhrase, 8000);
+				);
 			}
 			dispatch('lessonComplete');
 			console.log('Lesson complete');

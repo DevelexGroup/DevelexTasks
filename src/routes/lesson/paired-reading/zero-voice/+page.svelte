@@ -8,12 +8,12 @@
 		GazeInteractionObjectSetFixation
 	} from '@473783/develex-core';
 	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
-	import LessonTaskPairedReadingZeroVoiceContent from '$lib/components/LessonTaskPairedReadingZeroVoiceContent.svelte';
 	import type { LessonConfig, LessonConfigPairedReadingZeroVoice } from '$lib/types/lesson';
 	import { onMount } from 'svelte';
 	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
 	import { get } from 'svelte/store';
+	import LessonTaskPairedReadingZeroContent from '$lib/components/LessonTaskPairedReadingZeroContent.svelte';
 
 	/**
 	 * In the future, it can query for a specific lesson configuration.
@@ -51,12 +51,13 @@
 		};
 
 		const lessonConfig: LessonConfigPairedReadingZeroVoice = {
-			component: LessonTaskPairedReadingZeroVoiceContent,
+			component: LessonTaskPairedReadingZeroContent,
 			content: ['Jsou', 'jen', 'malí', 'zločinci'],
 			props: {
 				gazeFixationEmitter: gazeInteractionObjectSetFixation,
 				speechRecognition: new SpeechRecognitionMdn(),
-				speechEvaluator: new SpeechEvaluatorSimple()
+				speechEvaluator: new SpeechEvaluatorSimple(),
+				shouldListenForVoice: true
 			},
 			deInit
 		};
