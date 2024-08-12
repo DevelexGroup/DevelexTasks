@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {
-		GazeDataPointWithFixation,
-		GazeInteractionObjectSetFixation
+		GazeInteractionObjectSetFixation,
+		GazeInteractionObjectSetFixationEvent
 	} from '@473783/develex-core';
 	import { writable } from 'svelte/store';
 	import { createEventDispatcher, onDestroy } from 'svelte';
@@ -32,53 +32,6 @@
 	let isHiglightTime = false;
 
 	// check whether the speech recognition is on
-
-	/**
-	 * --------------------------
-	 * --------------------------
-	 * Types to fix.
-	 * TODO: core must export these types
-	 * --------------------------
-	 * --------------------------
-	 */
-	interface GazeInteractionEvent {
-		type: string;
-		sessionId: string;
-		timestamp: number;
-	}
-
-	interface GazeInteractionObjectFixationEvent extends GazeInteractionEvent {
-		fixationId: number;
-		duration: number;
-		gazeData: GazeDataPointWithFixation;
-		target: unknown;
-		settings: unknown;
-	}
-
-	interface GazeInteractionObjectSetFixationEvent extends GazeInteractionObjectFixationEvent {
-		type: 'fixationSetProgress' | 'fixationSetEnd' | 'fixationSetStart';
-		target: Element[];
-		settings: GazeInteractionObjectSetFixationSettings[];
-	}
-
-	interface GazeInteractionFixationSettings {
-		bufferSize: number;
-	}
-
-	interface GazeInteractionObjectSetFixationSettings extends GazeInteractionFixationSettings {
-		fixationSetProgress: (event: GazeInteractionObjectSetFixationEvent) => void;
-		fixationSetEnd: (event: GazeInteractionObjectSetFixationEvent) => void;
-		fixationSetStart: (event: GazeInteractionObjectSetFixationEvent) => void;
-	}
-
-	/**
-	 * --------------------------
-	 * --------------------------
-	 * End of the types  to fix.
-	 * Start of the actual code.
-	 * --------------------------
-	 * --------------------------
-	 */
 
 	const FIXATION_WORD = 'fixation-word';
 	const FIXATION_EYE = 'fixation-eye';

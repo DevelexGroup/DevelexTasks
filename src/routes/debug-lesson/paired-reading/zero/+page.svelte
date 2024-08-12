@@ -8,12 +8,12 @@
 		GazeInteractionObjectSetFixation
 	} from '@473783/develex-core';
 	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
-	import type { LessonConfig, LessonConfigPairedReadingZeroVoice } from '$lib/types/lesson';
+	import LessonTaskPairedReadingZeroContent from '$lib/components/LessonTaskPairedReadingZeroContent.svelte';
+	import type { LessonConfig, LessonConfigPairedReadingZero } from '$lib/types/lesson';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
-	import { get } from 'svelte/store';
-	import LessonTaskPairedReadingZeroContent from '$lib/components/LessonTaskPairedReadingZeroContent.svelte';
 
 	/**
 	 * In the future, it can query for a specific lesson configuration.
@@ -31,7 +31,6 @@
 		}));
 		const gazeInput: GazeInput<GazeInputConfigWithFixations> =
 			createGazeInput($inputCreationConfig);
-
 		const windowconfig = get(inputWindowFieldsConfig);
 		if (windowconfig) {
 			gazeInput.setWindowCalibration(windowconfig.mouse, windowconfig.window);
@@ -50,14 +49,14 @@
 			gazeInput.disconnect();
 		};
 
-		const lessonConfig: LessonConfigPairedReadingZeroVoice = {
+		const lessonConfig: LessonConfigPairedReadingZero = {
 			component: LessonTaskPairedReadingZeroContent,
 			content: ['Máma', 'dnes', 'kolo', 'mísa', 'dítě', 'léto', 'vzduch', 'slunce', 'příklad'],
 			props: {
 				gazeFixationEmitter: gazeInteractionObjectSetFixation,
 				speechRecognition: new SpeechRecognitionMdn(),
 				speechEvaluator: new SpeechEvaluatorSimple(),
-				shouldListenForVoice: true
+				shouldListenForVoice: false
 			},
 			gazeInput,
 			deInit
@@ -68,4 +67,4 @@
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
 </script>
 
-<Lesson {lessonConfig} isDebug={false} />
+<Lesson {lessonConfig} isDebug={true} />

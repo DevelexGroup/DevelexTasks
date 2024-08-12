@@ -50,13 +50,14 @@
 		const lessonConfig: LessonConfigPairedReadingOne = {
 			component: LessonTaskPairedReadingOneContent,
 			content: [
-				['Malé', 'děti', 'nejsou', 'roztomilé'],
-				['Jsou', 'jen', 'malí', 'zločinci'],
-				['Nejlepší', 'je', 'dát', 'je', 'do', 'pracovních', 'táborů']
+				['Máma', 'mele', 'maso'],
+				['Malý', 'osmiletý', 'chlapec', 'Adam', 'stál', 'u okna'],
+				['Adam', 'sledoval', 'silnici', 'vedoucí', 'k jejich', 'domu']
 			],
 			props: {
 				gazeFixationEmitter: gazeInteractionObjectSetFixation
 			},
+			gazeInput,
 			deInit
 		};
 
@@ -66,4 +67,4 @@
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
 </script>
 
-<Lesson {lessonConfig} />
+<Lesson {lessonConfig} isDebug={false} />

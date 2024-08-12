@@ -1,10 +1,18 @@
 <script lang="ts">
 	import LessonCross from './LessonCross.svelte';
-	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
-	import { derived, get, writable } from 'svelte/store';
+	import type {
+		GazeInteractionObjectSetFixation,
+		GazeInteractionObjectSetFixationEvent
+	} from '@473783/develex-core';
+	import { get, writable } from 'svelte/store';
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	import LessonWord from './LessonWord.svelte';
 	import LessonLayoutPairedReading from './LessonLayoutPairedReading.svelte';
+
+	/**
+	 * TODO: THIS IS OLD CODE AND SHOULD BE REMADE ACCORDING TO THE OTHER PAIRED READINGS
+	 * i.e. it should use async functions and the new event system
+	 */
 
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let currentContent: string[];
@@ -16,6 +24,7 @@
 		lessonSuccess: void;
 		lessonMistake: void;
 		lessonComplete: void;
+		lessonFail: void;
 	}>();
 
 	const sentenceWordIndex = writable(0);
@@ -44,7 +53,7 @@
 		gazeFixationEmitter.unregister(element);
 	};
 
-	const onFixationSetEnd = (event) => {
+	const onFixationSetEnd = (event: GazeInteractionObjectSetFixationEvent) => {
 		const { target } = event;
 
 		if (!Array.isArray(target) || target.length <= 0) {

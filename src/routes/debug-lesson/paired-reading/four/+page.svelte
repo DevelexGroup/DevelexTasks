@@ -261,7 +261,7 @@
 				speechRecognition: new SpeechRecognitionMdn(),
 				speechEvaluator: new SpeechEvaluatorSimple(),
 				wordReader: new WordReaderSynthesis(),
-				shouldHighlightWords: true
+				shouldHighlightWords: false
 			},
 			gazeInput,
 			deInit
@@ -272,4 +272,4 @@
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
 </script>
 
-<Lesson {lessonConfig} isDebug={false} />
+<Lesson {lessonConfig} isDebug={true} />

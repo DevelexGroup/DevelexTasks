@@ -272,4 +272,4 @@
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
 </script>
 
-<Lesson {lessonConfig} isDebug={false} />
+<Lesson {lessonConfig} isDebug={true} />

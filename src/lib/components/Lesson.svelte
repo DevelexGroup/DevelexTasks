@@ -5,6 +5,7 @@
 	import { fly } from 'svelte/transition';
 	import LessonFrame from './LessonFrame.svelte';
 	import { onDestroy } from 'svelte';
+	import LessonDebug from './LessonDebug.svelte';
 
 	/**
 	 * @type {Promise<LessonConfig>}
@@ -12,6 +13,12 @@
 	 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
 	 */
 	export let lessonConfig: Promise<LessonConfig>;
+
+	/**
+	 * @type {boolean}
+	 * Indicates if the application is in debug mode. If so, the LessonDebug component will be displayed.
+	 */
+	export let isDebug: boolean;
 
 	const handleError = (event: Event) => {
 		console.log(event);
@@ -54,6 +61,9 @@
 			</div>
 		{:else}
 			<LessonFrame {lessonConfigResult} />
+		{/if}
+		{#if isDebug}
+			<LessonDebug gazeInput={lessonConfigResult.gazeInput} />
 		{/if}
 	{:catch catchedError}
 		<div
