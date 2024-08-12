@@ -1,7 +1,11 @@
 import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
 import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
 import type { IWordReader } from '$lib/interfaces/IWordReader';
-import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
+import type {
+	GazeInput,
+	GazeInputConfig,
+	GazeInteractionObjectSetFixation
+} from '@473783/develex-core';
 import type { SvelteComponent } from 'svelte';
 
 export type LessonWordType = {
@@ -93,6 +97,7 @@ export type LessonConfigBase<T extends LessonSvelteComponentBase> = {
 	content: Array<T['prototype']['$$prop_def']['currentContent']>;
 	props: T['prototype']['$$prop_def'];
 	deInit: () => void;
+	gazeInput: GazeInput<GazeInputConfig>;
 };
 
 export type LessonConfigPairedReadingZero =

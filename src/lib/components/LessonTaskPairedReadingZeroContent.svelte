@@ -1,7 +1,10 @@
 <script lang="ts">
 	import LessonCross from './LessonCross.svelte';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
+	import type {
+		GazeInteractionObjectSetFixation,
+		GazeInteractionObjectSetFixationEvent
+	} from '@473783/develex-core';
 	import LessonWord from './LessonWord.svelte';
 	import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
 	import type {
@@ -41,7 +44,7 @@
 		gazeFixationEmitter.unregister(element);
 	};
 
-	const onFixationSetStart = (event) => {
+	const onFixationSetStart = (event: GazeInteractionObjectSetFixationEvent) => {
 		const { target } = event;
 		console.log('onFixationSetStart', target);
 

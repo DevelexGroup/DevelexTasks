@@ -51,13 +51,14 @@
 
 		const lessonConfig: LessonConfigPairedReadingZero = {
 			component: LessonTaskPairedReadingZeroContent,
-			content: ['Jsou', 'jen', 'malí', 'zločinci', 'a', 'zločinci', 'jsou', 'zločinci'],
+			content: ['Máma', 'dnes', 'kolo', 'mísa', 'dítě', 'léto', 'vzduch', 'slunce', 'příklad'],
 			props: {
 				gazeFixationEmitter: gazeInteractionObjectSetFixation,
 				speechRecognition: new SpeechRecognitionMdn(),
 				speechEvaluator: new SpeechEvaluatorSimple(),
 				shouldListenForVoice: false
 			},
+			gazeInput,
 			deInit
 		};
 
@@ -66,4 +67,4 @@
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
 </script>
 
-<Lesson {lessonConfig} />
+<Lesson {lessonConfig} isDebug={false} />

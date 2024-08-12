@@ -53,9 +53,9 @@
 		return {
 			component: LessonTaskPairedReadingTwoContent,
 			content: [
-				['Byla', 'jednou', 'jedna', 'slepice'],
-				['Slepice', 'se', 'jmenovala', 'Kokoska'],
-				['Kokoska', 'měla', 'dvě', 'křídla']
+				['Máma', 'mele', 'maso'],
+				['Malý', 'osmiletý', 'chlapec', 'Adam', 'stál', 'u okna'],
+				['Adam', 'sledoval', 'silnici', 'vedoucí', 'k jejich', 'domu']
 			],
 			props: {
 				gazeFixationEmitter: gazeInteractionObjectSetFixation,
@@ -63,10 +63,13 @@
 				speechEvaluator: new SpeechEvaluatorSimple(),
 				wordReader: new WordReaderSynthesis()
 			},
+			gazeInput,
 			deInit
 		};
+
+		return lessonConfig;
 	};
 	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
 </script>
 
-<Lesson {lessonConfig} />
+<Lesson {lessonConfig} isDebug={false} />

@@ -7,11 +7,11 @@ import {
 } from '@473783/develex-core';
 import LessonTaskPairedReadingOneContent from './LessonTaskPairedReadingOneContent.svelte';
 import type { LessonConfig, LessonConfigPairedReadingThree } from '$lib/types/lesson';
-import LessonTaskPairedReadingZeroVoiceContent from './LessonTaskPairedReadingZeroVoiceContent.svelte';
 import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
 import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 import LessonTaskPairedReadingThreeContent from './LessonTaskPairedReadingThreeContent.svelte';
+import LessonTaskPairedReadingZeroContent from './LessonTaskPairedReadingZeroContent.svelte';
 
 // it resolves on click in document
 const lessonConfig: Promise<LessonConfig> = new Promise((resolve) => {
@@ -50,6 +50,7 @@ const lessonConfig: Promise<LessonConfig> = new Promise((resolve) => {
 			props: {
 				gazeFixationEmitter
 			},
+			gazeInput: mouseGazeInput,
 			deInit
 		});
 	});
@@ -85,13 +86,15 @@ const lessonConfigTwo: Promise<LessonConfig> = new Promise((resolve) => {
 		if (!mouseGazeInput.isConnected) mouseGazeInput.connect();
 		if (!mouseGazeInput.isEmitting) mouseGazeInput.start();
 		resolve({
-			component: LessonTaskPairedReadingZeroVoiceContent,
+			component: LessonTaskPairedReadingZeroContent,
 			content: ['Máma', 'mele', 'maso.'],
 			props: {
 				gazeFixationEmitter,
 				speechRecognition: speechRecognition,
-				speechEvaluator: speechEvaluator
+				speechEvaluator: speechEvaluator,
+				shouldListenForVoice: true
 			},
+			gazeInput: mouseGazeInput,
 			deInit
 		});
 	});
@@ -234,6 +237,7 @@ const lessonConfigThree: Promise<LessonConfig> = new Promise((resolve) => {
 				wordReader,
 				shouldHighlightWords: true
 			},
+			gazeInput: mouseGazeInput,
 			deInit
 		};
 
@@ -266,18 +270,28 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		lessonConfig: lessonConfig
+		lessonConfig: lessonConfig,
+		isDebug: false
 	}
 };
 
 export const DefaultTwo: Story = {
 	args: {
-		lessonConfig: lessonConfigTwo
+		lessonConfig: lessonConfigTwo,
+		isDebug: false
 	}
 };
 
 export const PairedReadingThree: Story = {
 	args: {
-		lessonConfig: lessonConfigThree
+		lessonConfig: lessonConfigThree,
+		isDebug: false
+	}
+};
+
+export const DebugPairedReadingThree: Story = {
+	args: {
+		lessonConfig: lessonConfigThree,
+		isDebug: true
 	}
 };
