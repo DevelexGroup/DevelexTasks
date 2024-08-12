@@ -7,7 +7,35 @@
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
 - test
+- build
 sast:
   stage: test
 include:
 - template: Security/SAST.gitlab-ci.yml
+
+justbuild:
+  stage: build
+  image: node:lts   # Use a Node.js image
+  script:
+    - npm config set -- //gitlab.ics.muni.cz/:_authToken=$CI_JOB_TOKEN
+    - npm config set @473783:registry=https://gitlab.ics.muni.cz/api/v4/projects/7015/packages/npm/
+    - npm install
+    - npm run build
+  rules:
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+
+pages:
+  stage: build
+  image: node:lts   # Use a Node.js image
+  script:
+    - npm config set -- //gitlab.ics.muni.cz/:_authToken=$CI_JOB_TOKEN
+    - npm config set @473783:registry=https://gitlab.ics.muni.cz/api/v4/projects/7015/packages/npm/
+    - npm install
+    - npm run build
+    - mkdir -p public
+    - cp -r build/* public/
+  artifacts:
+    paths:
+      - public/  
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
