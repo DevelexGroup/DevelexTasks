@@ -4,7 +4,13 @@ import LessonTaskSyllableGrid from './LessonTaskSyllableGrid.svelte';
 const meta = {
 	title: 'Lesson/LessonTaskSyllableGrid',
 	component: LessonTaskSyllableGrid,
-	tags: ['autodocs']
+	tags: ['autodocs'],
+	argTypes: {
+		hideAssignmentSyllables: {
+			options: [[0], [1], [], [0, 1]],
+			control: { type: 'radio' }
+		}
+	}
 } satisfies Meta<LessonTaskSyllableGrid>;
 
 export default meta;

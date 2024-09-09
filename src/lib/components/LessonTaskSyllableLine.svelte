@@ -10,6 +10,12 @@
 	 */
 	export let isSyllableAssignmentVisible: boolean = true;
 
+	/**
+	 * Is syllable assignment present? If not, no space is reserved for it.
+	 * This should not be changed during the task as this messes up the layout.
+	 */
+	export let isSyllableAssignmentPresent: boolean = true;
+
 	export let content: SyllableTaskType = {
 		syllables: ['pa', 'ra', 'pa', 'ga'],
 		correctSyllable: 'pa'
@@ -21,6 +27,8 @@
 	export let syllableGap: number = 12;
 
 	export let rowIndex: number = 0;
+
+	export let assignmentWidth: number = 120;
 
 	export let registerElement: (element: HTMLElement) => void;
 	export let unregisterElement: (element: HTMLElement) => void;
@@ -53,20 +61,22 @@
 	};
 </script>
 
-<div>
-	{#if isSyllableAssignmentVisible}
-		<div in:fade={inOptions} out:fade={outOptions} class="flex items-center justify-start">
-			<LessonTaskSyllableItem
-				disabled={true}
-				word={content.correctSyllable}
-				id={idCorrectSyllable}
-				{registerElement}
-				{unregisterElement}
-			/>
-		</div>
-	{/if}
-</div>
-<div class="col-start-2 flex" style="gap: {syllableGap}px;">
+{#if isSyllableAssignmentPresent}
+	<div style="width: {assignmentWidth}px;">
+		{#if isSyllableAssignmentVisible && isSyllableAssignmentPresent && content.correctSyllable}
+			<div in:fade={inOptions} out:fade={outOptions} class="flex items-center justify-start">
+				<LessonTaskSyllableItem
+					disabled={true}
+					word={content.correctSyllable}
+					id={idCorrectSyllable}
+					{registerElement}
+					{unregisterElement}
+				/>
+			</div>
+		{/if}
+	</div>
+{/if}
+<div class="flex" style="gap: {syllableGap}px;">
 	{#each content.syllables as syllable, index}
 		<LessonTaskSyllableItem
 			disabled={false}
