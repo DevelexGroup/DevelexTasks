@@ -6,6 +6,7 @@
 	export let id: string;
 	export let registerElement: (element: HTMLElement) => void;
 	export let unregisterElement: (element: HTMLElement) => void;
+	export let disabled: boolean = false;
 
 	const dispatch = createEventDispatcher<{
 		'word-clicked': {
@@ -19,9 +20,15 @@
 	};
 </script>
 
-<button class="group relative inline-block cursor-pointer" on:click={handleWordClick}>
+<button
+	class="group relative inline-block {disabled ? '' : 'cursor-pointer'}"
+	on:click={handleWordClick}
+	{disabled}
+>
 	<LessonWord {registerElement} {unregisterElement} {word} {id} isHighlighted={false} />
 	<div
-		class="absolute left-0 top-0 -z-10 h-full w-full rounded-md duration-500 group-hover:bg-neutral-200 group-hover:opacity-50"
-	></div>
+		class="absolute left-0 top-0 -z-10 h-full w-full rounded-md duration-500 group-hover:bg-neutral-200 group-hover:opacity-50 {disabled
+			? 'group-hover:bg-neutral-200 group-hover:opacity-50'
+			: ''}"
+	/>
 </button>
