@@ -25,26 +25,9 @@
 			out:fade={outOptions}
 			class="absolute left-0 top-0 flex h-full w-full items-center justify-center"
 		>
-			<div class="lesson-stack grid w-full gap-x-12">
-				{#if isSyllableVisible}
-					<div
-						in:fade={inOptions}
-						out:fade={outOptions}
-						class="flex w-24 items-center justify-start"
-					>
-						<slot name="syllable-area">
-							<div class="h-24 w-24 rounded-md bg-blue-500 text-white">
-								Unoccupied syllable area
-							</div>
-						</slot>
-					</div>
-				{/if}
-				<div class="col-start-2">
-					<slot name="task-area">
-						<div class="h-24 w-24 rounded-md bg-green-500 text-white">Unoccupied task area</div>
-					</slot>
-				</div>
-			</div>
+			<slot name="task-area">
+				<div class="h-24 w-24 rounded-md bg-green-500 text-white">Unoccupied task area</div>
+			</slot>
 		</div>
 	{/if}
 </div>

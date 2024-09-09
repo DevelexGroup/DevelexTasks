@@ -13,6 +13,11 @@ export type LessonWordType = {
 	id: string;
 };
 
+export type SyllableTaskType = {
+	syllables: string[];
+	correctSyllable: string;
+};
+
 export type LessonSvelteComponentEvents = {
 	lessonSuccess: CustomEvent<void>;
 	lessonMistake: CustomEvent<void>;

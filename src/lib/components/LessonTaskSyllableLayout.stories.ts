@@ -13,17 +13,3 @@ type Story = StoryObj<typeof meta>;
 export const InitialState: Story = {
 	args: {}
 };
-
-export const WithInitialSyllable: Story = {
-	args: {
-		isCrossfixVisible: false,
-		isSyllableVisible: true
-	}
-};
-
-export const WithoutInitialSyllable: Story = {
-	args: {
-		isCrossfixVisible: false,
-		isSyllableVisible: false
-	}
-};

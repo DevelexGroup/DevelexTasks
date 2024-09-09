@@ -27,8 +27,14 @@
 >
 	<LessonWord {registerElement} {unregisterElement} {word} {id} isHighlighted={false} />
 	<div
-		class="absolute left-0 top-0 -z-10 h-full w-full rounded-md duration-500 group-hover:bg-neutral-200 group-hover:opacity-50 {disabled
-			? 'group-hover:bg-neutral-200 group-hover:opacity-50'
-			: ''}"
+		class="syllable-select absolute -left-2 top-0 -z-10 h-full rounded-md duration-500 {disabled
+			? ''
+			: 'group-hover:bg-neutral-200 group-hover:opacity-50'}"
 	/>
 </button>
+
+<style>
+	.syllable-select {
+		width: calc(100% + 1rem);
+	}
+</style>
