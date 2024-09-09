@@ -8,14 +8,16 @@
 	const outOptions = { duration: 200 };
 </script>
 
-<div class="relative h-full w-full p-12">
+<div class="relative mx-auto h-full w-full max-w-7xl p-12">
 	{#if isCrossfixVisible}
 		<div
 			in:fade={inOptions}
 			out:fade={outOptions}
-			class="absolute left-0 top-0 flex h-full w-full items-center justify-center"
+			class="items-left absolute left-0 top-0 flex h-full w-full justify-start"
 		>
-			<slot name="crossfix-area" />
+			<slot name="crossfix-area">
+				<div class="h-24 w-24 rounded-md bg-red-500 text-white">Unoccupied crossfix area</div>
+			</slot>
 		</div>
 	{:else}
 		<div
@@ -23,17 +25,25 @@
 			out:fade={outOptions}
 			class="absolute left-0 top-0 flex h-full w-full items-center justify-center"
 		>
-			<div class="lesson-stack grid">
+			<div class="lesson-stack grid w-full gap-x-12">
 				{#if isSyllableVisible}
 					<div
 						in:fade={inOptions}
 						out:fade={outOptions}
 						class="flex w-24 items-center justify-start"
 					>
-						<slot name="syllable-area" />
+						<slot name="syllable-area">
+							<div class="h-24 w-24 rounded-md bg-blue-500 text-white">
+								Unoccupied syllable area
+							</div>
+						</slot>
 					</div>
 				{/if}
-				<slot name="task-area" />
+				<div class="col-start-2">
+					<slot name="task-area">
+						<div class="h-24 w-24 rounded-md bg-green-500 text-white">Unoccupied task area</div>
+					</slot>
+				</div>
 			</div>
 		</div>
 	{/if}
