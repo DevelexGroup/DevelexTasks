@@ -30,6 +30,9 @@
 	 */
 	let wasCrossFixated: Writable<boolean> = writable(false);
 	let wasCorrectSyllableSelected: Writable<boolean> = writable(false);
+	let wasMistakenTooManyTimes: Writable<boolean> = writable(false);
+
+	let mistakeCount: number = 0;
 
 	let hideAssignmentSyllables: number[] = [];
 
@@ -60,7 +63,11 @@
 	};
 
 	const handleIncorrectSyllableClick = () => {
+		mistakeCount++;
 		dispatch('lessonMistake');
+		if (mistakeCount >= 3) {
+			wasMistakenTooManyTimes.set(true);
+		}
 	};
 
 	/**
@@ -114,11 +121,11 @@
 	 */
 	const processSyllableSelection = async () => {
 		try {
-			await retry(() => waitForCondition(wasCorrectSyllableSelected, SYLLABLE_SELECTION_TIMEOUT), {
-				retries: 3,
-				delay: MISTAKE_SCREEN_TIMEOUT,
-				onRetry: () => dispatch('lessonMistake')
-			});
+			await waitForCondition(
+				wasCorrectSyllableSelected,
+				SYLLABLE_SELECTION_TIMEOUT,
+				wasMistakenTooManyTimes
+			);
 			dispatch('lessonComplete');
 		} catch {
 			dispatch('lessonFail');

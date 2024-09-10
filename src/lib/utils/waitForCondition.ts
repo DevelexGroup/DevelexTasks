@@ -1,22 +1,39 @@
 import type { Readable } from 'svelte/store';
 
-export const waitForCondition = (store: Readable<boolean>, maxTimeout: number): Promise<void> => {
+export const waitForCondition = (
+	store: Readable<boolean>,
+	maxTimeout: number,
+	instantFailStore?: Readable<boolean> // Optional instant fail condition store
+): Promise<void> => {
 	return new Promise((resolve, reject) => {
-		// Initialize `unsubscribe` to an empty function
 		let unsubscribe: () => void = () => {};
+		let unsubscribeFail: () => void = () => {};
 
-		// Define `unsubscribe` within the subscription callback
+		// Subscribe to the main store (success condition)
 		unsubscribe = store.subscribe((value) => {
 			if (value) {
-				unsubscribe(); // Unsubscribe and resolve if condition is met
+				unsubscribe(); // Unsubscribe and resolve if success condition is met
+				if (unsubscribeFail) unsubscribeFail(); // Cleanup instant fail listener if present
 				resolve();
 			}
 		});
 
-		// Timeout to reject the promise if the condition is not met in time
+		// Subscribe to the instant fail store (fail condition)
+		if (instantFailStore) {
+			unsubscribeFail = instantFailStore.subscribe((failValue) => {
+				if (failValue) {
+					unsubscribe(); // Cleanup success listener if fail condition is met
+					unsubscribeFail();
+					reject(new Error('Instant fail condition triggered.'));
+				}
+			});
+		}
+
+		// Timeout to reject the promise if the success condition is not met in time
 		setTimeout(() => {
 			unsubscribe();
-			reject(new Error('timeout waiting for condition for: ' + maxTimeout));
+			if (unsubscribeFail) unsubscribeFail();
+			reject(new Error('Timeout waiting for condition: ' + maxTimeout));
 		}, maxTimeout);
 	});
 };
