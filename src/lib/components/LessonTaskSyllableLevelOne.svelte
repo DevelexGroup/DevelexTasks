@@ -1,4 +1,12 @@
 <script lang="ts">
+	/*
+	 * Syllable task level one
+	 * ----------------------
+	 * This task is designed to test the user's ability to find the correct syllable
+	 * in a set of syllables.
+	 *
+	 * Only one line of syllables is presented to the user.
+	 */
 	import LessonTaskSyllableLayout from './LessonTaskSyllableLayout.svelte';
 	import LessonCross from './LessonCross.svelte';
 	import type { SyllableTaskType } from '$lib/types/lesson';
@@ -55,17 +63,28 @@
 		dispatch('lessonMistake');
 	};
 
+	/**
+	 * Evaluate the gaze event to determine the user's gaze
+	 * interaction with the task
+	 * @param event
+	 * @returns void
+	 */
 	const evaluateGazeEvent = (event: GazeInteractionObjectSetFixationEvent) => {
 		const { target } = event;
 
 		/**
-		 * First stage of the lesson, the user should fixate on the crossfix
+		 * Currently only checking for crossfixation
 		 */
 		if (target.some((t) => t.id === FIXATION_EYE)) {
 			wasCrossFixated.set(true);
 		}
 	};
 
+	/**
+	 * Step 0: Read the correct syllable to the user
+	 * if the setting is enabled
+	 * @returns void
+	 */
 	const processReadingAssignmentSyllable = () => {
 		if (!shouldReadCorrectSyllable) return;
 		void wordReader.read([
@@ -76,6 +95,10 @@
 		]);
 	};
 
+	/**
+	 * Step 1: Wait for the user to fixate on the crossfix
+	 * @returns void
+	 */
 	const processCrossFixation = async () => {
 		try {
 			await waitForCondition(wasCrossFixated, CROSS_FIXATION_TIMEOUT);
@@ -85,6 +108,10 @@
 		}
 	};
 
+	/**
+	 * Step 2: Wait for the user to select the correct syllable
+	 * @returns void
+	 */
 	const processSyllableSelection = async () => {
 		try {
 			await retry(() => waitForCondition(wasCorrectSyllableSelected, SYLLABLE_SELECTION_TIMEOUT), {
@@ -100,6 +127,8 @@
 
 	/**
 	 * Main logic of the task, process steps in order
+	 * to complete the task successfully
+	 * @returns void
 	 */
 	const processTaskLogic = async () => {
 		processReadingAssignmentSyllable(); // Step 0: Read the correct syllable to the user, no need to use await here
@@ -107,11 +136,19 @@
 		await processSyllableSelection(); // Step 2: Wait for the user to select the correct syllable
 	};
 
+	/**
+	 * Start the task logic and gaze event evaluation
+	 * when the component is mounted
+	 */
 	onMount(() => {
 		gazeFixationEmitter.on('fixationSetStart', evaluateGazeEvent);
 		processTaskLogic();
 	});
 
+	/**
+	 * Clean up the event listener when the component is destroyed
+	 * to prevent memory leaks
+	 */
 	onDestroy(() => {
 		gazeFixationEmitter.off('fixationSetStart', evaluateGazeEvent);
 	});
