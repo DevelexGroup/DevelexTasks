@@ -2,7 +2,6 @@
 	import { fade } from 'svelte/transition';
 
 	export let isCrossfixVisible: boolean = true;
-	export let isSyllableVisible: boolean = true;
 
 	const inOptions = { duration: 750, delay: 200 };
 	const outOptions = { duration: 200 };
@@ -31,10 +30,3 @@
 		</div>
 	{/if}
 </div>
-
-<style>
-	.lesson-stack {
-		display: grid;
-		grid-template-columns: 6rem /* w-24 in tailwind */ 1fr;
-	}
-</style>

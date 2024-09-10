@@ -13,7 +13,7 @@ export class WordReaderSynthesis implements IWordReader {
 		this.utterance.rate = 0.8;
 	}
 
-	read(words: { id: string; text: string }[]): Promise<void> {
+	read(words: { text: string }[]): Promise<void> {
 		this.utterance.text = words.map((word) => word.text).join(' ');
 		return new Promise((resolve, reject) => {
 			this.utterance.onend = () => {
