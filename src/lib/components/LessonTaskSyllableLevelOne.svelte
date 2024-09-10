@@ -39,7 +39,7 @@
 	const FIXATION_EYE = 'fixation-eye';
 	const CROSS_FIXATION_TIMEOUT = 5000;
 	const SYLLABLE_SELECTION_TIMEOUT = 4000;
-	const MISTAKE_SCREEN_TIMEOUT = 5000;
+	const MAXIMUM_MISTAKE_COUNT = 3;
 
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
@@ -65,7 +65,7 @@
 	const handleIncorrectSyllableClick = () => {
 		mistakeCount++;
 		dispatch('lessonMistake');
-		if (mistakeCount >= 3) {
+		if (mistakeCount >= MAXIMUM_MISTAKE_COUNT) {
 			wasMistakenTooManyTimes.set(true);
 		}
 	};
