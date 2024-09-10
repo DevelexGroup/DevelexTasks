@@ -8,12 +8,28 @@ const cleanup = (...unsubscribers: Array<() => void>) => {
 	unsubscribers.forEach((unsubscribe) => unsubscribe && unsubscribe());
 };
 
+class TimeoutError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'TimeoutError';
+	}
+}
+
+class InstantFailError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'InstantFailError';
+	}
+}
+
 /**
  * Helper function that waits for a condition to be met.
  * @param store Success condition store
  * @param maxTimeout Timeout in milliseconds to wait for the condition
  * @param instantFailStore Optional store that triggers an instant fail condition
  * @returns Promise that resolves when the success condition is met, rejects if the timeout is reached or the instant fail condition is met
+ * @throws {TimeoutError} When the timeout is reached
+ * @throws {InstantFailError} When the instant fail condition is met
  */
 export const waitForCondition = (
 	store: Readable<boolean>,
@@ -33,13 +49,13 @@ export const waitForCondition = (
 		const onFail = (failValue: boolean) => {
 			if (failValue) {
 				cleanup(...unsubscribers);
-				reject(new Error('Instant fail condition triggered.'));
+				reject(new InstantFailError('Instant fail condition met'));
 			}
 		};
 
 		const onTimeout = () => {
 			cleanup(...unsubscribers);
-			reject(new Error(`Timeout waiting for condition: ${maxTimeout}ms`));
+			reject(new TimeoutError('Timeout reached after ' + maxTimeout + 'ms'));
 		};
 
 		unsubscribers.push(store.subscribe(onSuccess));
