@@ -15,14 +15,15 @@
 	import LessonTaskSyllableGrid from './LessonTaskSyllableGrid.svelte';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
-	import { waitForCondition } from '$lib/utils/waitForCondition';
-	import { retry } from '$lib/utils/retry';
+	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 
 	export let currentContent: SyllableTaskType;
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let wordReader: IWordReader;
 
 	export let shouldReadCorrectSyllable: boolean = true;
+	export let isSyllableAssignmentPresent: boolean = true;
+	export let correctSyllableVisibilityTimeout: number = 0;
 
 	/**
 	 * State stores to keep up with the state of the lesson
@@ -88,18 +89,31 @@
 	};
 
 	/**
-	 * Step 0: Read the correct syllable to the user
+	 * Step 2: Read the correct syllable to the user
 	 * if the setting is enabled
 	 * @returns void
 	 */
-	const processReadingAssignmentSyllable = () => {
+	const processReadingAssignmentSyllable = async () => {
 		if (!shouldReadCorrectSyllable) return;
+		await waitForTimeout(500);
 		void wordReader.read([
 			{
 				text: currentContent.correctSyllable,
 				id: 'correct-syllable'
 			}
 		]);
+	};
+
+	/**
+	 * Step 2: Make syllable assignment invisible after a certain time
+	 * if the setting is enabled (i.e. correctSyllableVisibilityTimeout > 0)
+	 * @returns void
+	 */
+	const processHideAssignmentSyllable = () => {
+		if (correctSyllableVisibilityTimeout <= 0) return;
+		waitForTimeout(correctSyllableVisibilityTimeout).then(() => {
+			hideAssignmentSyllables = [0];
+		});
 	};
 
 	/**
@@ -116,7 +130,7 @@
 	};
 
 	/**
-	 * Step 2: Wait for the user to select the correct syllable
+	 * Step 3: Wait for the user to select the correct syllable
 	 * @returns void
 	 */
 	const processSyllableSelection = async () => {
@@ -138,9 +152,10 @@
 	 * @returns void
 	 */
 	const processTaskLogic = async () => {
-		processReadingAssignmentSyllable(); // Step 0: Read the correct syllable to the user, no need to use await here
 		await processCrossFixation(); // Step 1: Wait for the user to fixate on the crossfix
-		await processSyllableSelection(); // Step 2: Wait for the user to select the correct syllable
+		processReadingAssignmentSyllable(); // Step 2: Read the correct syllable to the user, no need to use await here (Simultaneous)
+		processHideAssignmentSyllable(); // Step 2: Hide the correct syllable after a certain time (Simultaneous)
+		await processSyllableSelection(); // Step 3: Wait for the user to select the correct syllable
 	};
 
 	/**
@@ -168,10 +183,11 @@
 		{registerElement}
 		{unregisterElement}
 		{hideAssignmentSyllables}
-		isSyllableAssignmentPresent={false}
+		{isSyllableAssignmentPresent}
 		assignmentWidth={120}
 		syllableGap={12}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}
+		slot="task-area"
 	/>
 </LessonTaskSyllableLayout>
