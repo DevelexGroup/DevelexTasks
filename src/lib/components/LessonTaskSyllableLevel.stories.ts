@@ -1,12 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import LessonTaskSyllableLevelOne from './LessonTaskSyllableLevelOne.svelte';
+import LessonTaskSyllableLevel from './LessonTaskSyllableLevel.svelte';
 import {
 	createGazeInput,
 	GazeInteractionObjectSetFixation,
 	GazeInteractionScreenFixation
 } from '@473783/develex-core';
-import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
-import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
 import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 
 const mouseGazeInput = createGazeInput({
@@ -39,8 +37,8 @@ document.addEventListener(
 );
 
 const meta = {
-	title: 'Lesson/LessonTaskSyllableLevelOne',
-	component: LessonTaskSyllableLevelOne,
+	title: 'Lesson/LessonTaskSyllableLevel',
+	component: LessonTaskSyllableLevel,
 	tags: ['autodocs'],
 	argTypes: {
 		gazeFixationEmitter: {
@@ -66,7 +64,7 @@ const meta = {
 			}
 		}
 	}
-} satisfies Meta<LessonTaskSyllableLevelOne>;
+} satisfies Meta<LessonTaskSyllableLevel>;
 
 export default meta;
 
@@ -74,10 +72,29 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		currentContent: {
-			correctSyllable: 'ma',
-			syllables: ['ma', 'ma', 'so']
-		},
+		currentContent: [
+			{
+				correctSyllable: 'ma',
+				syllables: ['ma', 'ma', 'so']
+			}
+		],
+		gazeFixationEmitter: gazeFixationEmitter,
+		wordReader: wordReader
+	}
+};
+
+export const DefaultMultiple: Story = {
+	args: {
+		currentContent: [
+			{
+				correctSyllable: 'ma',
+				syllables: ['ma', 'ma', 'so']
+			},
+			{
+				correctSyllable: 'ba',
+				syllables: ['ba', 'ma', 'ro']
+			}
+		],
 		gazeFixationEmitter: gazeFixationEmitter,
 		wordReader: wordReader
 	}
