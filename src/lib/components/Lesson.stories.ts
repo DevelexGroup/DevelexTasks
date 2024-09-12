@@ -6,12 +6,17 @@ import {
 	GazeInteractionScreenFixation
 } from '@473783/develex-core';
 import LessonTaskPairedReadingOneContent from './LessonTaskPairedReadingOneContent.svelte';
-import type { LessonConfig, LessonConfigPairedReadingThree } from '$lib/types/lesson';
+import type {
+	LessonConfig,
+	LessonConfigPairedReadingThree,
+	LessonConfigSyllablesLevelOne
+} from '$lib/types/lesson';
 import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
 import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 import LessonTaskPairedReadingThreeContent from './LessonTaskPairedReadingThreeContent.svelte';
 import LessonTaskPairedReadingZeroContent from './LessonTaskPairedReadingZeroContent.svelte';
+import LessonTaskSyllableLevel from './LessonTaskSyllableLevel.svelte';
 
 // it resolves on click in document
 const lessonConfig: Promise<LessonConfig> = new Promise((resolve) => {
@@ -245,6 +250,62 @@ const lessonConfigThree: Promise<LessonConfig> = new Promise((resolve) => {
 	});
 });
 
+const lessonConfigSyllablesLevelOne: Promise<LessonConfig> = new Promise((resolve) => {
+	const mouseGazeInput = createGazeInput({
+		tracker: 'dummy',
+		fixationDetection: 'idt',
+		frequency: 60,
+		precisionMinimalError: 0.5,
+		precisionDecayRate: 0.1,
+		precisionMaximumError: 1
+	});
+
+	const gazeFixationDetector = new GazeInteractionScreenFixation();
+	const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+
+	// expect error
+	//@ts-expect-error error in lib
+	gazeFixationDetector.connect(mouseGazeInput);
+	gazeFixationEmitter.connect(gazeFixationDetector);
+
+	const deInit = () => {
+		if (mouseGazeInput.isEmitting) mouseGazeInput.stop();
+		if (mouseGazeInput.isConnected) mouseGazeInput.disconnect();
+	};
+
+	const wordReader = new WordReaderSynthesis();
+
+	document.addEventListener('dblclick', (e) => {
+		mouseGazeInput.setWindowCalibration(e, window);
+		if (!mouseGazeInput.isConnected) mouseGazeInput.connect();
+		if (!mouseGazeInput.isEmitting) mouseGazeInput.start();
+
+		const lessonConfig: LessonConfigSyllablesLevelOne = {
+			component: LessonTaskSyllableLevel,
+			content: [
+				[
+					{
+						correctSyllable: 'ma',
+						syllables: ['ma', 'ma', 'so']
+					},
+					{
+						correctSyllable: 'ba',
+						syllables: ['ba', 'ma', 'ro']
+					}
+				]
+			],
+			props: {
+				gazeFixationEmitter,
+				wordReader
+			},
+			gazeInput: mouseGazeInput,
+			deInit
+		};
+
+		resolve(lessonConfig);
+	});
+});
+
 const meta = {
 	title: 'Lesson/Lesson',
 	component: Lesson,
@@ -292,6 +353,13 @@ export const PairedReadingThree: Story = {
 export const DebugPairedReadingThree: Story = {
 	args: {
 		lessonConfig: lessonConfigThree,
+		isDebug: true
+	}
+};
+
+export const DebugSyllablesLevelOne: Story = {
+	args: {
+		lessonConfig: lessonConfigSyllablesLevelOne,
 		isDebug: true
 	}
 };

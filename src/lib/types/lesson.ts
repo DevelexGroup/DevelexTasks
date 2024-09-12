@@ -1,3 +1,4 @@
+import type LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
 import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
 import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
 import type { IWordReader } from '$lib/interfaces/IWordReader';
@@ -6,7 +7,7 @@ import type {
 	GazeInputConfig,
 	GazeInteractionObjectSetFixation
 } from '@473783/develex-core';
-import type { SvelteComponent } from 'svelte';
+import type { SvelteComponent, ComponentType } from 'svelte';
 
 export type LessonWordType = {
 	text: string;
@@ -97,6 +98,8 @@ export type LessonSvelteComponentPairedReadingThree = typeof SvelteComponent<
 	LessonSvelteComponentEvents
 >;
 
+export type LessonSvelteComponentSyllables = ComponentType<LessonTaskSyllableLevel>;
+
 export type LessonConfigBase<T extends LessonSvelteComponentBase> = {
 	component: T;
 	content: Array<T['prototype']['$$prop_def']['currentContent']>;
@@ -118,9 +121,12 @@ export type LessonConfigPairedReadingTwo = LessonConfigBase<LessonSvelteComponen
 export type LessonConfigPairedReadingThree =
 	LessonConfigBase<LessonSvelteComponentPairedReadingThree>;
 
+export type LessonConfigSyllables = LessonConfigBase<LessonSvelteComponentSyllables>;
+
 export type LessonConfig =
 	| LessonConfigPairedReadingZero
 	| LessonConfigPairedReadingOne
 	| LessonConfigPairedReadingZeroVoice
 	| LessonConfigPairedReadingTwo
-	| LessonConfigPairedReadingThree;
+	| LessonConfigPairedReadingThree
+	| LessonConfigSyllables;
