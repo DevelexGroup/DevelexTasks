@@ -30,7 +30,13 @@ export function load({ params }) {
 					}
 				]
 			],
-			partialProps: {}
+			partialProps: {
+				assignmentGap: 200,
+				syllableGap: 20,
+				shouldReadCorrectSyllable: true,
+				isSyllableAssignmentPresent: true,
+				correctSyllableVisibilityTimeout: 0
+			}
 		},
 		{
 			level: 'one',
@@ -66,7 +72,13 @@ export function load({ params }) {
 					}
 				]
 			],
-			partialProps: {}
+			partialProps: {
+				assignmentGap: 200,
+				syllableGap: 20,
+				shouldReadCorrectSyllable: true,
+				isSyllableAssignmentPresent: true,
+				correctSyllableVisibilityTimeout: 0
+			}
 		},
 		{
 			level: 'two',
@@ -102,7 +114,13 @@ export function load({ params }) {
 					}
 				]
 			],
-			partialProps: {}
+			partialProps: {
+				assignmentGap: 200,
+				syllableGap: 20,
+				shouldReadCorrectSyllable: true,
+				isSyllableAssignmentPresent: true,
+				correctSyllableVisibilityTimeout: 0
+			}
 		}
 	];
 

@@ -18,6 +18,16 @@
 	export let correctSyllableVisibilityTimeout: number = 0;
 
 	/**
+	 * Width of the assignment syllable gap in pixels.
+	 */
+	export let assignmentGap: number = 120;
+
+	/**
+	 * The gap between the syllables in pixels.
+	 */
+	export let syllableGap: number = 12;
+
+	/**
 	 * State stores to keep up with the state of the lesson
 	 * and control the flow of the lesson
 	 */
@@ -193,8 +203,8 @@
 		{unregisterElement}
 		{hideAssignmentSyllables}
 		{isSyllableAssignmentPresent}
-		assignmentWidth={120}
-		syllableGap={12}
+		{assignmentGap}
+		{syllableGap}
 		{currentRowIndex}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}
