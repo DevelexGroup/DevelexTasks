@@ -36,9 +36,9 @@
 	export let isSyllableAssignmentPresent: boolean = true;
 
 	/**
-	 * Width of the assignment syllable in pixels.
+	 * Width of the assignment syllable gap in pixels.
 	 */
-	export let assignmentWidth: number = 120;
+	export let assignmentGap: number = 120;
 
 	/**
 	 * The gap between the syllables in pixels.
@@ -89,7 +89,11 @@
 	};
 </script>
 
-<div class="custom-grid" class:one-column={!isSyllableAssignmentPresent}>
+<div
+	class="custom-grid"
+	class:one-column={!isSyllableAssignmentPresent}
+	style="gap: 1rem {assignmentGap}px;"
+>
 	{#each content as task, rowIndex}
 		{@const idCorrectSyllable = `syllable-assignement_${rowIndex}`}
 		{@const idOtherSyllableBase = `syllable-choice_${rowIndex}_`}
@@ -100,7 +104,6 @@
 			{syllableGap}
 			{idCorrectSyllable}
 			{idOtherSyllableBase}
-			{assignmentWidth}
 			isSyllableAssignmentVisible={!hideAssignmentSyllables.includes(rowIndex)}
 			{isSyllableAssignmentPresent}
 			{rowIndex}
@@ -114,7 +117,6 @@
 	.custom-grid {
 		display: grid;
 		grid-template-columns: fit-content(100%) 1fr;
-		gap: 1rem 4rem;
 	}
 	.one-column {
 		grid-template-columns: 1fr;

@@ -32,8 +32,8 @@
 	let hideAssignmentSyllables: number[] = currentContent.map((_, index) => index);
 
 	const FIXATION_EYE = 'fixation-eye';
-	const CROSS_FIXATION_TIMEOUT = 5000;
-	const SYLLABLE_SELECTION_TIMEOUT = 8000;
+	const CROSS_FIXATION_TIMEOUT = 8000;
+	const SYLLABLE_SELECTION_TIMEOUT = 80000;
 	const MAXIMUM_MISTAKE_COUNT = 3;
 
 	const dispatch = createEventDispatcher<{

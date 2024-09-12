@@ -4,8 +4,8 @@
 	export let isHighlighted: boolean = false;
 	export let word: string;
 	export let id: string;
-	export let registerElement: (element: HTMLElement) => void;
-	export let unregisterElement: (element: HTMLElement) => void;
+	export let registerElement: (element: HTMLElement) => void = () => {};
+	export let unregisterElement: (element: HTMLElement) => void = () => {};
 
 	let element: HTMLElement;
 

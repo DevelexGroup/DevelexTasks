@@ -3,6 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import LessonTaskSyllableItem from './LessonTaskSyllableItem.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import LessonWord from './LessonWord.svelte';
 
 	/**
 	 * Is assignment syllable visible?
@@ -27,8 +28,6 @@
 	export let syllableGap: number = 12;
 
 	export let rowIndex: number = 0;
-
-	export let assignmentWidth: number = 120;
 
 	export let registerElement: (element: HTMLElement) => void;
 	export let unregisterElement: (element: HTMLElement) => void;
@@ -62,9 +61,9 @@
 </script>
 
 {#if isSyllableAssignmentPresent}
-	<div style="width: {assignmentWidth}px;">
+	<div class="relative">
 		{#if isSyllableAssignmentVisible && isSyllableAssignmentPresent && content.correctSyllable}
-			<div in:fade={inOptions} out:fade={outOptions} class="flex items-center justify-start">
+			<div in:fade={inOptions} out:fade={outOptions} class="absolute">
 				<LessonTaskSyllableItem
 					disabled={true}
 					word={content.correctSyllable}
@@ -74,6 +73,10 @@
 				/>
 			</div>
 		{/if}
+		<!-- Shadow LessonWord without gaze registration to -->
+		<div class="pointer-events-none select-none opacity-0">
+			<LessonWord word={content.correctSyllable} id={idCorrectSyllable} />
+		</div>
 	</div>
 {/if}
 <div class="flex" style="gap: {syllableGap}px;">
