@@ -17,5 +17,5 @@
 	</div>
 
 	<p class="mb-4 text-lg text-gray-700">You have completed the level.</p>
-	<Button href="/section/paired-reading">Back to Lessons</Button>
+	<Button href="/section/">Back to Lessons</Button>
 </div>
