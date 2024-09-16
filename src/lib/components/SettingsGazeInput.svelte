@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { GazeInputConfig } from '@473783/develex-core';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import InputSelect from './InputSelect.svelte';
+	import { get } from 'svelte/store';
+	import { inputCreationConfig } from '$lib/stores/gazeConfig';
 
 	const dispatch = createEventDispatcher<{
 		gazeInputSetup: GazeInputConfig; // TODO Switch to GazeInputConfigWithFixations
@@ -9,6 +11,18 @@
 
 	let gazeInputType: string = 'gazepointBase';
 	let form: HTMLFormElement;
+
+	onMount(() => {
+		switch (get(inputCreationConfig).tracker) {
+			case 'opengaze':
+				gazeInputType =
+					get(inputCreationConfig).fixationDetection === 'idt' ? 'gazepointIdt' : 'gazepointBase';
+				break;
+			case 'dummy':
+				gazeInputType = 'mouseIdt';
+				break;
+		}
+	});
 
 	const gazepointBase: GazeInputConfig = {
 		tracker: 'opengaze',

@@ -1,3 +1,4 @@
+import type LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
 import type LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
 import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
 import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
@@ -17,6 +18,12 @@ export type LessonWordType = {
 export type SyllableTaskType = {
 	syllables: string[];
 	correctSyllable: string;
+};
+
+export type CibuleTaskType = {
+	syllables: string[];
+	correctSyllable?: string;
+	incorrectSyllable?: string;
 };
 
 export type LessonSvelteComponentEvents = {
@@ -99,6 +106,7 @@ export type LessonSvelteComponentPairedReadingThree = typeof SvelteComponent<
 >;
 
 export type LessonSvelteComponentSyllables = ComponentType<LessonTaskSyllableLevel>;
+export type LessonSvelteComponentCibule = ComponentType<LessonTaskCibuleLevel>;
 
 export type LessonConfigBase<T extends LessonSvelteComponentBase> = {
 	component: T;
@@ -122,6 +130,7 @@ export type LessonConfigPairedReadingThree =
 	LessonConfigBase<LessonSvelteComponentPairedReadingThree>;
 
 export type LessonConfigSyllables = LessonConfigBase<LessonSvelteComponentSyllables>;
+export type LessonConfigCibule = LessonConfigBase<LessonSvelteComponentCibule>;
 
 export type LessonConfig =
 	| LessonConfigPairedReadingZero
@@ -129,4 +138,5 @@ export type LessonConfig =
 	| LessonConfigPairedReadingZeroVoice
 	| LessonConfigPairedReadingTwo
 	| LessonConfigPairedReadingThree
-	| LessonConfigSyllables;
+	| LessonConfigSyllables
+	| LessonConfigCibule;
