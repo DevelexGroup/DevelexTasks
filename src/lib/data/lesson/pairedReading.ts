@@ -1,46 +1,16 @@
-import type { LessonConfigPairedReading } from '$lib/types/lesson';
+import type LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
+import type { ComponentProps } from 'svelte';
 
 export const pairedReadingLessons: {
-	content: LessonConfigPairedReading['content'];
-	partialProps: Partial<LessonConfigPairedReading['props']>;
+	content: ComponentProps<LessonTaskPairedReadingLevel>['currentContent'][];
+	partialProps: Partial<ComponentProps<LessonTaskPairedReadingLevel>>;
 	level: string;
 }[] = [
 	{
 		level: 'one',
-		content: [
-			[
-				{
-					text: 'I am a cat.',
-					id: 'fixw-0-0'
-				},
-				{
-					text: 'I am a dog.',
-					id: 'fixw-0-1'
-				}
-			],
-			[
-				{
-					text: 'I am a cat.',
-					id: 'fixw-1-0'
-				},
-				{
-					text: 'I am a dog.',
-					id: 'fixw-1-1'
-				}
-			],
-			[
-				{
-					text: 'I am a cat.',
-					id: 'fixw-2-0'
-				},
-				{
-					text: 'I am a dog.',
-					id: 'fixw-2-1'
-				}
-			]
-		],
+		content: [],
 		partialProps: {
-			shouldHighlightWords: true
+			bufferSize: 150
 		}
 	}
 ];
