@@ -1,4 +1,5 @@
 import type LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
+import type LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
 import type LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
 import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
 import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
@@ -13,6 +14,33 @@ import type { SvelteComponent, ComponentType } from 'svelte';
 export type LessonWordType = {
 	text: string;
 	id: string;
+};
+
+/**
+ * The type of the paired reading task.
+ * @example
+ * {
+ * 	text: [
+ * 		['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog.'],
+ * 		['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'cat.']
+ * 	],
+ * 	evaluationSegment: [
+ * 		{
+ * 			range: [[0, 0], [0, 2]],
+ * 			id: 'fixw-0-0'
+ * 		},
+ * 		{
+ * 			range: [[1, 0], [1, 2]],
+ * 			id: 'fixw-1-0'
+ * 		}
+ * 	]
+ */
+export type PairedReadingTaskType = {
+	text: string[][]; // The text to display, divided into segments and lines.
+	evaluationSegment: {
+		range: [[number, number], [number, number]]; // The range of the segment [start, end] with [line, word] indexes.
+		id: string;
+	}[];
 };
 
 export type SyllableTaskType = {
@@ -107,10 +135,11 @@ export type LessonSvelteComponentPairedReadingThree = typeof SvelteComponent<
 
 export type LessonSvelteComponentSyllables = ComponentType<LessonTaskSyllableLevel>;
 export type LessonSvelteComponentCibule = ComponentType<LessonTaskCibuleLevel>;
+export type LessonSvelteComponentPairedReading = ComponentType<LessonTaskPairedReadingLevel>;
 
 export type LessonConfigBase<T extends LessonSvelteComponentBase> = {
 	component: T;
-	content: Array<T['prototype']['$$prop_def']['currentContent']>;
+	content: T['prototype']['$$prop_def']['currentContent'][];
 	props: T['prototype']['$$prop_def'];
 	deInit: () => void;
 	gazeInput: GazeInput<GazeInputConfig>;
@@ -131,6 +160,7 @@ export type LessonConfigPairedReadingThree =
 
 export type LessonConfigSyllables = LessonConfigBase<LessonSvelteComponentSyllables>;
 export type LessonConfigCibule = LessonConfigBase<LessonSvelteComponentCibule>;
+export type LessonConfigPairedReading = LessonConfigBase<LessonSvelteComponentPairedReading>;
 
 export type LessonConfig =
 	| LessonConfigPairedReadingZero
