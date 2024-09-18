@@ -3,6 +3,28 @@ import type LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.sv
 import { writable, type Writable } from 'svelte/store';
 import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
 
+// Define the type for the return object of getLogic
+export type GetLogicType = {
+	onMount: () => void;
+	onDestroy: () => void;
+	wordsRegisterFn: () => void;
+	wordsUnregisterFn: () => void;
+	crossRegisterFn: () => void;
+	crossUnregisterFn: () => void;
+	wordsStore: Writable<WordMetadata[]>;
+};
+
+// Define the getLogic function type
+export type GetLogicFunction = (
+	params: ComponentProps<LessonTaskPairedReadingLevel>,
+	dispatch: EventDispatcher<{
+		lessonSuccess: void;
+		lessonMistake: void;
+		lessonComplete: void;
+		lessonFail: void;
+	}>
+) => GetLogicType;
+
 export const getLogic = (
 	params: ComponentProps<LessonTaskPairedReadingLevel>,
 	dispatch: EventDispatcher<{
@@ -11,15 +33,7 @@ export const getLogic = (
 		lessonComplete: void;
 		lessonFail: void;
 	}>
-): {
-	onMount: () => void;
-	onDestroy: () => void;
-	wordsRegisterFn: () => void;
-	wordsUnregisterFn: () => void;
-	crossRegisterFn: () => void;
-	crossUnregisterFn: () => void;
-	wordsStore: Writable<WordMetadata[]>;
-} => {
+): GetLogicType => {
 	/**
 	 * States of the task:
 	 * ====================
