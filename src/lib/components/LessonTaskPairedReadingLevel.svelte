@@ -5,8 +5,9 @@
 	import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
 	import { derived } from 'svelte/store';
 	import type { PairedReadingTaskType } from '$lib/types/lesson';
-	import { getLogic } from './LessonTaskPairedReadingLevel.logic';
+	import { getPilotLogic } from './LessonTaskPairedReadingLevel.logic';
 	import type { IWordReader } from '$lib/interfaces/IWordReader';
+	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let currentContent: PairedReadingTaskType;
@@ -16,40 +17,6 @@
 	export let shouldListenForVoice: boolean;
 	export let bufferSize: number;
 
-	// const onFixationSetStart = (event: GazeInteractionObjectSetFixationEvent) => {
-	// 	const { target } = event;
-
-	// 	if (!Array.isArray(target) || target.length <= 0) {
-	// 		/**
-	// 		 * Do nothing if the target is empty.
-	// 		 */
-	// 		return;
-	// 	}
-
-	// 	if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId())) {
-	// 		/**
-	// 		 * If the target has a start cross, set the hasFixatedStartCross to true.
-	// 		 */
-	// 		hasFixatedStartCross.set(true);
-	// 		return;
-	// 	}
-
-	// 	if (
-	// 		target.some(
-	// 			(t) =>
-	// 				PairedReadingIdManager.parseWordId(t.id)?.evaluationSegmentIndex ===
-	// 				$currentEvaluationSegment
-	// 		)
-	// 	) {
-	// 		/**
-	// 		 * If the target has a word, and the word is in the current evaluation segment,
-	// 		 * set the isFixating to true.
-	// 		 * TODO: Better gaze contigency handling
-	// 		 */
-	// 		isFixating.set(true);
-	// 	}
-	// };
-
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
@@ -57,51 +24,16 @@
 		lessonFail: void;
 	}>();
 
-	// const evaluateSpeech = (event: ISpeechRecognitionResult) => {
-	// 	const evaluation = speechEvaluator.evaluateSpeech(event);
-	// 	if (evaluation.isCorrect) {
-	// 		hasSaidPhrase.set(true);
-	// 	}
-	// };
-
-	// const stopSpeechEvaluation = () => {
-	// 	speechRecognition.stop();
-	// 	speechRecognition.off('speech', evaluateSpeech);
-	// };
-
-	// const startProcess = async () => {
-	// 	try {
-	// 		// Notify the parent component that the user has successfully fixated the cross.
-	// 		dispatch('lessonSuccess');
-	// 		// First countdown: wait for fixation or timeout
-	// 		await waitForCondition(isFixating, 5000);
-	// 		// Reset fixation store for the next phase
-	// 		isFixating.set(false);
-
-	// 		// startSpeechEvaluation(currentContent);
-
-	// 		// Second countdown: wait for the phrase or timeout
-	// 		// await waitForCondition(hasSaidPhrase, 5000);
-
-	// 		if (shouldListenForVoice) {
-	// 			console.log('startProcess - shouldListenForVoice', currentContent);
-	// 			speechEvaluator.targetWord = currentContent;
-	// 			await waitForCondition(hasSaidPhrase, 5000);
-	// 		}
-
-	// 		dispatch('lessonSuccess');
-	// 		await waitForTimeout(500);
-
-	// 		dispatch('lessonComplete');
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 		dispatch('lessonMistake');
-	// 	} finally {
-	// 		stopSpeechEvaluation();
-	// 	}
-	// };
-
-	const logic = getLogic(
+	const {
+		gridStateStore,
+		wordsStore,
+		onDestroyLogic,
+		onMountLogic,
+		crossRegisterFn,
+		crossUnregisterFn,
+		wordsRegisterFn,
+		wordsUnregisterFn
+	} = getPilotLogic(
 		{
 			gazeFixationEmitter,
 			currentContent,
@@ -114,18 +46,27 @@
 		dispatch
 	);
 
-	const wordStore = derived(logic.wordsStore, ($wordsStore) => {
+	const wordStore = derived(wordsStore, ($wordsStore) => {
 		return $wordsStore;
 	});
 
 	onMount(() => {
-		logic.onMount();
+		onMountLogic();
 	});
 
 	onDestroy(() => {
-		logic.onDestroy();
+		onDestroyLogic();
 	});
 </script>
+
+<LessonTaskPairedReadingLayout
+	words={$wordStore}
+	stage={$gridStateStore}
+	{crossRegisterFn}
+	{crossUnregisterFn}
+	{wordsRegisterFn}
+	{wordsUnregisterFn}
+/>
 
 <!-- <LessonLayoutPairedReading {validateFixation}>
 	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} slot="cross-fix" />

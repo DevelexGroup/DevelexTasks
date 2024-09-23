@@ -7,21 +7,23 @@ export class PairedReadingIdManager {
 	private static FIXCROSS_B_ID = 'fixc-b';
 
 	// Generate a word ID from PairedReadingTaskType
-	static getWordId(word: WordMetadata): string {
-		const { evaluationSegmentIndex, lineIndex } = word;
-		return `${this.WORD_ID_PREFIX}-${evaluationSegmentIndex}-${lineIndex}`;
+	static getWordId(word: Omit<WordMetadata, 'id'>): string {
+		const { evaluationSegments, lineIndex, orderInLine } = word;
+		return `${this.WORD_ID_PREFIX}-${JSON.stringify(evaluationSegments)}-${lineIndex}-${orderInLine}`;
 	}
 
 	// Parse a word ID and return PairedReadingTaskType without text
 	static parseWordId(id: string): {
-		evaluationSegmentIndex: number;
+		evaluationSegmentIndex: number[];
 		lineIndex: number;
+		orderInLine: number;
 	} | null {
 		const match = id.match(this.WORD_REGEX);
 		if (match) {
 			return {
-				evaluationSegmentIndex: parseInt(match[1], 10),
-				lineIndex: parseInt(match[2], 10)
+				evaluationSegmentIndex: JSON.parse(match[1]),
+				lineIndex: parseInt(match[2]),
+				orderInLine: parseInt(match[3])
 			};
 		}
 		return null;
@@ -40,8 +42,9 @@ export type WordMetadata = {
 	text: string;
 	lineIndex: number;
 	orderInLine: number;
-	isHighlighted: boolean;
-	evaluationSegmentIndex: number;
+	isInActiveSegment: boolean; // is the word in the active evaluation segment
+	evaluationSegments: number[]; // affiliation to evaluation segments, can be multiple
+	id: string;
 };
 
 export class PairedReadingManager {
@@ -69,9 +72,7 @@ export class PairedReadingManager {
 
 	// Method to get the words formatted as required
 	getWords(): WordMetadata[][] {
-		const { text, evaluationSegment } = this.task;
-		const currentSegment = evaluationSegment[this._activeEvaluationSegmentIndex];
-		const [[startLine, startWord], [endLine, endWord]] = currentSegment.range;
+		const { text } = this.task;
 
 		const result: WordMetadata[][] = [];
 
@@ -81,16 +82,32 @@ export class PairedReadingManager {
 			const formattedLine: WordMetadata[] = [];
 
 			for (let wordIndex = 0; wordIndex < wordsInLine.length; wordIndex++) {
-				const isHighlighted =
-					(lineIndex > startLine || (lineIndex === startLine && wordIndex >= startWord)) &&
-					(lineIndex < endLine || (lineIndex === endLine && wordIndex <= endWord));
+				// Check in which segment ranges the current word is
+				const evaluationSegments = this.task.evaluationSegment
+					.map((segment, index) => {
+						const [[startLine, startWord], [endLine, endWord]] = segment.range;
+						return (lineIndex > startLine || (lineIndex === startLine && wordIndex >= startWord)) &&
+							(lineIndex < endLine || (lineIndex === endLine && wordIndex <= endWord))
+							? index
+							: -1;
+					})
+					.filter((index) => index !== -1);
+
+				const isInActiveSegment = evaluationSegments.includes(this._activeEvaluationSegmentIndex);
 
 				formattedLine.push({
 					text: wordsInLine[wordIndex],
 					lineIndex,
 					orderInLine: wordIndex,
-					isHighlighted,
-					evaluationSegmentIndex: this._activeEvaluationSegmentIndex
+					isInActiveSegment,
+					evaluationSegments,
+					id: PairedReadingIdManager.getWordId({
+						text: wordsInLine[wordIndex],
+						lineIndex,
+						orderInLine: wordIndex,
+						isInActiveSegment,
+						evaluationSegments
+					})
 				});
 			}
 
@@ -98,5 +115,24 @@ export class PairedReadingManager {
 		}
 
 		return result;
+	}
+
+	getReadingSegment(): {
+		id: string;
+		text: string;
+	} {
+		const words = this.getWords();
+		const currentSegment = words
+			.flatMap((line) => line.filter((word) => word.isInActiveSegment))
+			.map((word) => word.text);
+		return {
+			id: this.task.evaluationSegment[this._activeEvaluationSegmentIndex].id,
+			text: currentSegment.join(' ')
+		};
+	}
+
+	nextSegment(): void {
+		if (this._activeEvaluationSegmentIndex < this.task.evaluationSegment.length - 1)
+			this.activeEvaluationSegmentIndex++;
 	}
 }

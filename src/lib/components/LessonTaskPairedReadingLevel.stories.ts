@@ -102,3 +102,36 @@ export const Default: Story = {
 		shouldListenForVoice: true
 	}
 };
+
+export const TwoSegments: Story = {
+	args: {
+		currentContent: {
+			text: [
+				['Máma', 'mele', 'maso'],
+				['Táta', 'mele', 'maso']
+			],
+			evaluationSegment: [
+				{
+					range: [
+						[0, 0],
+						[0, 2]
+					],
+					id: '0'
+				},
+				{
+					range: [
+						[1, 0],
+						[1, 2]
+					],
+					id: '1'
+				}
+			]
+		},
+		bufferSize: 100,
+		gazeFixationEmitter: gazeFixationEmitter,
+		speechRecognition: speechRecognition,
+		speechEvaluator: speechEvaluator,
+		wordReader: wordReader,
+		shouldListenForVoice: true
+	}
+};
