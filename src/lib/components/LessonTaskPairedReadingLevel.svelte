@@ -6,23 +6,15 @@
 	import { derived } from 'svelte/store';
 	import type { PairedReadingTaskType } from '$lib/types/lesson';
 	import { getLogic } from './LessonTaskPairedReadingLevel.logic';
+	import type { IWordReader } from '$lib/interfaces/IWordReader';
 
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let currentContent: PairedReadingTaskType;
 	export let speechEvaluator: ISpeechEvaluator;
 	export let speechRecognition: ISpeechRecognition;
+	export let wordReader: IWordReader;
 	export let shouldListenForVoice: boolean;
 	export let bufferSize: number;
-
-	// const registerElement = (element: HTMLElement) => {
-	// 	gazeFixationEmitter.register(element, {
-	// 		bufferSize
-	// 	});
-	// };
-
-	// const unregisterElement = (element: HTMLElement) => {
-	// 	gazeFixationEmitter.unregister(element);
-	// };
 
 	// const onFixationSetStart = (event: GazeInteractionObjectSetFixationEvent) => {
 	// 	const { target } = event;
@@ -116,7 +108,8 @@
 			speechEvaluator,
 			speechRecognition,
 			shouldListenForVoice,
-			bufferSize
+			bufferSize,
+			wordReader
 		},
 		dispatch
 	);

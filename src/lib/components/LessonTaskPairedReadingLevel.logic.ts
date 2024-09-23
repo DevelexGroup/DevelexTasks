@@ -7,10 +7,10 @@ import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
 export type GetLogicType = {
 	onMount: () => void;
 	onDestroy: () => void;
-	wordsRegisterFn: () => void;
-	wordsUnregisterFn: () => void;
-	crossRegisterFn: () => void;
-	crossUnregisterFn: () => void;
+	wordsRegisterFn: (element: HTMLElement) => void;
+	wordsUnregisterFn: (element: HTMLElement) => void;
+	crossRegisterFn: (element: HTMLElement) => void;
+	crossUnregisterFn: (element: HTMLElement) => void;
 	wordsStore: Writable<WordMetadata[]>;
 };
 
@@ -52,27 +52,43 @@ export const getLogic = (
 	// const currentEvaluationSegment = writable(0);
 
 	dispatch('lessonSuccess');
-
 	console.log('params', params);
+
+	const asyncLogic = async () => {
+		await new Promise((resolve) => {
+			setTimeout(() => {
+				resolve(void 0);
+			}, 1000);
+		});
+		dispatch('lessonComplete');
+		alert('Lesson complete');
+	};
+
 	return {
 		onMount: () => {
 			console.log('Mounted');
+			asyncLogic();
 		},
 		onDestroy: () => {
 			console.log('Destroyed');
 		},
-		wordsRegisterFn: () => {
-			console.log('Words registered');
+		wordsRegisterFn: (element: HTMLElement) => {
+			params.gazeFixationEmitter.register(element, {
+				bufferSize: params.bufferSize
+			});
 		},
-		wordsUnregisterFn: () => {
-			console.log('Words unregistered');
+		wordsUnregisterFn: (element: HTMLElement) => {
+			params.gazeFixationEmitter.unregister(element);
 		},
-		crossRegisterFn: () => {
-			console.log('Cross registered');
+		crossRegisterFn: (element: HTMLElement) => {
+			params.gazeFixationEmitter.register(element, {
+				bufferSize: params.bufferSize
+			});
 		},
-		crossUnregisterFn: () => {
-			console.log('Cross unregistered');
+		crossUnregisterFn: (element: HTMLElement) => {
+			params.gazeFixationEmitter.unregister(element);
 		},
+
 		wordsStore: writable([])
 	};
 };
