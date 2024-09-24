@@ -45,6 +45,58 @@ type PairedReadingExtendedFixationEvent =
 	  })
 	| (GazeInteractionObjectFixationEvent & { currentlyReadingWord: null });
 
+/**
+	 * 
+	 * @param params 
+	 * @param dispatch 
+	 * @returns
+	 * @startuml
+start
+
+:fixationCrossStart - Await fixation on the start cross 
+(up to [n] seconds);
+
+if (Fixation successful?) then (Yes)
+  :lessonSuccess - Start fixation achieved;
+  :Display all text segments without highlighting;
+else (No)
+  :lessonFail - Failed to fixate on start cross;
+  stop
+endif
+
+repeat
+  :Read whole segment outloud;
+
+  if (User starts fixation on the word which is not currently read out loud) then (No)
+    :Continue reading to the end of the segment;
+    
+    :lessonSuccess - Segment completed successfully;
+    :Move to the next segment;
+  else (Yes)
+    :lessonMistake - Incorrect gaze pattern detected;
+    
+    :Retry up to 3 times with delays of [n] seconds each;
+    
+    if (All retries failed?) then (Yes)
+      :lessonFail - Task interrupted;
+      stop
+    endif
+  endif
+repeat while (More segments to read?)
+
+:All segments read successfully;
+:fixationCrossEnd - Await fixation on the end cross 
+(up to [n] seconds);
+
+if (Fixation successful?) then (Yes)
+  :lessonComplete - Task completed successfully;
+  stop
+else (No)
+  :lessonFail - Failed to fixate on end cross;
+  stop
+endif
+@enduml
+	 */
 export const getLogic = (
 	params: ComponentProps<LessonTaskPairedReadingLevel>,
 	dispatch: EventDispatcher<{
