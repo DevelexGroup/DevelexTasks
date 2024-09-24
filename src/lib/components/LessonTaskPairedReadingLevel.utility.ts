@@ -42,6 +42,7 @@ export type WordMetadata = {
 	text: string;
 	lineIndex: number;
 	orderInLine: number;
+	totalIndex: number;
 	isInActiveSegment: boolean; // is the word in the active evaluation segment
 	evaluationSegments: number[]; // affiliation to evaluation segments, can be multiple
 	id: string;
@@ -99,6 +100,7 @@ export class PairedReadingManager {
 					text: wordsInLine[wordIndex],
 					lineIndex,
 					orderInLine: wordIndex,
+					totalIndex: lineIndex * wordsInLine.length + wordIndex,
 					isInActiveSegment,
 					evaluationSegments,
 					id: PairedReadingIdManager.getWordId({
@@ -106,6 +108,7 @@ export class PairedReadingManager {
 						lineIndex,
 						orderInLine: wordIndex,
 						isInActiveSegment,
+						totalIndex: lineIndex * wordsInLine.length + wordIndex,
 						evaluationSegments
 					})
 				});
