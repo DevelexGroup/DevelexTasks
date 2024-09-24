@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
-	let sentence: string = 'Mama mele maso';
+	let sentence: string = 'Máma mele maso';
 	let currentWord: string | null = null;
 	let isReading: boolean = false;
 	let reader: WordReaderSynthesis | null = null;

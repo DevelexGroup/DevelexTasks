@@ -5,7 +5,7 @@ export class WordReaderSynthesis implements IWordReader {
 	utterance: SpeechSynthesisUtterance | null = null;
 	wordPositions: Array<{ word: string; start: number; end: number }> = [];
 	currentWord: string | null = null;
-	speed: 'very-slow' | 'slow' | 'normal' = 'normal';
+	speed: 'very-slow' | 'slow' | 'normal' = 'slow';
 	get utteranceRate() {
 		switch (this.speed) {
 			case 'very-slow':
