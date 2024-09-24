@@ -1,13 +1,15 @@
 import type { ComponentProps, EventDispatcher } from 'svelte';
 import type LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
-import { writable, type Writable } from 'svelte/store';
+import { get, writable, type Writable } from 'svelte/store';
 import {
 	PairedReadingIdManager,
 	PairedReadingManager,
 	type WordMetadata
 } from './LessonTaskPairedReadingLevel.utility';
-import { waitForConditionCancellable } from '$lib/utils/waitForCondition';
+import { getCancellableAsync, waitForConditionCancellable } from '$lib/utils/waitForCondition';
 import { browser } from '$app/environment';
+import type { GazeInteractionObjectFixationEvent } from '@473783/develex-core';
+import { retry } from '$lib/utils/retry';
 
 // Define the type for the return object of getLogic
 export type GetLogicType = {
@@ -32,80 +34,256 @@ export type GetLogicFunction = (
 	}>
 ) => GetLogicType;
 
-// export const getLogic = (
-// 	params: ComponentProps<LessonTaskPairedReadingLevel>,
-// 	dispatch: EventDispatcher<{
-// 		lessonSuccess: void;
-// 		lessonMistake: void;
-// 		lessonComplete: void;
-// 		lessonFail: void;
-// 	}>
-// ): GetLogicType => {
-// 	/**
-// 	 * States of the task:
-// 	 * ====================
-// 	 * hasFixatedStartCross: Indicates if the user has fixated on the cross.
-// 	 * isFixating: Indicates if the user has fixated on the content.
-// 	 * hasSaidPhrase: Indicates if the user has said the phrase.
-// 	 * showEndCross: Indicates if the end cross should be shown.
-// 	 * hasFixatedEndCross: Indicates if the user has fixated on the cross after saying the phrase.
-// 	 * currentEvaluationSegment: Indicates the current evaluation segment. (Index of the current segment)
-// 	 */
-// 	const hasFixatedStartCross = writable(false);
-// 	const isFixating = writable(false);
-// 	const hasSaidPhrase = writable(false);
-// 	const showEndCross = writable(false);
-// 	const hasFixatedEndCross = writable(false);
-// 	const currentEvaluationSegment = writable(0);
+type PairedReadingExtendedFixationEvent =
+	| (GazeInteractionObjectFixationEvent & {
+			currentlyReadingWord: WordMetadata;
+			targetsMatched: (WordMetadata & {
+				withinLineDistance: number; // 0 for the exact same position within the line, -1 for fixating on previous word, 1 for fixating on next word, 2 for fixating on the word after the next word, etc.
+				betweenLineDistance: number; // 0 for the fixating at the line which is currently being read, -1 for fixating on the previous line, 1 for fixating on the next line, 2 for fixating on the line after the next line, etc.
+				totalDistance: number; // Total distance from the current word
+			})[];
+	  })
+	| (GazeInteractionObjectFixationEvent & { currentlyReadingWord: null });
 
-// 	const abortController = new AbortController();
+export const getLogic = (
+	params: ComponentProps<LessonTaskPairedReadingLevel>,
+	dispatch: EventDispatcher<{
+		lessonSuccess: void;
+		lessonMistake: void;
+		lessonComplete: void;
+		lessonFail: void;
+	}>
+): GetLogicType => {
+	// State variables
+	const hasFixatedStartCross = writable(false);
+	const hasFixatedEndCross = writable(false);
+	const currentlyReadingWord = writable<WordMetadata | null>(null);
 
-// 	const pairedReadingManager = new PairedReadingManager(params.currentContent);
-// 	const wordsStore = writable<WordMetadata[][]>(pairedReadingManager.getWords());
-// 	const gridStateStore = writable<'crossStart' | 'reading' | 'crossEnd'>('crossStart');
+	const abortWrongPatternController = new AbortController();
+	const abortController = new AbortController();
 
-// 	const asyncLogic = async () => {
-// 		try {
-// 			await waitForConditionCancellable(hasFixatedStartCross, 10000, abortController.signal);
-// 		} catch (e) {
-// 			void e;
-// 			dispatch('lessonFail');
-// 			return;
-// 		}
-// 		await waitForConditionCancellable(hasFixatedStartCross, 10000, abortController.signal);
-// 		dispatch('lessonComplete');
-// 		alert('Lesson complete');
-// 	};
+	const pairedReadingManager = new PairedReadingManager(params.currentContent);
+	const wordsStore = writable<WordMetadata[][]>(pairedReadingManager.getWords());
+	const gridStateStore = writable<'crossStart' | 'reading' | 'crossEnd'>('crossStart');
 
-// 	return {
-// 		onMount: () => {
-// 			console.log('Mounted');
-// 			asyncLogic();
-// 		},
-// 		onDestroy: () => {
-// 			console.log('Destroyed');
-// 		},
-// 		wordsRegisterFn: (element: HTMLElement) => {
-// 			params.gazeFixationEmitter.register(element, {
-// 				bufferSize: params.bufferSize
-// 			});
-// 		},
-// 		wordsUnregisterFn: (element: HTMLElement) => {
-// 			params.gazeFixationEmitter.unregister(element);
-// 		},
-// 		crossRegisterFn: (element: HTMLElement) => {
-// 			params.gazeFixationEmitter.register(element, {
-// 				bufferSize: params.bufferSize
-// 			});
-// 		},
-// 		crossUnregisterFn: (element: HTMLElement) => {
-// 			params.gazeFixationEmitter.unregister(element);
-// 		},
+	let wordsFlat = get(wordsStore).flat();
 
-// 		wordsStore,
-// 		gridStateStore
-// 	};
-// };
+	// Subscribe to the wordsStore and update wordsFlat
+	const unsubscribeToWordStore = wordsStore.subscribe((value) => {
+		wordsFlat = value.flat();
+	});
+
+	/**
+	 * Calculates the distance between the current word and the target word.
+	 * @param word - The current word metadata.
+	 * @param target - The target word metadata.
+	 * @returns An object containing distance metrics.
+	 */
+	const calculateDistance = (word: WordMetadata, target: WordMetadata) => {
+		const withinLineDistance = target.lineIndex - word.lineIndex;
+		const betweenLineDistance = target.lineIndex - word.lineIndex;
+		const totalDistance = target.totalIndex - word.totalIndex;
+		return {
+			withinLineDistance,
+			betweenLineDistance,
+			totalDistance
+		};
+	};
+
+	/**
+	 * Calculates an extended fixation event by matching words with the event targets.
+	 * @param event - The gaze interaction object fixation event.
+	 * @returns The extended fixation event with matched targets and distances.
+	 */
+	const calculateExtendedEvent = (
+		event: GazeInteractionObjectFixationEvent
+	): PairedReadingExtendedFixationEvent => {
+		// Check how many words from wordsFlat fit to target ids
+		const words = wordsFlat.filter((word) => event.target.some((t) => t.id === word.id));
+
+		// If there are words in the target
+		if (words.length > 0) {
+			const targetsMatched = words.map((word) => {
+				const distance = calculateDistance(word, wordsFlat[0]);
+				return { ...word, ...distance };
+			});
+			return {
+				...event,
+				currentlyReadingWord: get(currentlyReadingWord),
+				targetsMatched
+			};
+		} else {
+			const extendedEvent: PairedReadingExtendedFixationEvent = {
+				...event,
+				currentlyReadingWord: get(currentlyReadingWord),
+				targetsMatched: []
+			};
+			return extendedEvent;
+		}
+	};
+
+	/**
+	 * Evaluates gaze fixations and updates state accordingly.
+	 * @param event - The gaze interaction object fixation event.
+	 */
+	const evaluateFixations = (event: GazeInteractionObjectFixationEvent) => {
+		const { target } = event;
+
+		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId())) {
+			hasFixatedStartCross.set(true);
+		}
+
+		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId())) {
+			hasFixatedEndCross.set(true);
+		}
+
+		const extendedEvent = calculateExtendedEvent(event);
+
+		if (extendedEvent.currentlyReadingWord === null) return; // If there is no word to read, do not evaluate
+
+		// If any of the targets have distance 0, all is correct
+		const isGazePatternCorrect = extendedEvent.targetsMatched.some(
+			(target) => target.withinLineDistance === 0
+		);
+
+		if (!isGazePatternCorrect) {
+			abortWrongPatternController.abort('Wrong fixation pattern');
+		}
+	};
+
+	/**
+	 * Evaluates changes in the reader's current word.
+	 * @param word - The current word being read by the reader.
+	 */
+	const evaluateReaderWordChange = (
+		word: {
+			text: string;
+			id: string;
+			start: number;
+			end: number;
+		} | null
+	) => {
+		// Match based on the id from wordsStore
+		const currentWord = wordsFlat.find((w) => w.id === word?.id) ?? null;
+		currentlyReadingWord.set(currentWord);
+	};
+
+	/**
+	 * Performs a single reading segment.
+	 */
+	const performSingleReadingSegment = async () => {
+		const segment = pairedReadingManager.getReadingSegment();
+		await params.wordReader.read([segment]);
+		currentlyReadingWord.set(null);
+	};
+
+	/**
+	 * Performs the reading segments for the task.
+	 */
+	const performReadingSegments = async () => {
+		for await (const segment of params.currentContent.evaluationSegment) {
+			wordsStore.set(pairedReadingManager.getWords());
+			void segment; // Do not operate with the segment directly
+			await retry(
+				() => getCancellableAsync(performSingleReadingSegment, abortWrongPatternController.signal),
+				{
+					retries: 3,
+					delay: 3000,
+					onRetry: () => {
+						params.wordReader.abort();
+						dispatch('lessonMistake');
+					}
+				}
+			);
+			pairedReadingManager.nextSegment();
+			dispatch('lessonSuccess');
+		}
+	};
+
+	/**
+	 * Performs waiting for the start cross fixation.
+	 * @returns A promise that resolves to true if fixation is detected, false otherwise.
+	 */
+	const performWaitForStartCrossFixation = async () => {
+		try {
+			await waitForConditionCancellable(hasFixatedStartCross, 100000, abortController.signal);
+			return true;
+		} catch {
+			dispatch('lessonFail');
+			return false;
+		}
+	};
+
+	/**
+	 * Performs waiting for the end cross fixation.
+	 */
+	const performWaitForEndCrossFixation = async () => {
+		await waitForConditionCancellable(hasFixatedEndCross, 100000, abortController.signal);
+		dispatch('lessonComplete');
+		alert('Lesson complete');
+	};
+
+	/**
+	 * Main function to perform the task logic asynchronously.
+	 */
+	const performTask = async () => {
+		const started = await performWaitForStartCrossFixation();
+		if (!started) return;
+
+		gridStateStore.set('reading');
+		await performReadingSegments();
+
+		gridStateStore.set('crossEnd');
+		await performWaitForEndCrossFixation();
+	};
+
+	/**
+	 * Registers a gaze fixation element.
+	 * @param element - The HTML element to register.
+	 */
+	const setupRegisterElement = (element: HTMLElement) => {
+		params.gazeFixationEmitter.register(element, {
+			bufferSize: params.bufferSize
+		});
+	};
+
+	/**
+	 * Unregisters a gaze fixation element.
+	 * @param element - The HTML element to unregister.
+	 */
+	const setupUnregisterElement = (element: HTMLElement) => {
+		params.gazeFixationEmitter.unregister(element);
+	};
+
+	/**
+	 * Logic to execute when the component is mounted.
+	 */
+	const setupOnMount = () => {
+		params.wordReader.onWordChange = evaluateReaderWordChange;
+		performTask();
+		params.gazeFixationEmitter.on('fixationObjectStart', evaluateFixations);
+	};
+
+	/**
+	 * Logic to execute when the component is destroyed.
+	 */
+	const setupOnDestroy = () => {
+		abortController.abort('Task destroyed');
+		unsubscribeToWordStore();
+		params.gazeFixationEmitter.off('fixationObjectStart', evaluateFixations);
+	};
+
+	return {
+		onMountLogic: setupOnMount,
+		onDestroyLogic: setupOnDestroy,
+		wordsRegisterFn: setupRegisterElement,
+		wordsUnregisterFn: setupUnregisterElement,
+		crossRegisterFn: setupRegisterElement,
+		crossUnregisterFn: setupUnregisterElement,
+		wordsStore,
+		gridStateStore
+	};
+};
 
 /**
  * Logic for the pilot version of the Paired Reading lesson task.
@@ -178,7 +356,7 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 	};
 
 	// Function to evaluate gaze fixations
-	const evaluateFixations = (event: GazeInteractionObjectSetFixationEvent) => {
+	const evaluateFixations = (event: GazeInteractionObjectFixationEvent) => {
 		const { target } = event;
 
 		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId())) {
@@ -264,14 +442,14 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 	const onMountLogic = () => {
 		registerKeyInput();
 		asyncLogic();
-		params.gazeFixationEmitter.on('fixationSetStart', evaluateFixations);
+		params.gazeFixationEmitter.on('fixationObjectStart', evaluateFixations);
 	};
 
 	// Logic to execute when the component is destroyed
 	const onDestroyLogic = () => {
 		unregisterKeyInput();
 		abortController.abort('Task destroyed');
-		params.gazeFixationEmitter.off('fixationSetStart', evaluateFixations);
+		params.gazeFixationEmitter.off('fixationObjectStart', evaluateFixations);
 	};
 
 	return {
