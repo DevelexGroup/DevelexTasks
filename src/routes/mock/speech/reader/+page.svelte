@@ -35,11 +35,13 @@
 		const words = sentence
 			.split(' ')
 			.filter((word) => word.trim() !== '')
-			.map((word) => ({ text: word }));
+			.map((word) => ({ text: word, id: word }));
 
 		// Assign the onWordChange callback before starting to read
 		reader.onWordChange = (word) => {
-			currentWord = word;
+			if (word) {
+				currentWord = word.text;
+			}
 		};
 
 		// Read the words
