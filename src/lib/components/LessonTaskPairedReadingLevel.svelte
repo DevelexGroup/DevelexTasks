@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-	import type { GazeInteractionObjectSetFixation } from '@473783/develex-core';
+	import type { GazeInteractionObjectFixation } from '@473783/develex-core';
 	import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
 	import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
 	import { derived } from 'svelte/store';
@@ -9,7 +9,7 @@
 	import type { IWordReader } from '$lib/interfaces/IWordReader';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 
-	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
+	export let gazeFixationEmitter: GazeInteractionObjectFixation;
 	export let currentContent: PairedReadingTaskType;
 	export let speechEvaluator: ISpeechEvaluator;
 	export let speechRecognition: ISpeechRecognition;
