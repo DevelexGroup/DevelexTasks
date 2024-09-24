@@ -5,6 +5,17 @@ export class WordReaderSynthesis implements IWordReader {
 	utterance: SpeechSynthesisUtterance | null = null;
 	wordPositions: Array<{ word: string; start: number; end: number }> = [];
 	currentWord: string | null = null;
+	speed: 'very-slow' | 'slow' | 'normal' = 'normal';
+	get utteranceRate() {
+		switch (this.speed) {
+			case 'very-slow':
+				return 0.4;
+			case 'slow':
+				return 0.6;
+			case 'normal':
+				return 0.8;
+		}
+	}
 
 	/**
 	 * Callback function to notify when the current word changes.
@@ -19,7 +30,7 @@ export class WordReaderSynthesis implements IWordReader {
 		if (typeof window !== 'undefined' && 'SpeechSynthesisUtterance' in window) {
 			this.utterance = new SpeechSynthesisUtterance();
 			this.utterance.lang = 'cs-CZ';
-			this.utterance.rate = 0.8;
+			this.utterance.rate = this.utteranceRate;
 		} else {
 			console.error('SpeechSynthesisUtterance is not supported in this environment.');
 			throw new Error('SpeechSynthesisUtterance is not available');
