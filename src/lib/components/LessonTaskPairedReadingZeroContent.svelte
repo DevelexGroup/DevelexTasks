@@ -44,9 +44,9 @@
 		gazeFixationEmitter.unregister(element);
 	};
 
-	const onFixationSetStart = (event: GazeInteractionObjectSetFixationEvent) => {
+	const onfixationObjectStart = (event: GazeInteractionObjectSetFixationEvent) => {
 		const { target } = event;
-		console.log('onFixationSetStart', target);
+		console.log('onfixationObjectStart', target);
 
 		if (!Array.isArray(target) || target.length <= 0) {
 			/**
@@ -65,7 +65,7 @@
 		}
 
 		if (target.some((t) => t.id === FIXATION_WORD)) {
-			console.log('onFixationSetStart bs', target);
+			console.log('onfixationObjectStart bs', target);
 			/**
 			 * If the target has a word fixation, start countdown during which the user must read out loud the content.
 			 */
@@ -132,13 +132,13 @@
 	}
 
 	onMount(() => {
-		gazeFixationEmitter.on('fixationSetStart', onFixationSetStart);
+		gazeFixationEmitter.on('fixationObjectStart', onfixationObjectStart);
 		speechRecognition.start();
 		speechRecognition.on('speech', evaluateSpeech);
 	});
 
 	onDestroy(() => {
-		gazeFixationEmitter.off('fixationSetStart', onFixationSetStart);
+		gazeFixationEmitter.off('fixationObjectStart', onfixationObjectStart);
 		speechRecognition.stop();
 	});
 </script>
