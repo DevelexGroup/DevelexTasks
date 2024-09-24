@@ -3,8 +3,13 @@ import type { IWordReader } from '$lib/interfaces/IWordReader';
 
 export class WordReaderSynthesis implements IWordReader {
 	utterance: SpeechSynthesisUtterance | null = null;
-	wordPositions: Array<{ word: string; start: number; end: number }> = [];
-	currentWord: string | null = null;
+	wordPositions: Array<{ text: string; id: string; start: number; end: number }> = [];
+	currentWord: {
+		text: string;
+		id: string;
+		start: number;
+		end: number;
+	} | null = null;
 	speed: 'very-slow' | 'slow' | 'normal' = 'slow';
 	get utteranceRate() {
 		switch (this.speed) {
@@ -20,7 +25,14 @@ export class WordReaderSynthesis implements IWordReader {
 	/**
 	 * Callback function to notify when the current word changes.
 	 */
-	onWordChange?: (word: string | null) => void;
+	onWordChange?: (
+		word: {
+			text: string;
+			id: string;
+			start: number;
+			end: number;
+		} | null
+	) => void;
 
 	constructor() {
 		// Do not initialize the utterance here to avoid SSR issues
@@ -37,16 +49,21 @@ export class WordReaderSynthesis implements IWordReader {
 		}
 	}
 
-	private getCurrentWord(charIndex: number): string | null {
+	private getCurrentWord(charIndex: number): {
+		text: string;
+		id: string;
+		start: number;
+		end: number;
+	} | null {
 		for (const wordPosition of this.wordPositions) {
 			if (charIndex >= wordPosition.start && charIndex < wordPosition.end) {
-				return wordPosition.word;
+				return wordPosition;
 			}
 		}
 		return null;
 	}
 
-	read(words: { text: string }[]): Promise<void> {
+	read(words: { text: string; id: string }[]): Promise<void> {
 		if (!this.utterance) {
 			this.initializeUtterance();
 		}
@@ -66,7 +83,7 @@ export class WordReaderSynthesis implements IWordReader {
 			text += wordText;
 			position += wordText.length;
 			const end = position;
-			this.wordPositions.push({ word: wordText, start, end });
+			this.wordPositions.push({ text: wordText, id: wordObj.id, start, end });
 		});
 
 		this.utterance!.text = text;

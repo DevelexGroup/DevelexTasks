@@ -107,6 +107,54 @@ export type GetLogicFunction = (
 // 	};
 // };
 
+/**
+ * Logic for the pilot version of the Paired Reading lesson task.
+ * It is very permissive and its main purpose is to collect eye movement data of participants without much interference from gaze control.
+ * @param params of the Paired Reading task
+ * @param dispatch event dispatcher for the lesson task
+ * @returns logic object for the paired reading task
+@startuml
+start
+
+:fixationCrossStart - Await fixation on the start cross (focus on the starting point) 
+(up to [n] seconds);
+
+if (Fixation successful?) then (Yes)
+  :lessonSuccess - Start fixation achieved;
+  :Begin reading process (show all text segments);
+else (No)
+  :lessonFail - Failed to fixate on start cross;
+  stop
+endif
+
+repeat
+  :Highlight a segment of the text;
+  :Wait for operator confirmation to proceed 
+  (up to [n] seconds);
+  
+  if (Operator confirms?) then (Yes)
+    :lessonSuccess - Segment completed;
+    :Move to the next segment;
+  else (No)
+    :lessonFail - Task interrupted;
+    stop
+  endif
+repeat while (More segments to read?)
+
+:All segments read successfully;
+:fixationCrossEnd - Await fixation on the end cross (focus on the ending point) 
+(up to [n] seconds);
+
+if (Fixation successful?) then (Yes)
+  :lessonComplete - Task completed successfully;
+  stop
+else (No)
+  :lessonFail - Failed to fixate on end cross;
+  stop
+endif
+
+@enduml
+ */
 export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 	// State variables
 	const hasFixatedStartCross = writable(false);
