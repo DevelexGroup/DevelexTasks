@@ -74,7 +74,7 @@
 		gazeFixationEmitter.unregister(element);
 	};
 
-	gazeFixationEmitter.on('fixationSetStart', (event) => {
+	gazeFixationEmitter.on('fixationObjectStart', (event) => {
 		const { target } = event;
 		console.log(target);
 
