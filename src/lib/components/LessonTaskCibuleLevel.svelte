@@ -189,7 +189,7 @@
 	 * when the component is mounted
 	 */
 	onMount(() => {
-		gazeFixationEmitter.on('fixationSetStart', evaluateGazeEvent);
+		gazeFixationEmitter.on('fixationObjectStart', evaluateGazeEvent);
 		processTaskLogic();
 	});
 
@@ -198,7 +198,7 @@
 	 * to prevent memory leaks
 	 */
 	onDestroy(() => {
-		gazeFixationEmitter.off('fixationSetStart', evaluateGazeEvent);
+		gazeFixationEmitter.off('fixationObjectStart', evaluateGazeEvent);
 	});
 </script>
 
