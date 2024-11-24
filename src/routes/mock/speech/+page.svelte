@@ -6,8 +6,6 @@
 	import { onMount } from 'svelte';
 
 	let results: ISpeechRecognitionResult[] = $state([]);
-	let results = $state();
-	
 
 	let recognition: SpeechRecognitionMdn = $state();
 	let isOn;

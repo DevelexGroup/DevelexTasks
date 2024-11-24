@@ -8,13 +8,11 @@
 	import type { ISpeechEvaluatorResult } from '$lib/interfaces/ISpeechEvaluator';
 
 	let results: ISpeechRecognitionResult[] = $state([]);
-	let results = $state();
-	
 
 	let wordToCompare: string = $state('hello');
 	let evaluator = $state(new SpeechEvaluatorSimple(wordToCompare));
 	let evaluatorResults: ISpeechEvaluatorResult[] = $state([]);
-	let evaluator.targetWord = $derived(wordToCompare);
+	let evaluatorTargetWord = $derived(wordToCompare);
 
 	let recognition: SpeechRecognitionMdn = $state();
 	let isOn;
