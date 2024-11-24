@@ -1,15 +1,6 @@
-import type LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
-import type { ComponentProps, SvelteComponent } from 'svelte';
+import type { LessonConfigPairedReading } from '$lib/types/lesson';
 
-type TaskContent<T extends SvelteComponent> = T extends { $$prop_def: { currentContent: unknown } }
-	? {
-			content: ComponentProps<T>['currentContent'][];
-			partialProps: Partial<ComponentProps<T>>;
-			level: string;
-		}
-	: never;
-
-export const pairedReadingLessonsE: TaskContent<LessonTaskPairedReadingLevel>[] = [
+export const pairedReadingLessonsE: LessonConfigPairedReading['data'][] = [
 	{
 		level: 'one',
 		content: [],

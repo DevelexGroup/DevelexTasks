@@ -1,15 +1,8 @@
 import type LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
 import type LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
 import type LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
-import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
-import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
-import type { IWordReader } from '$lib/interfaces/IWordReader';
-import type {
-	GazeInput,
-	GazeInputConfig,
-	GazeInteractionObjectSetFixation
-} from '@473783/develex-core';
-import type { SvelteComponent, ComponentType } from 'svelte';
+import type { GazeInput, GazeInputConfig } from '@473783/develex-core';
+import type { ComponentProps, SvelteComponent_1 } from 'svelte';
 
 export type LessonWordType = {
 	text: string;
@@ -61,112 +54,33 @@ export type LessonSvelteComponentEvents = {
 	lessonFail: CustomEvent<void>;
 };
 
-export type LessonSvelteComponentBase = typeof SvelteComponent<
+export type LessonConfigBase<T extends MandatoryLessonComponentStructure> = {
+	setup: {
+		component: T;
+		content: ComponentProps<T>['currentContent'][];
+		props: ComponentProps<T>;
+		deInit: () => void;
+		gazeInput: GazeInput<GazeInputConfig>;
+	};
+	data: {
+		content: ComponentProps<T>['currentContent'][];
+		partialProps: Omit<
+			ComponentProps<T>,
+			'currentContent' | 'gazeFixationEmitter' | 'wordReader' | 'speechEvaluator'
+		>;
+		level: string;
+	};
+};
+
+type MandatoryLessonComponentStructure = SvelteComponent_1<
 	{
-		// Props
-		/**
-		 * The text to display.
-		 */
 		currentContent: unknown;
 	},
 	LessonSvelteComponentEvents
 >;
 
-export type LessonSvelteComponentPairedReadingZeroVoice = typeof SvelteComponent<
-	{
-		// Props
-		/**
-		 * The text to display.
-		 */
-		gazeFixationEmitter: GazeInteractionObjectSetFixation;
-		currentContent: string;
-		speechEvaluator: ISpeechEvaluator;
-		speechRecognition: ISpeechRecognition;
-	},
-	LessonSvelteComponentEvents
->;
+export type LessonConfigSyllables = LessonConfigBase<LessonTaskSyllableLevel>;
+export type LessonConfigCibule = LessonConfigBase<LessonTaskCibuleLevel>;
+export type LessonConfigPairedReading = LessonConfigBase<LessonTaskPairedReadingLevel>;
 
-export type LessonSvelteComponentPairedReadingZero = typeof SvelteComponent<
-	{
-		// Props
-		/**
-		 * The text to display.
-		 */
-		gazeFixationEmitter: GazeInteractionObjectSetFixation;
-		currentContent: string;
-	},
-	LessonSvelteComponentEvents
->;
-
-export type LessonSvelteComponentPairedReadingOne = typeof SvelteComponent<
-	{
-		// Props
-		/**
-		 * The text to display.
-		 */
-		gazeFixationEmitter: GazeInteractionObjectSetFixation;
-		currentContent: string[];
-	},
-	LessonSvelteComponentEvents
->;
-
-export type LessonSvelteComponentPairedReadingTwo = typeof SvelteComponent<
-	{
-		gazeFixationEmitter: GazeInteractionObjectSetFixation;
-		currentContent: string[];
-		wordReader: IWordReader;
-		speechEvaluator: ISpeechEvaluator;
-		speechRecognition: ISpeechRecognition;
-	},
-	LessonSvelteComponentEvents
->;
-
-export type LessonSvelteComponentPairedReadingThree = typeof SvelteComponent<
-	{
-		gazeFixationEmitter: GazeInteractionObjectSetFixation;
-		currentContent: { text: string; id: string }[][];
-		wordReader: IWordReader;
-		speechEvaluator: ISpeechEvaluator;
-		speechRecognition: ISpeechRecognition;
-		shouldHighlightWords: boolean;
-	},
-	LessonSvelteComponentEvents
->;
-
-export type LessonSvelteComponentSyllables = ComponentType<LessonTaskSyllableLevel>;
-export type LessonSvelteComponentCibule = ComponentType<LessonTaskCibuleLevel>;
-export type LessonSvelteComponentPairedReading = ComponentType<LessonTaskPairedReadingLevel>;
-
-export type LessonConfigBase<T extends LessonSvelteComponentBase> = {
-	component: T;
-	content: T['prototype']['$$prop_def']['currentContent'][];
-	props: T['prototype']['$$prop_def'];
-	deInit: () => void;
-	gazeInput: GazeInput<GazeInputConfig>;
-};
-
-export type LessonConfigPairedReadingZero =
-	LessonConfigBase<LessonSvelteComponentPairedReadingZero>;
-
-export type LessonConfigPairedReadingOne = LessonConfigBase<LessonSvelteComponentPairedReadingOne>;
-
-export type LessonConfigPairedReadingZeroVoice =
-	LessonConfigBase<LessonSvelteComponentPairedReadingZeroVoice>;
-
-export type LessonConfigPairedReadingTwo = LessonConfigBase<LessonSvelteComponentPairedReadingTwo>;
-
-export type LessonConfigPairedReadingThree =
-	LessonConfigBase<LessonSvelteComponentPairedReadingThree>;
-
-export type LessonConfigSyllables = LessonConfigBase<LessonSvelteComponentSyllables>;
-export type LessonConfigCibule = LessonConfigBase<LessonSvelteComponentCibule>;
-export type LessonConfigPairedReading = LessonConfigBase<LessonSvelteComponentPairedReading>;
-
-export type LessonConfig =
-	| LessonConfigPairedReadingZero
-	| LessonConfigPairedReadingOne
-	| LessonConfigPairedReadingZeroVoice
-	| LessonConfigPairedReadingTwo
-	| LessonConfigPairedReadingThree
-	| LessonConfigSyllables
-	| LessonConfigCibule;
+export type LessonConfig = LessonConfigSyllables | LessonConfigCibule | LessonConfigPairedReading;

@@ -1,11 +1,6 @@
-import type LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
-import type { ComponentProps } from 'svelte';
+import type { LessonConfigSyllables } from '$lib/types/lesson';
 
-export const syllableLessons: {
-	content: ComponentProps<LessonTaskSyllableLevel>['currentContent'][];
-	partialProps: Partial<ComponentProps<LessonTaskSyllableLevel>>;
-	level: string;
-}[] = [
+export const syllableLessons: LessonConfigSyllables['data'][] = [
 	{
 		level: 'zero',
 		content: [
