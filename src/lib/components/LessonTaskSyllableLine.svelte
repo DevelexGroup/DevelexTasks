@@ -17,7 +17,7 @@
 	 */
 	export let isSyllableAssignmentPresent: boolean = true;
 
-	export let content: SyllableTaskType = {
+	export let content: SyllableTaskType[number] = {
 		syllables: ['pa', 'ra', 'pa', 'ga'],
 		correctSyllable: 'pa'
 	};

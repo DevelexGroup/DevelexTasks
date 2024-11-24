@@ -6,7 +6,7 @@
 	/**
 	 * The content of the task.
 	 */
-	export let content: SyllableTaskType[] = [
+	export let content: SyllableTaskType = [
 		{
 			syllables: ['pa', 'ra', 'pa', 'ga'],
 			correctSyllable: 'pa'

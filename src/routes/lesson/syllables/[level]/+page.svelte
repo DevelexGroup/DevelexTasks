@@ -57,7 +57,7 @@
 			gazeInput.disconnect();
 		};
 
-		const lessonConfig: LessonConfigSyllables = {
+		const lessonConfig: LessonConfigSyllables['setup'] = {
 			component: LessonTaskSyllableLevel,
 			content: data.config.content,
 			props: {
@@ -72,7 +72,7 @@
 		return lessonConfig;
 	};
 
-	const lessonConfig: Promise<LessonConfigSyllables> = getAsyncLessonConfig();
+	const lessonConfig: Promise<LessonConfigSyllables['setup']> = getAsyncLessonConfig();
 </script>
 
 {#if data}

@@ -6,7 +6,7 @@
 	/**
 	 * The content of the task.
 	 */
-	export let content: CibuleTaskType[] = [
+	export let content: CibuleTaskType = [
 		{
 			syllables: ['pa', 'ra', 'pa', 'ga'],
 			correctSyllable: 'pa'

@@ -12,7 +12,7 @@
 	import LessonTaskCibuleLayout from './LessonTaskCibuleLayout.svelte';
 	import LessonTaskCibuleGrid from './LessonTaskCibuleGrid.svelte';
 
-	export let currentContent: CibuleTaskType[];
+	export let currentContent: CibuleTaskType;
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let wordReader: IWordReader;
 

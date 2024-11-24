@@ -39,13 +39,13 @@ export type PairedReadingTaskType = {
 export type SyllableTaskType = {
 	syllables: string[];
 	correctSyllable: string;
-};
+}[];
 
 export type CibuleTaskType = {
 	syllables: string[];
 	correctSyllable?: string;
 	incorrectSyllable?: string;
-};
+}[];
 
 export type LessonSvelteComponentEvents = {
 	lessonSuccess: CustomEvent<void>;
@@ -66,7 +66,11 @@ export type LessonConfigBase<T extends MandatoryLessonComponentStructure> = {
 		content: ComponentProps<T>['currentContent'][];
 		partialProps: Omit<
 			ComponentProps<T>,
-			'currentContent' | 'gazeFixationEmitter' | 'wordReader' | 'speechEvaluator'
+			| 'currentContent'
+			| 'gazeFixationEmitter'
+			| 'wordReader'
+			| 'speechEvaluator'
+			| 'speechRecognition'
 		>;
 		level: string;
 	};

@@ -11,7 +11,7 @@
 	 * The lesson component that will be displayed as a lesson.
 	 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
 	 */
-	export let lessonConfigResult: LessonConfig;
+	export let lessonConfigResult: LessonConfig['setup'];
 
 	let state: 'round' | 'fail' | 'complete' | 'mistake' = 'round';
 

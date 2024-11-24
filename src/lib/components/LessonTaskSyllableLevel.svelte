@@ -9,7 +9,7 @@
 	import { writable, type Writable } from 'svelte/store';
 	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 
-	export let currentContent: SyllableTaskType[];
+	export let currentContent: SyllableTaskType;
 	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
 	export let wordReader: IWordReader;
 

@@ -17,7 +17,7 @@
 	 */
 	export let isSyllableAssignmentPresent: boolean = true;
 
-	export let content: CibuleTaskType = {
+	export let content: CibuleTaskType[number] = {
 		syllables: ['pa', 'ra', 'pa', 'ga'],
 		correctSyllable: 'pa'
 	};

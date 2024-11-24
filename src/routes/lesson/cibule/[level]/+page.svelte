@@ -57,7 +57,7 @@
 			gazeInput.disconnect();
 		};
 
-		const lessonConfig: LessonConfigCibule = {
+		const lessonConfig: LessonConfigCibule['setup'] = {
 			component: LessonTaskCibuleLevel,
 			content: data.config.content,
 			props: {
