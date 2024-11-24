@@ -2,14 +2,14 @@ import type { PairedReadingTaskType } from '$lib/types/lesson';
 
 export class PairedReadingIdManager {
 	private static WORD_ID_PREFIX = 'fixw';
-	private static WORD_REGEX = new RegExp(`^${this.WORD_ID_PREFIX}-(\\d+)-(\\d+)$`);
+	private static WORD_REGEX = new RegExp(`^${this.WORD_ID_PREFIX}-\\[(.*?)\\]-(\\d+)-(\\d+)$`); // Updated regex to match brackets
 	private static FIXCROSS_A_ID = 'fixc-a';
 	private static FIXCROSS_B_ID = 'fixc-b';
 
 	// Generate a word ID from PairedReadingTaskType
 	static getWordId(word: Omit<WordMetadata, 'id'>): string {
 		const { evaluationSegments, lineIndex, orderInLine } = word;
-		return `${this.WORD_ID_PREFIX}-${JSON.stringify(evaluationSegments)}-${lineIndex}-${orderInLine}`;
+		return `${this.WORD_ID_PREFIX}-[${evaluationSegments.join(',')}]-${lineIndex}-${orderInLine}`;
 	}
 
 	// Parse a word ID and return PairedReadingTaskType without text
@@ -21,7 +21,7 @@ export class PairedReadingIdManager {
 		const match = id.match(this.WORD_REGEX);
 		if (match) {
 			return {
-				evaluationSegmentIndex: JSON.parse(match[1]),
+				evaluationSegmentIndex: JSON.parse(`[${match[1]}]`), // Parse the JSON array
 				lineIndex: parseInt(match[2]),
 				orderInLine: parseInt(match[3])
 			};
@@ -35,6 +35,26 @@ export class PairedReadingIdManager {
 
 	static getFixCrossBId() {
 		return this.FIXCROSS_B_ID;
+	}
+
+	// Check if a word belongs to a specific evaluation segment by segment index
+	static isWordInEvaluationSegmentByIndex(
+		idOfEvaluationSegment: string,
+		idOfWord: string,
+		task: PairedReadingTaskType
+	): boolean {
+		const parsedWordId = this.parseWordId(idOfWord);
+		if (!parsedWordId) {
+			throw new Error(`Invalid word ID: ${idOfWord}`);
+		}
+
+		// Find the index of the evaluation segment with the matching ID
+		const segmentIndex = task.evaluationSegment.findIndex(
+			(segment) => segment.id === idOfEvaluationSegment
+		);
+
+		// Check if the parsed word's evaluation segments include the index
+		return parsedWordId.evaluationSegmentIndex.includes(segmentIndex);
 	}
 }
 
@@ -128,6 +148,7 @@ export class PairedReadingManager {
 		const currentSegment = words
 			.flatMap((line) => line.filter((word) => word.isInActiveSegment))
 			.map((word) => word.text);
+
 		return {
 			id: this.task.evaluationSegment[this._activeEvaluationSegmentIndex].id,
 			text: currentSegment.join(' ')

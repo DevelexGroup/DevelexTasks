@@ -34,17 +34,6 @@ export type GetLogicFunction = (
 	}>
 ) => GetLogicType;
 
-type PairedReadingExtendedFixationEvent =
-	| (GazeInteractionObjectFixationEvent & {
-			currentlyReadingWord: WordMetadata;
-			targetsMatched: (WordMetadata & {
-				withinLineDistance: number; // 0 for the exact same position within the line, -1 for fixating on previous word, 1 for fixating on next word, 2 for fixating on the word after the next word, etc.
-				betweenLineDistance: number; // 0 for the fixating at the line which is currently being read, -1 for fixating on the previous line, 1 for fixating on the next line, 2 for fixating on the line after the next line, etc.
-				totalDistance: number; // Total distance from the current word
-			})[];
-	  })
-	| (GazeInteractionObjectFixationEvent & { currentlyReadingWord: null });
-
 /**
 	 * 
 	 * @param params 
@@ -109,70 +98,16 @@ export const getLogic = (
 	// State variables
 	const hasFixatedStartCross = writable(false);
 	const hasFixatedEndCross = writable(false);
-	const currentlyReadingWord = writable<WordMetadata | null>(null);
-
-	const abortWrongPatternController = new AbortController();
+	const currentlyReadingPhrase = writable<{
+		text: string;
+		id: string;
+	} | null>(null);
+	let gazeMistakesDuringReading: number = 0;
 	const abortController = new AbortController();
 
 	const pairedReadingManager = new PairedReadingManager(params.currentContent);
 	const wordsStore = writable<WordMetadata[][]>(pairedReadingManager.getWords());
 	const gridStateStore = writable<'crossStart' | 'reading' | 'crossEnd'>('crossStart');
-
-	let wordsFlat = get(wordsStore).flat();
-
-	// Subscribe to the wordsStore and update wordsFlat
-	const unsubscribeToWordStore = wordsStore.subscribe((value) => {
-		wordsFlat = value.flat();
-	});
-
-	/**
-	 * Calculates the distance between the current word and the target word.
-	 * @param word - The current word metadata.
-	 * @param target - The target word metadata.
-	 * @returns An object containing distance metrics.
-	 */
-	const calculateDistance = (word: WordMetadata, target: WordMetadata) => {
-		const withinLineDistance = target.lineIndex - word.lineIndex;
-		const betweenLineDistance = target.lineIndex - word.lineIndex;
-		const totalDistance = target.totalIndex - word.totalIndex;
-		return {
-			withinLineDistance,
-			betweenLineDistance,
-			totalDistance
-		};
-	};
-
-	/**
-	 * Calculates an extended fixation event by matching words with the event targets.
-	 * @param event - The gaze interaction object fixation event.
-	 * @returns The extended fixation event with matched targets and distances.
-	 */
-	const calculateExtendedEvent = (
-		event: GazeInteractionObjectFixationEvent
-	): PairedReadingExtendedFixationEvent => {
-		// Check how many words from wordsFlat fit to target ids
-		const words = wordsFlat.filter((word) => event.target.some((t) => t.id === word.id));
-
-		// If there are words in the target
-		if (words.length > 0) {
-			const targetsMatched = words.map((word) => {
-				const distance = calculateDistance(word, wordsFlat[0]);
-				return { ...word, ...distance };
-			});
-			return {
-				...event,
-				currentlyReadingWord: get(currentlyReadingWord),
-				targetsMatched
-			};
-		} else {
-			const extendedEvent: PairedReadingExtendedFixationEvent = {
-				...event,
-				currentlyReadingWord: get(currentlyReadingWord),
-				targetsMatched: []
-			};
-			return extendedEvent;
-		}
-	};
 
 	/**
 	 * Evaluates gaze fixations and updates state accordingly.
@@ -181,25 +116,31 @@ export const getLogic = (
 	const evaluateFixations = (event: GazeInteractionObjectFixationEvent) => {
 		const { target } = event;
 
+		console.log(target);
+
 		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId())) {
 			hasFixatedStartCross.set(true);
+			return;
 		}
 
 		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId())) {
 			hasFixatedEndCross.set(true);
+			return;
 		}
 
-		const extendedEvent = calculateExtendedEvent(event);
-
-		if (extendedEvent.currentlyReadingWord === null) return; // If there is no word to read, do not evaluate
-
 		// If any of the targets have distance 0, all is correct
-		const isGazePatternCorrect = extendedEvent.targetsMatched.some(
-			(target) => target.withinLineDistance === 0
+		const phrase = get(currentlyReadingPhrase);
+		if (!phrase || get(gridStateStore) !== 'reading') return;
+		const isGazePatternCorrect = target.some((target) =>
+			PairedReadingIdManager.isWordInEvaluationSegmentByIndex(
+				phrase.id,
+				target.id,
+				params.currentContent
+			)
 		);
 
 		if (!isGazePatternCorrect) {
-			abortWrongPatternController.abort('Wrong fixation pattern');
+			gazeMistakesDuringReading++;
 		}
 	};
 
@@ -208,16 +149,12 @@ export const getLogic = (
 	 * @param word - The current word being read by the reader.
 	 */
 	const evaluateReaderWordChange = (
-		word: {
+		phrase: {
 			text: string;
 			id: string;
-			start: number;
-			end: number;
 		} | null
 	) => {
-		// Match based on the id from wordsStore
-		const currentWord = wordsFlat.find((w) => w.id === word?.id) ?? null;
-		currentlyReadingWord.set(currentWord);
+		currentlyReadingPhrase.set(phrase);
 	};
 
 	/**
@@ -225,8 +162,10 @@ export const getLogic = (
 	 */
 	const performSingleReadingSegment = async () => {
 		const segment = pairedReadingManager.getReadingSegment();
+		gazeMistakesDuringReading = 0;
 		await params.wordReader.read([segment]);
-		currentlyReadingWord.set(null);
+		if (gazeMistakesDuringReading > 1) throw new Error('Too many mistakes');
+		currentlyReadingPhrase.set(null);
 	};
 
 	/**
@@ -236,17 +175,14 @@ export const getLogic = (
 		for await (const segment of params.currentContent.evaluationSegment) {
 			wordsStore.set(pairedReadingManager.getWords());
 			void segment; // Do not operate with the segment directly
-			await retry(
-				() => getCancellableAsync(performSingleReadingSegment, abortWrongPatternController.signal),
-				{
-					retries: 3,
-					delay: 3000,
-					onRetry: () => {
-						params.wordReader.abort();
-						dispatch('lessonMistake');
-					}
+			await retry(() => getCancellableAsync(performSingleReadingSegment, abortController.signal), {
+				retries: 3,
+				delay: 5000,
+				onRetry: () => {
+					params.wordReader.abort();
+					dispatch('lessonMistake');
 				}
-			);
+			});
 			pairedReadingManager.nextSegment();
 			dispatch('lessonSuccess');
 		}
@@ -272,7 +208,6 @@ export const getLogic = (
 	const performWaitForEndCrossFixation = async () => {
 		await waitForConditionCancellable(hasFixatedEndCross, 100000, abortController.signal);
 		dispatch('lessonComplete');
-		alert('Lesson complete');
 	};
 
 	/**
@@ -321,7 +256,6 @@ export const getLogic = (
 	 */
 	const setupOnDestroy = () => {
 		abortController.abort('Task destroyed');
-		unsubscribeToWordStore();
 		params.gazeFixationEmitter.off('fixationObjectStart', evaluateFixations);
 	};
 
@@ -454,7 +388,6 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 	const waitForEndCrossFixation = async () => {
 		await waitForConditionCancellable(hasFixatedEndCross, 100000, abortController.signal);
 		dispatch('lessonComplete');
-		alert('Lesson complete');
 	};
 
 	// Main asynchronous logic
