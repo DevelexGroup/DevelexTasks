@@ -22,6 +22,7 @@
 		{/each}
 		<div class="mt-4 flex flex-col gap-1">
 			<Button href="/">Back to selection</Button>
+			<Button href="/settings">Change tracker</Button>
 		</div>
 	</div>
 </div>

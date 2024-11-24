@@ -73,8 +73,12 @@
 		gazeFixationEmitter.unregister(element);
 	};
 
-	const handleCorrectSyllableClick = () => {
+	const handleAllCorrectSyllablesClicked = () => {
 		wasCorrectSyllableSelected.set(true);
+	};
+
+	const handleCorrectSyllableClick = () => {
+		dispatch('lessonSuccess');
 	};
 
 	const handleIncorrectSyllableClick = () => {
@@ -154,7 +158,6 @@
 				SYLLABLE_SELECTION_TIMEOUT,
 				wasMistakenTooManyTimes
 			);
-			dispatch('lessonSuccess');
 			return true;
 		} catch {
 			dispatch('lessonFail');
@@ -219,6 +222,7 @@
 		{assignmentGap}
 		{syllableGap}
 		{currentRowIndex}
+		on:all-correct-syllables-clicked={handleAllCorrectSyllablesClicked}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}
 	/>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Button from './Button.svelte';
+
 	interface Props {
 		errorMessages?: string[];
 	}
@@ -16,4 +18,5 @@
 			{/each}
 		</ul>
 	{/if}
+	<Button href="/">Back to Lessons</Button>
 </div>

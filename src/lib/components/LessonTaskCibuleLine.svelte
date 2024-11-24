@@ -5,49 +5,21 @@
 	import LessonWord from './LessonWord.svelte';
 	import LessonTaskCibuleItem from './LessonTaskCibuleItem.svelte';
 
-	
-
-	
-
-
-	const correctIndexes =
-		content.correctSyllable == undefined
-			? content.syllables
-					.map((item, index) => (item.includes(content.incorrectSyllable ?? '') ? -1 : index))
-					.filter((index) => index !== -1)
-					.reverse()
-			: content.syllables
-					.map((item, index) => (item === content.correctSyllable ? index : -1))
-					.filter((index) => index !== -1)
-					.reverse();
-
-	const correctIndexesSet = new Set(correctIndexes);
-
-	const getNextExpectingIndex = (): number => {
-		return correctIndexes.pop() ?? -1;
-	};
-
-	let correctExpectingIndex = getNextExpectingIndex();
-
-	
-
-
-
 	interface Props {
 		/**
-	 * Is assignment syllable visible?
-	 * It can change during the task or it might be invisible from the start.
-	 */
+		 * Is assignment syllable visible?
+		 * It can change during the task or it might be invisible from the start.
+		 */
 		isSyllableAssignmentVisible?: boolean;
 		/**
-	 * Is syllable assignment present? If not, no space is reserved for it.
-	 * This should not be changed during the task as this messes up the layout.
-	 */
+		 * Is syllable assignment present? If not, no space is reserved for it.
+		 * This should not be changed during the task as this messes up the layout.
+		 */
 		isSyllableAssignmentPresent?: boolean;
 		content?: CibuleTaskType[number];
 		/**
-	 * The gap between the syllables in pixels.
-	 */
+		 * The gap between the syllables in pixels.
+		 */
 		syllableGap?: number;
 		markWantedSyllables?: boolean;
 		rowIndex?: number;
@@ -61,9 +33,9 @@
 		isSyllableAssignmentVisible = true,
 		isSyllableAssignmentPresent = true,
 		content = {
-		syllables: ['pa', 'ra', 'pa', 'ga'],
-		correctSyllable: 'pa'
-	},
+			syllables: ['pa', 'ra', 'pa', 'ga'],
+			correctSyllable: 'pa'
+		},
 		syllableGap = 12,
 		markWantedSyllables = false,
 		rowIndex = 0,
@@ -72,6 +44,17 @@
 		idCorrectSyllable = 'syllable-assignement',
 		idOtherSyllableBase = 'syllable-choice-'
 	}: Props = $props();
+
+	const correctIndexes =
+		content.correctSyllable == undefined
+			? content.syllables
+					.map((item, index) => (item.includes(content.incorrectSyllable ?? '') ? -1 : index))
+					.filter((index) => index !== -1)
+					.reverse()
+			: content.syllables
+					.map((item, index) => (item === content.correctSyllable ? index : -1))
+					.filter((index) => index !== -1)
+					.reverse();
 
 	const dispatch = createEventDispatcher<{
 		'correct-syllable-clicked': {
@@ -85,6 +68,14 @@
 			rowIndex: number;
 		};
 	}>();
+
+	const correctIndexesSet = new Set(correctIndexes);
+
+	const getNextExpectingIndex = (): number => {
+		return correctIndexes.pop() ?? -1;
+	};
+
+	let correctExpectingIndex = getNextExpectingIndex();
 
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
 

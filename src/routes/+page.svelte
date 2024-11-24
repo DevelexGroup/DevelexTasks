@@ -6,4 +6,7 @@
 	<Button href="/section/paired-reading">Paired Reading</Button>
 	<Button href="/section/cibule">Cibule</Button>
 	<Button href="/section/syllables">Syllables</Button>
+	<div class="mt-4 flex flex-col gap-1">
+		<Button href="/settings">Change tracker</Button>
+	</div>
 </div>

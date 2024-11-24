@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { SyllableTaskType } from '$lib/types/lesson';
 	import LessonTaskSyllableLine from './LessonTaskSyllableLine.svelte';
-	import { createEventDispatcher } from 'svelte';
 
 	interface Props {
 		/**
@@ -62,36 +61,11 @@
 		unregisterElement
 	}: Props = $props();
 
-	const dispatch = createEventDispatcher<{
-		'correct-syllable-clicked': {
-			word: string;
-			id: string;
-			rowIndex: number;
-			currentRowIndex: number;
-		};
-		'incorrect-syllable-clicked': {
-			word: string;
-			id: string;
-			rowIndex: number;
-			currentRowIndex: number;
-		};
-	}>();
-
-	const handleIncorrectSyllableClicked = (
-		e: CustomEvent<{ word: string; id: string; rowIndex: number }>
-	) => {
-		dispatch('incorrect-syllable-clicked', { ...e.detail, currentRowIndex });
-	};
-
-	const handleCorrectSyllableClicked = (
-		e: CustomEvent<{ word: string; id: string; rowIndex: number }>
-	) => {
-		const isCorrectRow = e.detail.rowIndex === currentRowIndex;
-		if (isCorrectRow) {
-			dispatch('correct-syllable-clicked', { ...e.detail, currentRowIndex });
-		} else {
-			handleIncorrectSyllableClicked(e);
-		}
+	const getCorrectRowIdsForTheCorrect = (syllableRow: SyllableTaskType[number]) => {
+		const { correctSyllable, syllables } = syllableRow;
+		return syllables
+			.map((value, index) => (value === correctSyllable ? index : -1))
+			.filter((index) => index !== -1);
 	};
 </script>
 
@@ -101,20 +75,24 @@
 	style="gap: 1rem {assignmentGap}px;"
 >
 	{#each content as task, rowIndex}
-		{@const idCorrectSyllable = `syllable-assignement_${rowIndex}`}
+		{@const idAssignementSyllable = `syllable-assignement_${rowIndex}`}
 		{@const idOtherSyllableBase = `syllable-choice_${rowIndex}_`}
+		{@const correctIdsInTheRow = getCorrectRowIdsForTheCorrect(task)}
 		<LessonTaskSyllableLine
 			content={task}
 			{registerElement}
 			{unregisterElement}
 			{syllableGap}
-			{idCorrectSyllable}
+			{idAssignementSyllable}
 			{idOtherSyllableBase}
+			{correctIdsInTheRow}
 			isSyllableAssignmentVisible={!hideAssignmentSyllables.includes(rowIndex)}
 			{isSyllableAssignmentPresent}
 			{rowIndex}
-			on:correct-syllable-clicked={handleCorrectSyllableClicked}
-			on:incorrect-syllable-clicked={handleIncorrectSyllableClicked}
+			isActive={currentRowIndex === rowIndex}
+			on:correct-syllable-clicked
+			on:all-correct-syllables-clicked
+			on:incorrect-syllable-clicked
 		/>
 	{/each}
 </div>
