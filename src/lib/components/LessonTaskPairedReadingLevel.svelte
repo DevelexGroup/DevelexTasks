@@ -5,7 +5,11 @@
 	import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
 	import { derived } from 'svelte/store';
 	import type { PairedReadingTaskType } from '$lib/types/lesson';
-	import { getPilotLogic } from './LessonTaskPairedReadingLevel.logic';
+	import {
+		getLogic,
+		getPilotLogic,
+		type GetLogicFunction
+	} from './LessonTaskPairedReadingLevel.logic';
 	import type { IWordReader } from '$lib/interfaces/IWordReader';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 
@@ -16,6 +20,7 @@
 	export let wordReader: IWordReader;
 	export let shouldListenForVoice: boolean;
 	export let bufferSize: number;
+	export let logicType: 'main' | 'pilot' = 'main';
 
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
@@ -23,6 +28,8 @@
 		lessonComplete: void;
 		lessonFail: void;
 	}>();
+
+	const logicGetter: GetLogicFunction = logicType === 'main' ? getLogic : getPilotLogic;
 
 	const {
 		gridStateStore,
@@ -33,7 +40,7 @@
 		crossUnregisterFn,
 		wordsRegisterFn,
 		wordsUnregisterFn
-	} = getPilotLogic(
+	} = logicGetter(
 		{
 			gazeFixationEmitter,
 			currentContent,
