@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
+	import type { Snippet } from 'svelte';
 
-	export let validateFixation: boolean = true;
+	interface Props {
+		validateFixation: boolean;
+		crossFix: Snippet;
+		wordArea: Snippet;
+	}
+
+	let { validateFixation = true, crossFix, wordArea }: Props = $props();
 
 	const inOptions = { duration: 750, delay: 200 };
 	const outOptions = { duration: 200 };
@@ -14,7 +21,7 @@
 			out:fade={outOptions}
 			class="flex w-24 max-w-7xl items-center justify-start"
 		>
-			<slot name="cross-fix" />
+			{@render crossFix()}
 		</div>
 	{/if}
 	<div
@@ -22,7 +29,7 @@
 		class:opacity-0={validateFixation}
 	>
 		<div class="flex w-auto max-w-7xl flex-wrap gap-x-12">
-			<slot name="word-area" />
+			{@render wordArea()}
 		</div>
 	</div>
 </div>

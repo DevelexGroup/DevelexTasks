@@ -1,20 +1,26 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import type { ISpeechRecognitionResult } from '$lib/interfaces/ISpeechRecognition';
 	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
 	import { onMount } from 'svelte';
 	import type { ISpeechEvaluatorResult } from '$lib/interfaces/ISpeechEvaluator';
 
-	let results: ISpeechRecognitionResult[] = [];
-	$: results = [];
+	let results: ISpeechRecognitionResult[] = $state([]);
+	let results = $state();
+	
 
-	let wordToCompare: string = 'hello';
-	let evaluator = new SpeechEvaluatorSimple(wordToCompare);
-	let evaluatorResults: ISpeechEvaluatorResult[] = [];
-	$: evaluator.targetWord = wordToCompare;
+	let wordToCompare: string = $state('hello');
+	let evaluator = $state(new SpeechEvaluatorSimple(wordToCompare));
+	let evaluatorResults: ISpeechEvaluatorResult[] = $state([]);
+	let evaluator.targetWord = $derived(wordToCompare);
 
-	let recognition: SpeechRecognitionMdn;
-	$: isOn = recognition?.isOn;
+	let recognition: SpeechRecognitionMdn = $state();
+	let isOn;
+	run(() => {
+		isOn = recognition?.isOn;
+	});
 
 	const handleResult = (event: ISpeechRecognitionResult) => {
 		console.warn(event);
@@ -47,7 +53,7 @@
 <div class="mb-4 flex justify-center gap-2">
 	<button
 		class="rounded-md bg-blue-500 px-4 py-2 text-white"
-		on:click={() => {
+		onclick={() => {
 			recognition.start();
 		}}
 	>
@@ -55,7 +61,7 @@
 	</button>
 	<button
 		class="rounded-md bg-red-500 px-4 py-2 text-white"
-		on:click={() => {
+		onclick={() => {
 			recognition.stop();
 		}}
 	>

@@ -3,10 +3,64 @@
 	import LessonTaskCibuleLine from './LessonTaskCibuleLine.svelte';
 	import { createEventDispatcher } from 'svelte';
 
-	/**
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+	
+
+	
+	interface Props {
+		/**
 	 * The content of the task.
 	 */
-	export let content: CibuleTaskType = [
+		content?: CibuleTaskType;
+		/**
+	 * The index of the current row.
+	 */
+		currentRowIndex?: number;
+		/**
+	 * Hide assignment syllables for some rows.
+	 * Array of row indices to hide the assignment syllable for.
+	 */
+		hideAssignmentSyllables?: number[];
+		/**
+	 * Is assignment syllable visible? Sometimes, assignment syllable is not visible for the whole task.
+	 * E.g. when it is only read aloud.
+	 * It cannot change during the task as this messes up the layout.
+	 */
+		isSyllableAssignmentPresent?: boolean;
+		/**
+	 * Width of the assignment syllable gap in pixels.
+	 */
+		assignmentGap?: number;
+		/**
+	 * The gap between the syllables in pixels.
+	 */
+		syllableGap?: number;
+		markWantedSyllables?: boolean;
+		/**
+	 * Register an element for gaze interaction.
+	 * Assuming all syllables needs the same interaction.
+	 */
+		registerElement: (element: HTMLElement) => void;
+		/**
+	 * Unregister an element for gaze interaction.
+	 */
+		unregisterElement: (element: HTMLElement) => void;
+	}
+
+	let {
+		content = [
 		{
 			syllables: ['pa', 'ra', 'pa', 'ga'],
 			correctSyllable: 'pa'
@@ -15,48 +69,16 @@
 			syllables: ['ta', 'ra', 'pa', 'ga'],
 			correctSyllable: 'ra'
 		}
-	];
-
-	/**
-	 * The index of the current row.
-	 */
-	export let currentRowIndex: number = 0;
-
-	/**
-	 * Hide assignment syllables for some rows.
-	 * Array of row indices to hide the assignment syllable for.
-	 */
-	export let hideAssignmentSyllables: number[] = [1];
-
-	/**
-	 * Is assignment syllable visible? Sometimes, assignment syllable is not visible for the whole task.
-	 * E.g. when it is only read aloud.
-	 * It cannot change during the task as this messes up the layout.
-	 */
-	export let isSyllableAssignmentPresent: boolean = true;
-
-	/**
-	 * Width of the assignment syllable gap in pixels.
-	 */
-	export let assignmentGap: number = 120;
-
-	/**
-	 * The gap between the syllables in pixels.
-	 */
-	export let syllableGap: number = 12;
-
-	export let markWantedSyllables: boolean = false;
-
-	/**
-	 * Register an element for gaze interaction.
-	 * Assuming all syllables needs the same interaction.
-	 */
-	export let registerElement: (element: HTMLElement) => void;
-
-	/**
-	 * Unregister an element for gaze interaction.
-	 */
-	export let unregisterElement: (element: HTMLElement) => void;
+	],
+		currentRowIndex = 0,
+		hideAssignmentSyllables = [1],
+		isSyllableAssignmentPresent = true,
+		assignmentGap = 120,
+		syllableGap = 12,
+		markWantedSyllables = false,
+		registerElement,
+		unregisterElement
+	}: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		'correct-syllable-clicked': {

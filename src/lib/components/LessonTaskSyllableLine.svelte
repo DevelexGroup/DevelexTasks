@@ -5,34 +5,51 @@
 	import { createEventDispatcher } from 'svelte';
 	import LessonWord from './LessonWord.svelte';
 
-	/**
+	
+
+	
+
+
+	
+
+
+	interface Props {
+		/**
 	 * Is assignment syllable visible?
 	 * It can change during the task or it might be invisible from the start.
 	 */
-	export let isSyllableAssignmentVisible: boolean = true;
-
-	/**
+		isSyllableAssignmentVisible?: boolean;
+		/**
 	 * Is syllable assignment present? If not, no space is reserved for it.
 	 * This should not be changed during the task as this messes up the layout.
 	 */
-	export let isSyllableAssignmentPresent: boolean = true;
-
-	export let content: SyllableTaskType[number] = {
-		syllables: ['pa', 'ra', 'pa', 'ga'],
-		correctSyllable: 'pa'
-	};
-
-	/**
+		isSyllableAssignmentPresent?: boolean;
+		content?: SyllableTaskType[number];
+		/**
 	 * The gap between the syllables in pixels.
 	 */
-	export let syllableGap: number = 12;
+		syllableGap?: number;
+		rowIndex?: number;
+		registerElement: (element: HTMLElement) => void;
+		unregisterElement: (element: HTMLElement) => void;
+		idCorrectSyllable?: string;
+		idOtherSyllableBase?: string;
+	}
 
-	export let rowIndex: number = 0;
-
-	export let registerElement: (element: HTMLElement) => void;
-	export let unregisterElement: (element: HTMLElement) => void;
-	export let idCorrectSyllable: string = 'syllable-assignement';
-	export let idOtherSyllableBase: string = 'syllable-choice-';
+	let {
+		isSyllableAssignmentVisible = true,
+		isSyllableAssignmentPresent = true,
+		content = {
+		syllables: ['pa', 'ra', 'pa', 'ga'],
+		correctSyllable: 'pa'
+	},
+		syllableGap = 12,
+		rowIndex = 0,
+		registerElement,
+		unregisterElement,
+		idCorrectSyllable = 'syllable-assignement',
+		idOtherSyllableBase = 'syllable-choice-'
+	}: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		'correct-syllable-clicked': {

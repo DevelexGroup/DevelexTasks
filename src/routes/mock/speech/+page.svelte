@@ -1,13 +1,19 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import type { ISpeechRecognitionResult } from '$lib/interfaces/ISpeechRecognition';
 	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { onMount } from 'svelte';
 
-	let results: ISpeechRecognitionResult[] = [];
-	$: results = [];
+	let results: ISpeechRecognitionResult[] = $state([]);
+	let results = $state();
+	
 
-	let recognition: SpeechRecognitionMdn;
-	$: isOn = recognition?.isOn;
+	let recognition: SpeechRecognitionMdn = $state();
+	let isOn;
+	run(() => {
+		isOn = recognition?.isOn;
+	});
 
 	const handleResult = (event: ISpeechRecognitionResult) => {
 		console.warn(event);
@@ -38,7 +44,7 @@
 <div class="mb-4 flex justify-center gap-2">
 	<button
 		class="rounded-md bg-blue-500 px-4 py-2 text-white"
-		on:click={() => {
+		onclick={() => {
 			recognition.start();
 		}}
 	>
@@ -46,7 +52,7 @@
 	</button>
 	<button
 		class="rounded-md bg-red-500 px-4 py-2 text-white"
-		on:click={() => {
+		onclick={() => {
 			recognition.stop();
 		}}
 	>

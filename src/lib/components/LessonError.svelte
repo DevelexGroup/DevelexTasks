@@ -1,5 +1,9 @@
 <script lang="ts">
-	export let errorMessages: string[] = [];
+	interface Props {
+		errorMessages?: string[];
+	}
+
+	let { errorMessages = [] }: Props = $props();
 </script>
 
 <div class="flex flex-col items-center justify-center space-y-4">

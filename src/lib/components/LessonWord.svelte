@@ -1,13 +1,23 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 
-	export let isHighlighted: boolean = false;
-	export let word: string;
-	export let id: string;
-	export let registerElement: (element: HTMLElement) => void = () => {};
-	export let unregisterElement: (element: HTMLElement) => void = () => {};
+	interface Props {
+		isHighlighted?: boolean;
+		word: string;
+		id: string;
+		registerElement?: (element: HTMLElement) => void;
+		unregisterElement?: (element: HTMLElement) => void;
+	}
 
-	let element: HTMLElement;
+	let {
+		isHighlighted = false,
+		word,
+		id,
+		registerElement = () => {},
+		unregisterElement = () => {}
+	}: Props = $props();
+
+	let element: HTMLElement = $state();
 
 	onMount(() => {
 		registerElement(element);

@@ -6,14 +6,19 @@
 	import LessonMistake from './LessonMistake.svelte';
 	import LessonFail from './LessonFail.svelte';
 
-	/**
+	
+	interface Props {
+		/**
 	 * @type {LessonConfig}
 	 * The lesson component that will be displayed as a lesson.
 	 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
 	 */
-	export let lessonConfigResult: LessonConfig['setup'];
+		lessonConfigResult: LessonConfig['setup'];
+	}
 
-	let state: 'round' | 'fail' | 'complete' | 'mistake' = 'round';
+	let { lessonConfigResult }: Props = $props();
+
+	let state: 'round' | 'fail' | 'complete' | 'mistake' = $state('round');
 
 	/**
 	 * Lesson Track Logic
@@ -69,8 +74,7 @@
 			in:fly={flyIn}
 			out:fly={flyOut}
 		>
-			<svelte:component
-				this={lessonConfigResult.component}
+			<lessonConfigResult.component
 				{...lessonConfigResult.props}
 				currentContent={lessonConfigResult.content[$lessonProgress]}
 				on:lessonSuccess={handleLessonSuccess}

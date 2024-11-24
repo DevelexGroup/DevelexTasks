@@ -13,14 +13,27 @@
 	import type { IWordReader } from '$lib/interfaces/IWordReader';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 
-	export let gazeFixationEmitter: GazeInteractionObjectFixation;
-	export let currentContent: PairedReadingTaskType;
-	export let speechEvaluator: ISpeechEvaluator;
-	export let speechRecognition: ISpeechRecognition;
-	export let wordReader: IWordReader;
-	export let shouldListenForVoice: boolean;
-	export let bufferSize: number;
-	export let logicType: 'main' | 'pilot' = 'main';
+	interface Props {
+		gazeFixationEmitter: GazeInteractionObjectFixation;
+		currentContent: PairedReadingTaskType;
+		speechEvaluator: ISpeechEvaluator;
+		speechRecognition: ISpeechRecognition;
+		wordReader: IWordReader;
+		shouldListenForVoice: boolean;
+		bufferSize: number;
+		logicType?: 'main' | 'pilot';
+	}
+
+	let {
+		gazeFixationEmitter,
+		currentContent,
+		speechEvaluator,
+		speechRecognition,
+		wordReader,
+		shouldListenForVoice,
+		bufferSize,
+		logicType = 'main'
+	}: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;

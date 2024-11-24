@@ -5,20 +5,34 @@
 	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
 	import LessonWord from './LessonWord.svelte';
 
-	export let words: WordMetadata[][];
 
-	export let xGap: number = 10;
 
-	export let yGap: number = 5;
 
-	export let stage: 'crossStart' | 'reading' | 'crossEnd' = 'crossStart';
 
-	export let crossStartPosition: 'top' | 'center' = 'center';
 
-	export let wordsRegisterFn: (element: HTMLElement) => void;
-	export let wordsUnregisterFn: (element: HTMLElement) => void;
-	export let crossRegisterFn: (element: HTMLElement) => void;
-	export let crossUnregisterFn: (element: HTMLElement) => void;
+	interface Props {
+		words: WordMetadata[][];
+		xGap?: number;
+		yGap?: number;
+		stage?: 'crossStart' | 'reading' | 'crossEnd';
+		crossStartPosition?: 'top' | 'center';
+		wordsRegisterFn: (element: HTMLElement) => void;
+		wordsUnregisterFn: (element: HTMLElement) => void;
+		crossRegisterFn: (element: HTMLElement) => void;
+		crossUnregisterFn: (element: HTMLElement) => void;
+	}
+
+	let {
+		words,
+		xGap = 10,
+		yGap = 5,
+		stage = 'crossStart',
+		crossStartPosition = 'center',
+		wordsRegisterFn,
+		wordsUnregisterFn,
+		crossRegisterFn,
+		crossUnregisterFn
+	}: Props = $props();
 
 	const fadeInParams = {
 		duration: 300,

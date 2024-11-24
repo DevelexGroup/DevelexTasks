@@ -7,18 +7,24 @@
 	import { onDestroy } from 'svelte';
 	import LessonDebug from './LessonDebug.svelte';
 
-	/**
+	
+
+	
+	interface Props {
+		/**
 	 * @type {Promise<LessonConfig>}
 	 * The lesson component that will be displayed as a lesson.
 	 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
 	 */
-	export let lessonConfig: Promise<LessonConfig['setup']>;
-
-	/**
+		lessonConfig: Promise<LessonConfig['setup']>;
+		/**
 	 * @type {boolean}
 	 * Indicates if the application is in debug mode. If so, the LessonDebug component will be displayed.
 	 */
-	export let isDebug: boolean;
+		isDebug: boolean;
+	}
+
+	let { lessonConfig, isDebug }: Props = $props();
 
 	const handleError = (event: Event) => {
 		console.log(event);
@@ -27,7 +33,7 @@
 		errorMessages = [...errorMessages, message];
 	};
 
-	let errorMessages: string[] = [];
+	let errorMessages: string[] = $state([]);
 
 	const flyIn = { y: '100%', duration: 750, opacity: 0, delay: 500 };
 	const flyOut = { duration: 200, opacity: 0 };
@@ -39,7 +45,7 @@
 	});
 </script>
 
-<svelte:window on:error={handleError} />
+<svelte:window onerror={handleError} />
 
 <div class="relative flex h-screen w-screen items-center justify-center overflow-hidden">
 	{#await lessonConfig}

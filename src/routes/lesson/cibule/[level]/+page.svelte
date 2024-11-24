@@ -14,13 +14,17 @@
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 	import LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
 
-	export let data: {
+	interface Props {
+		data: {
 		config: {
 			content: LessonConfigCibule['content'];
 			partialProps: Partial<LessonConfigCibule['props']>;
 			level: string;
 		};
 	};
+	}
+
+	let { data }: Props = $props();
 
 	/**
 	 * In the future, it can query for a specific lesson configuration.

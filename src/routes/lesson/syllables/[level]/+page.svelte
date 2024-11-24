@@ -14,13 +14,17 @@
 	import LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 
-	export let data: {
+	interface Props {
+		data: {
 		config: {
 			content: LessonConfigSyllables['content'];
 			partialProps: Partial<LessonConfigSyllables['props']>;
 			level: string;
 		};
 	};
+	}
+
+	let { data }: Props = $props();
 
 	/**
 	 * In the future, it can query for a specific lesson configuration.

@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
+	import type { Snippet } from 'svelte';
 
-	export let isCrossfixVisible: boolean = true;
+	interface Props {
+		isCrossfixVisible?: boolean;
+		crossFixArea?: Snippet;
+		taskArea?: Snippet;
+	}
+
+	let { isCrossfixVisible = true, crossFixArea, taskArea }: Props = $props();
 
 	const inOptions = { duration: 750, delay: 200 };
 	const outOptions = { duration: 200 };
@@ -14,9 +21,11 @@
 			out:fade={outOptions}
 			class="items-left absolute left-0 top-0 flex h-full w-full justify-start p-12 py-32"
 		>
-			<slot name="crossfix-area">
+			{#if crossFixArea}
+				{@render crossFixArea()}
+			{:else}
 				<div class="h-24 w-24 rounded-md bg-red-500 text-white">Unoccupied crossfix area</div>
-			</slot>
+			{/if}
 		</div>
 	{:else}
 		<div
@@ -24,9 +33,11 @@
 			out:fade={outOptions}
 			class="absolute left-0 top-0 flex h-full w-full items-center justify-center"
 		>
-			<slot name="task-area">
+			{#if taskArea}
+				{@render taskArea()}
+			{:else}
 				<div class="h-24 w-24 rounded-md bg-green-500 text-white">Unoccupied task area</div>
-			</slot>
+			{/if}
 		</div>
 	{/if}
 </div>

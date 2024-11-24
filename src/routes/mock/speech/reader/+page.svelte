@@ -2,9 +2,9 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
-	let sentence: string = 'Máma mele maso';
-	let currentWord: string | null = null;
-	let isReading: boolean = false;
+	let sentence: string = $state('Máma mele maso');
+	let currentWord: string | null = $state(null);
+	let isReading: boolean = $state(false);
 	let reader: WordReaderSynthesis | null = null;
 
 	// Initialize the reader only on the client side
@@ -62,7 +62,7 @@
 <div class="container">
 	<h2>Speech Synthesis Demo</h2>
 	<input type="text" bind:value={sentence} placeholder="Enter a sentence" disabled={isReading} />
-	<button on:click={play} disabled={isReading}>
+	<button onclick={play} disabled={isReading}>
 		{isReading ? 'Reading...' : 'Play'}
 	</button>
 	{#if currentWord}
