@@ -72,7 +72,7 @@
 		return lessonConfig;
 	};
 
-	const lessonConfig: Promise<LessonConfigCibule> = getAsyncLessonConfig();
+	const lessonConfig: Promise<LessonConfigCibule['setup']> = getAsyncLessonConfig();
 </script>
 
 {#if data}
