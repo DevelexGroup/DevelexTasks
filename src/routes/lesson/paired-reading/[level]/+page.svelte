@@ -1,19 +1,27 @@
 <script lang="ts">
 	import Lesson from '$lib/components/Lesson.svelte';
+	import type { LessonConfigMap } from '$lib/types/lesson';
 	import {
 		createGazeInput,
 		type GazeInputConfigWithFixations,
 		type GazeInput,
 		GazeInteractionScreenFixation,
-		GazeInteractionObjectSetFixation
+		GazeInteractionObjectFixation
 	} from '@473783/develex-core';
 	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
-	import type { LessonConfig, LessonConfigPairedReadingZeroVoice } from '$lib/types/lesson';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
-	import { get } from 'svelte/store';
-	import LessonTaskPairedReadingZeroContent from '$lib/components/LessonTaskPairedReadingZeroContent.svelte';
+
+	interface Props {
+		data: {
+			config: LessonConfigMap['pairedReading']['data'];
+		};
+	}
+
+	let { data }: Props = $props();
 
 	/**
 	 * In the future, it can query for a specific lesson configuration.
@@ -29,9 +37,9 @@
 				resolve();
 			});
 		}));
-		const gazeInput: GazeInput<GazeInputConfigWithFixations> =
-			createGazeInput($inputCreationConfig);
-
+		const gazeInput: GazeInput<GazeInputConfigWithFixations> = createGazeInput(
+			get(inputCreationConfig)
+		);
 		const windowconfig = get(inputWindowFieldsConfig);
 		if (windowconfig) {
 			gazeInput.setWindowCalibration(windowconfig.mouse, windowconfig.window);
@@ -39,9 +47,9 @@
 			console.error('No window config');
 		}
 		const gazeInteractionScreenFixation = new GazeInteractionScreenFixation();
-		const gazeInteractionObjectSetFixation = new GazeInteractionObjectSetFixation();
+		const gazeInteractionObjectFixation = new GazeInteractionObjectFixation();
 		gazeInteractionScreenFixation.connect(gazeInput);
-		gazeInteractionObjectSetFixation.connect(gazeInteractionScreenFixation);
+		gazeInteractionObjectFixation.connect(gazeInteractionScreenFixation);
 		await gazeInput.connect();
 		await gazeInput.start();
 
@@ -50,14 +58,15 @@
 			gazeInput.disconnect();
 		};
 
-		const lessonConfig: LessonConfigPairedReadingZeroVoice = {
-			component: LessonTaskPairedReadingZeroContent,
-			content: ['Máma', 'dnes', 'kolo', 'mísa', 'dítě', 'léto', 'vzduch', 'slunce', 'příklad'],
+		const lessonConfig: LessonConfigMap['pairedReading']['setup'] = {
+			type: 'pairedReading',
+			content: data.config.content,
 			props: {
-				gazeFixationEmitter: gazeInteractionObjectSetFixation,
+				wordReader: new WordReaderSynthesis(),
 				speechRecognition: new SpeechRecognitionMdn(),
 				speechEvaluator: new SpeechEvaluatorSimple(),
-				shouldListenForVoice: true
+				gazeFixationEmitter: gazeInteractionObjectFixation,
+				...data.config.partialProps
 			},
 			gazeInput,
 			deInit
@@ -65,7 +74,10 @@
 
 		return lessonConfig;
 	};
-	const lessonConfig: Promise<LessonConfig> = getAsyncLessonConfig();
+
+	const lessonConfig: Promise<LessonConfigMap['pairedReading']['setup']> = getAsyncLessonConfig();
 </script>
 
-<Lesson {lessonConfig} isDebug={false} />
+{#if data}
+	<Lesson {lessonConfig} isDebug={false} />
+{/if}

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/svelte';
 import LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
 import {
 	createGazeInput,
-	GazeInteractionObjectSetFixation,
+	GazeInteractionObjectFixation,
 	GazeInteractionScreenFixation
 } from '@473783/develex-core';
 import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
@@ -19,7 +19,7 @@ const mouseGazeInput = createGazeInput({
 });
 
 const gazeFixationDetector = new GazeInteractionScreenFixation();
-const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+const gazeFixationEmitter = new GazeInteractionObjectFixation();
 
 const speechRecognition = new SpeechRecognitionMdn();
 const speechEvaluator = new SpeechEvaluatorSimple();

@@ -5,7 +5,7 @@
 		type GazeInputConfigWithFixations,
 		type GazeInput,
 		GazeInteractionScreenFixation,
-		GazeInteractionObjectSetFixation
+		GazeInteractionObjectFixation
 	} from '@473783/develex-core';
 	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
 	import LessonTaskPairedReadingOneContent from '$lib/components/LessonTaskPairedReadingOneContent.svelte';
@@ -36,9 +36,9 @@
 			console.error('No window config');
 		}
 		const gazeInteractionScreenFixation = new GazeInteractionScreenFixation();
-		const gazeInteractionObjectSetFixation = new GazeInteractionObjectSetFixation();
+		const gazeInteractionObjectFixation = new GazeInteractionObjectFixation();
 		gazeInteractionScreenFixation.connect(gazeInput);
-		gazeInteractionObjectSetFixation.connect(gazeInteractionScreenFixation);
+		gazeInteractionObjectFixation.connect(gazeInteractionScreenFixation);
 		await gazeInput.connect();
 		await gazeInput.start();
 
@@ -55,7 +55,7 @@
 				['Adam', 'sledoval', 'silnici', 'vedoucí', 'k jejich', 'domu']
 			],
 			props: {
-				gazeFixationEmitter: gazeInteractionObjectSetFixation
+				gazeFixationEmitter: gazeInteractionObjectFixation
 			},
 			gazeInput,
 			deInit

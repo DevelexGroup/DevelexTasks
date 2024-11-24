@@ -1,6 +1,6 @@
-import type { LessonConfigPairedReading } from '$lib/types/lesson';
+import type { LessonConfigMap } from '$lib/types/lesson';
 
-export const pairedReadingLessonsE: LessonConfigPairedReading['data'][] = [
+export const pairedReadingLessonsE: LessonConfigMap['pairedReading']['data'][] = [
 	{
 		level: 'pilot-level-1-novoice',
 		content: [

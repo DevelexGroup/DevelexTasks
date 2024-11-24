@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/svelte';
 import Lesson from './Lesson.svelte';
 import {
 	createGazeInput,
-	GazeInteractionObjectSetFixation,
+	GazeInteractionObjectFixation,
 	GazeInteractionScreenFixation
 } from '@473783/develex-core';
 import LessonTaskPairedReadingOneContent from './LessonTaskPairedReadingOneContent.svelte';
@@ -30,7 +30,7 @@ const lessonConfig: Promise<LessonConfig> = new Promise((resolve) => {
 	});
 
 	const gazeFixationDetector = new GazeInteractionScreenFixation();
-	const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+	const gazeFixationEmitter = new GazeInteractionObjectFixation();
 
 	// expect error
 	//@ts-expect-error error in lib
@@ -72,7 +72,7 @@ const lessonConfigTwo: Promise<LessonConfig> = new Promise((resolve) => {
 	});
 
 	const gazeFixationDetector = new GazeInteractionScreenFixation();
-	const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+	const gazeFixationEmitter = new GazeInteractionObjectFixation();
 
 	// expect error
 	//@ts-expect-error error in lib
@@ -116,7 +116,7 @@ const lessonConfigThree: Promise<LessonConfig> = new Promise((resolve) => {
 	});
 
 	const gazeFixationDetector = new GazeInteractionScreenFixation();
-	const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+	const gazeFixationEmitter = new GazeInteractionObjectFixation();
 
 	// expect error
 	//@ts-expect-error error in lib
@@ -261,7 +261,7 @@ const lessonConfigSyllablesLevelOne: Promise<LessonConfig> = new Promise((resolv
 	});
 
 	const gazeFixationDetector = new GazeInteractionScreenFixation();
-	const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+	const gazeFixationEmitter = new GazeInteractionObjectFixation();
 
 	// expect error
 	//@ts-expect-error error in lib

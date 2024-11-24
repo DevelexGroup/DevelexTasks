@@ -1,27 +1,22 @@
 <script lang="ts">
 	import Lesson from '$lib/components/Lesson.svelte';
-	import type { LessonConfigCibule } from '$lib/types/lesson';
+	import type { LessonConfigMap } from '$lib/types/lesson';
 	import {
 		createGazeInput,
 		type GazeInputConfigWithFixations,
 		type GazeInput,
 		GazeInteractionScreenFixation,
-		GazeInteractionObjectSetFixation
+		GazeInteractionObjectFixation
 	} from '@473783/develex-core';
 	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
-	import LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
 
 	interface Props {
 		data: {
-		config: {
-			content: LessonConfigCibule['content'];
-			partialProps: Partial<LessonConfigCibule['props']>;
-			level: string;
+			config: LessonConfigMap['cibule']['data'];
 		};
-	};
 	}
 
 	let { data }: Props = $props();
@@ -50,9 +45,9 @@
 			console.error('No window config');
 		}
 		const gazeInteractionScreenFixation = new GazeInteractionScreenFixation();
-		const gazeInteractionObjectSetFixation = new GazeInteractionObjectSetFixation();
+		const gazeInteractionObjectFixation = new GazeInteractionObjectFixation();
 		gazeInteractionScreenFixation.connect(gazeInput);
-		gazeInteractionObjectSetFixation.connect(gazeInteractionScreenFixation);
+		gazeInteractionObjectFixation.connect(gazeInteractionScreenFixation);
 		await gazeInput.connect();
 		await gazeInput.start();
 
@@ -61,12 +56,12 @@
 			gazeInput.disconnect();
 		};
 
-		const lessonConfig: LessonConfigCibule['setup'] = {
-			component: LessonTaskCibuleLevel,
+		const lessonConfig: LessonConfigMap['cibule']['setup'] = {
+			type: 'cibule',
 			content: data.config.content,
 			props: {
 				wordReader: new WordReaderSynthesis(),
-				gazeFixationEmitter: gazeInteractionObjectSetFixation,
+				gazeFixationEmitter: gazeInteractionObjectFixation,
 				...data.config.partialProps
 			},
 			gazeInput,
@@ -76,7 +71,7 @@
 		return lessonConfig;
 	};
 
-	const lessonConfig: Promise<LessonConfigCibule['setup']> = getAsyncLessonConfig();
+	const lessonConfig: Promise<LessonConfigMap['cibule']['setup']> = getAsyncLessonConfig();
 </script>
 
 {#if data}

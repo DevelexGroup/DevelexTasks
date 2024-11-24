@@ -1,8 +1,8 @@
-import type LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
-import type LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
-import type LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
+import LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
+import LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
+import LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
 import type { GazeInput, GazeInputConfig } from '@473783/develex-core';
-import type { ComponentProps, SvelteComponent_1 } from 'svelte';
+import type { Component, ComponentProps } from 'svelte';
 
 export type LessonWordType = {
 	text: string;
@@ -54,18 +54,28 @@ export type LessonSvelteComponentEvents = {
 	lessonFail: CustomEvent<void>;
 };
 
-export type LessonConfigBase<T extends MandatoryLessonComponentStructure> = {
+export const lessonComponentMap = {
+	syllable: LessonTaskSyllableLevel,
+	cibule: LessonTaskCibuleLevel,
+	pairedReading: LessonTaskPairedReadingLevel
+};
+
+export type LessonTypes = keyof typeof lessonComponentMap;
+
+export type LessonComponent = Component<ComponentProps<LessonTaskCibuleLevel>>;
+
+export type LessonConfigBase<T extends LessonTypes> = {
 	setup: {
-		component: T;
-		content: ComponentProps<T>['currentContent'][];
-		props: ComponentProps<T>;
+		type: T;
+		content: ComponentProps<(typeof lessonComponentMap)[T]>['currentContent'][];
+		props: Omit<ComponentProps<(typeof lessonComponentMap)[T]>, 'currentContent'>;
 		deInit: () => void;
 		gazeInput: GazeInput<GazeInputConfig>;
 	};
 	data: {
-		content: ComponentProps<T>['currentContent'][];
+		content: ComponentProps<(typeof lessonComponentMap)[T]>['currentContent'][];
 		partialProps: Omit<
-			ComponentProps<T>,
+			ComponentProps<(typeof lessonComponentMap)[T]>,
 			| 'currentContent'
 			| 'gazeFixationEmitter'
 			| 'wordReader'
@@ -76,15 +86,14 @@ export type LessonConfigBase<T extends MandatoryLessonComponentStructure> = {
 	};
 };
 
-type MandatoryLessonComponentStructure = SvelteComponent_1<
-	{
-		currentContent: unknown;
-	},
-	LessonSvelteComponentEvents
->;
+/**
+ * Complete configuration map for all lesson types.
+ */
+export type LessonConfigMap = {
+	[K in LessonTypes]: LessonConfigBase<K>;
+};
 
-export type LessonConfigSyllables = LessonConfigBase<LessonTaskSyllableLevel>;
-export type LessonConfigCibule = LessonConfigBase<LessonTaskCibuleLevel>;
-export type LessonConfigPairedReading = LessonConfigBase<LessonTaskPairedReadingLevel>;
-
-export type LessonConfig = LessonConfigSyllables | LessonConfigCibule | LessonConfigPairedReading;
+/**
+ * Union of all possible lesson configurations.
+ */
+export type LessonConfig = LessonConfigMap[LessonTypes];

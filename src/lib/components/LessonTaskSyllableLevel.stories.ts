@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/svelte';
 import LessonTaskSyllableLevel from './LessonTaskSyllableLevel.svelte';
 import {
 	createGazeInput,
-	GazeInteractionObjectSetFixation,
+	GazeInteractionObjectFixation,
 	GazeInteractionScreenFixation
 } from '@473783/develex-core';
 import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
@@ -17,7 +17,7 @@ const mouseGazeInput = createGazeInput({
 });
 
 const gazeFixationDetector = new GazeInteractionScreenFixation();
-const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+const gazeFixationEmitter = new GazeInteractionObjectFixation();
 
 const wordReader = new WordReaderSynthesis();
 

@@ -1,6 +1,6 @@
-import type { LessonConfigSyllables } from '$lib/types/lesson';
+import type { LessonConfigMap } from '$lib/types/lesson';
 
-export const syllableLessons: LessonConfigSyllables['data'][] = [
+export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 	{
 		level: 'zero',
 		content: [

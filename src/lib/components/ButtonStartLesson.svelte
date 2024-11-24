@@ -17,7 +17,7 @@
 
 <button
 	onclick={processClick}
-	class="rounded bg-orange-500 px-4 py-2 font-bold text-white hover:bg-orange-700"
+	class="rounded bg-orange-500 px-4 py-2 text-left font-bold text-white hover:bg-orange-700"
 >
 	{@render children?.()}
 </button>
