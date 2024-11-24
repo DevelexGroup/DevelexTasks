@@ -3,6 +3,7 @@
 
 	interface Props {
 		isHighlighted?: boolean;
+		isDeHighlighted?: boolean;
 		word: string;
 		id: string;
 		registerElement?: (element: HTMLElement) => void;
@@ -11,6 +12,7 @@
 
 	let {
 		isHighlighted = false,
+		isDeHighlighted = false,
 		word,
 		id,
 		registerElement = () => {},
@@ -32,8 +34,10 @@
 	{id}
 	bind:this={element}
 	class="inline-flex h-24 items-center justify-center rounded-md font-serif text-[32px] {isHighlighted
-		? 'text-green-700'
-		: 'text-gray-700'}"
+		? 'text-gray-900'
+		: isDeHighlighted
+			? 'text-gray-400'
+			: 'text-gray-700'}"
 >
 	{word}
 </div>

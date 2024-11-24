@@ -73,7 +73,9 @@
 	const clickedIds = new Set<string>(); // Track clicked syllables
 
 	const evaluateSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
-		if (!isActive) return;
+		if (!isActive) {
+			return dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
+		}
 		const { id } = e.detail;
 		if (correctIds.has(id)) {
 			clickedIds.add(id); // Add correct ID to clicked set

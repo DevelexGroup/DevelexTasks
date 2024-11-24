@@ -118,12 +118,18 @@ export const getLogic = (
 
 		console.log(target);
 
-		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId())) {
+		if (
+			target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId()) &&
+			get(gridStateStore) === 'crossStart'
+		) {
 			hasFixatedStartCross.set(true);
 			return;
 		}
 
-		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId())) {
+		if (
+			target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId()) &&
+			get(gridStateStore) === 'crossEnd'
+		) {
 			hasFixatedEndCross.set(true);
 			return;
 		}
@@ -345,12 +351,20 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 	const evaluateFixations = (event: GazeInteractionObjectFixationEvent) => {
 		const { target } = event;
 
-		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId())) {
+		if (
+			target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId()) &&
+			get(gridStateStore) === 'crossStart'
+		) {
 			hasFixatedStartCross.set(true);
+			return;
 		}
 
-		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId())) {
+		if (
+			target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId()) &&
+			get(gridStateStore) === 'crossEnd'
+		) {
 			hasFixatedEndCross.set(true);
+			return;
 		}
 	};
 

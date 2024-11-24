@@ -5,11 +5,6 @@
 	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
 	import LessonWord from './LessonWord.svelte';
 
-
-
-
-
-
 	interface Props {
 		words: WordMetadata[][];
 		xGap?: number;
@@ -91,6 +86,7 @@
 							unregisterElement={wordsUnregisterFn}
 							word={word.text}
 							id={word.id}
+							isDeHighlighted={!word.isInActiveSegment}
 							isHighlighted={word.isInActiveSegment}
 						/>
 					{/each}
