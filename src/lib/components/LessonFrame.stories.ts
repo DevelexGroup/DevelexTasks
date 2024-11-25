@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/svelte';
 import LessonFrame from './LessonFrame.svelte';
 import {
 	createGazeInput,
-	GazeInteractionObjectSetFixation,
+	GazeInteractionObjectFixation,
 	GazeInteractionScreenFixation
 } from '@473783/develex-core';
 import LessonTaskPairedReadingOneContent from './LessonTaskPairedReadingOneContent.svelte';
@@ -17,7 +17,7 @@ const mouseGazeInput = createGazeInput({
 });
 
 const gazeFixationDetector = new GazeInteractionScreenFixation();
-const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+const gazeFixationEmitter = new GazeInteractionObjectFixation();
 
 // expect error
 //@ts-expect-error error in lib
@@ -39,7 +39,7 @@ const meta = {
 	component: LessonFrame,
 	tags: ['autodocs'],
 	argTypes: {
-		gazeInteractionObjectSetFixation: {
+		gazeInteractionObjectFixation: {
 			control: false,
 			defaultValue: gazeFixationEmitter
 		},
@@ -66,14 +66,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		gazeInteractionObjectSetFixation: gazeFixationEmitter,
+		gazeInteractionObjectFixation: gazeFixationEmitter,
 		lessonConfigResult: {
 			component: LessonTaskPairedReadingOneContent,
 			content: [
 				['Máma', 'mele', 'maso.'],
 				['Táta', 'mele', 'maso.']
 			],
-			gazeInteractionObjectSetFixation: gazeFixationEmitter
+			gazeInteractionObjectFixation: gazeFixationEmitter
 		}
 	}
 };

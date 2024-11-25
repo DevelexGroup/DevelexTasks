@@ -1,5 +1,11 @@
 <script lang="ts">
-	export let errorMessages: string[] = [];
+	import Button from './Button.svelte';
+
+	interface Props {
+		errorMessages?: string[];
+	}
+
+	let { errorMessages = [] }: Props = $props();
 </script>
 
 <div class="flex flex-col items-center justify-center space-y-4">
@@ -12,4 +18,5 @@
 			{/each}
 		</ul>
 	{/if}
+	<Button href="/">Back to Lessons</Button>
 </div>

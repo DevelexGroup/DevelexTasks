@@ -2,11 +2,21 @@
 	import LessonWord from './LessonWord.svelte';
 	import { createEventDispatcher } from 'svelte';
 
-	export let word: string;
-	export let id: string;
-	export let registerElement: (element: HTMLElement) => void;
-	export let unregisterElement: (element: HTMLElement) => void;
-	export let disabled: boolean = false;
+	interface Props {
+		word: string;
+		id: string;
+		registerElement: (element: HTMLElement) => void;
+		unregisterElement: (element: HTMLElement) => void;
+		disabled?: boolean;
+	}
+
+	let {
+		word,
+		id,
+		registerElement,
+		unregisterElement,
+		disabled = false
+	}: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		'word-clicked': {
@@ -22,7 +32,7 @@
 
 <button
 	class="group relative inline-block {disabled ? '' : 'cursor-pointer'}"
-	on:click={handleWordClick}
+	onclick={handleWordClick}
 	{disabled}
 >
 	<LessonWord {registerElement} {unregisterElement} {word} {id} isHighlighted={false} />
@@ -30,7 +40,7 @@
 		class="syllable-select absolute -left-2 top-0 -z-10 h-full rounded-md duration-500 {disabled
 			? ''
 			: 'group-hover:bg-neutral-200 group-hover:opacity-50'}"
-	/>
+	></div>
 </button>
 
 <style>

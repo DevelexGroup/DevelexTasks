@@ -2,11 +2,15 @@
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 
-	export let id: string;
-	export let registerElement: (element: HTMLElement) => void;
-	export let unregisterElement: (element: HTMLElement) => void;
+	interface Props {
+		id: string;
+		registerElement: (element: HTMLElement) => void;
+		unregisterElement: (element: HTMLElement) => void;
+	}
 
-	let element: HTMLElement;
+	let { id, registerElement, unregisterElement }: Props = $props();
+
+	let element: HTMLElement = $state();
 
 	onMount(() => {
 		registerElement(element);

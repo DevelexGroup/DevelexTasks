@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
+
 	import type { GazeInputConfig } from '@473783/develex-core';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import InputSelect from './InputSelect.svelte';
@@ -9,8 +11,8 @@
 		gazeInputSetup: GazeInputConfig; // TODO Switch to GazeInputConfigWithFixations
 	}>();
 
-	let gazeInputType: string = 'gazepointBase';
-	let form: HTMLFormElement;
+	let gazeInputType: string = $state('gazepointBase');
+	let form: HTMLFormElement = $state();
 
 	onMount(() => {
 		switch (get(inputCreationConfig).tracker) {
@@ -66,7 +68,7 @@
 	};
 </script>
 
-<form bind:this={form} class="max-w-sm space-y-4" on:change|preventDefault={handleSubmit}>
+<form bind:this={form} class="max-w-sm space-y-4" onchange={preventDefault(handleSubmit)}>
 	<div class="mb-8 text-sm text-gray-600">
 		<InputSelect
 			label="Gaze input type"

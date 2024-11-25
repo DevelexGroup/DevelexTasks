@@ -1,12 +1,8 @@
-import type { LessonConfigCibule } from '$lib/types/lesson';
+import type { LessonConfigMap } from '$lib/types/lesson';
 
 const globalGap = 4;
 
-export const cibuleLessons: {
-	content: LessonConfigCibule['content'];
-	partialProps: Partial<LessonConfigCibule['props']>;
-	level: string;
-}[] = [
+export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	{
 		level: 'one',
 		content: [

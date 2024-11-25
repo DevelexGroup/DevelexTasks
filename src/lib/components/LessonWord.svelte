@@ -1,13 +1,25 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 
-	export let isHighlighted: boolean = false;
-	export let word: string;
-	export let id: string;
-	export let registerElement: (element: HTMLElement) => void = () => {};
-	export let unregisterElement: (element: HTMLElement) => void = () => {};
+	interface Props {
+		isHighlighted?: boolean;
+		isDeHighlighted?: boolean;
+		word: string;
+		id: string;
+		registerElement?: (element: HTMLElement) => void;
+		unregisterElement?: (element: HTMLElement) => void;
+	}
 
-	let element: HTMLElement;
+	let {
+		isHighlighted = false,
+		isDeHighlighted = false,
+		word,
+		id,
+		registerElement = () => {},
+		unregisterElement = () => {}
+	}: Props = $props();
+
+	let element: HTMLElement = $state();
 
 	onMount(() => {
 		registerElement(element);
@@ -22,8 +34,10 @@
 	{id}
 	bind:this={element}
 	class="inline-flex h-24 items-center justify-center rounded-md font-serif text-[32px] {isHighlighted
-		? 'text-green-700'
-		: 'text-gray-700'}"
+		? 'text-gray-900'
+		: isDeHighlighted
+			? 'text-gray-400'
+			: 'text-gray-700'}"
 >
 	{word}
 </div>

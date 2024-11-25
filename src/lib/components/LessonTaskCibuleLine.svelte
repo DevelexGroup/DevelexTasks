@@ -5,22 +5,45 @@
 	import LessonWord from './LessonWord.svelte';
 	import LessonTaskCibuleItem from './LessonTaskCibuleItem.svelte';
 
-	/**
-	 * Is assignment syllable visible?
-	 * It can change during the task or it might be invisible from the start.
-	 */
-	export let isSyllableAssignmentVisible: boolean = true;
+	interface Props {
+		/**
+		 * Is assignment syllable visible?
+		 * It can change during the task or it might be invisible from the start.
+		 */
+		isSyllableAssignmentVisible?: boolean;
+		/**
+		 * Is syllable assignment present? If not, no space is reserved for it.
+		 * This should not be changed during the task as this messes up the layout.
+		 */
+		isSyllableAssignmentPresent?: boolean;
+		content?: CibuleTaskType[number];
+		/**
+		 * The gap between the syllables in pixels.
+		 */
+		syllableGap?: number;
+		markWantedSyllables?: boolean;
+		rowIndex?: number;
+		registerElement: (element: HTMLElement) => void;
+		unregisterElement: (element: HTMLElement) => void;
+		idCorrectSyllable?: string;
+		idOtherSyllableBase?: string;
+	}
 
-	/**
-	 * Is syllable assignment present? If not, no space is reserved for it.
-	 * This should not be changed during the task as this messes up the layout.
-	 */
-	export let isSyllableAssignmentPresent: boolean = true;
-
-	export let content: CibuleTaskType = {
-		syllables: ['pa', 'ra', 'pa', 'ga'],
-		correctSyllable: 'pa'
-	};
+	let {
+		isSyllableAssignmentVisible = true,
+		isSyllableAssignmentPresent = true,
+		content = {
+			syllables: ['pa', 'ra', 'pa', 'ga'],
+			correctSyllable: 'pa'
+		},
+		syllableGap = 12,
+		markWantedSyllables = false,
+		rowIndex = 0,
+		registerElement,
+		unregisterElement,
+		idCorrectSyllable = 'syllable-assignement',
+		idOtherSyllableBase = 'syllable-choice-'
+	}: Props = $props();
 
 	const correctIndexes =
 		content.correctSyllable == undefined
@@ -32,28 +55,6 @@
 					.map((item, index) => (item === content.correctSyllable ? index : -1))
 					.filter((index) => index !== -1)
 					.reverse();
-
-	const correctIndexesSet = new Set(correctIndexes);
-
-	const getNextExpectingIndex = (): number => {
-		return correctIndexes.pop() ?? -1;
-	};
-
-	let correctExpectingIndex = getNextExpectingIndex();
-
-	/**
-	 * The gap between the syllables in pixels.
-	 */
-	export let syllableGap: number = 12;
-
-	export let markWantedSyllables: boolean = false;
-
-	export let rowIndex: number = 0;
-
-	export let registerElement: (element: HTMLElement) => void;
-	export let unregisterElement: (element: HTMLElement) => void;
-	export let idCorrectSyllable: string = 'syllable-assignement';
-	export let idOtherSyllableBase: string = 'syllable-choice-';
 
 	const dispatch = createEventDispatcher<{
 		'correct-syllable-clicked': {
@@ -67,6 +68,14 @@
 			rowIndex: number;
 		};
 	}>();
+
+	const correctIndexesSet = new Set(correctIndexes);
+
+	const getNextExpectingIndex = (): number => {
+		return correctIndexes.pop() ?? -1;
+	};
+
+	let correctExpectingIndex = getNextExpectingIndex();
 
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
 

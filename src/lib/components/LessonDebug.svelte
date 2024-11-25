@@ -7,7 +7,11 @@
 	} from '@473783/develex-core';
 	import { onDestroy, onMount } from 'svelte';
 
-	export let gazeInput: GazeInput<GazeInputConfig>;
+	interface Props {
+		gazeInput: GazeInput<GazeInputConfig>;
+	}
+
+	let { gazeInput }: Props = $props();
 
 	let drawGazeIndicator: (data: GazeDataPoint) => void;
 

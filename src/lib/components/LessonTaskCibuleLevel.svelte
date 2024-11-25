@@ -2,8 +2,8 @@
 	import LessonCross from './LessonCross.svelte';
 	import type { CibuleTaskType } from '$lib/types/lesson';
 	import type {
-		GazeInteractionObjectSetFixation,
-		GazeInteractionObjectSetFixationEvent
+		GazeInteractionObjectFixation,
+		GazeInteractionObjectFixationEvent
 	} from '@473783/develex-core';
 	import type { IWordReader } from '$lib/interfaces/IWordReader';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
@@ -12,24 +12,35 @@
 	import LessonTaskCibuleLayout from './LessonTaskCibuleLayout.svelte';
 	import LessonTaskCibuleGrid from './LessonTaskCibuleGrid.svelte';
 
-	export let currentContent: CibuleTaskType[];
-	export let gazeFixationEmitter: GazeInteractionObjectSetFixation;
-	export let wordReader: IWordReader;
+	interface Props {
+		currentContent: CibuleTaskType;
+		gazeFixationEmitter: GazeInteractionObjectFixation;
+		wordReader: IWordReader;
+		shouldReadCorrectSyllable?: boolean;
+		isSyllableAssignmentPresent?: boolean;
+		correctSyllableVisibilityTimeout?: number;
+		markWantedSyllables?: boolean;
+		/**
+		 * Width of the assignment syllable gap in pixels.
+		 */
+		assignmentGap?: number;
+		/**
+		 * The gap between the syllables in pixels.
+		 */
+		syllableGap?: number;
+	}
 
-	export let shouldReadCorrectSyllable: boolean = true;
-	export let isSyllableAssignmentPresent: boolean = true;
-	export let correctSyllableVisibilityTimeout: number = 0;
-	export let markWantedSyllables: boolean = false;
-
-	/**
-	 * Width of the assignment syllable gap in pixels.
-	 */
-	export let assignmentGap: number = 120;
-
-	/**
-	 * The gap between the syllables in pixels.
-	 */
-	export let syllableGap: number = 12;
+	let {
+		currentContent,
+		gazeFixationEmitter,
+		wordReader,
+		shouldReadCorrectSyllable = true,
+		isSyllableAssignmentPresent = true,
+		correctSyllableVisibilityTimeout = 0,
+		markWantedSyllables = false,
+		assignmentGap = 120,
+		syllableGap = 12
+	}: Props = $props();
 
 	/**
 	 * State stores to keep up with the state of the lesson
@@ -40,10 +51,10 @@
 	let wasMistakenTooManyTimes: Writable<boolean> = writable(false);
 
 	let mistakeCount: number = 0;
-	let currentRowIndex: number = 0;
+	let currentRowIndex: number = $state(0);
 
 	// Hide every assignment syllable by default
-	let hideAssignmentSyllables: number[] = currentContent.map((_, index) => index);
+	let hideAssignmentSyllables: number[] = $state(currentContent.map((_, index) => index));
 
 	const FIXATION_EYE = 'fixation-eye';
 	const CROSS_FIXATION_TIMEOUT = 8000;
@@ -85,7 +96,7 @@
 	 * @param event
 	 * @returns void
 	 */
-	const evaluateGazeEvent = (event: GazeInteractionObjectSetFixationEvent) => {
+	const evaluateGazeEvent = (event: GazeInteractionObjectFixationEvent) => {
 		const { target } = event;
 
 		/**
@@ -189,7 +200,7 @@
 	 * when the component is mounted
 	 */
 	onMount(() => {
-		gazeFixationEmitter.on('fixationSetStart', evaluateGazeEvent);
+		gazeFixationEmitter.on('fixationObjectStart', evaluateGazeEvent);
 		processTaskLogic();
 	});
 
@@ -198,12 +209,15 @@
 	 * to prevent memory leaks
 	 */
 	onDestroy(() => {
-		gazeFixationEmitter.off('fixationSetStart', evaluateGazeEvent);
+		gazeFixationEmitter.off('fixationObjectStart', evaluateGazeEvent);
 	});
 </script>
 
-<LessonTaskCibuleLayout isCrossfixVisible={!$wasCrossFixated}>
-	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} slot="crossfix-area" />
+{#snippet crossFixArea()}
+	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} />
+{/snippet}
+
+{#snippet taskArea()}
 	<LessonTaskCibuleGrid
 		content={currentContent}
 		{registerElement}
@@ -216,6 +230,7 @@
 		{markWantedSyllables}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}
-		slot="task-area"
 	/>
-</LessonTaskCibuleLayout>
+{/snippet}
+
+<LessonTaskCibuleLayout isCrossfixVisible={!$wasCrossFixated} {crossFixArea} {taskArea} />

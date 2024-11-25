@@ -1,26 +1,25 @@
 <script lang="ts">
 	import Lesson from '$lib/components/Lesson.svelte';
-	import type { LessonConfigSyllables } from '$lib/types/lesson';
+	import type { LessonConfigMap } from '$lib/types/lesson';
 	import {
 		createGazeInput,
 		type GazeInputConfigWithFixations,
 		type GazeInput,
 		GazeInteractionScreenFixation,
-		GazeInteractionObjectSetFixation
+		GazeInteractionObjectFixation
 	} from '@473783/develex-core';
 	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 
-	export let data: {
-		config: {
-			content: LessonConfigSyllables['content'];
-			partialProps: Partial<LessonConfigSyllables['props']>;
-			level: string;
+	interface Props {
+		data: {
+			config: LessonConfigMap['syllable']['data'];
 		};
-	};
+	}
+
+	let { data }: Props = $props();
 
 	/**
 	 * In the future, it can query for a specific lesson configuration.
@@ -46,9 +45,9 @@
 			console.error('No window config');
 		}
 		const gazeInteractionScreenFixation = new GazeInteractionScreenFixation();
-		const gazeInteractionObjectSetFixation = new GazeInteractionObjectSetFixation();
+		const gazeInteractionObjectFixation = new GazeInteractionObjectFixation();
 		gazeInteractionScreenFixation.connect(gazeInput);
-		gazeInteractionObjectSetFixation.connect(gazeInteractionScreenFixation);
+		gazeInteractionObjectFixation.connect(gazeInteractionScreenFixation);
 		await gazeInput.connect();
 		await gazeInput.start();
 
@@ -57,12 +56,12 @@
 			gazeInput.disconnect();
 		};
 
-		const lessonConfig: LessonConfigSyllables = {
-			component: LessonTaskSyllableLevel,
+		const lessonConfig: LessonConfigMap['syllable']['setup'] = {
+			type: 'syllable',
 			content: data.config.content,
 			props: {
 				wordReader: new WordReaderSynthesis(),
-				gazeFixationEmitter: gazeInteractionObjectSetFixation,
+				gazeFixationEmitter: gazeInteractionObjectFixation,
 				...data.config.partialProps
 			},
 			gazeInput,
@@ -72,7 +71,7 @@
 		return lessonConfig;
 	};
 
-	const lessonConfig: Promise<LessonConfigSyllables> = getAsyncLessonConfig();
+	const lessonConfig: Promise<LessonConfigMap['syllable']['setup']> = getAsyncLessonConfig();
 </script>
 
 {#if data}

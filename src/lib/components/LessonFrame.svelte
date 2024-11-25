@@ -1,19 +1,26 @@
 <script lang="ts">
-	import type { LessonConfig } from '$lib/types/lesson';
-	import { derived, writable } from 'svelte/store';
+	import { type LessonConfig } from '$lib/types/lesson';
+	import { writable } from 'svelte/store';
 	import LessonCompleted from './LessonCompleted.svelte';
 	import { fly } from 'svelte/transition';
 	import LessonMistake from './LessonMistake.svelte';
 	import LessonFail from './LessonFail.svelte';
+	import LessonTaskCibuleLevel from './LessonTaskCibuleLevel.svelte';
+	import LessonTaskSyllableLevel from './LessonTaskSyllableLevel.svelte';
+	import LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
 
-	/**
-	 * @type {LessonConfig}
-	 * The lesson component that will be displayed as a lesson.
-	 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
-	 */
-	export let lessonConfigResult: LessonConfig;
+	interface Props {
+		/**
+		 * @type {LessonConfig}
+		 * The lesson component that will be displayed as a lesson.
+		 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
+		 */
+		lessonConfigResult: LessonConfig['setup'];
+	}
 
-	let state: 'round' | 'fail' | 'complete' | 'mistake' = 'round';
+	let { lessonConfigResult }: Props = $props();
+
+	let state: 'round' | 'fail' | 'complete' | 'mistake' = $state('round');
 
 	/**
 	 * Lesson Track Logic
@@ -69,15 +76,34 @@
 			in:fly={flyIn}
 			out:fly={flyOut}
 		>
-			<svelte:component
-				this={lessonConfigResult.component}
-				{...lessonConfigResult.props}
-				currentContent={lessonConfigResult.content[$lessonProgress]}
-				on:lessonSuccess={handleLessonSuccess}
-				on:lessonMistake={handleLessonMistake}
-				on:lessonComplete={handleLessonComplete}
-				on:lessonFail={handleLessonFail}
-			/>
+			{#if lessonConfigResult.type === 'syllable'}
+				<LessonTaskSyllableLevel
+					{...lessonConfigResult.props}
+					currentContent={lessonConfigResult.content[$lessonProgress]}
+					on:lessonSuccess={handleLessonSuccess}
+					on:lessonMistake={handleLessonMistake}
+					on:lessonComplete={handleLessonComplete}
+					on:lessonFail={handleLessonFail}
+				/>
+			{:else if lessonConfigResult.type === 'pairedReading'}
+				<LessonTaskPairedReadingLevel
+					{...lessonConfigResult.props}
+					currentContent={lessonConfigResult.content[$lessonProgress]}
+					on:lessonSuccess={handleLessonSuccess}
+					on:lessonMistake={handleLessonMistake}
+					on:lessonComplete={handleLessonComplete}
+					on:lessonFail={handleLessonFail}
+				/>
+			{:else if lessonConfigResult.type === 'cibule'}
+				<LessonTaskCibuleLevel
+					{...lessonConfigResult.props}
+					currentContent={lessonConfigResult.content[$lessonProgress]}
+					on:lessonSuccess={handleLessonSuccess}
+					on:lessonMistake={handleLessonMistake}
+					on:lessonComplete={handleLessonComplete}
+					on:lessonFail={handleLessonFail}
+				/>
+			{/if}
 		</div>
 	{/key}
 	{#if state === 'mistake'}

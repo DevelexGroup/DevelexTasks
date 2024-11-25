@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import LessonTaskPairedReadingThreeContent from './LessonTaskPairedReadingThreeContent.svelte';
+import LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
 import {
 	createGazeInput,
-	GazeInteractionObjectSetFixation,
+	GazeInteractionObjectFixation,
 	GazeInteractionScreenFixation
 } from '@473783/develex-core';
 import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
@@ -19,7 +19,7 @@ const mouseGazeInput = createGazeInput({
 });
 
 const gazeFixationDetector = new GazeInteractionScreenFixation();
-const gazeFixationEmitter = new GazeInteractionObjectSetFixation();
+const gazeFixationEmitter = new GazeInteractionObjectFixation();
 
 const speechRecognition = new SpeechRecognitionMdn();
 const speechEvaluator = new SpeechEvaluatorSimple();
@@ -42,8 +42,8 @@ document.addEventListener(
 );
 
 const meta = {
-	title: 'Lesson/LessonTaskPairedReadingThreeContent',
-	component: LessonTaskPairedReadingThreeContent,
+	title: 'Lesson/LessonTaskPairedReadingLevel',
+	component: LessonTaskPairedReadingLevel,
 	tags: ['autodocs'],
 	argTypes: {
 		gazeFixationEmitter: {
@@ -52,36 +52,7 @@ const meta = {
 		},
 		currentContent: {
 			control: 'text',
-			defaultValue: [
-				[
-					{
-						text: 'Máma',
-						id: '1'
-					},
-					{
-						text: 'mele',
-						id: '2'
-					},
-					{
-						text: 'maso.',
-						id: '3'
-					}
-				],
-				[
-					{
-						text: 'Táta',
-						id: '4'
-					},
-					{
-						text: 'mele',
-						id: '5'
-					},
-					{
-						text: 'květiny.',
-						id: '6'
-					}
-				]
-			]
+			defaultValue: 'Máma'
 		},
 		speechRecognition: {
 			control: false,
@@ -103,7 +74,7 @@ const meta = {
 			}
 		}
 	}
-} satisfies Meta<LessonTaskPairedReadingThreeContent>;
+} satisfies Meta<LessonTaskPairedReadingLevel>;
 
 export default meta;
 
@@ -111,80 +82,56 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		currentContent: [
-			[
+		currentContent: {
+			text: [['Máma', 'mele', 'maso']],
+			evaluationSegment: [
 				{
-					text: 'Máma',
-					id: '1'
-				},
-				{
-					text: 'má',
-					id: '2'
-				},
-				{
-					text: 'maso.',
-					id: '3'
-				}
-			],
-			[
-				{
-					text: 'Táta',
-					id: '4'
-				},
-				{
-					text: 'mele',
-					id: '5'
-				},
-				{
-					text: 'květiny.',
-					id: '6'
+					range: [
+						[0, 0],
+						[0, 2]
+					],
+					id: '0'
 				}
 			]
-		],
+		},
+		bufferSize: 100,
 		gazeFixationEmitter: gazeFixationEmitter,
 		speechRecognition: speechRecognition,
 		speechEvaluator: speechEvaluator,
 		wordReader: wordReader,
-		shouldHighlightWords: true
+		shouldListenForVoice: true
 	}
 };
 
-export const LevelFour: Story = {
+export const TwoSegments: Story = {
 	args: {
-		currentContent: [
-			[
-				{
-					text: 'Máma',
-					id: '1'
-				},
-				{
-					text: 'má',
-					id: '2'
-				},
-				{
-					text: 'maso.',
-					id: '3'
-				}
+		currentContent: {
+			text: [
+				['Máma', 'mele', 'maso'],
+				['Táta', 'mele', 'maso']
 			],
-			[
+			evaluationSegment: [
 				{
-					text: 'Táta',
-					id: '4'
+					range: [
+						[0, 0],
+						[0, 2]
+					],
+					id: '0'
 				},
 				{
-					text: 'mele',
-					id: '5'
-				},
-				{
-					text: 'květiny.',
-					id: '6'
+					range: [
+						[1, 0],
+						[1, 2]
+					],
+					id: '1'
 				}
 			]
-		],
+		},
+		bufferSize: 100,
 		gazeFixationEmitter: gazeFixationEmitter,
 		speechRecognition: speechRecognition,
 		speechEvaluator: speechEvaluator,
 		wordReader: wordReader,
-		shouldHighlightWords: false
+		shouldListenForVoice: true
 	}
 };
