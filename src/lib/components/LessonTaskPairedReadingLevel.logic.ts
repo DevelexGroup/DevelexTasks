@@ -1,5 +1,4 @@
-import type { ComponentProps, EventDispatcher } from 'svelte';
-import type LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
+import type { EventDispatcher } from 'svelte';
 import { get, writable, type Writable } from 'svelte/store';
 import {
 	PairedReadingIdManager,
@@ -10,6 +9,7 @@ import { getCancellableAsync, waitForConditionCancellable } from '$lib/utils/wai
 import { browser } from '$app/environment';
 import type { GazeInteractionObjectFixationEvent } from '@473783/develex-core';
 import { retry } from '$lib/utils/retry';
+import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 
 // Define the type for the return object of getLogic
 export type GetLogicType = {
@@ -25,7 +25,7 @@ export type GetLogicType = {
 
 // Define the getLogic function type
 export type GetLogicFunction = (
-	params: ComponentProps<LessonTaskPairedReadingLevel>,
+	params: LessonTaskPairedReadingTaskProps,
 	dispatch: EventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
@@ -86,8 +86,8 @@ else (No)
 endif
 @enduml
 	 */
-export const getLogic = (
-	params: ComponentProps<LessonTaskPairedReadingLevel>,
+export const getLogic: GetLogicFunction = (
+	params: LessonTaskPairedReadingTaskProps,
 	dispatch: EventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
