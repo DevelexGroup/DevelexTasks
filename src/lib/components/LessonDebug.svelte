@@ -1,33 +1,39 @@
 <script lang="ts">
-	import {
-		GazeIndicator,
-		type GazeDataPoint,
-		type GazeInput,
-		type GazeInputConfig
-	} from '@473783/develex-core';
-	import { onDestroy, onMount } from 'svelte';
+	import { GazeIndicator, type GazeDataPoint, type GazeManager } from '@473783/develex-core';
+	import { getContext, onDestroy, onMount } from 'svelte';
 
-	interface Props {
-		gazeInput: GazeInput<GazeInputConfig>;
-	}
-
-	let { gazeInput }: Props = $props();
-
+	let isGazeActive = false;
 	let drawGazeIndicator: (data: GazeDataPoint) => void;
 
-	onMount(() => {
-		const gazeIndicator: GazeIndicator = new GazeIndicator();
-		if (!document) {
-			return; // Do nothing if the document is not available. (e.g. during SSR)
+	const gazeManager = getContext<GazeManager>('gazeManager');
+
+	function toggleGaze() {
+		isGazeActive = !isGazeActive;
+		if (isGazeActive) {
+			const gazeIndicator: GazeIndicator = new GazeIndicator();
+			if (!document) return;
+			gazeIndicator.init(document);
+			drawGazeIndicator = (data: GazeDataPoint) => {
+				gazeIndicator.draw(data);
+			};
+			gazeManager.on('data', drawGazeIndicator);
+		} else {
+			gazeManager.off('data', drawGazeIndicator);
 		}
-		gazeIndicator.init(document);
-		drawGazeIndicator = (data: GazeDataPoint) => {
-			gazeIndicator.draw(data);
-		};
-		gazeInput.on('data', drawGazeIndicator);
-	});
+	}
 
 	onDestroy(() => {
-		gazeInput.off('data', drawGazeIndicator);
+		if (isGazeActive) {
+			gazeManager.off('data', drawGazeIndicator);
+		}
 	});
 </script>
+
+<div class="fixed bottom-0 left-1/2 mb-4 flex -translate-x-1/2 items-center justify-center">
+	<button
+		class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700"
+		on:click={toggleGaze}
+	>
+		👁️
+	</button>
+</div>
