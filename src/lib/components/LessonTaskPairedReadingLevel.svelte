@@ -10,7 +10,6 @@
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 
 	let {
-		gazeFixationEmitter,
 		currentContent,
 		speechEvaluator,
 		speechRecognition,
@@ -40,7 +39,6 @@
 		wordsUnregisterFn
 	} = logicGetter(
 		{
-			gazeFixationEmitter,
 			currentContent,
 			speechEvaluator,
 			speechRecognition,

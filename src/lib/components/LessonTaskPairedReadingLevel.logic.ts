@@ -1,4 +1,4 @@
-import type { EventDispatcher } from 'svelte';
+import { getContext, type EventDispatcher } from 'svelte';
 import { get, writable, type Writable } from 'svelte/store';
 import {
 	PairedReadingIdManager,
@@ -7,7 +7,7 @@ import {
 } from './LessonTaskPairedReadingLevel.utility';
 import { getCancellableAsync, waitForConditionCancellable } from '$lib/utils/waitForCondition';
 import { browser } from '$app/environment';
-import type { GazeInteractionObjectFixationEvent } from '@473783/develex-core';
+import type { GazeInteractionObjectFixationEvent, GazeManager } from '@473783/develex-core';
 import { retry } from '$lib/utils/retry';
 import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 
@@ -33,6 +33,12 @@ export type GetLogicFunction = (
 		lessonFail: void;
 	}>
 ) => GetLogicType;
+
+/**
+ * Get the gaze manager from the context
+ * Relies on the broader App context to have a gaze manager in Svelte Context
+ */
+const gazeManager = getContext<GazeManager>('gazeManager');
 
 /**
 	 * 
@@ -235,8 +241,12 @@ export const getLogic: GetLogicFunction = (
 	 * @param element - The HTML element to register.
 	 */
 	const setupRegisterElement = (element: HTMLElement) => {
-		params.gazeFixationEmitter.register(element, {
-			bufferSize: params.bufferSize
+		gazeManager.register({
+			interaction: 'fixation',
+			element,
+			settings: {
+				bufferSize: params.bufferSize
+			}
 		});
 	};
 
@@ -245,7 +255,10 @@ export const getLogic: GetLogicFunction = (
 	 * @param element - The HTML element to unregister.
 	 */
 	const setupUnregisterElement = (element: HTMLElement) => {
-		params.gazeFixationEmitter.unregister(element);
+		gazeManager.unregister({
+			interaction: 'fixation',
+			element
+		});
 	};
 
 	/**
@@ -254,7 +267,7 @@ export const getLogic: GetLogicFunction = (
 	const setupOnMount = () => {
 		params.wordReader.onWordChange = evaluateReaderWordChange;
 		performTask();
-		params.gazeFixationEmitter.on('fixationObjectStart', evaluateFixations);
+		gazeManager.on('fixationObjectStart', evaluateFixations);
 	};
 
 	/**
@@ -262,7 +275,7 @@ export const getLogic: GetLogicFunction = (
 	 */
 	const setupOnDestroy = () => {
 		abortController.abort('Task destroyed');
-		params.gazeFixationEmitter.off('fixationObjectStart', evaluateFixations);
+		gazeManager.off('fixationObjectStart', evaluateFixations);
 	};
 
 	return {
@@ -338,13 +351,20 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 
 	// Register and unregister functions for gaze fixation elements
 	const register = (element: HTMLElement) => {
-		params.gazeFixationEmitter.register(element, {
-			bufferSize: params.bufferSize
+		gazeManager.register({
+			interaction: 'fixation',
+			element,
+			settings: {
+				bufferSize: params.bufferSize
+			}
 		});
 	};
 
 	const unregister = (element: HTMLElement) => {
-		params.gazeFixationEmitter.unregister(element);
+		gazeManager.unregister({
+			interaction: 'fixation',
+			element
+		});
 	};
 
 	// Function to evaluate gaze fixations
@@ -441,14 +461,14 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 	const onMountLogic = () => {
 		registerKeyInput();
 		asyncLogic();
-		params.gazeFixationEmitter.on('fixationObjectStart', evaluateFixations);
+		gazeManager.on('fixationObjectStart', evaluateFixations);
 	};
 
 	// Logic to execute when the component is destroyed
 	const onDestroyLogic = () => {
 		unregisterKeyInput();
 		abortController.abort('Task destroyed');
-		params.gazeFixationEmitter.off('fixationObjectStart', evaluateFixations);
+		gazeManager.off('fixationObjectStart', evaluateFixations);
 	};
 
 	return {
