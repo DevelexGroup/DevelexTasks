@@ -1,15 +1,9 @@
 <script lang="ts">
 	import Lesson from '$lib/components/Lesson.svelte';
 	import type { LessonConfigMap } from '$lib/types/lesson';
-	import {
-		createGazeInput,
-		type GazeInputConfigWithFixations,
-		type GazeInput,
-		GazeInteractionScreenFixation,
-		GazeInteractionObjectFixation
-	} from '@473783/develex-core';
+	import { type GazeManager } from '@473783/develex-core';
 	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
-	import { onMount } from 'svelte';
+	import { onMount, getContext } from 'svelte';
 	import { get } from 'svelte/store';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 
@@ -44,10 +38,6 @@
 		} else {
 			console.error('No window config');
 		}
-		const gazeInteractionScreenFixation = new GazeInteractionScreenFixation();
-		const gazeInteractionObjectFixation = new GazeInteractionObjectFixation();
-		gazeInteractionScreenFixation.connect(gazeInput);
-		gazeInteractionObjectFixation.connect(gazeInteractionScreenFixation);
 		await gazeInput.connect();
 		await gazeInput.start();
 
@@ -70,6 +60,8 @@
 
 		return lessonConfig;
 	};
+
+	const gazeManager = getContext('gazeManager');
 
 	const lessonConfig: Promise<LessonConfigMap['cibule']['setup']> = getAsyncLessonConfig();
 </script>
