@@ -48,9 +48,9 @@
 		}
 	});
 
-	const handleLoad = (lessonConfig: LessonConfig['setup']) => {
+	const handleLoad = (obtainedLessonConfig: LessonConfig['setup']) => {
 		lessonState = 'lessonFrame';
-		lessonConfig = lessonConfig;
+		lessonConfig = obtainedLessonConfig;
 	};
 </script>
 
