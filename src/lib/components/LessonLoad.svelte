@@ -10,6 +10,7 @@
 	import { fly } from 'svelte/transition';
 	import LessonLoadLine from './LessonLoadLine.svelte';
 	import { goto } from '$app/navigation';
+	import { extractErrorMessage } from '$lib/utils/errorUtility';
 
 	interface Props {
 		getLessonConfig: () => Promise<LessonConfig['setup']>;
@@ -32,6 +33,7 @@
 			loadStateTracker === 'error' ||
 			loadStateEmitting === 'error'
 	);
+	let errorMessage = $state('');
 
 	$effect(() => {
 		if (!showCalibration && calibrationPromiseResolve) {
@@ -54,6 +56,11 @@
 				});
 			}
 		} catch (error) {
+			errorMessage = extractErrorMessage(
+				error,
+				'Nepodařilo se nakalibrovat okno prohlížeče',
+				'Neznámá chyba při získání kalibrační rovnice'
+			);
 			loadStateViewportCalibration = 'error';
 			throw error;
 		}
@@ -66,6 +73,11 @@
 			 * @todo: implement once new bridge is ready
 			 */
 		} catch (error) {
+			errorMessage = extractErrorMessage(
+				error,
+				'Nepodařilo se připojit k Bridge',
+				'Neznámá chyba při připojení k Bridge'
+			);
 			loadStateBridge = 'error';
 			throw error;
 		}
@@ -77,6 +89,11 @@
 			console.log('connectToTracker', gazeManager.windowCalibration);
 			await gazeManager.connect();
 		} catch (error) {
+			errorMessage = extractErrorMessage(
+				error,
+				'Nepodařilo se připojit k trackeru',
+				'Neznámá chyba při připojení k trackeru'
+			);
 			loadStateTracker = 'error';
 			throw error;
 		}
@@ -87,6 +104,11 @@
 			await connectToTracker();
 			await gazeManager.start();
 		} catch (error) {
+			errorMessage = extractErrorMessage(
+				error,
+				'Nepodařilo se začít vysílat pohyby očí',
+				'Neznámá chyba při pokusu o vysílání pohybů očí'
+			);
 			loadStateEmitting = 'error';
 			throw error;
 		}
@@ -125,6 +147,7 @@
 			class="absolute inset-0 left-0 top-0 flex flex-col items-center justify-center gap-2"
 		>
 			<div class="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-2">
+				<h1 class="mb-4 w-full text-left text-2xl font-bold text-neutral-600">Nahrávám lekci</h1>
 				<LessonLoadLine
 					loadState={loadStateViewportCalibration}
 					loadTitle="Okno prohlížeče zkalibrováno"
@@ -135,8 +158,7 @@
 				<div class="mt-6 h-32 w-full max-w-md text-red-500">
 					{#if anyError}
 						<div in:fly={{ duration: 600, y: 200 }}>
-							Došlo k chybě při získávání konfigurace lekce. Zkontrolujte své připojení k internetu
-							a zkuste to znovu.
+							{errorMessage}
 						</div>
 						<button
 							class="mt-4 rounded-md bg-neutral-200 px-4 py-2 text-left text-neutral-600 hover:bg-neutral-300"
