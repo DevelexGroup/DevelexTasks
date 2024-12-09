@@ -13,6 +13,10 @@
 
 	let { data }: Props = $props();
 
+	/**
+	 * It must return a lesson config object in a promise.
+	 * This is necessitated to prevent problems with SSR and to allow for async loading of the lesson config.
+	 */
 	const getLessonConfig = async (): Promise<LessonConfigMap['pairedReading']['setup']> => {
 		return {
 			type: 'pairedReading',
