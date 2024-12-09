@@ -1,4 +1,4 @@
-import { getContext, type EventDispatcher } from 'svelte';
+import { type EventDispatcher } from 'svelte';
 import { get, writable, type Writable } from 'svelte/store';
 import {
 	PairedReadingIdManager,
@@ -31,14 +31,9 @@ export type GetLogicFunction = (
 		lessonMistake: void;
 		lessonComplete: void;
 		lessonFail: void;
-	}>
+	}>,
+	gazeManager: GazeManager
 ) => GetLogicType;
-
-/**
- * Get the gaze manager from the context
- * Relies on the broader App context to have a gaze manager in Svelte Context
- */
-const gazeManager = getContext<GazeManager>('gazeManager');
 
 /**
 	 * 
@@ -99,7 +94,8 @@ export const getLogic: GetLogicFunction = (
 		lessonMistake: void;
 		lessonComplete: void;
 		lessonFail: void;
-	}>
+	}>,
+	gazeManager: GazeManager
 ): GetLogicType => {
 	// State variables
 	const hasFixatedStartCross = writable(false);
@@ -338,7 +334,7 @@ endif
 
 @enduml
  */
-export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
+export const getPilotLogic: GetLogicFunction = (params, dispatch, gazeManager) => {
 	// State variables
 	const hasFixatedStartCross = writable(false);
 	const hasFixatedEndCross = writable(false);

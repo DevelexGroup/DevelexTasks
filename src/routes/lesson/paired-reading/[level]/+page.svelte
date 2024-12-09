@@ -1,19 +1,9 @@
 <script lang="ts">
 	import Lesson from '$lib/components/Lesson.svelte';
-	import type { LessonConfigMap } from '$lib/types/lesson';
-	import {
-		createGazeInput,
-		type GazeInputConfigWithFixations,
-		type GazeInput,
-		GazeInteractionScreenFixation,
-		GazeInteractionObjectFixation
-	} from '@473783/develex-core';
-	import { inputCreationConfig, inputWindowFieldsConfig } from '$lib/stores/gazeConfig';
-	import { onMount } from 'svelte';
-	import { get } from 'svelte/store';
-	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
-	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
+	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
+	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
+	import type { LessonConfigMap } from '$lib/types/lesson';
 
 	interface Props {
 		data: {
@@ -23,61 +13,20 @@
 
 	let { data }: Props = $props();
 
-	/**
-	 * In the future, it can query for a specific lesson configuration.
-	 */
-	const getAsyncLessonConfig = async () => {
-		void (await new Promise<void>((resolve, reject) => {
-			onMount(() => {
-				// check if in browser or not
-				if (typeof window === 'undefined') {
-					reject('Not in browser');
-					return;
-				}
-				resolve();
-			});
-		}));
-		const gazeInput: GazeInput<GazeInputConfigWithFixations> = createGazeInput(
-			get(inputCreationConfig)
-		);
-		const windowconfig = get(inputWindowFieldsConfig);
-		if (windowconfig) {
-			gazeInput.setWindowCalibration(windowconfig.mouse, windowconfig.window);
-		} else {
-			console.error('No window config');
-		}
-		const gazeInteractionScreenFixation = new GazeInteractionScreenFixation();
-		const gazeInteractionObjectFixation = new GazeInteractionObjectFixation();
-		gazeInteractionScreenFixation.connect(gazeInput);
-		gazeInteractionObjectFixation.connect(gazeInteractionScreenFixation);
-		await gazeInput.connect();
-		await gazeInput.start();
-
-		const deInit = () => {
-			gazeInput.stop();
-			gazeInput.disconnect();
-		};
-
-		const lessonConfig: LessonConfigMap['pairedReading']['setup'] = {
+	const getLessonConfig = async (): Promise<LessonConfigMap['pairedReading']['setup']> => {
+		return {
 			type: 'pairedReading',
 			content: data.config.content,
 			props: {
 				wordReader: new WordReaderSynthesis(),
-				speechRecognition: new SpeechRecognitionMdn(),
 				speechEvaluator: new SpeechEvaluatorSimple(),
-				gazeFixationEmitter: gazeInteractionObjectFixation,
+				speechRecognition: new SpeechRecognitionMdn(),
 				...data.config.partialProps
-			},
-			gazeInput,
-			deInit
+			}
 		};
-
-		return lessonConfig;
 	};
-
-	const lessonConfig: Promise<LessonConfigMap['pairedReading']['setup']> = getAsyncLessonConfig();
 </script>
 
 {#if data}
-	<Lesson {lessonConfig} isDebug={false} />
+	<Lesson {getLessonConfig} isDebug={false} />
 {/if}

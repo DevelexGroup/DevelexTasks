@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { derived } from 'svelte/store';
 	import {
 		getLogic,
@@ -8,6 +8,7 @@
 	} from './LessonTaskPairedReadingLevel.logic';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
+	import type { GazeManager } from '@473783/develex-core';
 
 	let {
 		currentContent,
@@ -28,6 +29,8 @@
 
 	const logicGetter: GetLogicFunction = logicType === 'main' ? getLogic : getPilotLogic;
 
+	const gazeManager = getContext<GazeManager>('gazeManager');
+
 	const {
 		gridStateStore,
 		wordsStore,
@@ -46,7 +49,8 @@
 			bufferSize,
 			wordReader
 		},
-		dispatch
+		dispatch,
+		gazeManager
 	);
 
 	const wordStore = derived(wordsStore, ($wordsStore) => {

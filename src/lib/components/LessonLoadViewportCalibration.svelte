@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { waitForTimeout } from '$lib/utils/waitForCondition';
 	import type { GazeManager } from '@473783/develex-core';
 
 	interface Props {
@@ -20,14 +19,16 @@
 				height: window.screen.height
 			}
 		};
-		gazeManager.setWindowCalibration(e, windowScreen);
-		await waitForTimeout(500);
+		await gazeManager.setWindowCalibration(e, windowScreen);
+		console.log('gazeManager', gazeManager.windowCalibration, gazeManager.input);
 		onCalibrated();
 	};
 </script>
 
 <button
-	class="absolute inset-0 left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-4"
+	class="fixed inset-0 left-0 top-0 z-50 flex h-full w-full flex-col items-center justify-center gap-4 bg-neutral-200"
 	onclick={load}
 	aria-label="Viewport Calibration"
-></button>
+>
+	Klikni na mě
+</button>

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 
-	import type { GazeInputConfig } from '@473783/develex-core';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import type { GazeInputConfig, GazeManager } from '@473783/develex-core';
+	import { createEventDispatcher, getContext, onMount } from 'svelte';
 	import InputSelect from './InputSelect.svelte';
 	import { get } from 'svelte/store';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';
@@ -47,17 +47,21 @@
 		precisionMaximumError: 1.5
 	};
 
+	const gazeManager = getContext<GazeManager>('gazeManager');
 	const handleSubmit = () => {
 		let gazeInputConfig: GazeInputConfig;
 
 		switch (gazeInputType) {
 			case 'gazepointBase':
+				gazeManager.createInput(gazepointBase);
 				gazeInputConfig = gazepointBase;
 				break;
 			case 'gazepointIdt':
+				gazeManager.createInput(gazepointIdt);
 				gazeInputConfig = gazepointIdt;
 				break;
 			case 'mouseIdt':
+				gazeManager.createInput(mouseIdt);
 				gazeInputConfig = mouseIdt;
 				break;
 			default:
