@@ -146,7 +146,7 @@
 			transition:fly={{ duration: 300, y: 200 }}
 			class="absolute inset-0 left-0 top-0 flex flex-col items-center justify-center gap-2"
 		>
-			<div class="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-2">
+			<div class="mx-auto flex w-full max-w-sm flex-col items-center justify-center gap-2">
 				<h1 class="mb-4 w-full text-left text-2xl font-bold text-neutral-600">Nahrávám lekci</h1>
 				<LessonLoadLine
 					loadState={loadStateViewportCalibration}
@@ -155,7 +155,7 @@
 				<LessonLoadLine loadState={loadStateBridge} loadTitle="Připojení Bridge" />
 				<LessonLoadLine loadState={loadStateTracker} loadTitle="Nastavení trackeru" />
 				<LessonLoadLine loadState={loadStateEmitting} loadTitle="Vysílám pohyby očí" />
-				<div class="mt-6 h-32 w-full max-w-md text-red-500">
+				<div class="mt-6 h-32 w-full max-w-sm text-red-500">
 					{#if anyError}
 						<div in:fly={{ duration: 600, y: 200 }}>
 							{errorMessage}

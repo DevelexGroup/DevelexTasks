@@ -6,9 +6,9 @@
 
 <div
 	in:fade={{ duration: 250 }}
-	class="flex h-full w-full flex-col items-center justify-center gap-4 bg-green-50"
+	class="flex h-full w-full flex-col items-center justify-center gap-4 bg-neutral-50"
 >
-	<h1 class="text-3xl text-gray-700">Lesson Completed</h1>
+	<h1 class="text-3xl font-bold text-neutral-600">Lekce úspěšně dokončena!</h1>
 
 	<div
 		class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-green-200 bg-gray-100"
@@ -16,6 +16,6 @@
 		<Icon icon="material-symbols:thumb-up-outline-rounded" class="h-8 w-8 text-green-500" />
 	</div>
 
-	<p class="mb-4 text-lg text-gray-700">You have completed the level.</p>
-	<Button href="/">Back to Lessons</Button>
+	<p class="mb-4 text-lg text-gray-700">Páv je potěšen. Páv ti dnes neublíží.</p>
+	<Button href="/">Zpátky na výběr lekcí</Button>
 </div>

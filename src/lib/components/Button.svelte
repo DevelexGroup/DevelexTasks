@@ -12,7 +12,7 @@
 
 <a
 	onclick={bubble('click')}
-	class="rounded bg-orange-500 px-4 py-2 font-bold text-white no-underline hover:bg-orange-700"
+	class="rounded bg-[#0071bc] px-4 py-2 font-bold text-white no-underline hover:bg-[#30c0f2]"
 	{href}
 >
 	{@render children?.()}
