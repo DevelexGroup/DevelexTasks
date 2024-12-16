@@ -371,7 +371,7 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch, gazeManager) =
 			target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId()) &&
 			get(gridStateStore) === 'crossStart'
 		) {
-			hasFixatedStartCross.set(true);
+			// hasFixatedStartCross.set(true);
 			return;
 		}
 
@@ -379,7 +379,7 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch, gazeManager) =
 			target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId()) &&
 			get(gridStateStore) === 'crossEnd'
 		) {
-			hasFixatedEndCross.set(true);
+			// hasFixatedEndCross.set(true);
 			return;
 		}
 	};
@@ -435,7 +435,9 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch, gazeManager) =
 	// Keyboard event handler
 	const keyDownHandler = (event: KeyboardEvent) => {
 		if (event.key === 'Enter') {
-			hasOperatorConfirmedSegment.set(true);
+			if (get(gridStateStore) === 'reading') return hasOperatorConfirmedSegment.set(true);
+			if (get(gridStateStore) === 'crossStart') return hasFixatedStartCross.set(true);
+			if (get(gridStateStore) === 'crossEnd') return hasFixatedEndCross.set(true);
 		}
 	};
 
