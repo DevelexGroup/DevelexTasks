@@ -1,17 +1,12 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import type { ISpeechRecognitionResult } from '$lib/interfaces/ISpeechRecognition';
 	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { onMount } from 'svelte';
 
 	let results: ISpeechRecognitionResult[] = $state([]);
 
-	let recognition: SpeechRecognitionMdn = $state();
-	let isOn;
-	run(() => {
-		isOn = recognition?.isOn;
-	});
+	let recognition: SpeechRecognitionMdn;
+	let isOn = $state(false);
 
 	const handleResult = (event: ISpeechRecognitionResult) => {
 		console.warn(event);
@@ -19,6 +14,7 @@
 	};
 
 	onMount(() => {
+		isOn = recognition.isOn;
 		recognition = new SpeechRecognitionMdn();
 		recognition.on('speech', handleResult);
 		recognition.on('error', (error) => {

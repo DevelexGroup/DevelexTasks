@@ -14,11 +14,8 @@
 	let evaluatorResults: ISpeechEvaluatorResult[] = $state([]);
 	let evaluatorTargetWord = $derived(wordToCompare);
 
-	let recognition: SpeechRecognitionMdn = $state();
-	let isOn;
-	run(() => {
-		isOn = recognition?.isOn;
-	});
+	let recognition: SpeechRecognitionMdn;
+	let isOn = $state(false);
 
 	const handleResult = (event: ISpeechRecognitionResult) => {
 		console.warn(event);
@@ -27,6 +24,7 @@
 	};
 
 	onMount(() => {
+		isOn = recognition.isOn;
 		recognition = new SpeechRecognitionMdn();
 		recognition.on('speech', handleResult);
 		recognition.on('error', (error) => {
