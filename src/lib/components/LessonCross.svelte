@@ -10,14 +10,18 @@
 
 	let { id, registerElement, unregisterElement }: Props = $props();
 
-	let element: HTMLElement = $state();
+	let element: HTMLElement | undefined = $state();
 
 	onMount(() => {
-		registerElement(element);
+		if (element) {
+			registerElement(element);
+		}
 	});
 
 	onDestroy(() => {
-		unregisterElement(element);
+		if (element) {
+			unregisterElement(element);
+		}
 	});
 </script>
 

@@ -15,10 +15,10 @@
 		 * The lesson component that will be displayed as a lesson.
 		 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
 		 */
-		lessonConfigResult: LessonConfig['setup'];
+		lessonConfig: LessonConfig['setup'];
 	}
 
-	let { lessonConfigResult }: Props = $props();
+	let { lessonConfig }: Props = $props();
 
 	let state: 'round' | 'fail' | 'complete' | 'mistake' = $state('round');
 
@@ -52,7 +52,7 @@
 	};
 
 	const handleLessonComplete = () => {
-		const isLessonComplete = $lessonProgress === lessonConfigResult.content.length - 1;
+		const isLessonComplete = $lessonProgress === lessonConfig.content.length - 1;
 
 		if (isLessonComplete) {
 			completeAudio.play();
@@ -76,28 +76,28 @@
 			in:fly={flyIn}
 			out:fly={flyOut}
 		>
-			{#if lessonConfigResult.type === 'syllable'}
+			{#if lessonConfig.type === 'syllable'}
 				<LessonTaskSyllableLevel
-					{...lessonConfigResult.props}
-					currentContent={lessonConfigResult.content[$lessonProgress]}
+					{...lessonConfig.props}
+					currentContent={lessonConfig.content[$lessonProgress]}
 					on:lessonSuccess={handleLessonSuccess}
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
 				/>
-			{:else if lessonConfigResult.type === 'pairedReading'}
+			{:else if lessonConfig.type === 'pairedReading'}
 				<LessonTaskPairedReadingLevel
-					{...lessonConfigResult.props}
-					currentContent={lessonConfigResult.content[$lessonProgress]}
+					{...lessonConfig.props}
+					currentContent={lessonConfig.content[$lessonProgress]}
 					on:lessonSuccess={handleLessonSuccess}
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
 				/>
-			{:else if lessonConfigResult.type === 'cibule'}
+			{:else if lessonConfig.type === 'cibule'}
 				<LessonTaskCibuleLevel
-					{...lessonConfigResult.props}
-					currentContent={lessonConfigResult.content[$lessonProgress]}
+					{...lessonConfig.props}
+					currentContent={lessonConfig.content[$lessonProgress]}
 					on:lessonSuccess={handleLessonSuccess}
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}

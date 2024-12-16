@@ -1,38 +1,15 @@
 <script lang="ts">
 	import LessonCross from './LessonCross.svelte';
-	import type { CibuleTaskType } from '$lib/types/lesson';
-	import type {
-		GazeInteractionObjectFixation,
-		GazeInteractionObjectFixationEvent
-	} from '@473783/develex-core';
-	import type { IWordReader } from '$lib/interfaces/IWordReader';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import type { GazeInteractionObjectFixationEvent, GazeManager } from '@473783/develex-core';
+	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 	import LessonTaskCibuleLayout from './LessonTaskCibuleLayout.svelte';
 	import LessonTaskCibuleGrid from './LessonTaskCibuleGrid.svelte';
-
-	interface Props {
-		currentContent: CibuleTaskType;
-		gazeFixationEmitter: GazeInteractionObjectFixation;
-		wordReader: IWordReader;
-		shouldReadCorrectSyllable?: boolean;
-		isSyllableAssignmentPresent?: boolean;
-		correctSyllableVisibilityTimeout?: number;
-		markWantedSyllables?: boolean;
-		/**
-		 * Width of the assignment syllable gap in pixels.
-		 */
-		assignmentGap?: number;
-		/**
-		 * The gap between the syllables in pixels.
-		 */
-		syllableGap?: number;
-	}
+	import type { LessonTaskCibuleLevelProps } from './LessonTaskCibuleLevel.type';
 
 	let {
 		currentContent,
-		gazeFixationEmitter,
 		wordReader,
 		shouldReadCorrectSyllable = true,
 		isSyllableAssignmentPresent = true,
@@ -40,7 +17,9 @@
 		markWantedSyllables = false,
 		assignmentGap = 120,
 		syllableGap = 12
-	}: Props = $props();
+	}: LessonTaskCibuleLevelProps = $props();
+
+	const gazeManager = getContext<GazeManager>('gazeManager');
 
 	/**
 	 * State stores to keep up with the state of the lesson
@@ -69,13 +48,20 @@
 	}>();
 
 	const registerElement = (element: HTMLElement) => {
-		gazeFixationEmitter.register(element, {
-			bufferSize: 150
+		gazeManager.register({
+			interaction: 'fixation',
+			element,
+			settings: {
+				bufferSize: 150
+			}
 		});
 	};
 
 	const unregisterElement = (element: HTMLElement) => {
-		gazeFixationEmitter.unregister(element);
+		gazeManager.unregister({
+			interaction: 'fixation',
+			element
+		});
 	};
 
 	const handleCorrectSyllableClick = () => {
@@ -200,7 +186,7 @@
 	 * when the component is mounted
 	 */
 	onMount(() => {
-		gazeFixationEmitter.on('fixationObjectStart', evaluateGazeEvent);
+		gazeManager.on('fixationObjectStart', evaluateGazeEvent);
 		processTaskLogic();
 	});
 
@@ -209,7 +195,7 @@
 	 * to prevent memory leaks
 	 */
 	onDestroy(() => {
-		gazeFixationEmitter.off('fixationObjectStart', evaluateGazeEvent);
+		gazeManager.off('fixationObjectStart', evaluateGazeEvent);
 	});
 </script>
 

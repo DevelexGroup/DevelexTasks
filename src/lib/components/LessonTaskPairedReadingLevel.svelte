@@ -1,31 +1,16 @@
 <script lang="ts">
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-	import type { GazeInteractionObjectFixation } from '@473783/develex-core';
-	import type { ISpeechEvaluator } from '$lib/interfaces/ISpeechEvaluator';
-	import type { ISpeechRecognition } from '$lib/interfaces/ISpeechRecognition';
+	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { derived } from 'svelte/store';
-	import type { PairedReadingTaskType } from '$lib/types/lesson';
 	import {
 		getLogic,
 		getPilotLogic,
 		type GetLogicFunction
 	} from './LessonTaskPairedReadingLevel.logic';
-	import type { IWordReader } from '$lib/interfaces/IWordReader';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
-
-	interface Props {
-		gazeFixationEmitter: GazeInteractionObjectFixation;
-		currentContent: PairedReadingTaskType;
-		speechEvaluator: ISpeechEvaluator;
-		speechRecognition: ISpeechRecognition;
-		wordReader: IWordReader;
-		shouldListenForVoice: boolean;
-		bufferSize: number;
-		logicType?: 'main' | 'pilot';
-	}
+	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
+	import type { GazeManager } from '@473783/develex-core';
 
 	let {
-		gazeFixationEmitter,
 		currentContent,
 		speechEvaluator,
 		speechRecognition,
@@ -33,7 +18,7 @@
 		shouldListenForVoice,
 		bufferSize,
 		logicType = 'main'
-	}: Props = $props();
+	}: LessonTaskPairedReadingTaskProps = $props();
 
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
@@ -43,6 +28,8 @@
 	}>();
 
 	const logicGetter: GetLogicFunction = logicType === 'main' ? getLogic : getPilotLogic;
+
+	const gazeManager = getContext<GazeManager>('gazeManager');
 
 	const {
 		gridStateStore,
@@ -55,7 +42,6 @@
 		wordsUnregisterFn
 	} = logicGetter(
 		{
-			gazeFixationEmitter,
 			currentContent,
 			speechEvaluator,
 			speechRecognition,
@@ -63,7 +49,8 @@
 			bufferSize,
 			wordReader
 		},
-		dispatch
+		dispatch,
+		gazeManager
 	);
 
 	const wordStore = derived(wordsStore, ($wordsStore) => {

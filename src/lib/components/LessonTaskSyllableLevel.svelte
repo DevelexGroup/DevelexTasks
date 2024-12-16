@@ -1,41 +1,24 @@
 <script lang="ts">
 	import LessonTaskSyllableLayout from './LessonTaskSyllableLayout.svelte';
 	import LessonCross from './LessonCross.svelte';
-	import type { SyllableTaskType } from '$lib/types/lesson';
-	import type { GazeInteractionObjectFixation } from '@473783/develex-core';
-	import type { IWordReader } from '$lib/interfaces/IWordReader';
 	import LessonTaskSyllableGrid from './LessonTaskSyllableGrid.svelte';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
-
-	interface Props {
-		currentContent: SyllableTaskType;
-		gazeFixationEmitter: GazeInteractionObjectFixation;
-		wordReader: IWordReader;
-		shouldReadCorrectSyllable?: boolean;
-		isSyllableAssignmentPresent?: boolean;
-		correctSyllableVisibilityTimeout?: number;
-		/**
-		 * Width of the assignment syllable gap in pixels.
-		 */
-		assignmentGap?: number;
-		/**
-		 * The gap between the syllables in pixels.
-		 */
-		syllableGap?: number;
-	}
+	import type { LessonTaskSyllableLevelProps } from './LessonTaskSyllableLevel.type';
+	import type { GazeInteractionObjectFixationEvent, GazeManager } from '@473783/develex-core';
 
 	let {
 		currentContent,
-		gazeFixationEmitter,
 		wordReader,
 		shouldReadCorrectSyllable = true,
 		isSyllableAssignmentPresent = true,
 		correctSyllableVisibilityTimeout = 0,
 		assignmentGap = 120,
 		syllableGap = 12
-	}: Props = $props();
+	}: LessonTaskSyllableLevelProps = $props();
+
+	const gazeManager = getContext<GazeManager>('gazeManager');
 
 	/**
 	 * State stores to keep up with the state of the lesson
@@ -64,13 +47,20 @@
 	}>();
 
 	const registerElement = (element: HTMLElement) => {
-		gazeFixationEmitter.register(element, {
-			bufferSize: 150
+		gazeManager.register({
+			interaction: 'fixation',
+			element,
+			settings: {
+				bufferSize: 150
+			}
 		});
 	};
 
 	const unregisterElement = (element: HTMLElement) => {
-		gazeFixationEmitter.unregister(element);
+		gazeManager.unregister({
+			interaction: 'fixation',
+			element
+		});
 	};
 
 	const handleAllCorrectSyllablesClicked = () => {
@@ -195,7 +185,7 @@
 	 * when the component is mounted
 	 */
 	onMount(() => {
-		gazeFixationEmitter.on('fixationObjectStart', evaluateGazeEvent);
+		gazeManager.on('fixationObjectStart', evaluateGazeEvent);
 		processTaskLogic();
 	});
 
@@ -204,7 +194,7 @@
 	 * to prevent memory leaks
 	 */
 	onDestroy(() => {
-		gazeFixationEmitter.off('fixationObjectStart', evaluateGazeEvent);
+		gazeManager.off('fixationObjectStart', evaluateGazeEvent);
 	});
 </script>
 

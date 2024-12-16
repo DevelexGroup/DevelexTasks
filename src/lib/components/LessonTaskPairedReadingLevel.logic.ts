@@ -1,5 +1,4 @@
-import type { ComponentProps, EventDispatcher } from 'svelte';
-import type LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
+import { type EventDispatcher } from 'svelte';
 import { get, writable, type Writable } from 'svelte/store';
 import {
 	PairedReadingIdManager,
@@ -8,8 +7,9 @@ import {
 } from './LessonTaskPairedReadingLevel.utility';
 import { getCancellableAsync, waitForConditionCancellable } from '$lib/utils/waitForCondition';
 import { browser } from '$app/environment';
-import type { GazeInteractionObjectFixationEvent } from '@473783/develex-core';
+import type { GazeInteractionObjectFixationEvent, GazeManager } from '@473783/develex-core';
 import { retry } from '$lib/utils/retry';
+import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 
 // Define the type for the return object of getLogic
 export type GetLogicType = {
@@ -25,13 +25,14 @@ export type GetLogicType = {
 
 // Define the getLogic function type
 export type GetLogicFunction = (
-	params: ComponentProps<LessonTaskPairedReadingLevel>,
+	params: LessonTaskPairedReadingTaskProps,
 	dispatch: EventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
 		lessonComplete: void;
 		lessonFail: void;
-	}>
+	}>,
+	gazeManager: GazeManager
 ) => GetLogicType;
 
 /**
@@ -86,14 +87,15 @@ else (No)
 endif
 @enduml
 	 */
-export const getLogic = (
-	params: ComponentProps<LessonTaskPairedReadingLevel>,
+export const getLogic: GetLogicFunction = (
+	params: LessonTaskPairedReadingTaskProps,
 	dispatch: EventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
 		lessonComplete: void;
 		lessonFail: void;
-	}>
+	}>,
+	gazeManager: GazeManager
 ): GetLogicType => {
 	// State variables
 	const hasFixatedStartCross = writable(false);
@@ -235,8 +237,12 @@ export const getLogic = (
 	 * @param element - The HTML element to register.
 	 */
 	const setupRegisterElement = (element: HTMLElement) => {
-		params.gazeFixationEmitter.register(element, {
-			bufferSize: params.bufferSize
+		gazeManager.register({
+			interaction: 'fixation',
+			element,
+			settings: {
+				bufferSize: params.bufferSize
+			}
 		});
 	};
 
@@ -245,7 +251,10 @@ export const getLogic = (
 	 * @param element - The HTML element to unregister.
 	 */
 	const setupUnregisterElement = (element: HTMLElement) => {
-		params.gazeFixationEmitter.unregister(element);
+		gazeManager.unregister({
+			interaction: 'fixation',
+			element
+		});
 	};
 
 	/**
@@ -254,7 +263,7 @@ export const getLogic = (
 	const setupOnMount = () => {
 		params.wordReader.onWordChange = evaluateReaderWordChange;
 		performTask();
-		params.gazeFixationEmitter.on('fixationObjectStart', evaluateFixations);
+		gazeManager.on('fixationObjectStart', evaluateFixations);
 	};
 
 	/**
@@ -262,7 +271,7 @@ export const getLogic = (
 	 */
 	const setupOnDestroy = () => {
 		abortController.abort('Task destroyed');
-		params.gazeFixationEmitter.off('fixationObjectStart', evaluateFixations);
+		gazeManager.off('fixationObjectStart', evaluateFixations);
 	};
 
 	return {
@@ -325,7 +334,7 @@ endif
 
 @enduml
  */
-export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
+export const getPilotLogic: GetLogicFunction = (params, dispatch, gazeManager) => {
 	// State variables
 	const hasFixatedStartCross = writable(false);
 	const hasFixatedEndCross = writable(false);
@@ -338,13 +347,20 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 
 	// Register and unregister functions for gaze fixation elements
 	const register = (element: HTMLElement) => {
-		params.gazeFixationEmitter.register(element, {
-			bufferSize: params.bufferSize
+		gazeManager.register({
+			interaction: 'fixation',
+			element,
+			settings: {
+				bufferSize: params.bufferSize
+			}
 		});
 	};
 
 	const unregister = (element: HTMLElement) => {
-		params.gazeFixationEmitter.unregister(element);
+		gazeManager.unregister({
+			interaction: 'fixation',
+			element
+		});
 	};
 
 	// Function to evaluate gaze fixations
@@ -355,7 +371,7 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 			target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId()) &&
 			get(gridStateStore) === 'crossStart'
 		) {
-			hasFixatedStartCross.set(true);
+			// hasFixatedStartCross.set(true);
 			return;
 		}
 
@@ -363,7 +379,7 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 			target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId()) &&
 			get(gridStateStore) === 'crossEnd'
 		) {
-			hasFixatedEndCross.set(true);
+			// hasFixatedEndCross.set(true);
 			return;
 		}
 	};
@@ -419,7 +435,9 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 	// Keyboard event handler
 	const keyDownHandler = (event: KeyboardEvent) => {
 		if (event.key === 'Enter') {
-			hasOperatorConfirmedSegment.set(true);
+			if (get(gridStateStore) === 'reading') return hasOperatorConfirmedSegment.set(true);
+			if (get(gridStateStore) === 'crossStart') return hasFixatedStartCross.set(true);
+			if (get(gridStateStore) === 'crossEnd') return hasFixatedEndCross.set(true);
 		}
 	};
 
@@ -441,14 +459,14 @@ export const getPilotLogic: GetLogicFunction = (params, dispatch) => {
 	const onMountLogic = () => {
 		registerKeyInput();
 		asyncLogic();
-		params.gazeFixationEmitter.on('fixationObjectStart', evaluateFixations);
+		gazeManager.on('fixationObjectStart', evaluateFixations);
 	};
 
 	// Logic to execute when the component is destroyed
 	const onDestroyLogic = () => {
 		unregisterKeyInput();
 		abortController.abort('Task destroyed');
-		params.gazeFixationEmitter.off('fixationObjectStart', evaluateFixations);
+		gazeManager.off('fixationObjectStart', evaluateFixations);
 	};
 
 	return {

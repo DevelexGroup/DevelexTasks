@@ -1,7 +1,6 @@
 import LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
 import LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
 import LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
-import type { GazeInput, GazeInputConfig } from '@473783/develex-core';
 import type { Component, ComponentProps } from 'svelte';
 
 export type LessonWordType = {
@@ -69,8 +68,6 @@ export type LessonConfigBase<T extends LessonTypes> = {
 		type: T;
 		content: ComponentProps<(typeof lessonComponentMap)[T]>['currentContent'][];
 		props: Omit<ComponentProps<(typeof lessonComponentMap)[T]>, 'currentContent'>;
-		deInit: () => void;
-		gazeInput: GazeInput<GazeInputConfig>;
 	};
 	data: {
 		content: ComponentProps<(typeof lessonComponentMap)[T]>['currentContent'][];
