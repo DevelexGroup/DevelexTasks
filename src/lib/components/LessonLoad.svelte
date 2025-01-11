@@ -68,10 +68,9 @@
 
 	const connectToBridge = async () => {
 		try {
-			await waitForTimeout(500);
-			/**
-			 * @todo: implement once new bridge is ready
-			 */
+			await waitForTimeout(400);
+			await gazeManager.open();
+			loadStateBridge = 'loaded';
 		} catch (error) {
 			errorMessage = extractErrorMessage(
 				error,
@@ -85,9 +84,11 @@
 
 	const connectToTracker = async () => {
 		try {
-			console.log('connectToTracker', gazeManager.input);
-			console.log('connectToTracker', gazeManager.windowCalibration);
-			await gazeManager.connect();
+			const manager = await gazeManager.status();
+			if (manager.lastStatus === null || manager.lastStatus.status === 'trackerDisconnected') {
+				await gazeManager.connect();
+			}
+			loadStateTracker = 'loaded';
 		} catch (error) {
 			errorMessage = extractErrorMessage(
 				error,
@@ -101,8 +102,11 @@
 
 	const startEmitting = async () => {
 		try {
-			await connectToTracker();
-			await gazeManager.start();
+			const manager = await gazeManager.status();
+			if (manager.lastStatus?.status !== 'trackerEmitting') {
+				await gazeManager.start();
+			}
+			loadStateEmitting = 'loaded';
 		} catch (error) {
 			errorMessage = extractErrorMessage(
 				error,
@@ -121,15 +125,12 @@
 		loadStateViewportCalibration = 'loaded';
 
 		await connectToBridge();
-		loadStateBridge = 'loaded';
 
 		await connectToTracker();
-		loadStateTracker = 'loaded';
 
 		await startEmitting();
-		loadStateEmitting = 'loaded';
 
-		await waitForTimeout(400);
+		await waitForTimeout(600);
 		onLoad(lessonConfig);
 	};
 
@@ -155,7 +156,7 @@
 				<LessonLoadLine loadState={loadStateBridge} loadTitle="Připojení Bridge" />
 				<LessonLoadLine loadState={loadStateTracker} loadTitle="Nastavení trackeru" />
 				<LessonLoadLine loadState={loadStateEmitting} loadTitle="Vysílám pohyby očí" />
-				<div class="mt-6 h-32 w-full max-w-sm text-red-500">
+				<div class="mt-6 h-24 w-full max-w-sm text-red-500">
 					{#if anyError}
 						<div in:fly={{ duration: 600, y: 200 }}>
 							{errorMessage}

@@ -45,6 +45,7 @@
 		if (gazeManager.input) {
 			gazeManager.stop();
 			gazeManager.disconnect();
+			gazeManager.close();
 		}
 	});
 
