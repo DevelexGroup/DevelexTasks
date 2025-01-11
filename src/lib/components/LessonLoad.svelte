@@ -68,10 +68,8 @@
 
 	const connectToBridge = async () => {
 		try {
-			await waitForTimeout(500);
-			/**
-			 * @todo: implement once new bridge is ready
-			 */
+			await gazeManager.open();
+			loadStateBridge = 'loaded';
 		} catch (error) {
 			errorMessage = extractErrorMessage(
 				error,
@@ -85,9 +83,11 @@
 
 	const connectToTracker = async () => {
 		try {
-			console.log('connectToTracker', gazeManager.input);
-			console.log('connectToTracker', gazeManager.windowCalibration);
-			await gazeManager.connect();
+			const manager = await gazeManager.status();
+			if (manager.lastStatus === null || manager.lastStatus.status === 'trackerDisconnected') {
+				await gazeManager.connect();
+			}
+			loadStateTracker = 'loaded';
 		} catch (error) {
 			errorMessage = extractErrorMessage(
 				error,
@@ -101,8 +101,11 @@
 
 	const startEmitting = async () => {
 		try {
-			await connectToTracker();
-			await gazeManager.start();
+			const manager = await gazeManager.status();
+			if (manager.lastStatus?.status !== 'trackerEmitting') {
+				await gazeManager.start();
+			}
+			loadStateEmitting = 'loaded';
 		} catch (error) {
 			errorMessage = extractErrorMessage(
 				error,
@@ -121,13 +124,10 @@
 		loadStateViewportCalibration = 'loaded';
 
 		await connectToBridge();
-		loadStateBridge = 'loaded';
 
 		await connectToTracker();
-		loadStateTracker = 'loaded';
 
 		await startEmitting();
-		loadStateEmitting = 'loaded';
 
 		await waitForTimeout(400);
 		onLoad(lessonConfig);
