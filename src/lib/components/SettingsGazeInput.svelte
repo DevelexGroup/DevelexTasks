@@ -12,11 +12,11 @@
 	}>();
 
 	let gazeInputType: string = $state('gazepointBase');
-	let form: HTMLFormElement = $state();
+	let form: HTMLFormElement | null = $state(null);
 
 	onMount(() => {
 		switch (get(inputCreationConfig).tracker) {
-			case 'opengaze':
+			case 'gazepoint':
 				gazeInputType =
 					get(inputCreationConfig).fixationDetection === 'idt' ? 'gazepointIdt' : 'gazepointBase';
 				break;
@@ -27,13 +27,13 @@
 	});
 
 	const gazepointBase: GazeInputConfig = {
-		tracker: 'opengaze',
+		tracker: 'gazepoint',
 		uri: 'ws://localhost:13892',
 		fixationDetection: 'device'
 	};
 
 	const gazepointIdt: GazeInputConfig = {
-		tracker: 'opengaze',
+		tracker: 'gazepoint',
 		uri: 'ws://localhost:13892',
 		fixationDetection: 'idt'
 	};

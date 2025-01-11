@@ -68,6 +68,7 @@
 
 	const connectToBridge = async () => {
 		try {
+			await waitForTimeout(400);
 			await gazeManager.open();
 			loadStateBridge = 'loaded';
 		} catch (error) {
@@ -129,7 +130,7 @@
 
 		await startEmitting();
 
-		await waitForTimeout(400);
+		await waitForTimeout(600);
 		onLoad(lessonConfig);
 	};
 
