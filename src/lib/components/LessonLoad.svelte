@@ -156,7 +156,7 @@
 				<LessonLoadLine loadState={loadStateBridge} loadTitle="Připojení Bridge" />
 				<LessonLoadLine loadState={loadStateTracker} loadTitle="Nastavení trackeru" />
 				<LessonLoadLine loadState={loadStateEmitting} loadTitle="Vysílám pohyby očí" />
-				<div class="mt-6 h-32 w-full max-w-sm text-red-500">
+				<div class="mt-6 h-24 w-full max-w-sm text-red-500">
 					{#if anyError}
 						<div in:fly={{ duration: 600, y: 200 }}>
 							{errorMessage}
