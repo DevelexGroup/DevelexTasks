@@ -85,7 +85,7 @@
 	const connectToTracker = async () => {
 		try {
 			const manager = await gazeManager.status();
-			if (manager.lastStatus === null || manager.lastStatus.status === 'trackerDisconnected') {
+			if (manager.lastStatus === null || manager.lastStatus.tracker.status === 'trackerDisconnected') {
 				await gazeManager.connect();
 			}
 			loadStateTracker = 'loaded';
@@ -103,7 +103,7 @@
 	const startEmitting = async () => {
 		try {
 			const manager = await gazeManager.status();
-			if (manager.lastStatus?.status !== 'trackerEmitting') {
+			if (manager.lastStatus?.tracker.status !== 'trackerEmitting') {
 				await gazeManager.start();
 			}
 			loadStateEmitting = 'loaded';
