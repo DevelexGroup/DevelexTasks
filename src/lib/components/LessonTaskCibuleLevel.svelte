@@ -91,6 +91,13 @@
 		if (target.some((t) => t.id === FIXATION_EYE)) {
 			wasCrossFixated.set(true);
 		}
+
+		if (
+			target.some((t) => t.id === 'syllable-choice_0_0') &&
+			currentContent[currentRowIndex].syllables.length == 1
+		) {
+			handleCorrectSyllableClick();
+		}
 	};
 
 	/**

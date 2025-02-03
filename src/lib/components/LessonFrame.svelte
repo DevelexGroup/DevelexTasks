@@ -64,7 +64,7 @@
 	};
 
 	const handleLessonFail = () => {
-		failAudio.play();
+		// failAudio.play();
 		state = 'fail';
 	};
 </script>

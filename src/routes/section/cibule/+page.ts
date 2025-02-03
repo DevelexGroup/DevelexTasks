@@ -2,10 +2,11 @@ import { cibuleLessons } from '$lib/data/lesson/cibule';
 
 /** @type {import('./$types').PageLoad} */
 export function load() {
-	const levelArray = cibuleLessons.map((i) => i.level);
-
 	return {
-		config: levelArray
+		config: cibuleLessons.map((i) => ({
+			label: i.label,
+			level: i.level
+		}))
 	};
 }
 

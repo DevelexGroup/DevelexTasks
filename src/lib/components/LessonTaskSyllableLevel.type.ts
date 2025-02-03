@@ -15,4 +15,5 @@ export interface LessonTaskSyllableLevelProps {
 	 * The gap between the syllables in pixels.
 	 */
 	syllableGap?: number;
+	highlightLine?: boolean;
 }

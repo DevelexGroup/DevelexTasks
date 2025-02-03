@@ -15,7 +15,8 @@
 		isSyllableAssignmentPresent = true,
 		correctSyllableVisibilityTimeout = 0,
 		assignmentGap = 120,
-		syllableGap = 12
+		syllableGap = 12,
+		highlightLine = false
 	}: LessonTaskSyllableLevelProps = $props();
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
@@ -222,6 +223,7 @@
 		{assignmentGap}
 		{syllableGap}
 		{currentRowIndex}
+		{highlightLine}
 		on:all-correct-syllables-clicked={handleAllCorrectSyllablesClicked}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}

@@ -5,6 +5,7 @@ const globalGap = 0;
 export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	{
 		level: 'one',
+		label: 'Úroveň 1',
 		content: [
 			[
 				{
@@ -106,6 +107,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	},
 	{
 		level: 'two',
+		label: 'Úroveň 2',
 		content: [
 			[
 				{
@@ -224,6 +226,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	},
 	{
 		level: 'three',
+		label: 'Úroveň 3',
 		content: [
 			[
 				{
@@ -276,6 +279,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	},
 	{
 		level: 'four',
+		label: 'Úroveň 4',
 		content: [
 			[
 				{
@@ -342,6 +346,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	},
 	{
 		level: 'five',
+		label: 'Úroveň 5',
 		content: [
 			[
 				{
@@ -426,6 +431,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	},
 	{
 		level: 'six',
+		label: 'Úroveň 6',
 		content: [
 			[
 				{
@@ -457,6 +463,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	},
 	{
 		level: 'seven',
+		label: 'Úroveň 7',
 		content: [
 			[
 				{

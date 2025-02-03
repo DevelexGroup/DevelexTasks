@@ -28,6 +28,7 @@
 		unregisterElement: (element: HTMLElement) => void;
 		idAssignementSyllable?: string;
 		idOtherSyllableBase?: string;
+		highlightLine?: boolean;
 	}
 
 	let {
@@ -44,13 +45,16 @@
 		registerElement,
 		unregisterElement,
 		idAssignementSyllable = 'syllable-assignement',
-		idOtherSyllableBase = 'syllable-choice-'
+		idOtherSyllableBase = 'syllable-choice-',
+		highlightLine = false
 	}: Props = $props();
 
 	const correctIndexes = content.syllables
 		.map((item, index) => (item === content.correctSyllable ? index : -1))
 		.filter((index) => index !== -1)
 		.reverse();
+
+	console.log(highlightLine);
 
 	const getNextExpectingIndex = (): number => {
 		return correctIndexes.pop() ?? -1;
@@ -172,6 +176,7 @@
 			{registerElement}
 			{unregisterElement}
 			isHighlighted={usedIndexes.includes(index) && showProgressAfterMistake}
+			isDeHighlighted={!isActive && highlightLine}
 			on:word-clicked={evaluateSyllable}
 		/>
 	{/each}

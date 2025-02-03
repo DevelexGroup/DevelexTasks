@@ -82,16 +82,29 @@
 	const inOptions = { duration: 750, delay: 200 };
 	const outOptions = { duration: 200 };
 
+	let showProgressAfterMistake = $state(false);
+	let usedIndexes = $state<number[]>([]);
+
 	const evaluateSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
+		showProgressAfterMistake = false;
+
 		const columnIndex = +e.detail.id.replace(`${idOtherSyllableBase}`, '');
 		const isCorrect = correctExpectingIndex == columnIndex;
 
 		if (!isCorrect) {
+			setTimeout(() => {
+				showProgressAfterMistake = true;
+				setTimeout(() => {
+					showProgressAfterMistake = false;
+				}, 3500);
+			}, 4500);
+
 			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 			return;
 		}
 
 		if (correctIndexes.length > 0) {
+			usedIndexes.push(correctExpectingIndex);
 			correctExpectingIndex = getNextExpectingIndex();
 			roundCompleteAudio.pause();
 			roundCompleteAudio.currentTime = 0;
@@ -134,7 +147,8 @@
 			id={`${idOtherSyllableBase}${index}`}
 			{registerElement}
 			{unregisterElement}
-			isHighlighted={markWantedSyllables && correctIndexesSet.has(index)}
+			isHighlighted={(markWantedSyllables && correctIndexesSet.has(index)) ||
+				(showProgressAfterMistake && usedIndexes.includes(index))}
 			isWrong={!correctIndexesSet.has(index)}
 			on:word-clicked={evaluateSyllable}
 		/>

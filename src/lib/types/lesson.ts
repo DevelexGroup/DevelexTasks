@@ -81,6 +81,7 @@ export type LessonConfigBase<T extends LessonTypes> = {
 			| 'speechRecognition'
 		>;
 		level: string;
+		label?: string;
 	};
 };
 

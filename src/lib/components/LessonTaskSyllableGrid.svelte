@@ -39,6 +39,7 @@
 		 * Unregister an element for gaze interaction.
 		 */
 		unregisterElement: (element: HTMLElement) => void;
+		highlightLine?: boolean;
 	}
 
 	let {
@@ -58,7 +59,8 @@
 		assignmentGap = 120,
 		syllableGap = 12,
 		registerElement,
-		unregisterElement
+		unregisterElement,
+		highlightLine = false
 	}: Props = $props();
 
 	const getCorrectRowIdsForTheCorrect = (syllableRow: SyllableTaskType[number]) => {
@@ -90,6 +92,7 @@
 			{isSyllableAssignmentPresent}
 			{rowIndex}
 			isActive={currentRowIndex === rowIndex}
+			{highlightLine}
 			on:correct-syllable-clicked
 			on:all-correct-syllables-clicked
 			on:incorrect-syllable-clicked

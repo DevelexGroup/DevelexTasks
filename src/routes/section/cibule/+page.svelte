@@ -4,7 +4,10 @@
 
 	interface Props {
 		data: {
-			config: string[];
+			config: {
+				level: number;
+				label?: string;
+			}[];
 		};
 	}
 
@@ -15,14 +18,14 @@
 	<h1 class="text-3xl font-bold">Cibule</h1>
 	<p>Choose your level:</p>
 	<div class="flex flex-col gap-1">
-		{#each data.config as level}
-			<ButtonStartLesson href="/lesson/cibule/{level}">
-				{level}
+		{#each data.config as item}
+			<ButtonStartLesson href="/lesson/cibule/{item.level}">
+				{item.label ?? `Úroveň ${item.level}`}
 			</ButtonStartLesson>
 		{/each}
 		<div class="mt-4 flex flex-col gap-1">
 			<Button href="/">Back to selection</Button>
-			<Button href="/settings">Change tracker</Button>
+			<Button href="/settings">Změnit zařízení</Button>
 		</div>
 	</div>
 </div>

@@ -3,6 +3,7 @@ import type { LessonConfigMap } from '$lib/types/lesson';
 export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 	{
 		level: 'one',
+		label: 'Úroveň 1',
 		content: [
 			[
 				{
@@ -125,6 +126,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 	},
 	{
 		level: 'two',
+		label: 'Úroveň 2',
 		content: [
 			[
 				{
@@ -244,6 +246,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 	},
 	{
 		level: 'three',
+		label: 'Úroveň 3',
 		content: [
 			[
 				{
@@ -345,11 +348,13 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			syllableGap: 20,
 			shouldReadCorrectSyllable: true,
 			isSyllableAssignmentPresent: false,
-			correctSyllableVisibilityTimeout: 0
+			correctSyllableVisibilityTimeout: 0,
+			highlightLine: true
 		}
 	},
 	{
 		level: 'four',
+		label: 'Úroveň 4',
 		content: [
 			[
 				{
@@ -465,7 +470,8 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			syllableGap: 20,
 			shouldReadCorrectSyllable: true,
 			isSyllableAssignmentPresent: false,
-			correctSyllableVisibilityTimeout: 0
+			correctSyllableVisibilityTimeout: 0,
+			highlightLine: true
 		}
 	}
 ] as const;
