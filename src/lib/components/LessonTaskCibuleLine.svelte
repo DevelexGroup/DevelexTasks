@@ -135,6 +135,7 @@
 			{registerElement}
 			{unregisterElement}
 			isHighlighted={markWantedSyllables && correctIndexesSet.has(index)}
+			isWrong={!correctIndexesSet.has(index)}
 			on:word-clicked={evaluateSyllable}
 		/>
 	{/each}

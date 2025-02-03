@@ -101,12 +101,19 @@
 	const processReadingAssignmentSyllable = async () => {
 		if (!shouldReadCorrectSyllable) return;
 		await waitForTimeout(500);
+
+		const content = currentContent[currentRowIndex];
+
+		let textToRead =
+			content.correctSyllable == undefined ? content.incorrectSyllable! : content.correctSyllable!;
+
+		if (content.wordToRead !== undefined) {
+			textToRead = content.wordToRead;
+		}
+
 		void wordReader.read([
 			{
-				text:
-					currentContent[currentRowIndex].correctSyllable == undefined
-						? currentContent[currentRowIndex].incorrectSyllable!
-						: currentContent[currentRowIndex].correctSyllable!,
+				text: textToRead,
 				id: 'correct-syllable'
 			}
 		]);

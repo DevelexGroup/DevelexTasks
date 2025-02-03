@@ -9,6 +9,7 @@
 		unregisterElement: (element: HTMLElement) => void;
 		disabled?: boolean;
 		isHighlighted?: boolean;
+		isWrong?: boolean;
 	}
 
 	let {
@@ -17,7 +18,8 @@
 		registerElement,
 		unregisterElement,
 		disabled = false,
-		isHighlighted = false
+		isHighlighted = false,
+		isWrong = false
 	}: Props = $props();
 
 	const dispatch = createEventDispatcher<{
@@ -32,18 +34,35 @@
 	};
 </script>
 
-<button
-	class="group relative inline-block {disabled ? '' : 'cursor-pointer'}"
-	onclick={handleWordClick}
-	{disabled}
->
-	<LessonWord {registerElement} {unregisterElement} {word} {id} {isHighlighted} />
-	<div
-		class="syllable-select absolute -left-2 top-0 -z-10 h-full rounded-md duration-500 {disabled
-			? ''
-			: 'group-hover:bg-neutral-200 group-hover:opacity-50'}"
-	></div>
-</button>
+{#if isWrong}
+	{#each word.split('') as char}
+		<button
+			class="group relative inline-block {disabled ? '' : 'cursor-pointer'}"
+			onclick={handleWordClick}
+			{disabled}
+		>
+			<LessonWord {registerElement} {unregisterElement} word={char} {id} {isHighlighted} />
+			<div
+				class="syllable-select absolute -left-2 top-0 -z-10 h-full rounded-md duration-500 {disabled
+					? ''
+					: 'group-hover:bg-neutral-200 group-hover:opacity-50'}"
+			></div>
+		</button>
+	{/each}
+{:else}
+	<button
+		class="group relative inline-block {disabled ? '' : 'cursor-pointer'}"
+		onclick={handleWordClick}
+		{disabled}
+	>
+		<LessonWord {registerElement} {unregisterElement} {word} {id} {isHighlighted} />
+		<div
+			class="syllable-select absolute -left-2 top-0 -z-10 h-full rounded-md duration-500 {disabled
+				? ''
+				: 'group-hover:bg-neutral-200 group-hover:opacity-50'}"
+		></div>
+	</button>
+{/if}
 
 <style>
 	.syllable-select {

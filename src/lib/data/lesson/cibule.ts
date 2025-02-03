@@ -1,6 +1,6 @@
 import type { LessonConfigMap } from '$lib/types/lesson';
 
-const globalGap = 4;
+const globalGap = 0;
 
 export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	{
@@ -75,6 +75,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'c',
+					wordToRead: 'cé',
 					syllables: [
 						'ooooo',
 						'c',
@@ -109,12 +110,14 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'k',
+					wordToRead: 'ká',
 					syllables: ['k']
 				}
 			],
 			[
 				{
 					correctSyllable: 'k',
+					wordToRead: 'ká',
 					syllables: [
 						'eeeee',
 						'k',
@@ -259,50 +262,6 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 						'aaa',
 						'lo',
 						'aaaaa'
-					]
-				}
-			],
-			[
-				{
-					correctSyllable: 'p',
-					syllables: [
-						'bbbbb',
-						'p',
-						'bbbb',
-						'p',
-						'bbbbbbbb',
-						'p',
-						'bbbb',
-						'p',
-						'bb',
-						'p',
-						'bbbbbbbb',
-						'p',
-						'bbbb',
-						'p',
-						'bbbb'
-					]
-				}
-			],
-			[
-				{
-					correctSyllable: 'c',
-					syllables: [
-						'ooooo',
-						'c',
-						'ooo',
-						'c',
-						'ooooooo',
-						'c',
-						'ooo',
-						'c',
-						'oo',
-						'c',
-						'ooooooo',
-						'c',
-						'oooo',
-						'c',
-						'oooo'
 					]
 				}
 			]
@@ -507,8 +466,8 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			],
 			[
 				{
-					incorrectSyllable: 'o',
-					syllables: ['ooooooooo', 'p', 'ooooooooo', 'li', 'oooooooo', 'ce', 'oooooooooo']
+					incorrectSyllable: 'a',
+					syllables: ['aaaaaaaaa', 'po', 'aaaaaaaaa', 'li', 'aaaaaaaa', 'ce', 'aaaaaaaaa']
 				}
 			],
 			[

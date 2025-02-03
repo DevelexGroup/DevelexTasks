@@ -44,6 +44,7 @@ export type CibuleTaskType = {
 	syllables: string[];
 	correctSyllable?: string;
 	incorrectSyllable?: string;
+	wordToRead?: string;
 }[];
 
 export type LessonSvelteComponentEvents = {
