@@ -8,6 +8,7 @@
 		registerElement: (element: HTMLElement) => void;
 		unregisterElement: (element: HTMLElement) => void;
 		disabled?: boolean;
+		isHighlighted?: boolean;
 	}
 
 	let {
@@ -15,6 +16,7 @@
 		id,
 		registerElement,
 		unregisterElement,
+		isHighlighted = false,
 		disabled = false
 	}: Props = $props();
 
@@ -35,7 +37,7 @@
 	onclick={handleWordClick}
 	{disabled}
 >
-	<LessonWord {registerElement} {unregisterElement} {word} {id} isHighlighted={false} />
+	<LessonWord {registerElement} {unregisterElement} {word} {id} {isHighlighted} />
 	<div
 		class="syllable-select absolute -left-2 top-0 -z-10 h-full rounded-md duration-500 {disabled
 			? ''

@@ -76,6 +76,16 @@
 		dispatch('lessonMistake');
 		if (mistakeCount >= MAXIMUM_MISTAKE_COUNT) {
 			wasMistakenTooManyTimes.set(true);
+		} else {
+			// TODO: tohle pak přes nějaký event, onLessonMistakeComplete
+			setTimeout(() => {
+				wordReader.read([
+					{
+						text: currentContent[currentRowIndex].correctSyllable,
+						id: 'correct-syllable'
+					}
+				]);
+			}, 4500);
 		}
 	};
 

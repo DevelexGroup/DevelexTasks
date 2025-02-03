@@ -47,6 +47,15 @@
 		idOtherSyllableBase = 'syllable-choice-'
 	}: Props = $props();
 
+	const correctIndexes = content.syllables
+		.map((item, index) => (item === content.correctSyllable ? index : -1))
+		.filter((index) => index !== -1)
+		.reverse();
+
+	const getNextExpectingIndex = (): number => {
+		return correctIndexes.pop() ?? -1;
+	};
+
 	const dispatch = createEventDispatcher<{
 		'correct-syllable-clicked': {
 			word: string;
@@ -71,27 +80,67 @@
 	const getSyllableId = (index: number) => `${idOtherSyllableBase}${index}`;
 	const correctIds = new Set(correctIdsInTheRow.map((ix) => getSyllableId(ix)));
 	const clickedIds = new Set<string>(); // Track clicked syllables
+	let correctExpectingIndex = getNextExpectingIndex();
+	const roundCompleteAudio = new Audio('/sound/positive.wav');
+	let showProgressAfterMistake = $state(false);
+	let usedIndexes = $state<number[]>([]);
 
 	const evaluateSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
+		showProgressAfterMistake = false;
+
 		if (!isActive) {
-			return dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
+			mistake(e);
+			return;
 		}
-		const { id } = e.detail;
-		if (correctIds.has(id)) {
-			clickedIds.add(id); // Add correct ID to clicked set
 
-			// Check if all correct IDs are clicked
-			const allCorrectClicked = Array.from(correctIds).every((correctId) =>
-				clickedIds.has(correctId)
-			);
+		const columnIndex = +e.detail.id.replace(`${idOtherSyllableBase}`, '');
+		const isCorrect = correctExpectingIndex == columnIndex;
 
-			dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
-			if (allCorrectClicked) {
-				dispatch('all-correct-syllables-clicked', { ...e.detail, rowIndex });
-			}
-		} else {
-			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
+		if (!isCorrect) {
+			mistake(e);
+			return;
 		}
+
+		const currentCorrectIndexes = correctIndexes.length;
+
+		usedIndexes.push(correctExpectingIndex);
+		correctExpectingIndex = getNextExpectingIndex();
+		roundCompleteAudio.pause();
+		roundCompleteAudio.currentTime = 0;
+		roundCompleteAudio.play();
+		dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
+
+		if (currentCorrectIndexes <= 0) {
+			dispatch('all-correct-syllables-clicked', { ...e.detail, rowIndex });
+		}
+
+		// const { id } = e.detail;
+		// if (correctIds.has(id)) {
+		// 	clickedIds.add(id); // Add correct ID to clicked set
+
+		// 	// Check if all correct IDs are clicked
+		// 	const allCorrectClicked = Array.from(correctIds).every((correctId) =>
+		// 		clickedIds.has(correctId)
+		// 	);
+
+		// 	dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
+		// 	if (allCorrectClicked) {
+		// 		dispatch('all-correct-syllables-clicked', { ...e.detail, rowIndex });
+		// 	}
+		// } else {
+		// 	dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
+		// }
+	};
+
+	const mistake = (e: CustomEvent<{ word: string; id: string }>) => {
+		setTimeout(() => {
+			showProgressAfterMistake = true;
+			setTimeout(() => {
+				showProgressAfterMistake = false;
+			}, 3500);
+		}, 4500);
+
+		dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 	};
 </script>
 
@@ -122,6 +171,7 @@
 			id={getSyllableId(index)}
 			{registerElement}
 			{unregisterElement}
+			isHighlighted={usedIndexes.includes(index) && showProgressAfterMistake}
 			on:word-clicked={evaluateSyllable}
 		/>
 	{/each}

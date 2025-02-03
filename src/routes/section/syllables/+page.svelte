@@ -12,7 +12,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center space-y-4">
-	<h1 class="text-3xl font-bold">Syllables</h1>
+	<h1 class="text-3xl font-bold">Slabiky</h1>
 	<p>Choose your level:</p>
 	<div class="flex flex-col gap-1">
 		{#each data.config as level}

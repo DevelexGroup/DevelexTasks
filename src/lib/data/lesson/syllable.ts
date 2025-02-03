@@ -2,7 +2,7 @@ import type { LessonConfigMap } from '$lib/types/lesson';
 
 export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 	{
-		level: 'zero',
+		level: 'one',
 		content: [
 			[
 				{
@@ -31,19 +31,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 						'sa'
 					]
 				}
-			]
-		],
-		partialProps: {
-			assignmentGap: 200,
-			syllableGap: 20,
-			shouldReadCorrectSyllable: true,
-			isSyllableAssignmentPresent: true,
-			correctSyllableVisibilityTimeout: 0
-		}
-	},
-	{
-		level: 'one',
-		content: [
+			],
 			[
 				{
 					correctSyllable: 'po',
@@ -125,16 +113,6 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 						'hu'
 					]
 				}
-			],
-			[
-				{
-					correctSyllable: 'ma',
-					syllables: ['ma', 'ma', 'so']
-				},
-				{
-					correctSyllable: 'ba',
-					syllables: ['ba', 'ma', 'ro']
-				}
 			]
 		],
 		partialProps: {
@@ -148,6 +126,12 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 	{
 		level: 'two',
 		content: [
+			[
+				{
+					correctSyllable: 'do',
+					syllables: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be']
+				}
+			],
 			[
 				{
 					correctSyllable: 'hůl',
@@ -169,8 +153,84 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			],
 			[
 				{
-					correctSyllable: 'ma',
-					syllables: ['ma', 'ma', 'so']
+					correctSyllable: 'kos',
+					syllables: [
+						'koš',
+						'kus',
+						'kos',
+						'kso',
+						'kos',
+						'sok',
+						'kos',
+						'kas',
+						'kos',
+						'kos',
+						'hos',
+						'koš',
+						'kos',
+						'sok',
+						'šok'
+					]
+				},
+				{
+					correctSyllable: 'nám',
+					syllables: [
+						'nám',
+						'nám',
+						'mán',
+						'nám',
+						'nam',
+						'ném',
+						'nem',
+						'nán',
+						'mná',
+						'ném',
+						'nám',
+						'máu',
+						'ním',
+						'míň',
+						'nám'
+					]
+				},
+				{
+					correctSyllable: 'výr',
+					syllables: [
+						'vír',
+						'rýv',
+						'výr',
+						'vir',
+						'vrý',
+						'vír',
+						'výr',
+						'vyr',
+						'výz',
+						'výr',
+						'vzý',
+						'výr',
+						'zvý',
+						'vír',
+						'viz'
+					]
+				},
+				{
+					correctSyllable: 'car',
+					syllables: [
+						'cor',
+						'car',
+						'rac',
+						'cer',
+						'rec',
+						'car',
+						'cac',
+						'sar',
+						'ras',
+						'čar',
+						'rač',
+						'car',
+						'car',
+						'čer',
+						'cra'
+					]
 				}
 			]
 		],
@@ -187,84 +247,95 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 		content: [
 			[
 				{
-					correctSyllable: 'plyš',
+					correctSyllable: 'do',
+					syllables: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be']
+				}
+			],
+			[
+				{
+					correctSyllable: 'vr',
+					syllables: ['nr', 'vr', 'vř', 'rv', 'vr', 'br', 'ir', 'vr', 'vl', 'ru', 'pr', 'vr']
+				}
+			],
+			[
+				{
+					correctSyllable: 'tr',
 					syllables: [
-						'plys',
-						'plyš',
-						'slyš',
-						'blyš',
-						'plyš',
-						'pylš',
-						'šlyp',
-						'dlyž',
-						'plys',
-						'blyž',
-						'plyš',
-						'blyš',
-						'plyš',
-						'plys',
-						'slyš'
+						'tl',
+						'tr',
+						'lr',
+						'tř',
+						'kr',
+						'tř',
+						'tr',
+						'jr',
+						'tl',
+						'hr',
+						'tr',
+						'lr',
+						'kr',
+						'tr',
+						'tř'
 					]
 				},
 				{
-					correctSyllable: 'krám',
+					correctSyllable: 'mr',
 					syllables: [
-						'drám',
-						'hrám',
-						'krám',
-						'trám',
-						'krám',
-						'krán',
-						'hrán',
-						'krém',
-						'hrém',
-						'krán',
-						'hrán',
-						'krám',
-						'krám',
-						'trám',
-						'vrám'
+						'nr',
+						'ml',
+						'mr',
+						'mv',
+						'mi',
+						'rm',
+						'mr',
+						'ur',
+						'nr',
+						'rn',
+						'jm',
+						'mr',
+						'nr',
+						'mv',
+						'rm'
 					]
 				},
 				{
-					correctSyllable: 'gram',
+					correctSyllable: 'hr',
 					syllables: [
-						'aram',
-						'gram',
-						'gran',
-						'fram',
-						'grem',
-						'grem',
-						'gram',
-						'garm',
-						'gram',
-						'garm',
-						'gern',
-						'fram',
-						'gran',
-						'gram',
-						'tran'
+						'rh',
+						'hr',
+						'hr',
+						'nr',
+						'hl',
+						'kr',
+						'rh',
+						'tr',
+						'lr',
+						'fr',
+						'hr',
+						'rh',
+						'rt',
+						'mr',
+						'hl'
 					]
 				},
 				{
-					correctSyllable: 'chlup',
+					correctSyllable: 'br',
 					syllables: [
-						'chlup',
-						'clup',
-						'chlub',
-						'clud',
-						'chlup',
-						'pluh',
-						'chulp',
-						'chulp',
-						'chlup',
-						'chlub',
-						'bluch',
-						'chlap',
-						'chlud',
-						'chlup',
-						'pluh',
-						'bluh'
+						'dr',
+						'rb',
+						'br',
+						'pr',
+						'br',
+						'bř',
+						'rd',
+						'bl',
+						'bu',
+						'rd',
+						'br',
+						'pr',
+						'rb',
+						'př',
+						'br'
 					]
 				}
 			]
@@ -273,13 +344,38 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			assignmentGap: 200,
 			syllableGap: 20,
 			shouldReadCorrectSyllable: true,
-			isSyllableAssignmentPresent: true,
+			isSyllableAssignmentPresent: false,
 			correctSyllableVisibilityTimeout: 0
 		}
 	},
 	{
 		level: 'four',
 		content: [
+			[
+				{
+					correctSyllable: 'do',
+					syllables: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be']
+				}
+			],
+			[
+				{
+					correctSyllable: 'zrod',
+					syllables: [
+						'srod',
+						'zrod',
+						'zrob',
+						'zdor',
+						'zrod',
+						'zdro',
+						'zrop',
+						'zrad',
+						'zrod',
+						'srod',
+						'zrop',
+						'zrob'
+					]
+				}
+			],
 			[
 				{
 					correctSyllable: 'plyš',
