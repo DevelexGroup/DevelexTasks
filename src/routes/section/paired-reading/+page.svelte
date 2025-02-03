@@ -21,8 +21,8 @@
 			</ButtonStartLesson>
 		{/each}
 		<div class="mt-4 flex flex-col gap-1">
-			<Button href="/">Back to selection</Button>
-			<Button href="/settings">Change tracker</Button>
+			<Button href="/">Zpět na výběr úloh</Button>
+			<Button href="/settings">Změnít zařízení</Button>
 		</div>
 	</div>
 </div>
