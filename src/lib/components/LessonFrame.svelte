@@ -69,8 +69,8 @@
 		state = 'fail';
 	};
 
-	const handleStateTransition = () => {
-		onLessonStateTransition(state);
+	const handleStateTransition = (e: CustomEvent<string>) => {
+		onLessonStateTransition(e.detail);
 	};
 </script>
 
@@ -89,7 +89,7 @@
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
-					on:stateTransition={handleStateTransition}
+					on:lessonFrameTransition={handleStateTransition}
 				/>
 			{:else if lessonConfig.type === 'pairedReading'}
 				<LessonTaskPairedReadingLevel
@@ -99,7 +99,7 @@
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
-					on:stateTransition={handleStateTransition}
+					on:lessonFrameTransition={handleStateTransition}
 				/>
 			{:else if lessonConfig.type === 'cibule'}
 				<LessonTaskCibuleLevel
@@ -109,7 +109,7 @@
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
-					on:stateTransition={handleStateTransition}
+					on:lessonFrameTransition={handleStateTransition}
 				/>
 			{/if}
 		</div>

@@ -191,7 +191,7 @@
 		dispatch('lessonFrameTransition', 'crossfixation');
 		await processCrossFixation(); // Step 1: Wait for the user to fixate on the crossfix
 		for await (const [index, _] of currentContent.entries()) {
-			dispatch('lessonFrameTransition', `assignment-${index}-of-${currentContent.length}`);
+			dispatch('lessonFrameTransition', `assignment-${index + 1}-of-${currentContent.length}`);
 			currentRowIndex = index;
 			// hide every assignment syllable except the current one
 			hideAssignmentSyllables = currentContent.map((_, i) => (i === index ? -1 : i));
@@ -200,7 +200,7 @@
 			const wasSuccess = await processSyllableSelection(); // Step 3: Wait for the user to select the correct syllable
 			if (!wasSuccess) return;
 			processStateCleanup();
-			dispatch('lessonFrameTransition', `assignmentDone-${index}-of-${currentContent.length}`);
+			dispatch('lessonFrameTransition', `assignmentDone-${index + 1}-of-${currentContent.length}`);
 			await waitForTimeout(500);
 		}
 		dispatch('lessonComplete');
