@@ -32,5 +32,5 @@
 </script>
 
 {#if data}
-	<Lesson {getLessonConfig} isDebug={false} />
+	<Lesson lessonName={data.config.level} {getLessonConfig} isDebug={false} />
 {/if}

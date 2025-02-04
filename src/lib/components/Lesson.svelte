@@ -19,9 +19,10 @@
 		 * Indicates if the application is in debug mode. If so, the LessonDebug component will be displayed.
 		 */
 		isDebug: boolean;
+		lessonName: string;
 	}
 
-	let { getLessonConfig, isDebug }: Props = $props();
+	let { getLessonConfig, isDebug, lessonName }: Props = $props();
 
 	let lessonConfig: LessonConfig['setup'] | null = $state(null);
 
@@ -64,7 +65,7 @@
 			in:fly={flyIn}
 			out:fly={flyOut}
 		>
-			<LessonLoad onLoad={handleLoad} {getLessonConfig} />
+			<LessonLoad onLoad={handleLoad} {getLessonConfig} {lessonName} />
 		</div>
 	{:else if lessonState === 'error'}
 		<div

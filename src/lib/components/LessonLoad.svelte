@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import Loader from './Loader.svelte';
 	import LessonLoadViewportCalibration from './LessonLoadViewportCalibration.svelte';
 	import { waitForTimeout } from '$lib/utils/waitForCondition';
 	import type { GazeManager } from '@473783/develex-core';
@@ -11,13 +10,15 @@
 	import LessonLoadLine from './LessonLoadLine.svelte';
 	import { goto } from '$app/navigation';
 	import { extractErrorMessage } from '$lib/utils/errorUtility';
+	import sessionRepository from '$lib/database/repositories/session.repository';
 
 	interface Props {
 		getLessonConfig: () => Promise<LessonConfig['setup']>;
 		onLoad: (lessonConfig: LessonConfig['setup']) => void;
+		lessonName: string;
 	}
 
-	let { getLessonConfig, onLoad }: Props = $props();
+	let { getLessonConfig, onLoad, lessonName }: Props = $props();
 	let showCalibration = $state(false);
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
@@ -41,6 +42,9 @@
 			calibrationPromiseResolve = null;
 		}
 	});
+
+	// Function to generate a unique ID
+	const generateUniqueId = () => `session-${Date.now()}`;
 
 	const checkViewportCalibration = async () => {
 		try {
@@ -85,7 +89,10 @@
 	const connectToTracker = async () => {
 		try {
 			const manager = await gazeManager.status();
-			if (manager.lastStatus === null || manager.lastStatus.tracker.status === 'trackerDisconnected') {
+			if (
+				manager.lastStatus === null ||
+				manager.lastStatus.tracker.status === 'trackerDisconnected'
+			) {
 				await gazeManager.connect();
 			}
 			loadStateTracker = 'loaded';
@@ -121,6 +128,17 @@
 	const load = async () => {
 		console.log('load the lesson config');
 		const lessonConfig = await getLessonConfig();
+
+		// Create a new session record
+		const sessionId = generateUniqueId();
+		const userName = 'NoSpecificUser';
+
+		await sessionRepository.create({
+			id: sessionId,
+			name: lessonName,
+			userName: userName
+		});
+
 		await checkViewportCalibration();
 		loadStateViewportCalibration = 'loaded';
 

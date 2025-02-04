@@ -22,7 +22,7 @@ export class DevelexIDB extends Dexie {
 			intersects: '++id, sessionId, timestamp, aoi',
 			userEvents: '++id, sessionId, timestamp, type',
 			stateEvents: '++id, sessionId, timestamp, type',
-			sessions: '++id, name, userName'
+			sessions: 'id, name, userName'
 		});
 	}
 }
