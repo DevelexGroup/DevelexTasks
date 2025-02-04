@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import Loader from './Loader.svelte';
 	import LessonLoadViewportCalibration from './LessonLoadViewportCalibration.svelte';
 	import { waitForTimeout } from '$lib/utils/waitForCondition';
 	import type { GazeManager } from '@473783/develex-core';
@@ -122,6 +121,7 @@
 	const load = async () => {
 		console.log('load the lesson config');
 		const lessonConfig = await getLessonConfig();
+
 		await checkViewportCalibration();
 		loadStateViewportCalibration = 'loaded';
 

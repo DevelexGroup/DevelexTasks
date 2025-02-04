@@ -12,5 +12,6 @@
 	<Button href="/section/fonologic">Baseline - Fonologické uvědomění a manipulace</Button>
 	<div class="mt-4 flex flex-col gap-1">
 		<Button href="/settings">Změnit zařízení</Button>
+		<Button href="/download">Stáhnout data</Button>
 	</div>
 </div>
