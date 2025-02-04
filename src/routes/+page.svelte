@@ -8,6 +8,8 @@
 	<Button href="/section/paired-reading">Dublované čtení</Button>
 	<Button href="/section/cibule">Cibule</Button>
 	<Button href="/section/syllables">Slabiky</Button>
+	<Button href="/section/visual-diff">Baseline - Zraková difereciace</Button>
+	<Button href="/section/fonologic">Baseline - Fonologické uvědomění a manipulace</Button>
 	<div class="mt-4 flex flex-col gap-1">
 		<Button href="/settings">Změnit zařízení</Button>
 	</div>

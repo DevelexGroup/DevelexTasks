@@ -1,6 +1,8 @@
 import LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
+import LessonTaskFonologicLevel from '$lib/components/LessonTaskFonologicLevel.svelte';
 import LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
 import LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
+import LessonTaskVisualDiffLevel from '$lib/components/LessonTaskVisualDiffLevel.svelte';
 import type { Component, ComponentProps } from 'svelte';
 
 export type LessonWordType = {
@@ -47,6 +49,22 @@ export type CibuleTaskType = {
 	wordToRead?: string;
 }[];
 
+export type VisualDiffTaskType = {
+	syllables: string[];
+	correctSyllable?: string;
+	correctGroupIndex?: number;
+	groups?: string[][];
+	wordToRead?: string;
+}[];
+
+export type FonologicTaskType = {
+	syllables: string[];
+	correctSyllable?: string;
+	wordToRead?: string;
+	correctIndexes?: number[];
+	correctImage?: string;
+}[];
+
 export type LessonSvelteComponentEvents = {
 	lessonSuccess: CustomEvent<void>;
 	lessonMistake: CustomEvent<void>;
@@ -57,7 +75,9 @@ export type LessonSvelteComponentEvents = {
 export const lessonComponentMap = {
 	syllable: LessonTaskSyllableLevel,
 	cibule: LessonTaskCibuleLevel,
-	pairedReading: LessonTaskPairedReadingLevel
+	pairedReading: LessonTaskPairedReadingLevel,
+	visualDiff: LessonTaskVisualDiffLevel,
+	fonologic: LessonTaskFonologicLevel
 };
 
 export type LessonTypes = keyof typeof lessonComponentMap;

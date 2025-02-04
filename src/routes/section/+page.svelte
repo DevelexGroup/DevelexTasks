@@ -9,6 +9,8 @@
 		<Button href="/section/paired-reading">Dublované čtení</Button>
 		<Button href="/section/syllables">Slabiky</Button>
 		<Button href="/section/cibule">Cibule</Button>
+		<Button href="/section/visual-diff">Baseline - Zraková difereciace</Button>
+		<Button href="/section/fonologic">Baseline - Fonologické uvědomění a manipulace</Button>
 	</div>
 	<a href="/settings" class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
 		Nastavení
