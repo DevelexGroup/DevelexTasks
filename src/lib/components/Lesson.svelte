@@ -193,6 +193,16 @@
 			gazeData: intersection.gazeData
 		});
 	};
+
+	const handleLessonStateTransition = async (newState: string) => {
+		// log as stateEvent
+		await stateEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'lessonFrameTransition',
+			data: newState
+		});
+	};
 </script>
 
 <svelte:window onerror={handleError} />
@@ -220,7 +230,7 @@
 			in:fly={flyIn}
 			out:fly={flyOut}
 		>
-			<LessonFrame {lessonConfig} />
+			<LessonFrame {lessonConfig} onLessonStateTransition={handleLessonStateTransition} />
 		</div>
 	{/if}
 	{#if isDebug}

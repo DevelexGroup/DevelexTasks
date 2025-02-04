@@ -16,9 +16,10 @@
 		 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
 		 */
 		lessonConfig: LessonConfig['setup'];
+		onLessonStateTransition: (newState: string) => void;
 	}
 
-	let { lessonConfig }: Props = $props();
+	let { lessonConfig, onLessonStateTransition }: Props = $props();
 
 	let state: 'round' | 'fail' | 'complete' | 'mistake' = $state('round');
 
@@ -67,6 +68,10 @@
 		// failAudio.play();
 		state = 'fail';
 	};
+
+	const handleStateTransition = () => {
+		onLessonStateTransition(state);
+	};
 </script>
 
 {#if state === 'round' || state === 'mistake'}
@@ -84,6 +89,7 @@
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
+					on:stateTransition={handleStateTransition}
 				/>
 			{:else if lessonConfig.type === 'pairedReading'}
 				<LessonTaskPairedReadingLevel
@@ -93,6 +99,7 @@
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
+					on:stateTransition={handleStateTransition}
 				/>
 			{:else if lessonConfig.type === 'cibule'}
 				<LessonTaskCibuleLevel
@@ -102,6 +109,7 @@
 					on:lessonMistake={handleLessonMistake}
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
+					on:stateTransition={handleStateTransition}
 				/>
 			{/if}
 		</div>
