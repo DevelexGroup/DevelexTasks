@@ -20,6 +20,7 @@
 	import saccadeRepository from '$lib/database/repositories/saccade.repository';
 	import fixationRepository from '$lib/database/repositories/fixation.repository';
 	import intersectionRepository from '$lib/database/repositories/intersect.repository';
+	import { browser } from '$app/environment';
 
 	interface Props {
 		/**
@@ -48,7 +49,7 @@
 
 	let errorMessages: string[] = $state([]);
 
-	let lessonState = writable<'error' | 'lessonFrame'>('lessonFrame');
+	const lessonState = writable<'loading' | 'lessonFrame' | 'error'>('loading');
 
 	const flyIn = { y: '100%', duration: 750, opacity: 0, delay: 500 };
 	const flyOut = { duration: 200, opacity: 0 };
@@ -56,6 +57,7 @@
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
 	const handleLoad = (obtainedLessonConfig: LessonConfig['setup']) => {
+		if (!browser) return;
 		lessonState.set('lessonFrame');
 		lessonConfig = obtainedLessonConfig;
 	};
@@ -66,6 +68,8 @@
 	const userName = 'NoSpecificUser';
 
 	onMount(async () => {
+		if (!browser) return;
+
 		await sessionRepository.create({
 			id: sessionId,
 			name: lessonName,
@@ -82,18 +86,16 @@
 	});
 
 	onDestroy(() => {
+		if (!browser) return;
 		if (gazeManager.input) {
 			gazeManager.stop();
 			gazeManager.disconnect();
 			gazeManager.close();
 		}
-		// if window defined, remove event listeners
-		if (window) {
-			window.removeEventListener('mousemove', handleMouseMove);
-			window.removeEventListener('mousedown', handleMouseDown);
-			window.removeEventListener('mouseup', handleMouseUp);
-			window.removeEventListener('click', handleClick);
-		}
+		window.removeEventListener('mousemove', handleMouseMove);
+		window.removeEventListener('mousedown', handleMouseDown);
+		window.removeEventListener('mouseup', handleMouseUp);
+		window.removeEventListener('click', handleClick);
 		gazeManager.off('saccadeObjectFrom', handleSaccade);
 		gazeManager.off('saccadeObjectTo', handleSaccade);
 		gazeManager.off('fixationObjectEnd', handleFixation);
