@@ -7,6 +7,8 @@
 	import { onDestroy, getContext } from 'svelte';
 	import LessonDebug from './LessonDebug.svelte';
 	import type { GazeManager } from '@473783/develex-core';
+	import { onMount } from 'svelte';
+	import sessionRepository from '$lib/database/repositories/session.repository';
 
 	interface Props {
 		/**
@@ -54,6 +56,19 @@
 		lessonState = 'lessonFrame';
 		lessonConfig = obtainedLessonConfig;
 	};
+
+	// Function to generate a unique ID
+	const generateUniqueId = () => `session-${Date.now()}`;
+	const sessionId = generateUniqueId();
+	const userName = 'NoSpecificUser';
+
+	onMount(async () => {
+		await sessionRepository.create({
+			id: sessionId,
+			name: lessonName,
+			userName: userName
+		});
+	});
 </script>
 
 <svelte:window onerror={handleError} />
