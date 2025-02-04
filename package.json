@@ -27,6 +27,7 @@
     "@types/dom-speech-recognition": "^0.0.4",
     "@types/eslint": "^8.56.7",
     "autoprefixer": "^10.4.19",
+    "dexie": "^4.0.11",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-storybook": "^0.8.0",
