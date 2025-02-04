@@ -9,6 +9,8 @@
 	import type { GazeManager } from '@473783/develex-core';
 	import { onMount } from 'svelte';
 	import sessionRepository from '$lib/database/repositories/session.repository';
+	import { writable } from 'svelte/store';
+	import stateEventsRepository from '$lib/database/repositories/stateEvents.repository';
 
 	interface Props {
 		/**
@@ -37,7 +39,7 @@
 
 	let errorMessages: string[] = $state([]);
 
-	let lessonState: 'error' | 'lessonFrame' = $state('lessonFrame');
+	let lessonState = writable<'error' | 'lessonFrame'>('lessonFrame');
 
 	const flyIn = { y: '100%', duration: 750, opacity: 0, delay: 500 };
 	const flyOut = { duration: 200, opacity: 0 };
@@ -53,7 +55,7 @@
 	});
 
 	const handleLoad = (obtainedLessonConfig: LessonConfig['setup']) => {
-		lessonState = 'lessonFrame';
+		lessonState.set('lessonFrame');
 		lessonConfig = obtainedLessonConfig;
 	};
 
@@ -69,6 +71,17 @@
 			userName: userName
 		});
 	});
+
+	// Subscribe to changes in lessonState and log them as stateEvents
+	lessonState.subscribe(async (newState) => {
+		console.log(`State changed to ${newState} in session ${sessionId} (lesson ${lessonName})`);
+		await stateEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: newState,
+			data: ''
+		});
+	});
 </script>
 
 <svelte:window onerror={handleError} />
@@ -82,7 +95,7 @@
 		>
 			<LessonLoad onLoad={handleLoad} {getLessonConfig} />
 		</div>
-	{:else if lessonState === 'error'}
+	{:else if $lessonState === 'error'}
 		<div
 			class="absolute inset-0 left-0 top-0 flex h-full w-full items-center justify-center"
 			in:fly={flyIn}
@@ -90,7 +103,7 @@
 		>
 			<LessonError {errorMessages} />
 		</div>
-	{:else if lessonState === 'lessonFrame'}
+	{:else if $lessonState === 'lessonFrame'}
 		<div
 			class="absolute inset-0 left-0 top-0 flex h-full w-full items-center justify-center"
 			in:fly={flyIn}
