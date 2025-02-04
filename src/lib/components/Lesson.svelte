@@ -87,10 +87,13 @@
 			gazeManager.disconnect();
 			gazeManager.close();
 		}
-		window.removeEventListener('mousemove', handleMouseMove);
-		window.removeEventListener('mousedown', handleMouseDown);
-		window.removeEventListener('mouseup', handleMouseUp);
-		window.removeEventListener('click', handleClick);
+		// if window defined, remove event listeners
+		if (window) {
+			window.removeEventListener('mousemove', handleMouseMove);
+			window.removeEventListener('mousedown', handleMouseDown);
+			window.removeEventListener('mouseup', handleMouseUp);
+			window.removeEventListener('click', handleClick);
+		}
 		gazeManager.off('saccadeObjectFrom', handleSaccade);
 		gazeManager.off('saccadeObjectTo', handleSaccade);
 		gazeManager.off('fixationObjectEnd', handleFixation);

@@ -56,11 +56,22 @@
 				bufferSize: 150
 			}
 		});
+		gazeManager.register({
+			interaction: 'intersect',
+			element,
+			settings: {
+				bufferSize: 150
+			}
+		});
 	};
 
 	const unregisterElement = (element: HTMLElement) => {
 		gazeManager.unregister({
 			interaction: 'fixation',
+			element
+		});
+		gazeManager.unregister({
+			interaction: 'intersect',
 			element
 		});
 	};
