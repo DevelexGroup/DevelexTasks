@@ -11,6 +11,7 @@
 	import sessionRepository from '$lib/database/repositories/session.repository';
 	import { writable } from 'svelte/store';
 	import stateEventsRepository from '$lib/database/repositories/stateEvents.repository';
+	import userEventsRepository from '$lib/database/repositories/userEvents.repository';
 
 	interface Props {
 		/**
@@ -52,6 +53,10 @@
 			gazeManager.disconnect();
 			gazeManager.close();
 		}
+		window.removeEventListener('mousemove', handleMouseMove);
+		window.removeEventListener('mousedown', handleMouseDown);
+		window.removeEventListener('mouseup', handleMouseUp);
+		window.removeEventListener('click', handleClick);
 	});
 
 	const handleLoad = (obtainedLessonConfig: LessonConfig['setup']) => {
@@ -70,6 +75,10 @@
 			name: lessonName,
 			userName: userName
 		});
+		window.addEventListener('mousemove', handleMouseMove);
+		window.addEventListener('mousedown', handleMouseDown);
+		window.addEventListener('mouseup', handleMouseUp);
+		window.addEventListener('click', handleClick);
 	});
 
 	// Subscribe to changes in lessonState and log them as stateEvents
@@ -82,6 +91,47 @@
 			data: ''
 		});
 	});
+
+	// Event handlers for mouse events
+	const handleMouseMove = async (event: MouseEvent) => {
+		console.log(`Mouse moved to: (${event.clientX}, ${event.clientY})`);
+		await userEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'mousemove',
+			data: `(${event.clientX}, ${event.clientY})`
+		});
+	};
+
+	const handleMouseDown = async (event: MouseEvent) => {
+		console.log(`Mouse button pressed at: (${event.clientX}, ${event.clientY})`);
+		await userEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'mousedown',
+			data: `(${event.clientX}, ${event.clientY})`
+		});
+	};
+
+	const handleMouseUp = async (event: MouseEvent) => {
+		console.log(`Mouse button released at: (${event.clientX}, ${event.clientY})`);
+		await userEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'mouseup',
+			data: `(${event.clientX}, ${event.clientY})`
+		});
+	};
+
+	const handleClick = async (event: MouseEvent) => {
+		console.log(`Mouse clicked at: (${event.clientX}, ${event.clientY})`);
+		await userEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'click',
+			data: `(${event.clientX}, ${event.clientY})`
+		});
+	};
 </script>
 
 <svelte:window onerror={handleError} />
