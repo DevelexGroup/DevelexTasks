@@ -80,7 +80,7 @@
 			in:fly={flyIn}
 			out:fly={flyOut}
 		>
-			<LessonLoad onLoad={handleLoad} {getLessonConfig} {lessonName} />
+			<LessonLoad onLoad={handleLoad} {getLessonConfig} />
 		</div>
 	{:else if lessonState === 'error'}
 		<div
