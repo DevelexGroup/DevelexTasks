@@ -83,13 +83,11 @@
 
 	const connectToTracker = async () => {
 		try {
-			const manager = await gazeManager.status();
-			if (
-				manager.lastStatus === null ||
-				manager.lastStatus.tracker.status === 'trackerDisconnected'
-			) {
+			/* 			const manager = await gazeManager.status();
+			if (manager.lastStatus === null || manager.lastStatus.tracker.status === 'trackerDisconnected') {
 				await gazeManager.connect();
-			}
+			} */
+			await gazeManager.connect();
 			loadStateTracker = 'loaded';
 		} catch (error) {
 			errorMessage = extractErrorMessage(

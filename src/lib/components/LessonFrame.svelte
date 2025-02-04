@@ -8,6 +8,8 @@
 	import LessonTaskCibuleLevel from './LessonTaskCibuleLevel.svelte';
 	import LessonTaskSyllableLevel from './LessonTaskSyllableLevel.svelte';
 	import LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
+	import LessonTaskVisualDiffLevel from './LessonTaskVisualDiffLevel.svelte';
+	import LessonTaskFonologicLevel from './LessonTaskFonologicLevel.svelte';
 
 	interface Props {
 		/**
@@ -110,6 +112,24 @@
 					on:lessonComplete={handleLessonComplete}
 					on:lessonFail={handleLessonFail}
 					on:lessonFrameTransition={handleStateTransition}
+				/>
+			{:else if lessonConfig.type === 'visualDiff'}
+				<LessonTaskVisualDiffLevel
+					{...lessonConfig.props}
+					currentContent={lessonConfig.content[$lessonProgress]}
+					on:lessonSuccess={handleLessonSuccess}
+					on:lessonMistake={handleLessonMistake}
+					on:lessonComplete={handleLessonComplete}
+					on:lessonFail={handleLessonFail}
+				/>
+			{:else if lessonConfig.type === 'fonologic'}
+				<LessonTaskFonologicLevel
+					{...lessonConfig.props}
+					currentContent={lessonConfig.content[$lessonProgress]}
+					on:lessonSuccess={handleLessonSuccess}
+					on:lessonMistake={handleLessonMistake}
+					on:lessonComplete={handleLessonComplete}
+					on:lessonFail={handleLessonFail}
 				/>
 			{/if}
 		</div>
