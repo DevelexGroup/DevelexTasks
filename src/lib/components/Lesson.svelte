@@ -6,12 +6,20 @@
 	import LessonFrame from './LessonFrame.svelte';
 	import { onDestroy, getContext } from 'svelte';
 	import LessonDebug from './LessonDebug.svelte';
-	import type { GazeManager } from '@473783/develex-core';
+	import type {
+		GazeInteractionObjectFixationEvent,
+		GazeInteractionObjectIntersectEvent,
+		GazeInteractionObjectSaccadeEvent,
+		GazeManager
+	} from '@473783/develex-core';
 	import { onMount } from 'svelte';
 	import sessionRepository from '$lib/database/repositories/session.repository';
 	import { writable } from 'svelte/store';
 	import stateEventsRepository from '$lib/database/repositories/stateEvents.repository';
 	import userEventsRepository from '$lib/database/repositories/userEvents.repository';
+	import saccadeRepository from '$lib/database/repositories/saccade.repository';
+	import fixationRepository from '$lib/database/repositories/fixation.repository';
+	import intersectionRepository from '$lib/database/repositories/intersect.repository';
 
 	interface Props {
 		/**
@@ -47,18 +55,6 @@
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
-	onDestroy(() => {
-		if (gazeManager.input) {
-			gazeManager.stop();
-			gazeManager.disconnect();
-			gazeManager.close();
-		}
-		window.removeEventListener('mousemove', handleMouseMove);
-		window.removeEventListener('mousedown', handleMouseDown);
-		window.removeEventListener('mouseup', handleMouseUp);
-		window.removeEventListener('click', handleClick);
-	});
-
 	const handleLoad = (obtainedLessonConfig: LessonConfig['setup']) => {
 		lessonState.set('lessonFrame');
 		lessonConfig = obtainedLessonConfig;
@@ -79,6 +75,26 @@
 		window.addEventListener('mousedown', handleMouseDown);
 		window.addEventListener('mouseup', handleMouseUp);
 		window.addEventListener('click', handleClick);
+		gazeManager.on('saccadeObjectFrom', handleSaccade);
+		gazeManager.on('saccadeObjectTo', handleSaccade);
+		gazeManager.on('fixationObjectEnd', handleFixation);
+		gazeManager.on('intersect', handleIntersection);
+	});
+
+	onDestroy(() => {
+		if (gazeManager.input) {
+			gazeManager.stop();
+			gazeManager.disconnect();
+			gazeManager.close();
+		}
+		window.removeEventListener('mousemove', handleMouseMove);
+		window.removeEventListener('mousedown', handleMouseDown);
+		window.removeEventListener('mouseup', handleMouseUp);
+		window.removeEventListener('click', handleClick);
+		gazeManager.off('saccadeObjectFrom', handleSaccade);
+		gazeManager.off('saccadeObjectTo', handleSaccade);
+		gazeManager.off('fixationObjectEnd', handleFixation);
+		gazeManager.off('intersect', handleIntersection);
 	});
 
 	// Subscribe to changes in lessonState and log them as stateEvents
@@ -104,7 +120,6 @@
 	};
 
 	const handleMouseDown = async (event: MouseEvent) => {
-		console.log(`Mouse button pressed at: (${event.clientX}, ${event.clientY})`);
 		await userEventsRepository.create({
 			sessionId,
 			timestamp: Date.now(),
@@ -114,7 +129,6 @@
 	};
 
 	const handleMouseUp = async (event: MouseEvent) => {
-		console.log(`Mouse button released at: (${event.clientX}, ${event.clientY})`);
 		await userEventsRepository.create({
 			sessionId,
 			timestamp: Date.now(),
@@ -124,12 +138,59 @@
 	};
 
 	const handleClick = async (event: MouseEvent) => {
-		console.log(`Mouse clicked at: (${event.clientX}, ${event.clientY})`);
 		await userEventsRepository.create({
 			sessionId,
 			timestamp: Date.now(),
 			type: 'click',
 			data: `(${event.clientX}, ${event.clientY})`
+		});
+	};
+
+	const transformAoiFromTargets = (targets: Element[]) => {
+		return targets
+			.map((target) => {
+				return target.id;
+			})
+			.join(';');
+	};
+
+	const handleSaccade = async (saccade: GazeInteractionObjectSaccadeEvent) => {
+		// get aoi from targets id, diveded by ;
+		const aoi = transformAoiFromTargets(saccade.target);
+		await saccadeRepository.create({
+			sessionId,
+			timestamp: saccade.timestamp.toString(),
+			type: saccade.type,
+			aoi,
+			duration: saccade.duration,
+			distance: saccade.distance,
+			angleToScreen: saccade.angleToScreen,
+			gazeData: saccade.gazeData,
+			originGazeData: saccade.originGazeData
+		});
+	};
+
+	const handleFixation = async (fixation: GazeInteractionObjectFixationEvent) => {
+		const aoi = transformAoiFromTargets(fixation.target);
+		await fixationRepository.create({
+			sessionId,
+			timestamp: fixation.timestamp.toString(),
+			type: fixation.type,
+			aoi,
+			duration: fixation.duration,
+			gazeData: fixation.gazeData,
+			fixationId: fixation.fixationId
+		});
+	};
+
+	const handleIntersection = async (intersection: GazeInteractionObjectIntersectEvent) => {
+		const aoi = transformAoiFromTargets(intersection.target);
+		await intersectionRepository.create({
+			sessionId,
+			timestamp: intersection.timestamp.toString(),
+			type: intersection.type,
+			aoi,
+			gazeData: intersection.gazeData
 		});
 	};
 </script>
