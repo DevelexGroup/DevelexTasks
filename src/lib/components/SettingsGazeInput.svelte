@@ -20,6 +20,9 @@
 				gazeInputType =
 					get(inputCreationConfig).fixationDetection === 'idt' ? 'gazepointIdt' : 'gazepointBase';
 				break;
+			case 'eyelogic':
+				gazeInputType = 'eyelogicIdt';
+				break;
 			case 'dummy':
 				gazeInputType = 'mouseIdt';
 				break;
@@ -47,6 +50,12 @@
 		precisionMaximumError: 1.5
 	};
 
+	const eyelogicIdt: GazeInputConfig = {
+		tracker: 'eyelogic',
+		uri: 'ws://localhost:13892',
+		fixationDetection: 'idt'
+	};
+
 	const gazeManager = getContext<GazeManager>('gazeManager');
 	const handleSubmit = () => {
 		let gazeInputConfig: GazeInputConfig;
@@ -59,6 +68,10 @@
 			case 'gazepointIdt':
 				gazeManager.createInput(gazepointIdt);
 				gazeInputConfig = gazepointIdt;
+				break;
+			case 'eyelogicIdt':
+				gazeManager.createInput(eyelogicIdt);
+				gazeInputConfig = eyelogicIdt;
 				break;
 			case 'mouseIdt':
 				gazeManager.createInput(mouseIdt);
@@ -79,6 +92,7 @@
 			options={[
 				{ value: 'gazepointBase', label: 'GazePoint (Device fixation)' },
 				{ value: 'gazepointIdt', label: 'GazePoint (IDT)' },
+				{ value: 'eyelogicIdt', label: 'EyeLogic (IDT)' },
 				{ value: 'mouseIdt', label: 'Mouse (IDT)' }
 			]}
 			bind:selectedValue={gazeInputType}
