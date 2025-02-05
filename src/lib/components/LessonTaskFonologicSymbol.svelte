@@ -40,6 +40,6 @@
 			: 'border-transparent'}"
 >
 	<div class="h-32 w-32">
-		<img src={`/src/lib/images/lesson/fonologic/${word}.webp`} alt={word} class="h-full w-full" />
+		<img src={`/img/lesson/fonologic/${word}.webp`} alt={word} class="h-full w-full" />
 	</div>
 </div>
