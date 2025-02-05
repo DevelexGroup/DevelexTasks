@@ -40,6 +40,6 @@
 			: 'border-transparent'}"
 >
 	<div class="h-20 w-20">
-		<img src={`/src/lib/images/lesson/VisualDiff/${word}.png`} alt={word} class="h-full w-full" />
+		<img src={`/img/lesson/VisualDiff/${word}.png`} alt={word} class="h-full w-full" />
 	</div>
 </div>
