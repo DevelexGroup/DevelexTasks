@@ -34,7 +34,7 @@
 	{id}
 	bind:this={element}
 	class="inline-flex h-24 items-center justify-center rounded-md font-serif text-[30px] {isHighlighted
-		? 'text-green-700'
+		? 'text-green-500'
 		: isDeHighlighted
 			? 'text-gray-400'
 			: 'text-gray-700'}"

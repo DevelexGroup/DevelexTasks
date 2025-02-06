@@ -1,12 +1,17 @@
 <script lang="ts">
 	import LessonCross from './LessonCross.svelte';
-	import type { GazeInteractionObjectFixationEvent, GazeManager } from '@473783/develex-core';
+	import type {
+		GazeInteractionObjectDwellEvent,
+		GazeInteractionObjectFixationEvent,
+		GazeManager
+	} from '@473783/develex-core';
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 	import type { LessonTaskFonologicLevelProps } from './LessonTaskFonologicLevel.type';
 	import LessonTaskFonologicGrid from './LessonTaskFonologicGrid.svelte';
 	import LessonTaskFonologicLayout from './LessonTaskFonologicLayout.svelte';
+	import fixationRepository from '$lib/database/repositories/fixation.repository';
 
 	let {
 		currentContent,
@@ -55,6 +60,17 @@
 				bufferSize: 150
 			}
 		});
+
+		if (element.id == FIXATION_EYE) {
+			gazeManager.register({
+				interaction: 'dwell',
+				element,
+				settings: {
+					dwellTime: 700,
+					bufferSize: 50
+				}
+			});
+		}
 	};
 
 	const unregisterElement = (element: HTMLElement) => {
@@ -62,6 +78,13 @@
 			interaction: 'fixation',
 			element
 		});
+
+		if (element.id == FIXATION_EYE) {
+			gazeManager.unregister({
+				interaction: 'dwell',
+				element
+			});
+		}
 	};
 
 	const handleCorrectSyllableClick = () => {
@@ -85,18 +108,19 @@
 	const evaluateGazeEvent = (event: GazeInteractionObjectFixationEvent) => {
 		const { target } = event;
 
-		/**
-		 * Currently only checking for crossfixation
-		 */
-		if (target.some((t) => t.id === FIXATION_EYE)) {
-			wasCrossFixated.set(true);
-		}
-
 		if (
 			target.some((t) => t.id === 'fonologic-choice_0_0') &&
 			currentContent[currentRowIndex].syllables.length == 1
 		) {
 			handleCorrectSyllableClick();
+		}
+	};
+
+	const evaluateDwellEvent = (event: GazeInteractionObjectDwellEvent) => {
+		const { target } = event;
+
+		if (target.some((t) => t.id === FIXATION_EYE)) {
+			wasCrossFixated.set(true);
 		}
 	};
 
@@ -200,6 +224,7 @@
 	 */
 	onMount(() => {
 		gazeManager.on('fixationObjectStart', evaluateGazeEvent);
+		gazeManager.on('dwellFinish', evaluateDwellEvent);
 		processTaskLogic();
 	});
 
@@ -209,6 +234,7 @@
 	 */
 	onDestroy(() => {
 		gazeManager.off('fixationObjectStart', evaluateGazeEvent);
+		gazeManager.off('dwellFinish', evaluateDwellEvent);
 	});
 </script>
 

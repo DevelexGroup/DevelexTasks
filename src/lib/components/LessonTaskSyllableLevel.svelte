@@ -6,7 +6,11 @@
 	import { writable, type Writable } from 'svelte/store';
 	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 	import type { LessonTaskSyllableLevelProps } from './LessonTaskSyllableLevel.type';
-	import type { GazeInteractionObjectFixationEvent, GazeManager } from '@473783/develex-core';
+	import type {
+		GazeInteractionObjectDwellEvent,
+		GazeInteractionObjectFixationEvent,
+		GazeManager
+	} from '@473783/develex-core';
 
 	let {
 		currentContent,
@@ -63,6 +67,17 @@
 				bufferSize: 150
 			}
 		});
+
+		if (element.id == FIXATION_EYE) {
+			gazeManager.register({
+				interaction: 'dwell',
+				element,
+				settings: {
+					dwellTime: 700,
+					bufferSize: 50
+				}
+			});
+		}
 	};
 
 	const unregisterElement = (element: HTMLElement) => {
@@ -74,6 +89,13 @@
 			interaction: 'intersect',
 			element
 		});
+
+		if (element.id == FIXATION_EYE) {
+			gazeManager.unregister({
+				interaction: 'dwell',
+				element
+			});
+		}
 	};
 
 	const handleAllCorrectSyllablesClicked = () => {
@@ -110,10 +132,11 @@
 	 */
 	const evaluateGazeEvent = (event: GazeInteractionObjectFixationEvent) => {
 		const { target } = event;
+	};
 
-		/**
-		 * Currently only checking for crossfixation
-		 */
+	const evaluateDwellEvent = (event: GazeInteractionObjectDwellEvent) => {
+		const { target } = event;
+
 		if (target.some((t) => t.id === FIXATION_EYE)) {
 			wasCrossFixated.set(true);
 		}
@@ -127,6 +150,15 @@
 	const processReadingAssignmentSyllable = async () => {
 		if (!shouldReadCorrectSyllable) return;
 		await waitForTimeout(500);
+		void wordReader.read([
+			{
+				text: currentContent[currentRowIndex].correctSyllable,
+				id: 'correct-syllable'
+			}
+		]);
+	};
+
+	const handleReadAssignemt = () => {
 		void wordReader.read([
 			{
 				text: currentContent[currentRowIndex].correctSyllable,
@@ -212,6 +244,7 @@
 	 */
 	onMount(() => {
 		gazeManager.on('fixationObjectStart', evaluateGazeEvent);
+		gazeManager.on('dwellFinish', evaluateDwellEvent);
 		processTaskLogic();
 	});
 
@@ -221,6 +254,7 @@
 	 */
 	onDestroy(() => {
 		gazeManager.off('fixationObjectStart', evaluateGazeEvent);
+		gazeManager.off('dwellFinish', evaluateDwellEvent);
 	});
 </script>
 
@@ -242,6 +276,7 @@
 		on:all-correct-syllables-clicked={handleAllCorrectSyllablesClicked}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}
+		on:read-assigment={handleReadAssignemt}
 	/>
 {/snippet}
 

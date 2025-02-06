@@ -65,6 +65,7 @@
 	let correctExpectingIndex = getNextExpectingIndex();
 
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
+	roundCompleteAudio.volume = 0.1;
 
 	const inOptions = { duration: 750, delay: 200 };
 	const outOptions = { duration: 200 };

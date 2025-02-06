@@ -4,6 +4,7 @@
 	import LessonTaskSyllableItem from './LessonTaskSyllableItem.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import LessonWord from './LessonWord.svelte';
+	import Icon from '@iconify/svelte';
 
 	interface Props {
 		/**
@@ -76,6 +77,7 @@
 			id: string;
 			rowIndex: number;
 		};
+		'read-assigment': {};
 	}>();
 
 	const inOptions = { duration: 750, delay: 200 };
@@ -86,6 +88,7 @@
 	const clickedIds = new Set<string>(); // Track clicked syllables
 	let correctExpectingIndex = getNextExpectingIndex();
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
+	roundCompleteAudio.volume = 0.1;
 	let showProgressAfterMistake = $state(false);
 	let usedIndexes = $state<number[]>([]);
 
@@ -168,6 +171,16 @@
 	</div>
 {/if}
 <div class="flex" style="gap: {syllableGap}px;">
+	{#if !isSyllableAssignmentPresent}
+		<button
+			class="mr-12"
+			class:invisible={!isActive}
+			onclick={() => dispatch('read-assigment', {})}
+		>
+			<Icon icon="material-symbols:volume-up-outline-rounded" class="h-14 w-14 text-gray-400" />
+		</button>
+	{/if}
+
 	{#each content.syllables as syllable, index}
 		<LessonTaskSyllableItem
 			disabled={false}

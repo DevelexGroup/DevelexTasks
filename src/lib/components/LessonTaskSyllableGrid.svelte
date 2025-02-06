@@ -96,6 +96,7 @@
 			on:correct-syllable-clicked
 			on:all-correct-syllables-clicked
 			on:incorrect-syllable-clicked
+			on:read-assigment
 		/>
 	{/each}
 </div>
