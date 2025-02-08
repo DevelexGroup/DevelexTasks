@@ -4,6 +4,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import LessonWord from './LessonWord.svelte';
 	import LessonTaskVisualDiffItem from './LessonTaskVisualDiffItem.svelte';
+	import LessonTaskVisualDiffGroup from './LessonTaskVisualDiffGroup.svelte';
 
 	interface Props {
 		isSyllableAssignmentVisible?: boolean;
@@ -54,8 +55,6 @@
 		};
 	}>();
 
-	console.log(content);
-
 	const correctIndexesSet = new Set(correctIndexes);
 
 	const getNextExpectingIndex = (): number => {
@@ -101,6 +100,22 @@
 			dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
 		}
 	};
+
+	const evaluateGroup = (e: CustomEvent<{ word: string; id: string }>) => {
+		showProgressAfterMistake = false;
+
+		const columnIndex = +e.detail.id.replace(`${idOtherSyllableBase}`, '');
+		const isCorrect = content.correctGroupIndex == columnIndex;
+
+		if (isCorrect) {
+			roundCompleteAudio.pause();
+			roundCompleteAudio.currentTime = 0;
+			roundCompleteAudio.play();
+			dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
+		} else {
+			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
+		}
+	};
 </script>
 
 {#if isSyllableAssignmentPresent}
@@ -127,20 +142,15 @@
 	style={`gap: ${syllableGap}px; ${gridCols > 0 ? `display: grid; grid-template-columns: repeat(${gridCols}, minmax(0, 1fr));` : ''}`}
 >
 	{#if content.syllables.length == 0 && content.groups != undefined}
-		{#each content.groups as group}
-			{#each group as syllable, index}
-				<LessonTaskVisualDiffItem
-					disabled={false}
-					word={syllable}
-					id={`${idOtherSyllableBase}${index}`}
-					{registerElement}
-					{unregisterElement}
-					isHighlighted={(markWantedSyllables && correctIndexesSet.has(index)) ||
-						(showProgressAfterMistake && usedIndexes.includes(index))}
-					isWrong={!correctIndexesSet.has(index)}
-					on:word-clicked={evaluateSyllable}
-				/>
-			{/each}
+		{#each content.groups as group, index}
+			<LessonTaskVisualDiffGroup
+				disabled={false}
+				words={group}
+				id={`${idOtherSyllableBase}${index}`}
+				{registerElement}
+				{unregisterElement}
+				on:word-clicked={evaluateGroup}
+			/>
 		{/each}
 	{:else}
 		{#each content.syllables as syllable, index}

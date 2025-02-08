@@ -152,12 +152,36 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 						['cherry', 'lemon', 'melon']
 					]
 				}
+			],
+			[
+				{
+					wordToRead: 'Vyznač skupinu, ve které je banán třetí v pořadí',
+					correctGroupIndex: 2,
+					syllables: [],
+					groups: [
+						['cherry', 'lemon', 'melon'],
+						['banana', 'apple', 'lemon'],
+						['apple', 'cherry', 'banana']
+					]
+				}
+			],
+			[
+				{
+					wordToRead: 'Vyznač skupinu, ve které je meloun na druhém místě v pořadí',
+					correctGroupIndex: 1,
+					syllables: [],
+					groups: [
+						['cherry', 'lemon', 'apple'],
+						['banana', 'melon', 'lemon'],
+						['apple', 'cherry', 'banana']
+					]
+				}
 			]
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 20,
-			shouldReadCorrectSyllable: false,
+			syllableGap: 100,
+			shouldReadCorrectSyllable: true,
 			isSyllableAssignmentPresent: false,
 			correctSyllableVisibilityTimeout: 0
 		}
