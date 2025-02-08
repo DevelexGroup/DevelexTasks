@@ -74,6 +74,7 @@
 	const getNextExpectingIndex = (): number => {
 		return correctIndexes.pop() ?? -1;
 	};
+	let expectingBoxIndex = $state(0);
 
 	let correctExpectingIndex = getNextExpectingIndex();
 
@@ -85,6 +86,7 @@
 
 	let showProgressAfterMistake = $state(false);
 	let usedIndexes = $state<number[]>([]);
+	let usedBoxIndexes = $state<number[]>([]);
 
 	const evaluateSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
 		showProgressAfterMistake = false;
@@ -112,6 +114,42 @@
 			roundCompleteAudio.play();
 		} else {
 			dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
+		}
+	};
+
+	const evaluateBoxSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
+		showProgressAfterMistake = false;
+
+		if (content.binding == undefined) {
+			return;
+		}
+
+		const columnIndex = +e.detail.id.replace(`${idOtherSyllableBase}`, '');
+		const isCorrect = expectingBoxIndex == content.binding[columnIndex];
+
+		if (!isCorrect) {
+			setTimeout(() => {
+				showProgressAfterMistake = true;
+				setTimeout(() => {
+					showProgressAfterMistake = false;
+				}, 3500);
+			}, 4500);
+
+			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
+			return;
+		}
+
+		usedIndexes.push(columnIndex);
+		usedBoxIndexes.push(expectingBoxIndex);
+		expectingBoxIndex++;
+		roundCompleteAudio.pause();
+		roundCompleteAudio.currentTime = 0;
+		roundCompleteAudio.play();
+
+		if (usedIndexes.length == Object.keys(content.binding).length) {
+			setTimeout(() => {
+				dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
+			}, 1000);
 		}
 	};
 </script>
@@ -151,7 +189,21 @@
 			isHighlighted={(markWantedSyllables && correctIndexesSet.has(index)) ||
 				(showProgressAfterMistake && usedIndexes.includes(index))}
 			isWrong={!correctIndexesSet.has(index)}
-			on:word-clicked={evaluateSyllable}
+			on:word-clicked={content.binding == undefined ? evaluateSyllable : evaluateBoxSyllable}
 		/>
 	{/each}
 </div>
+
+{#if content.binding != undefined}
+	<div class="mt-8 flex justify-center gap-2">
+		{#each Object.entries(content.binding).sort(([, a], [, b]) => a - b) as [wordIndex, orderIndex]}
+			<div
+				class="flex h-16 w-16 items-center justify-center rounded-md border border-gray-300 shadow-sm"
+			>
+				{#if usedBoxIndexes.includes(orderIndex)}
+					<span class="font-serif text-[30px] text-gray-700">{content.syllables[+wordIndex]}</span>
+				{/if}
+			</div>
+		{/each}
+	</div>
+{/if}

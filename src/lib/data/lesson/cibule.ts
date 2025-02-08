@@ -491,5 +491,29 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			isSyllableAssignmentPresent: false,
 			correctSyllableVisibilityTimeout: 0
 		}
+	},
+	{
+		level: 'eight',
+		label: 'Úroveň 8',
+		content: [
+			[
+				{
+					incorrectSyllable: 'p',
+					binding: {
+						3: 0,
+						1: 1,
+						5: 2
+					},
+					syllables: ['ppppppp', 'bu', 'ppppppppppppp', 'ta', 'pppppppp', 'le', 'ppppppp']
+				}
+			]
+		],
+		partialProps: {
+			assignmentGap: 200,
+			syllableGap: globalGap,
+			shouldReadCorrectSyllable: false,
+			isSyllableAssignmentPresent: false,
+			correctSyllableVisibilityTimeout: 0
+		}
 	}
 ];

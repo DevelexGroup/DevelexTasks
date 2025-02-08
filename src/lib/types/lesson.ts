@@ -47,6 +47,7 @@ export type CibuleTaskType = {
 	correctSyllable?: string;
 	incorrectSyllable?: string;
 	wordToRead?: string;
+	binding?: Record<number, number>;
 }[];
 
 export type VisualDiffTaskType = {
