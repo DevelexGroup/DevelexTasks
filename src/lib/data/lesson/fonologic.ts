@@ -11,28 +11,28 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 				{
 					correctSyllable: 'D',
 					correctIndexes: [0, 2, 3],
-					syllables: ['ghost', 'cat', 'sink', 'house']
+					syllables: ['delfín', 'kočka', 'umyvadlo', 'dům']
 				}
 			],
 			[
 				{
 					correctSyllable: 'A',
 					correctIndexes: [2, 3],
-					syllables: ['mys', 'tree', 'coconut', 'shark']
+					syllables: ['myš', 'smrk', 'hruška', 'žralok']
 				}
 			],
 			[
 				{
 					correctSyllable: 'B',
 					correctIndexes: [1, 2],
-					syllables: ['monkey', 'screwdriver', 'frog', 'eye']
+					syllables: ['šimpanz', 'šroubovák', 'žába', 'oko']
 				}
 			],
 			[
 				{
 					correctSyllable: 'O',
 					correctIndexes: [1, 2, 3],
-					syllables: ['sun', 'lamb', 'scythe', 'elephant']
+					syllables: ['slunce', 'ovce', 'bomba', 'slon']
 				}
 			]
 		],
@@ -51,29 +51,29 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'K',
-					correctIndexes: [2, 3],
-					syllables: ['ghost', 'cowboy', 'cat', 'sink', 'house']
+					correctIndexes: [1, 2],
+					syllables: ['duch', 'klaun', 'kůň', 'banán', 'nůž']
 				}
 			],
 			[
 				{
 					correctSyllable: 'L',
 					correctIndexes: [3, 4],
-					syllables: ['mys', 'cake', 'tree', 'fence', 'shark']
+					syllables: ['čáp', 'dárek', 'kotva', 'plot', 'žalud']
 				}
 			],
 			[
 				{
 					correctSyllable: 'O',
-					correctIndexes: [0, 2, 4],
-					syllables: ['monkey', 'music', 'screwdriver', 'frog', 'eye']
+					correctIndexes: [0, 1, 2, 4],
+					syllables: ['citron', 'obraz', 'noha', 'třešeň', 'pavouk']
 				}
 			],
 			[
 				{
 					correctSyllable: 'A',
 					correctIndexes: [1, 3],
-					syllables: ['sun', 'goat', 'lamb', 'scythe', 'elephant']
+					syllables: ['míč', 'koza', 'citron', 'kostka', 'květ']
 				}
 			]
 		],
@@ -93,28 +93,28 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 				{
 					correctSyllable: 'KO',
 					correctIndexes: [0, 1, 3],
-					syllables: ['bicycle', 'scythe', 'penguin', 'cat']
+					syllables: ['kolo', 'kost', 'tučňák', 'kočka']
 				}
 			],
 			[
 				{
 					correctSyllable: 'JE',
 					correctIndexes: [0, 2],
-					syllables: ['santa', 'apple', 'needle', 'car']
+					syllables: ['jelen', 'jablko', 'jehla', 'auto']
 				}
 			],
 			[
 				{
 					correctSyllable: 'BO',
 					correctIndexes: [0, 1],
-					syllables: ['shoe', 'screwdriver', 'frog', 'eye']
+					syllables: ['bota', 'chobotnice', 'liška', 'dlaň']
 				}
 			],
 			[
 				{
 					correctSyllable: 'VA',
 					correctIndexes: [0, 1],
-					syllables: ['cow', 'grass', 'screwdriver', 'zebra']
+					syllables: ['kráva', 'tramvaj', 'vážka', 'zebra']
 				}
 			]
 		],
@@ -134,28 +134,28 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 				{
 					correctSyllable: 'KO',
 					correctIndexes: [1, 2],
-					syllables: ['ghost', 'cowboy', 'cat', 'sink', 'house']
+					syllables: ['víla', 'koruna', 'klubko', 'tygr', 'guma']
 				}
 			],
 			[
 				{
 					correctSyllable: 'LE',
 					correctIndexes: [0, 2],
-					syllables: ['glasses', 'grandma', 'airplane', 'shark', 'leg']
+					syllables: ['brýle', 'mrkev', 'letadlo', 'motýl', 'ryba']
 				}
 			],
 			[
 				{
 					correctSyllable: 'CE',
 					correctIndexes: [0, 1, 4],
-					syllables: ['colander', 'monkey', 'screwdriver', 'frog', 'heart']
+					syllables: ['slepice', 'mince', 'prase', 'list', 'srdce']
 				}
 			],
 			[
 				{
 					correctSyllable: 'ZÁ',
 					correctIndexes: [0, 2, 4],
-					syllables: ['backpain', 'goat', 'pencilsharpener', 'scythe', 'toilet']
+					syllables: ['záda', 'vějíř', 'zámek', 'květák', 'zásuvka']
 				}
 			]
 		],
@@ -173,30 +173,30 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		content: [
 			[
 				{
-					correctImage: 'ghost',
+					correctImage: 'sýr',
 					correctIndexes: [2],
-					syllables: ['cat', 'penguin', 'house']
+					syllables: ['diamant', 'brokolice', 'skateboard']
 				}
 			],
 			[
 				{
-					correctImage: 'mys',
+					correctImage: 'mlýn',
 					correctIndexes: [0, 2],
-					syllables: ['cloud', 'car', 'goldengate']
+					syllables: ['mrak', 'svíčka', 'meloun']
 				}
 			],
 			[
 				{
-					correctImage: 'monkey',
+					correctImage: 'veverka',
 					correctIndexes: [2],
-					syllables: ['screwdriver', 'frog', 'eye']
+					syllables: ['astronaut', 'rty', 'volant']
 				}
 			],
 			[
 				{
-					correctImage: 'sun',
+					correctImage: 'kaktus',
 					correctIndexes: [1, 2],
-					syllables: ['lamb', 'tree', 'elephant']
+					syllables: ['medaile', 'klokan', 'kabát']
 				}
 			]
 		],
@@ -215,37 +215,37 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctIndexes: [0],
-					syllables: ['santa']
+					syllables: ['jelen']
 				}
 			],
 			[
 				{
 					correctIndexes: [1, 2, 4],
-					syllables: ['bear', 'strawberry', 'needle', 'ruler', 'apple']
+					syllables: ['dýně', 'ještěrka', 'jizva', 'telefon', 'ježek']
 				}
 			],
 			[
 				{
 					correctIndexes: [0],
-					syllables: ['coconut']
+					syllables: ['planeta']
 				}
 			],
 			[
 				{
 					correctIndexes: [0, 2, 3],
-					syllables: ['dog', 'strawberry', 'fence', 'ruler', 'apple']
+					syllables: ['pes', 'pila', 'jahoda', 'pravítkp', 'rajče']
 				}
 			],
 			[
 				{
 					correctIndexes: [0],
-					syllables: ['ear']
+					syllables: ['královna']
 				}
 			],
 			[
 				{
 					correctIndexes: [1],
-					syllables: ['monkey', 'sink', 'lamb', 'cat', 'apple']
+					syllables: ['chata', 'krabice', 'hrnek', 'had', 'hadice']
 				}
 			]
 		],
@@ -263,30 +263,30 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		content: [
 			[
 				{
-					correctImage: 'cake',
+					correctImage: 'prsten',
 					correctIndexes: [1],
-					syllables: ['cat', 'penguin', 'house']
+					syllables: ['holub', 'náklaďák', 'bonbon']
 				}
 			],
 			[
 				{
-					correctImage: 'house',
+					correctImage: 'deštník',
 					correctIndexes: [0, 2],
-					syllables: ['cloud', 'car', 'goldengate']
+					syllables: ['kytara', 'chameleon', 'konev']
 				}
 			],
 			[
 				{
-					correctImage: 'car',
+					correctImage: 'kokos',
 					correctIndexes: [2],
-					syllables: ['screwdriver', 'frog', 'eye']
+					syllables: ['pírko', 'dinosaurus', 'slunečnice']
 				}
 			],
 			[
 				{
-					correctImage: 'elephant',
+					correctImage: 'krocan',
 					correctIndexes: [1, 2],
-					syllables: ['nose', 'tree', 'scissors']
+					syllables: ['nos', 'župan', 'nůžky']
 				}
 			]
 		],
@@ -305,37 +305,37 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctIndexes: [0],
-					syllables: ['cowboy']
+					syllables: ['kovboj']
 				}
 			],
 			[
 				{
 					correctIndexes: [1, 2, 4],
-					syllables: ['bear', 'strawberry', 'needle', 'ruler', 'apple']
+					syllables: ['medvěd', 'jahoda', 'kytka', 'jazyk', 'jaguár']
 				}
 			],
 			[
 				{
 					correctIndexes: [0],
-					syllables: ['spear']
+					syllables: ['oštěp']
 				}
 			],
 			[
 				{
 					correctIndexes: [0, 2, 3],
-					syllables: ['dog', 'strawberry', 'fence', 'ruler', 'apple']
+					syllables: ['puzzle', 'dudlík', 'paprika', 'poklad', 'žárovka']
 				}
 			],
 			[
 				{
 					correctIndexes: [0],
-					syllables: ['ear']
+					syllables: ['ucho']
 				}
 			],
 			[
 				{
 					correctIndexes: [0, 2],
-					syllables: ['monkey', 'sink', 'lamb', 'cat', 'apple']
+					syllables: ['obličej', 'zrcadlo', 'ovoce', 'batoh', 'sova']
 				}
 			]
 		],
@@ -354,41 +354,41 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					wordToRead: 'Ve slově pes vyměň P za L.',
-					correctImage: 'dog',
+					correctImage: 'pes',
 					correctIndexes: [0, 1],
-					syllables: ['sob', 'forest', 'house']
+					syllables: ['luk', 'les', 'nos']
 				}
 			],
 			[
 				{
 					wordToRead: 'Ve slově mrak vyměň M za D.',
-					correctImage: 'cloud',
+					correctImage: 'mrak',
 					correctIndexes: [2],
-					syllables: ['wreck', 'goldengate', 'dragon']
+					syllables: ['pařát', 'mostík', 'drak']
 				}
 			],
 			[
 				{
-					wordToRead: 'Ve slově žába vyměň Ž za B.',
-					correctImage: 'frog',
+					wordToRead: 'Ve slově dárek vyměň D za P.',
+					correctImage: 'dárek',
 					correctIndexes: [0],
-					syllables: ['grandma', 'backpain', 'pour']
+					syllables: ['párek', 'lilek', 'šála']
 				}
 			],
 			[
 				{
-					wordToRead: 'Ve slově strom vyměň M za J.',
-					correctImage: 'elephant',
+					wordToRead: 'Ve slově cesta vyměň C za V.',
+					correctImage: 'cesta',
 					correctIndexes: [1],
-					syllables: ['elephant', 'sew', 'ceiling']
+					syllables: ['cela', 'vesta', 'vejce']
 				}
 			],
 			[
 				{
 					wordToRead: 'Ve slově lev vyměň V za D.',
-					correctImage: 'bear',
+					correctImage: 'lev',
 					correctIndexes: [0],
-					syllables: ['ice', 'nose', 'forest']
+					syllables: ['led', 'pilulka', 'les']
 				}
 			]
 		],
@@ -406,18 +406,18 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		content: [
 			[
 				{
-					wordToRead: 'Ve slově bota vyměň BO za NO.',
-					correctImage: 'shoe',
+					wordToRead: 'Ve slově hrnec vyměň HR za KA.',
+					correctImage: 'hrnec',
 					correctIndexes: [1],
-					syllables: ['music', 'leg', 'devilhorns']
+					syllables: ['divočák', 'palec', 'tanečník']
 				}
 			],
 			[
 				{
-					wordToRead: 'Ve slově koza vyměň ZA za SA.',
-					correctImage: 'goat',
+					wordToRead: 'Ve slově váha vyměň HA za ZA.',
+					correctImage: 'váha',
 					correctIndexes: [2],
-					syllables: ['bicycle', 'drip', 'scythe']
+					syllables: ['záda', 'vana', 'váza']
 				}
 			]
 		],
