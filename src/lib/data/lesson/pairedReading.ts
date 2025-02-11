@@ -1,5 +1,130 @@
 import type { LessonConfigMap } from '$lib/types/lesson';
 
+const level6content: LessonConfigMap['pairedReading']['data']['content'] = [
+	{
+		text: [
+			['Anička', 'má', 'velkou', 'rodinu.', 'Ona,', 'její', 'rodiče', 'a', 'malý'],
+			['bratr', 'právě', 'slaví', 'Vánoce.', 'Všichni', 'se', 'moc', 'těší!']
+		],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 3]
+				], // First sentence
+				id: 'fixw-0-0'
+			},
+			{
+				range: [
+					[0, 4],
+					[1, 3]
+				], // Second sentence
+				id: 'fixw-0-1'
+			},
+			{
+				range: [
+					[1, 4],
+					[1, 7]
+				], // Third sentence
+				id: 'fixw-0-2'
+			}
+		]
+	},
+	{
+		text: [
+			[
+				'Jednoho',
+				'letního',
+				'odpoledne',
+				'se',
+				'Tomáš',
+				'rozhodl',
+				'vyrazit',
+				'na',
+				'malý',
+				'ostrov',
+				'uprostřed'
+			],
+			[
+				'rybníka.',
+				'Už',
+				'dlouho',
+				'si',
+				'říkal,',
+				'že,',
+				'se',
+				'tam',
+				'musí',
+				'podívat,',
+				'protože',
+				'o něm',
+				'kolovalo',
+				'spoustu'
+			],
+			[
+				'příběhů.',
+				'Lidé',
+				'říkali,',
+				'že',
+				'na',
+				'ostrově',
+				'roste',
+				'starý',
+				'strom,',
+				'pod',
+				'kterým',
+				'je',
+				'ukrytý',
+				'poklad.'
+			],
+			[
+				'Jakmile',
+				'však',
+				'přistál,',
+				'prozkoumal',
+				'celý',
+				'ostrov,',
+				'ale',
+				'žádný',
+				'poklad',
+				'pod',
+				'stromem',
+				'nenašel.'
+			]
+		],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[1, 0]
+				], // First sentence
+				id: 'fixw-1-0'
+			},
+			{
+				range: [
+					[1, 1],
+					[2, 1]
+				], // Second sentence
+				id: 'fixw-1-1'
+			},
+			{
+				range: [
+					[2, 2],
+					[2, 13]
+				], // Third sentence
+				id: 'fixw-1-2'
+			},
+			{
+				range: [
+					[3, 0],
+					[3, 11]
+				], // Fourth sentence
+				id: 'fixw-1-3'
+			}
+		]
+	}
+];
+
 export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = [
 	{
 		level: 'main-level-1-errors',
@@ -1746,172 +1871,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		level: 'main-level-6-errors',
 		label: 'Level 6 (Chyby)',
-		content: [
-			{
-				text: [
-					['Můj', 'kamarád', 'Honzík', 'má', 'doma', 'papoušky.', 'Když'],
-					['Honzík', 'přijde', 'ze školy,', 'papoušci', 'vesele', 'zapískají.']
-				],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 5]
-						], // First sentence
-						id: 'fixw-0-0'
-					},
-					{
-						range: [
-							[0, 6],
-							[1, 5]
-						], // Second sentence
-						id: 'fixw-0-1'
-					}
-				]
-			},
-			{
-				text: [
-					['Malý', 'osmiletý', 'chlapec', 'Adam', 'stál', 'u okna.', 'Sledoval', 'totiž'],
-					['silnici', 'vedoucí', 'k jejich', 'domu.', 'Za chvíli', 'by se', 'mělo', 'objevit'],
-					['tatínkovo', 'auto', 's přívěsem', 'na koně.', 'Adam', 'má', 'koně', 'moc', 'rád.']
-				],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 5]
-						], // First sentence
-						id: 'fixw-1-0'
-					},
-					{
-						range: [
-							[0, 6],
-							[1, 3]
-						], // Second sentence
-						id: 'fixw-1-1'
-					},
-					{
-						range: [
-							[1, 4],
-							[2, 3]
-						], // Third sentence
-						id: 'fixw-1-2'
-					},
-					{
-						range: [
-							[2, 4],
-							[2, 8]
-						], // Fourth sentence
-						id: 'fixw-1-3'
-					}
-				]
-			},
-			{
-				text: [
-					[
-						'Jednoho',
-						'odpoledne',
-						'se',
-						'Kuba',
-						'rozhodl,',
-						'že',
-						'se',
-						'vydá',
-						'na',
-						'výlet',
-						'do',
-						'lesa',
-						'za',
-						'vesnicí.'
-					],
-					[
-						'Vzal',
-						'si',
-						'batůžek,',
-						'dal',
-						'si',
-						'do',
-						'něj',
-						'svačinu',
-						'a vyrazil.',
-						'Když',
-						'vešel',
-						'do',
-						'lesa,',
-						'slyšel',
-						'zpěv'
-					],
-					[
-						'ptáků',
-						'a',
-						'šumění',
-						'stromů.',
-						'Šel,',
-						'po',
-						'úzké',
-						'pěšince,',
-						'až',
-						'narazil',
-						'na',
-						'starý',
-						'dub.',
-						'Pod',
-						'ním'
-					],
-					[
-						'ležela',
-						'malá',
-						'krabička.',
-						'Kuba',
-						'ji',
-						'opatrně',
-						'otevřel',
-						'a',
-						'uvnitř',
-						'našel',
-						'starodávnou',
-						'mapu!'
-					]
-				],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 13]
-						],
-						id: 'fixw-2-0'
-					},
-					{
-						range: [
-							[1, 0],
-							[1, 8]
-						],
-						id: 'fixw-2-1'
-					},
-					{
-						range: [
-							[1, 9],
-							[2, 12]
-						],
-						id: 'fixw-2-2'
-					},
-					{
-						range: [
-							[2, 13],
-							[3, 2]
-						],
-						id: 'fixw-2-3'
-					},
-					{
-						range: [
-							[3, 3],
-							[3, 11]
-						],
-						id: 'fixw-2-4'
-					}
-				]
-			}
-		],
+		content: level6content,
 		partialProps: {
 			bufferSize: 50,
 			logicType: 'main',
@@ -1923,172 +1883,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		level: 'main-level-6-noerrors',
 		label: 'Level 6 (Bez chyb)',
-		content: [
-			{
-				text: [
-					['Můj', 'kamarád', 'Honzík', 'má', 'doma', 'papoušky.', 'Když'],
-					['Honzík', 'přijde', 'ze školy,', 'papoušci', 'vesele', 'zapískají.']
-				],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 5]
-						], // First sentence
-						id: 'fixw-0-0'
-					},
-					{
-						range: [
-							[0, 6],
-							[1, 5]
-						], // Second sentence
-						id: 'fixw-0-1'
-					}
-				]
-			},
-			{
-				text: [
-					['Malý', 'osmiletý', 'chlapec', 'Adam', 'stál', 'u okna.', 'Sledoval', 'totiž'],
-					['silnici', 'vedoucí', 'k jejich', 'domu.', 'Za chvíli', 'by se', 'mělo', 'objevit'],
-					['tatínkovo', 'auto', 's přívěsem', 'na koně.', 'Adam', 'má', 'koně', 'moc', 'rád.']
-				],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 5]
-						], // First sentence
-						id: 'fixw-1-0'
-					},
-					{
-						range: [
-							[0, 6],
-							[1, 3]
-						], // Second sentence
-						id: 'fixw-1-1'
-					},
-					{
-						range: [
-							[1, 4],
-							[2, 3]
-						], // Third sentence
-						id: 'fixw-1-2'
-					},
-					{
-						range: [
-							[2, 4],
-							[2, 8]
-						], // Fourth sentence
-						id: 'fixw-1-3'
-					}
-				]
-			},
-			{
-				text: [
-					[
-						'Jednoho',
-						'odpoledne',
-						'se',
-						'Kuba',
-						'rozhodl,',
-						'že',
-						'se',
-						'vydá',
-						'na',
-						'výlet',
-						'do',
-						'lesa',
-						'za',
-						'vesnicí.'
-					],
-					[
-						'Vzal',
-						'si',
-						'batůžek,',
-						'dal',
-						'si',
-						'do',
-						'něj',
-						'svačinu',
-						'a vyrazil.',
-						'Když',
-						'vešel',
-						'do',
-						'lesa,',
-						'slyšel',
-						'zpěv'
-					],
-					[
-						'ptáků',
-						'a',
-						'šumění',
-						'stromů.',
-						'Šel,',
-						'po',
-						'úzké',
-						'pěšince,',
-						'až',
-						'narazil',
-						'na',
-						'starý',
-						'dub.',
-						'Pod',
-						'ním'
-					],
-					[
-						'ležela',
-						'malá',
-						'krabička.',
-						'Kuba',
-						'ji',
-						'opatrně',
-						'otevřel',
-						'a',
-						'uvnitř',
-						'našel',
-						'starodávnou',
-						'mapu!'
-					]
-				],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 13]
-						],
-						id: 'fixw-2-0'
-					},
-					{
-						range: [
-							[1, 0],
-							[1, 8]
-						],
-						id: 'fixw-2-1'
-					},
-					{
-						range: [
-							[1, 9],
-							[2, 12]
-						],
-						id: 'fixw-2-2'
-					},
-					{
-						range: [
-							[2, 13],
-							[3, 2]
-						],
-						id: 'fixw-2-3'
-					},
-					{
-						range: [
-							[3, 3],
-							[3, 11]
-						],
-						id: 'fixw-2-4'
-					}
-				]
-			}
-		],
+		content: level6content,
 		partialProps: {
 			bufferSize: 50,
 			logicType: 'main',
