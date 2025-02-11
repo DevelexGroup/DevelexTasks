@@ -285,7 +285,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctImage: 'krocan',
-					correctIndexes: [1, 2],
+					correctIndexes: [0, 2],
 					syllables: ['nos', 'župan', 'nůžky']
 				}
 			]
@@ -310,7 +310,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			],
 			[
 				{
-					correctIndexes: [1, 2, 4],
+					correctIndexes: [1, 3, 4],
 					syllables: ['medvěd', 'jahoda', 'kytka', 'jazyk', 'jaguár']
 				}
 			],
@@ -355,7 +355,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 				{
 					wordToRead: 'Ve slově pes vyměň P za L.',
 					correctImage: 'pes',
-					correctIndexes: [0, 1],
+					correctIndexes: [1],
 					syllables: ['luk', 'les', 'nos']
 				}
 			],
@@ -408,7 +408,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 				{
 					wordToRead: 'Ve slově hrnec vyměň HR za KA.',
 					correctImage: 'hrnec',
-					correctIndexes: [1],
+					correctIndexes: [0],
 					syllables: ['divočák', 'palec', 'tanečník']
 				}
 			],
