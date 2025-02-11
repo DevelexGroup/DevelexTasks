@@ -8,6 +8,9 @@
 		id: string;
 		size?: number;
 		font?: 'times' | 'arial';
+		textColor?: string;
+		highlightColor?: string;
+		deHighlightedColor?: string;
 		registerElement?: (element: HTMLElement) => void;
 		unregisterElement?: (element: HTMLElement) => void;
 	}
@@ -19,6 +22,9 @@
 		id,
 		size = 30,
 		font = 'times',
+		textColor = '#000',
+		highlightColor = '#6C7A0ECC',
+		deHighlightedColor = '#9CA3AF',
 		registerElement = () => {},
 		unregisterElement = () => {}
 	}: Props = $props();
@@ -41,12 +47,14 @@
 <div
 	{id}
 	bind:this={element}
-	class="inline-flex h-24 items-center justify-center rounded-md {isHighlighted
-		? 'text-green-500'
+	class="inline-flex h-24 items-center justify-center rounded-md"
+	style="font-size: {size}px; font-family: {font === 'times'
+		? 'Times New Roman'
+		: 'Arial'}; color: {isHighlighted
+		? highlightColor
 		: isDeHighlighted
-			? 'text-gray-400'
-			: 'text-gray-700'}"
-	style="font-size: {size}px; font-family: {font === 'times' ? 'Times New Roman' : 'Arial'};"
+			? deHighlightedColor
+			: textColor};"
 >
 	{word}
 </div>
