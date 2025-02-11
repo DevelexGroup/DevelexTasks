@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
-	import { derived } from 'svelte/store';
+	import { derived, get, writable } from 'svelte/store';
 	import {
-		getLogic,
-		getPilotLogic,
-		type GetLogicFunction
-	} from './LessonTaskPairedReadingLevel.logic';
+		PairedReadingIdManager,
+		PairedReadingManager
+	} from './LessonTaskPairedReadingLevel.utility';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
-	import type { GazeManager } from '@473783/develex-core';
+	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
+	import { getCancellableAsync, waitForConditionCancellable } from '$lib/utils/waitForCondition';
+	import { retry } from '$lib/utils/retry';
 
 	let {
 		currentContent,
@@ -17,9 +18,7 @@
 		wordReader,
 		shouldListenForVoice,
 		bufferSize,
-		logicType = 'main',
-		fontSize = 30,
-		font = 'times'
+		logicType = 'main'
 	}: LessonTaskPairedReadingTaskProps = $props();
 
 	const dispatch = createEventDispatcher<{
@@ -29,54 +28,142 @@
 		lessonFail: void;
 	}>();
 
-	const logicGetter: GetLogicFunction = logicType === 'main' ? getLogic : getPilotLogic;
-
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
-	const {
-		gridStateStore,
-		wordsStore,
-		onDestroyLogic,
-		onMountLogic,
-		crossRegisterFn,
-		crossUnregisterFn,
-		wordsRegisterFn,
-		wordsUnregisterFn
-	} = logicGetter(
-		{
-			currentContent,
-			speechEvaluator,
-			speechRecognition,
-			shouldListenForVoice,
-			bufferSize,
-			wordReader
-		},
-		dispatch,
-		gazeManager
-	);
+	// State variables
+	const hasFixatedStartCross = writable(false);
+	const hasFixatedEndCross = writable(false);
+	const currentlyReadingPhrase = writable<{ text: string; id: string } | null>(null);
+	let gazeMistakesDuringReading: number = 0;
+	const abortController = new AbortController();
 
-	const wordStore = derived(wordsStore, ($wordsStore) => {
-		return $wordsStore;
-	});
+	const pairedReadingManager = new PairedReadingManager(currentContent);
+	const wordsStore = writable(pairedReadingManager.getWords());
+	const gridStateStore = writable<'crossStart' | 'reading' | 'crossEnd'>('crossStart');
+
+	const wordStore = derived(wordsStore, ($wordsStore) => $wordsStore);
+
+	function evaluateFixations(event: GazeInteractionObjectFixationEvent) {
+		const { target } = event;
+
+		if (
+			target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId()) &&
+			get(gridStateStore) === 'crossStart'
+		) {
+			hasFixatedStartCross.set(true);
+			return;
+		}
+
+		if (
+			target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId()) &&
+			get(gridStateStore) === 'crossEnd'
+		) {
+			hasFixatedEndCross.set(true);
+			return;
+		}
+
+		const phrase = get(currentlyReadingPhrase);
+		if (!phrase || get(gridStateStore) !== 'reading') return;
+		const isGazePatternCorrect = target.some((target) =>
+			PairedReadingIdManager.isWordInEvaluationSegmentByIndex(phrase.id, target.id, currentContent)
+		);
+
+		if (!isGazePatternCorrect) {
+			gazeMistakesDuringReading++;
+		}
+	}
+
+	function evaluateReaderWordChange(phrase: { text: string; id: string } | null) {
+		currentlyReadingPhrase.set(phrase);
+	}
+
+	async function performSingleReadingSegment() {
+		const segment = pairedReadingManager.getReadingSegment();
+		gazeMistakesDuringReading = 0;
+		await wordReader.read([segment]);
+		if (gazeMistakesDuringReading > 1) throw new Error('Too many mistakes');
+		currentlyReadingPhrase.set(null);
+	}
+
+	async function performReadingSegments() {
+		for await (const segment of currentContent.evaluationSegment) {
+			wordsStore.set(pairedReadingManager.getWords());
+			void segment;
+			await retry(() => getCancellableAsync(performSingleReadingSegment, abortController.signal), {
+				retries: 3,
+				delay: 5000,
+				onRetry: () => {
+					wordReader.abort();
+					dispatch('lessonMistake');
+				}
+			});
+			pairedReadingManager.nextSegment();
+			dispatch('lessonSuccess');
+		}
+	}
+
+	async function performWaitForStartCrossFixation() {
+		try {
+			await waitForConditionCancellable(hasFixatedStartCross, 100000, abortController.signal);
+			return true;
+		} catch {
+			dispatch('lessonFail');
+			return false;
+		}
+	}
+
+	async function performWaitForEndCrossFixation() {
+		await waitForConditionCancellable(hasFixatedEndCross, 100000, abortController.signal);
+		dispatch('lessonComplete');
+	}
+
+	async function performTask() {
+		const started = await performWaitForStartCrossFixation();
+		if (!started) return;
+
+		gridStateStore.set('reading');
+		await performReadingSegments();
+
+		gridStateStore.set('crossEnd');
+		await performWaitForEndCrossFixation();
+	}
+
+	function setupRegisterElement(element: HTMLElement) {
+		gazeManager.register({
+			interaction: 'fixation',
+			element,
+			settings: {
+				bufferSize
+			}
+		});
+	}
+
+	function setupUnregisterElement(element: HTMLElement) {
+		gazeManager.unregister({
+			interaction: 'fixation',
+			element
+		});
+	}
 
 	onMount(() => {
-		onMountLogic();
+		wordReader.onWordChange = evaluateReaderWordChange;
+		performTask();
+		gazeManager.on('fixationObjectStart', evaluateFixations);
 	});
 
 	onDestroy(() => {
-		onDestroyLogic();
+		abortController.abort('Task destroyed');
+		gazeManager.off('fixationObjectStart', evaluateFixations);
 	});
 </script>
 
 <LessonTaskPairedReadingLayout
 	words={$wordStore}
 	stage={$gridStateStore}
-	{crossRegisterFn}
-	{crossUnregisterFn}
-	{wordsRegisterFn}
-	{wordsUnregisterFn}
-	{fontSize}
-	{font}
+	crossRegisterFn={setupRegisterElement}
+	crossUnregisterFn={setupUnregisterElement}
+	wordsRegisterFn={setupRegisterElement}
+	wordsUnregisterFn={setupUnregisterElement}
 />
 
 <!-- <LessonLayoutPairedReading {validateFixation}>
