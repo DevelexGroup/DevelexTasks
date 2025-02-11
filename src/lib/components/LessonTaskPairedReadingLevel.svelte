@@ -36,6 +36,7 @@
 	const hasFixatedEndCross = writable(false);
 	const currentlyReadingPhrase = writable<{ text: string; id: string } | null>(null);
 	let gazeMistakesDuringReading: number = 0;
+	let forceSuccess = false;
 	const abortController = new AbortController();
 
 	const pairedReadingManager = new PairedReadingManager(currentContent);
@@ -81,8 +82,17 @@
 	async function performSingleReadingSegment() {
 		const segment = pairedReadingManager.getReadingSegment();
 		gazeMistakesDuringReading = 0;
-		await wordReader.read([segment]);
-		if (gazeMistakesDuringReading > 1) throw new Error('Too many mistakes');
+		forceSuccess = false;
+		try {
+			await wordReader.read([segment]);
+			if (gazeMistakesDuringReading > 1 && !forceSuccess) throw new Error('Too many mistakes');
+		} catch (error) {
+			// If we manually forced success, consider it a success
+			if (forceSuccess) {
+				return; // Success case
+			}
+			throw error; // Re-throw for actual errors
+		}
 		currentlyReadingPhrase.set(null);
 	}
 
@@ -148,15 +158,38 @@
 		});
 	}
 
+	// Add keyboard event handler
+	function handleKeyPress(event: KeyboardEvent) {
+		if (event.key === 'Enter') {
+			const currentState = get(gridStateStore);
+
+			if (currentState === 'crossStart') {
+				hasFixatedStartCross.set(true);
+			} else if (currentState === 'reading') {
+				// Force success for current reading segment
+				forceSuccess = true;
+				wordReader.abort();
+			} else if (currentState === 'crossEnd') {
+				hasFixatedEndCross.set(true);
+			}
+		} else if (event.key === 'Escape') {
+			dispatch('lessonFail');
+		}
+	}
+
 	onMount(() => {
 		wordReader.onWordChange = evaluateReaderWordChange;
 		performTask();
 		gazeManager.on('fixationObjectStart', evaluateFixations);
+		// Change from keypress to keydown
+		window.addEventListener('keydown', handleKeyPress);
 	});
 
 	onDestroy(() => {
 		abortController.abort('Task destroyed');
 		gazeManager.off('fixationObjectStart', evaluateFixations);
+		// Change from keypress to keydown
+		window.removeEventListener('keydown', handleKeyPress);
 	});
 </script>
 
