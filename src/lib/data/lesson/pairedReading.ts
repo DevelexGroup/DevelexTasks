@@ -33,6 +33,63 @@ const level6content: LessonConfigMap['pairedReading']['data']['content'] = [
 	{
 		text: [
 			[
+				'Petr',
+				'šel',
+				'odpoledne',
+				'na',
+				'zahradu.',
+				'Vzal',
+				'si',
+				'lupu,',
+				'aby',
+				'se',
+				'podíval,'
+			],
+			['co', 'tam', 'najde.', 'Nejprve', 'uviděl', 'housenku,', 'jak', 'leze', 'po', 'listu.'],
+			['Potom', 'našel', 'mraveniště.', 'Mravenci', 'nosili', 'drobky', 'a', 'běhali', 'sem'],
+			['a', 'tam.']
+		],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 4]
+				], // First sentence
+				id: 'fixw-1-0'
+			},
+			{
+				range: [
+					[0, 5],
+					[1, 2]
+				], // Second sentence
+				id: 'fixw-1-1'
+			},
+			{
+				range: [
+					[1, 3],
+					[1, 9]
+				], // Third sentence
+				id: 'fixw-1-2'
+			},
+			{
+				range: [
+					[2, 0],
+					[2, 2]
+				], // Fourth sentence
+				id: 'fixw-1-3'
+			},
+			{
+				range: [
+					[2, 3],
+					[3, 1]
+				], // Fifth sentence
+				id: 'fixw-1-4'
+			}
+		]
+	},
+	{
+		text: [
+			[
 				'Jednoho',
 				'letního',
 				'odpoledne',
@@ -51,7 +108,7 @@ const level6content: LessonConfigMap['pairedReading']['data']['content'] = [
 				'dlouho',
 				'si',
 				'říkal,',
-				'že,',
+				'že',
 				'se',
 				'tam',
 				'musí',
@@ -98,28 +155,28 @@ const level6content: LessonConfigMap['pairedReading']['data']['content'] = [
 					[0, 0],
 					[1, 0]
 				], // First sentence
-				id: 'fixw-1-0'
+				id: 'fixw-2-0'
 			},
 			{
 				range: [
 					[1, 1],
 					[2, 1]
 				], // Second sentence
-				id: 'fixw-1-1'
+				id: 'fixw-2-1'
 			},
 			{
 				range: [
 					[2, 2],
 					[2, 13]
 				], // Third sentence
-				id: 'fixw-1-2'
+				id: 'fixw-2-2'
 			},
 			{
 				range: [
 					[3, 0],
 					[3, 11]
 				], // Fourth sentence
-				id: 'fixw-1-3'
+				id: 'fixw-2-3'
 			}
 		]
 	}
