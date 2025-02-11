@@ -13,6 +13,7 @@
 		font?: 'times' | 'arial';
 		stage?: 'crossStart' | 'reading' | 'crossEnd';
 		crossStartPosition?: 'top' | 'center';
+		backgroundColor?: string;
 		wordsRegisterFn: (element: HTMLElement) => void;
 		wordsUnregisterFn: (element: HTMLElement) => void;
 		crossRegisterFn: (element: HTMLElement) => void;
@@ -27,6 +28,7 @@
 		font = 'times',
 		stage = 'crossStart',
 		crossStartPosition = 'center',
+		backgroundColor = '#FFFEE8',
 		wordsRegisterFn,
 		wordsUnregisterFn,
 		crossRegisterFn,
@@ -44,7 +46,10 @@
 	};
 </script>
 
-<div class="relative flex h-screen w-screen items-center justify-center p-20">
+<div
+	class="relative flex h-screen w-screen items-center justify-center p-20"
+	style="background-color: {backgroundColor};"
+>
 	{#if stage === 'crossStart'}
 		<div
 			class="absolute left-20"
