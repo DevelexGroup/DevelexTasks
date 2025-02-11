@@ -9,6 +9,7 @@
 		words: WordMetadata[][];
 		xGap?: number;
 		yGap?: number;
+		fontSize?: number;
 		stage?: 'crossStart' | 'reading' | 'crossEnd';
 		crossStartPosition?: 'top' | 'center';
 		wordsRegisterFn: (element: HTMLElement) => void;
@@ -21,6 +22,7 @@
 		words,
 		xGap = 10,
 		yGap = 5,
+		fontSize = 30,
 		stage = 'crossStart',
 		crossStartPosition = 'center',
 		wordsRegisterFn,
@@ -86,6 +88,7 @@
 							unregisterElement={wordsUnregisterFn}
 							word={word.text}
 							id={word.id}
+							size={fontSize}
 							isDeHighlighted={!word.isInActiveSegment}
 							isHighlighted={word.isInActiveSegment}
 						/>

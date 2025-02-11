@@ -6,6 +6,7 @@
 		isDeHighlighted?: boolean;
 		word: string;
 		id: string;
+		size?: number;
 		registerElement?: (element: HTMLElement) => void;
 		unregisterElement?: (element: HTMLElement) => void;
 	}
@@ -15,29 +16,35 @@
 		isDeHighlighted = false,
 		word,
 		id,
+		size = 30,
 		registerElement = () => {},
 		unregisterElement = () => {}
 	}: Props = $props();
 
-	let element: HTMLElement = $state();
+	let element: HTMLElement | undefined = $state();
 
 	onMount(() => {
-		registerElement(element);
+		if (element) {
+			registerElement(element);
+		}
 	});
 
 	onDestroy(() => {
-		unregisterElement(element);
+		if (element) {
+			unregisterElement(element);
+		}
 	});
 </script>
 
 <div
 	{id}
 	bind:this={element}
-	class="inline-flex h-24 items-center justify-center rounded-md font-serif text-[30px] {isHighlighted
+	class="inline-flex h-24 items-center justify-center rounded-md font-serif {isHighlighted
 		? 'text-green-500'
 		: isDeHighlighted
 			? 'text-gray-400'
 			: 'text-gray-700'}"
+	style="font-size: {size}px;"
 >
 	{word}
 </div>
