@@ -19,7 +19,8 @@
 		shouldListenForVoice,
 		bufferSize,
 		logicType = 'main',
-		shouldEmitMistake = true
+		shouldEmitMistake = true,
+		shouldHighlight = true
 	}: LessonTaskPairedReadingTaskProps = $props();
 
 	const dispatch = createEventDispatcher<{
@@ -200,6 +201,7 @@
 	crossUnregisterFn={setupUnregisterElement}
 	wordsRegisterFn={setupRegisterElement}
 	wordsUnregisterFn={setupUnregisterElement}
+	{shouldHighlight}
 />
 
 <!-- <LessonLayoutPairedReading {validateFixation}>

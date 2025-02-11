@@ -14,4 +14,5 @@ export interface LessonTaskPairedReadingTaskProps {
 	fontSize?: number;
 	font?: 'times' | 'arial';
 	shouldEmitMistake?: boolean;
+	shouldHighlight?: boolean;
 }

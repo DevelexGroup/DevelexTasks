@@ -14,6 +14,7 @@
 		stage?: 'crossStart' | 'reading' | 'crossEnd';
 		crossStartPosition?: 'top' | 'center';
 		backgroundColor?: string;
+		shouldHighlight?: boolean;
 		wordsRegisterFn: (element: HTMLElement) => void;
 		wordsUnregisterFn: (element: HTMLElement) => void;
 		crossRegisterFn: (element: HTMLElement) => void;
@@ -29,6 +30,7 @@
 		stage = 'crossStart',
 		crossStartPosition = 'center',
 		backgroundColor = '#FFFEE8',
+		shouldHighlight = true,
 		wordsRegisterFn,
 		wordsUnregisterFn,
 		crossRegisterFn,
@@ -115,7 +117,7 @@
 							size={fontSize}
 							{font}
 							isDeHighlighted={!word.isInActiveSegment}
-							isHighlighted={word.isInActiveSegment}
+							isHighlighted={word.isInActiveSegment && shouldHighlight}
 							inbetweenGap={xGap}
 							chainLeft={word.chainLeft}
 							chainRight={word.chainRight}
