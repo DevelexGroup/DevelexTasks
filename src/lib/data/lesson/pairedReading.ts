@@ -1349,10 +1349,11 @@ export const pairedReadingLessonsE: LessonConfigMap['pairedReading']['data'][] =
 
 export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = [
 	{
-		level: 'main-level-1-novoice',
+		level: 'main-level-1-errors',
+		label: 'Level 1 (Chyby)',
 		content: [
 			{
-				text: [['Máma']],
+				text: [['dům']],
 				evaluationSegment: [
 					{
 						range: [
@@ -1364,7 +1365,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 				]
 			},
 			{
-				text: [['dnes']],
+				text: [['voda']],
 				evaluationSegment: [
 					{
 						range: [
@@ -1400,7 +1401,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 				]
 			},
 			{
-				text: [['dítě']],
+				text: [['doba']],
 				evaluationSegment: [
 					{
 						range: [
@@ -1412,7 +1413,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 				]
 			},
 			{
-				text: [['léto']],
+				text: [['ráno']],
 				evaluationSegment: [
 					{
 						range: [
@@ -1424,7 +1425,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 				]
 			},
 			{
-				text: [['vzduch']],
+				text: [['strana']],
 				evaluationSegment: [
 					{
 						range: [
@@ -1436,7 +1437,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 				]
 			},
 			{
-				text: [['slunce']],
+				text: [['člověk']],
 				evaluationSegment: [
 					{
 						range: [
@@ -1448,7 +1449,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 				]
 			},
 			{
-				text: [['příklad']],
+				text: [['pravda']],
 				evaluationSegment: [
 					{
 						range: [
@@ -1458,12 +1459,157 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 						id: 'fixw-8-0-0'
 					}
 				]
+			},
+			{
+				text: [['chvíle']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-9-0-0'
+					}
+				]
 			}
 		],
 		partialProps: {
-			bufferSize: 100,
+			bufferSize: 50,
 			logicType: 'main',
-			shouldListenForVoice: false
+			shouldListenForVoice: false,
+			shouldEmitMistake: true
+		}
+	},
+	{
+		level: 'main-level-1-noerrors',
+		label: 'Level 1 (Bez chyb)',
+		content: [
+			{
+				text: [['dům']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-0-0-0'
+					}
+				]
+			},
+			{
+				text: [['voda']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-1-0-0'
+					}
+				]
+			},
+			{
+				text: [['kolo']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-2-0-0'
+					}
+				]
+			},
+			{
+				text: [['mísa']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-3-0-0'
+					}
+				]
+			},
+			{
+				text: [['doba']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-4-0-0'
+					}
+				]
+			},
+			{
+				text: [['ráno']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-5-0-0'
+					}
+				]
+			},
+			{
+				text: [['strana']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-6-0-0'
+					}
+				]
+			},
+			{
+				text: [['člověk']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-7-0-0'
+					}
+				]
+			},
+			{
+				text: [['pravda']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-8-0-0'
+					}
+				]
+			},
+			{
+				text: [['chvíle']],
+				evaluationSegment: [
+					{
+						range: [
+							[0, 0],
+							[0, 0]
+						],
+						id: 'fixw-9-0-0'
+					}
+				]
+			}
+		],
+		partialProps: {
+			bufferSize: 50,
+			logicType: 'main',
+			shouldListenForVoice: false,
+			shouldEmitMistake: false
 		}
 	},
 	{
