@@ -59,7 +59,12 @@
 	});
 </script>
 
-<div {id} bind:this={element} class="relative z-20 inline-flex h-24 items-center justify-center">
+<div
+	{id}
+	bind:this={element}
+	class="relative z-20 inline-flex items-center justify-center"
+	style="height: {size * 1.5}px;"
+>
 	{#if isHighlighted}
 		<div
 			class="z-1 pointer-events-none absolute h-full"
