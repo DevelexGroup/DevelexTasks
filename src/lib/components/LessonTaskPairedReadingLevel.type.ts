@@ -13,4 +13,5 @@ export interface LessonTaskPairedReadingTaskProps {
 	logicType?: 'main' | 'pilot';
 	fontSize?: number;
 	font?: 'times' | 'arial';
+	shouldEmitMistake?: boolean;
 }

@@ -18,7 +18,8 @@
 		wordReader,
 		shouldListenForVoice,
 		bufferSize,
-		logicType = 'main'
+		logicType = 'main',
+		shouldEmitMistake = true
 	}: LessonTaskPairedReadingTaskProps = $props();
 
 	const dispatch = createEventDispatcher<{
@@ -90,11 +91,13 @@
 			wordsStore.set(pairedReadingManager.getWords());
 			void segment;
 			await retry(() => getCancellableAsync(performSingleReadingSegment, abortController.signal), {
-				retries: 3,
+				retries: 999, // Virtually infinite retries
 				delay: 5000,
 				onRetry: () => {
 					wordReader.abort();
-					dispatch('lessonMistake');
+					if (shouldEmitMistake) {
+						dispatch('lessonMistake');
+					}
 				}
 			});
 			pairedReadingManager.nextSegment();
