@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
 	import LessonCross from './LessonCross.svelte';
-	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
 	import LessonWord from './LessonWord.svelte';
+	import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
+	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
 
 	interface Props {
 		words: WordMetadata[][];
@@ -44,6 +44,20 @@
 		duration: 300,
 		delay: 0
 	};
+
+	let enhancedWords = $derived(
+		words.map((row) =>
+			row.map((word, index) => {
+				const result = {
+					...word,
+					chainLeft: word.isInActiveSegment && index > 0 && row[index - 1].isInActiveSegment,
+					chainRight:
+						word.isInActiveSegment && index < row.length - 1 && row[index + 1].isInActiveSegment
+				};
+				return result;
+			})
+		)
+	);
 </script>
 
 <div
@@ -87,9 +101,9 @@
 			in:fade={{ ...fadeInParams }}
 			out:fade={{ ...fadeOutParams }}
 		>
-			{#each words as row}
+			{#each enhancedWords as row, rowIndex}
 				<div class="items-left flex justify-start" style="gap: {xGap}px;">
-					{#each row as word}
+					{#each row as word, i (rowIndex + '-' + word.id)}
 						<LessonWord
 							registerElement={wordsRegisterFn}
 							unregisterElement={wordsUnregisterFn}
@@ -99,6 +113,9 @@
 							{font}
 							isDeHighlighted={!word.isInActiveSegment}
 							isHighlighted={word.isInActiveSegment}
+							inbetweenGap={xGap}
+							chainLeft={word.chainLeft}
+							chainRight={word.chainRight}
 						/>
 					{/each}
 				</div>

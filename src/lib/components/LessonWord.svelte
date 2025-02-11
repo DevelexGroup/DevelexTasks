@@ -14,6 +14,9 @@
 		deHighlightedColor?: string;
 		extendLeft?: number;
 		extendRight?: number;
+		inbetweenGap?: number;
+		chainLeft?: boolean;
+		chainRight?: boolean;
 		registerElement?: (element: HTMLElement) => void;
 		unregisterElement?: (element: HTMLElement) => void;
 	}
@@ -30,11 +33,18 @@
 		deHighlightedColor = '#000',
 		extendLeft = 3,
 		extendRight = 3,
+		inbetweenGap = 10,
+		chainLeft = false,
+		chainRight = false,
 		registerElement = () => {},
 		unregisterElement = () => {}
 	}: Props = $props();
 
 	let element: HTMLElement | undefined = $state();
+
+	let computedExtendLeft = $derived(isHighlighted && chainLeft ? inbetweenGap / 2 : extendLeft);
+
+	let computedExtendRight = $derived(isHighlighted && chainRight ? inbetweenGap / 2 : extendRight);
 
 	onMount(() => {
 		if (element) {
@@ -49,17 +59,18 @@
 	});
 </script>
 
-<div
-	{id}
-	bind:this={element}
-	class="relative z-20 inline-flex h-24 items-center justify-center rounded-md"
->
+<div {id} bind:this={element} class="relative z-20 inline-flex h-24 items-center justify-center">
 	{#if isHighlighted}
 		<div
-			class="z-1 pointer-events-none absolute h-full rounded-md"
-			style="background-color: {highlightColor}; 
-				   left: -{extendLeft}px; 
-				   right: -{extendRight}px;"
+			class="z-1 pointer-events-none absolute h-full"
+			style="
+				background-color: {highlightColor}; 
+				left: -{computedExtendLeft}px; 
+				right: -{computedExtendRight}px;
+				border-radius: {chainLeft ? '0px' : '6px'} {chainRight ? '0px' : '6px'} {chainRight
+				? '0px'
+				: '6px'} {chainLeft ? '0px' : '6px'};
+			"
 			in:fade={{ duration: 300 }}
 			out:fade={{ duration: 150 }}
 		/>
