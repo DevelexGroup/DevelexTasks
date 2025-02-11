@@ -46,13 +46,16 @@
 	};
 
 	let enhancedWords = $derived(
-		words.map((row) =>
-			row.map((word, index) => {
+		words.map((row, rowIndex) =>
+			row.map((word, colIndex) => {
 				const result = {
 					...word,
-					chainLeft: word.isInActiveSegment && index > 0 && row[index - 1].isInActiveSegment,
+					chainLeft: word.isInActiveSegment && colIndex > 0 && row[colIndex - 1].isInActiveSegment,
 					chainRight:
-						word.isInActiveSegment && index < row.length - 1 && row[index + 1].isInActiveSegment
+						word.isInActiveSegment &&
+						colIndex < row.length - 1 &&
+						row[colIndex + 1].isInActiveSegment &&
+						word.isInActiveSegment
 				};
 				return result;
 			})
