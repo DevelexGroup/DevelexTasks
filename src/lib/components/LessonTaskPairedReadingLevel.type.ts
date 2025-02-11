@@ -12,4 +12,5 @@ export interface LessonTaskPairedReadingTaskProps {
 	bufferSize: number;
 	logicType?: 'main' | 'pilot';
 	fontSize?: number;
+	font?: 'times' | 'arial';
 }

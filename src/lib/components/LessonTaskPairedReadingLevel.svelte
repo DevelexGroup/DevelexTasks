@@ -18,7 +18,8 @@
 		shouldListenForVoice,
 		bufferSize,
 		logicType = 'main',
-		fontSize = 30
+		fontSize = 30,
+		font = 'times'
 	}: LessonTaskPairedReadingTaskProps = $props();
 
 	const dispatch = createEventDispatcher<{
@@ -75,6 +76,7 @@
 	{wordsRegisterFn}
 	{wordsUnregisterFn}
 	{fontSize}
+	{font}
 />
 
 <!-- <LessonLayoutPairedReading {validateFixation}>

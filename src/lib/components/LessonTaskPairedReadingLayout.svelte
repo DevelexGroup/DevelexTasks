@@ -10,6 +10,7 @@
 		xGap?: number;
 		yGap?: number;
 		fontSize?: number;
+		font?: 'times' | 'arial';
 		stage?: 'crossStart' | 'reading' | 'crossEnd';
 		crossStartPosition?: 'top' | 'center';
 		wordsRegisterFn: (element: HTMLElement) => void;
@@ -23,6 +24,7 @@
 		xGap = 10,
 		yGap = 5,
 		fontSize = 30,
+		font = 'times',
 		stage = 'crossStart',
 		crossStartPosition = 'center',
 		wordsRegisterFn,
@@ -89,6 +91,7 @@
 							word={word.text}
 							id={word.id}
 							size={fontSize}
+							{font}
 							isDeHighlighted={!word.isInActiveSegment}
 							isHighlighted={word.isInActiveSegment}
 						/>

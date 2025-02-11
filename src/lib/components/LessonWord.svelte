@@ -7,6 +7,7 @@
 		word: string;
 		id: string;
 		size?: number;
+		font?: 'times' | 'arial';
 		registerElement?: (element: HTMLElement) => void;
 		unregisterElement?: (element: HTMLElement) => void;
 	}
@@ -17,6 +18,7 @@
 		word,
 		id,
 		size = 30,
+		font = 'times',
 		registerElement = () => {},
 		unregisterElement = () => {}
 	}: Props = $props();
@@ -39,12 +41,12 @@
 <div
 	{id}
 	bind:this={element}
-	class="inline-flex h-24 items-center justify-center rounded-md font-serif {isHighlighted
+	class="inline-flex h-24 items-center justify-center rounded-md {isHighlighted
 		? 'text-green-500'
 		: isDeHighlighted
 			? 'text-gray-400'
 			: 'text-gray-700'}"
-	style="font-size: {size}px;"
+	style="font-size: {size}px; font-family: {font === 'times' ? 'Times New Roman' : 'Arial'};"
 >
 	{word}
 </div>
