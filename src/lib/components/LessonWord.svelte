@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	interface Props {
 		isHighlighted?: boolean;
@@ -11,6 +12,8 @@
 		textColor?: string;
 		highlightColor?: string;
 		deHighlightedColor?: string;
+		extendLeft?: number;
+		extendRight?: number;
 		registerElement?: (element: HTMLElement) => void;
 		unregisterElement?: (element: HTMLElement) => void;
 	}
@@ -23,8 +26,10 @@
 		size = 30,
 		font = 'times',
 		textColor = '#000',
-		highlightColor = '#6C7A0ECC',
-		deHighlightedColor = '#9CA3AF',
+		highlightColor = '#6C7A0E80',
+		deHighlightedColor = '#000',
+		extendLeft = 3,
+		extendRight = 3,
 		registerElement = () => {},
 		unregisterElement = () => {}
 	}: Props = $props();
@@ -47,14 +52,22 @@
 <div
 	{id}
 	bind:this={element}
-	class="inline-flex h-24 items-center justify-center rounded-md"
-	style="font-size: {size}px; font-family: {font === 'times'
-		? 'Times New Roman'
-		: 'Arial'}; color: {isHighlighted
-		? highlightColor
-		: isDeHighlighted
-			? deHighlightedColor
-			: textColor};"
+	class="relative z-20 inline-flex h-24 items-center justify-center rounded-md"
 >
-	{word}
+	{#if isHighlighted}
+		<div
+			class="z-1 pointer-events-none absolute h-full rounded-md"
+			style="background-color: {highlightColor}; 
+				   left: -{extendLeft}px; 
+				   right: -{extendRight}px;"
+			in:fade={{ duration: 300 }}
+			out:fade={{ duration: 150 }}
+		/>
+	{/if}
+	<span
+		class="z-20"
+		style="font-size: {size}px; font-family: {font === 'times'
+			? 'Times New Roman'
+			: 'Arial'}; color: {isDeHighlighted ? deHighlightedColor : textColor};">{word}</span
+	>
 </div>
