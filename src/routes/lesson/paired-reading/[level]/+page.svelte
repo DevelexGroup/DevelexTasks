@@ -32,5 +32,10 @@
 </script>
 
 {#if data}
-	<Lesson lessonName={data.config.level} {getLessonConfig} isDebug={false} />
+	<Lesson
+		lessonName={data.config.level}
+		{getLessonConfig}
+		isDebug={false}
+		backgroundColor="#FFFEE8"
+	/>
 {/if}

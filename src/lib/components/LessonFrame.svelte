@@ -22,7 +22,7 @@
 		onLessonStateTransition: (newState: string) => void;
 	}
 
-	let { lessonConfig, onLessonStateTransition, backgroundColor = '#FFFEE8' }: Props = $props();
+	let { lessonConfig, onLessonStateTransition, backgroundColor = 'transparent' }: Props = $props();
 
 	let state: 'round' | 'fail' | 'complete' | 'mistake' = $state('round');
 

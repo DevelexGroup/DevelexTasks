@@ -34,9 +34,10 @@
 		 */
 		isDebug: boolean;
 		lessonName: string;
+		backgroundColor?: string;
 	}
 
-	let { getLessonConfig, isDebug, lessonName }: Props = $props();
+	let { getLessonConfig, isDebug, lessonName, backgroundColor = 'transparent' }: Props = $props();
 
 	let lessonConfig: LessonConfig['setup'] | null = $state(null);
 
@@ -235,7 +236,11 @@
 			in:fly={flyIn}
 			out:fly={flyOut}
 		>
-			<LessonFrame {lessonConfig} onLessonStateTransition={handleLessonStateTransition} />
+			<LessonFrame
+				{backgroundColor}
+				{lessonConfig}
+				onLessonStateTransition={handleLessonStateTransition}
+			/>
 		</div>
 	{/if}
 	{#if isDebug}
