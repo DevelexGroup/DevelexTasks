@@ -1,5 +1,563 @@
 import type { LessonConfigMap } from '$lib/types/lesson';
 
+const level1content: LessonConfigMap['pairedReading']['data']['content'] = [
+	{
+		text: [['dům']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-0-0-0'
+			}
+		]
+	},
+	{
+		text: [['voda']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-1-0-0'
+			}
+		]
+	},
+	{
+		text: [['kolo']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-2-0-0'
+			}
+		]
+	},
+	{
+		text: [['mísa']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-3-0-0'
+			}
+		]
+	},
+	{
+		text: [['doba']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-4-0-0'
+			}
+		]
+	},
+	{
+		text: [['ráno']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-5-0-0'
+			}
+		]
+	},
+	{
+		text: [['strana']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-6-0-0'
+			}
+		]
+	},
+	{
+		text: [['člověk']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-7-0-0'
+			}
+		]
+	},
+	{
+		text: [['pravda']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-8-0-0'
+			}
+		]
+	},
+	{
+		text: [['chvíle']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-9-0-0'
+			}
+		]
+	}
+];
+
+const level4content: LessonConfigMap['pairedReading']['data']['content'] = [
+	{
+		text: [['Kočka', 'mňouká', 'a pes', 'štěká.']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-0-0'
+			},
+			{
+				range: [
+					[0, 1],
+					[0, 1]
+				],
+				id: 'fixw-0-1'
+			},
+			{
+				range: [
+					[0, 2],
+					[0, 2]
+				],
+				id: 'fixw-0-2'
+			},
+			{
+				range: [
+					[0, 3],
+					[0, 3]
+				],
+				id: 'fixw-0-3'
+			}
+		]
+	},
+	{
+		text: [['Maruška', 'právě', 'dělá', 'domácí', 'úkoly.']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-0-0'
+			},
+			{
+				range: [
+					[0, 1],
+					[0, 1]
+				],
+				id: 'fixw-0-1'
+			},
+			{
+				range: [
+					[0, 2],
+					[0, 2]
+				],
+				id: 'fixw-0-2'
+			},
+			{
+				range: [
+					[0, 3],
+					[0, 3]
+				],
+				id: 'fixw-0-3'
+			},
+			{
+				range: [
+					[0, 4],
+					[0, 4]
+				],
+				id: 'fixw-0-4'
+			}
+		]
+	},
+	{
+		text: [['Domácí', 'úkoly', 'Marušku', 'velmi', 'baví.']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-0-0'
+			},
+			{
+				range: [
+					[0, 1],
+					[0, 1]
+				],
+				id: 'fixw-0-1'
+			},
+			{
+				range: [
+					[0, 2],
+					[0, 2]
+				],
+				id: 'fixw-0-2'
+			},
+			{
+				range: [
+					[0, 3],
+					[0, 3]
+				],
+				id: 'fixw-0-3'
+			},
+			{
+				range: [
+					[0, 4],
+					[0, 4]
+				],
+				id: 'fixw-0-4'
+			}
+		]
+	},
+	{
+		text: [['Pilná', 'Maruška', 'má', 'nejraději', 'matematiku.']],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-0-0'
+			},
+			{
+				range: [
+					[0, 1],
+					[0, 1]
+				],
+				id: 'fixw-0-1'
+			},
+			{
+				range: [
+					[0, 2],
+					[0, 2]
+				],
+				id: 'fixw-0-2'
+			},
+			{
+				range: [
+					[0, 3],
+					[0, 3]
+				],
+				id: 'fixw-0-3'
+			},
+			{
+				range: [
+					[0, 4],
+					[0, 4]
+				],
+				id: 'fixw-0-4'
+			}
+		]
+	},
+	{
+		text: [
+			[
+				'Jana',
+				'byla',
+				'nemocná',
+				'a',
+				'smutně',
+				'pozorovala',
+				'z',
+				'okna',
+				'hrající',
+				'si',
+				'kamarády',
+				'na',
+				'hřišti.'
+			]
+		],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-0-0'
+			},
+			{
+				range: [
+					[0, 1],
+					[0, 1]
+				],
+				id: 'fixw-0-1'
+			},
+			{
+				range: [
+					[0, 2],
+					[0, 2]
+				],
+				id: 'fixw-0-2'
+			},
+			{
+				range: [
+					[0, 3],
+					[0, 4]
+				],
+				id: 'fixw-0-3'
+			},
+			{
+				range: [
+					[0, 5],
+					[0, 5]
+				],
+				id: 'fixw-0-4'
+			},
+			{
+				range: [
+					[0, 6],
+					[0, 7]
+				],
+				id: 'fixw-0-5'
+			},
+			{
+				range: [
+					[0, 8],
+					[0, 9]
+				],
+				id: 'fixw-0-6'
+			},
+			{
+				range: [
+					[0, 10],
+					[0, 10]
+				],
+				id: 'fixw-0-7'
+			},
+			{
+				range: [
+					[0, 11],
+					[0, 12]
+				],
+				id: 'fixw-0-8'
+			}
+		]
+	},
+	{
+		text: [
+			[
+				'Najednou',
+				'Jana',
+				'zpozorovala',
+				'stín',
+				'pohybující',
+				'se',
+				'tajemně',
+				'mezi',
+				'stromy',
+				'u',
+				'vedlejšího',
+				'domu.'
+			]
+		],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-0-0'
+			},
+			{
+				range: [
+					[0, 1],
+					[0, 1]
+				],
+				id: 'fixw-0-1'
+			},
+			{
+				range: [
+					[0, 2],
+					[0, 2]
+				],
+				id: 'fixw-0-2'
+			},
+			{
+				range: [
+					[0, 3],
+					[0, 3]
+				],
+				id: 'fixw-0-3'
+			},
+			{
+				range: [
+					[0, 4],
+					[0, 5]
+				],
+				id: 'fixw-0-4'
+			},
+			{
+				range: [
+					[0, 6],
+					[0, 6]
+				],
+				id: 'fixw-0-5'
+			},
+			{
+				range: [
+					[0, 7],
+					[0, 7]
+				],
+				id: 'fixw-0-6'
+			},
+			{
+				range: [
+					[0, 8],
+					[0, 8]
+				],
+				id: 'fixw-0-7'
+			},
+			{
+				range: [
+					[0, 9],
+					[0, 10]
+				],
+				id: 'fixw-0-8'
+			},
+			{
+				range: [
+					[0, 11],
+					[0, 11]
+				],
+				id: 'fixw-0-9'
+			}
+		]
+	},
+	{
+		text: [
+			[
+				'Druhý',
+				'den',
+				'ráno',
+				'Jana',
+				'uviděla',
+				'tmavou',
+				'a',
+				'chundelatou',
+				'kočku,',
+				'která',
+				'ji',
+				'upřeně',
+				'sledovala.'
+			]
+		],
+		evaluationSegment: [
+			{
+				range: [
+					[0, 0],
+					[0, 0]
+				],
+				id: 'fixw-0-0'
+			},
+			{
+				range: [
+					[0, 1],
+					[0, 1]
+				],
+				id: 'fixw-0-1'
+			},
+			{
+				range: [
+					[0, 2],
+					[0, 2]
+				],
+				id: 'fixw-0-2'
+			},
+			{
+				range: [
+					[0, 3],
+					[0, 3]
+				],
+				id: 'fixw-0-3'
+			},
+			{
+				range: [
+					[0, 4],
+					[0, 4]
+				],
+				id: 'fixw-0-4'
+			},
+			{
+				range: [
+					[0, 5],
+					[0, 5]
+				],
+				id: 'fixw-0-5'
+			},
+			{
+				range: [
+					[0, 6],
+					[0, 7]
+				],
+				id: 'fixw-0-6'
+			},
+			{
+				range: [
+					[0, 8],
+					[0, 8]
+				],
+				id: 'fixw-0-7'
+			},
+			{
+				range: [
+					[0, 9],
+					[0, 9]
+				],
+				id: 'fixw-0-8'
+			},
+			{
+				range: [
+					[0, 10],
+					[0, 10]
+				],
+				id: 'fixw-0-9'
+			},
+			{
+				range: [
+					[0, 11],
+					[0, 11]
+				],
+				id: 'fixw-0-10'
+			},
+			{
+				range: [
+					[0, 12],
+					[0, 12]
+				],
+				id: 'fixw-0-11'
+			}
+		]
+	}
+];
+
 const level6content: LessonConfigMap['pairedReading']['data']['content'] = [
 	{
 		text: [
@@ -186,128 +744,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		level: 'main-level-1-errors',
 		label: 'Level 1 (Chyby)',
-		content: [
-			{
-				text: [['dům']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-0-0-0'
-					}
-				]
-			},
-			{
-				text: [['voda']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-1-0-0'
-					}
-				]
-			},
-			{
-				text: [['kolo']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-2-0-0'
-					}
-				]
-			},
-			{
-				text: [['mísa']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-3-0-0'
-					}
-				]
-			},
-			{
-				text: [['doba']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-4-0-0'
-					}
-				]
-			},
-			{
-				text: [['ráno']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-5-0-0'
-					}
-				]
-			},
-			{
-				text: [['strana']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-6-0-0'
-					}
-				]
-			},
-			{
-				text: [['člověk']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-7-0-0'
-					}
-				]
-			},
-			{
-				text: [['pravda']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-8-0-0'
-					}
-				]
-			},
-			{
-				text: [['chvíle']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-9-0-0'
-					}
-				]
-			}
-		],
+		content: level1content,
 		partialProps: {
 			bufferSize: 50,
 			logicType: 'main',
@@ -318,128 +755,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		level: 'main-level-1-noerrors',
 		label: 'Level 1 (Bez chyb)',
-		content: [
-			{
-				text: [['dům']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-0-0-0'
-					}
-				]
-			},
-			{
-				text: [['voda']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-1-0-0'
-					}
-				]
-			},
-			{
-				text: [['kolo']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-2-0-0'
-					}
-				]
-			},
-			{
-				text: [['mísa']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-3-0-0'
-					}
-				]
-			},
-			{
-				text: [['doba']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-4-0-0'
-					}
-				]
-			},
-			{
-				text: [['ráno']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-5-0-0'
-					}
-				]
-			},
-			{
-				text: [['strana']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-6-0-0'
-					}
-				]
-			},
-			{
-				text: [['člověk']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-7-0-0'
-					}
-				]
-			},
-			{
-				text: [['pravda']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-8-0-0'
-					}
-				]
-			},
-			{
-				text: [['chvíle']],
-				evaluationSegment: [
-					{
-						range: [
-							[0, 0],
-							[0, 0]
-						],
-						id: 'fixw-9-0-0'
-					}
-				]
-			}
-		],
+		content: level1content,
 		partialProps: {
 			bufferSize: 50,
 			logicType: 'main',
@@ -1571,6 +1887,30 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 			logicType: 'main',
 			shouldListenForVoice: false,
 			shouldEmitMistake: false
+		}
+	},
+	{
+		level: 'main-level-4-errors',
+		label: 'Level 4 (Chyby)',
+		content: level4content,
+		partialProps: {
+			bufferSize: 50,
+			logicType: 'main',
+			shouldListenForVoice: false,
+			shouldEmitMistake: true,
+			shouldHighlight: false
+		}
+	},
+	{
+		level: 'main-level-4-noerrors',
+		label: 'Level 4 (Bez chyb)',
+		content: level4content,
+		partialProps: {
+			bufferSize: 50,
+			logicType: 'main',
+			shouldListenForVoice: false,
+			shouldEmitMistake: false,
+			shouldHighlight: false
 		}
 	},
 	{
