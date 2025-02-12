@@ -1,8 +1,8 @@
-import { pairedReadingLessonsE } from '$lib/data/lesson/pairedReading';
+import { pairedReadingLessons } from '$lib/data/lesson/pairedReading';
 
 /** @type {import('./$types').EntryGenerator} */
 export function entries() {
-	return pairedReadingLessonsE.map((lesson) => ({
+	return pairedReadingLessons.map((lesson) => ({
 		level: lesson.level
 	}));
 }

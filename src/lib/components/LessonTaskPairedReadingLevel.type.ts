@@ -11,4 +11,8 @@ export interface LessonTaskPairedReadingTaskProps {
 	shouldListenForVoice: boolean;
 	bufferSize: number;
 	logicType?: 'main' | 'pilot';
+	fontSize?: number;
+	font?: 'times' | 'arial';
+	shouldEmitMistake?: boolean;
+	shouldHighlight?: boolean;
 }

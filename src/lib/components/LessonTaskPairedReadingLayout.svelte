@@ -1,16 +1,20 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
 	import LessonCross from './LessonCross.svelte';
-	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
 	import LessonWord from './LessonWord.svelte';
+	import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
+	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
 
 	interface Props {
 		words: WordMetadata[][];
 		xGap?: number;
 		yGap?: number;
+		fontSize?: number;
+		font?: 'times' | 'arial';
 		stage?: 'crossStart' | 'reading' | 'crossEnd';
 		crossStartPosition?: 'top' | 'center';
+		backgroundColor?: string;
+		shouldHighlight?: boolean;
 		wordsRegisterFn: (element: HTMLElement) => void;
 		wordsUnregisterFn: (element: HTMLElement) => void;
 		crossRegisterFn: (element: HTMLElement) => void;
@@ -21,8 +25,12 @@
 		words,
 		xGap = 10,
 		yGap = 5,
+		fontSize = 30,
+		font = 'times',
 		stage = 'crossStart',
 		crossStartPosition = 'center',
+		backgroundColor = '#FFFEE8',
+		shouldHighlight = true,
 		wordsRegisterFn,
 		wordsUnregisterFn,
 		crossRegisterFn,
@@ -38,9 +46,29 @@
 		duration: 300,
 		delay: 0
 	};
+
+	let enhancedWords = $derived(
+		words.map((row, rowIndex) =>
+			row.map((word, colIndex) => {
+				const result = {
+					...word,
+					chainLeft: word.isInActiveSegment && colIndex > 0 && row[colIndex - 1].isInActiveSegment,
+					chainRight:
+						word.isInActiveSegment &&
+						colIndex < row.length - 1 &&
+						row[colIndex + 1].isInActiveSegment &&
+						word.isInActiveSegment
+				};
+				return result;
+			})
+		)
+	);
 </script>
 
-<div class="relative flex h-screen w-screen items-center justify-center p-20">
+<div
+	class="relative flex h-screen w-screen items-center justify-center p-20"
+	style="background-color: {backgroundColor};"
+>
 	{#if stage === 'crossStart'}
 		<div
 			class="absolute left-20"
@@ -78,16 +106,21 @@
 			in:fade={{ ...fadeInParams }}
 			out:fade={{ ...fadeOutParams }}
 		>
-			{#each words as row}
+			{#each enhancedWords as row, rowIndex}
 				<div class="items-left flex justify-start" style="gap: {xGap}px;">
-					{#each row as word}
+					{#each row as word, i (rowIndex + '-' + word.id)}
 						<LessonWord
 							registerElement={wordsRegisterFn}
 							unregisterElement={wordsUnregisterFn}
 							word={word.text}
 							id={word.id}
+							size={fontSize}
+							{font}
 							isDeHighlighted={!word.isInActiveSegment}
-							isHighlighted={word.isInActiveSegment}
+							isHighlighted={word.isInActiveSegment && shouldHighlight}
+							inbetweenGap={xGap}
+							chainLeft={word.chainLeft}
+							chainRight={word.chainRight}
 						/>
 					{/each}
 				</div>

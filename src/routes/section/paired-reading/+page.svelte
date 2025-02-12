@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import ButtonStartLesson from '$lib/components/ButtonStartLesson.svelte';
+	import type { LessonConfigMap } from '$lib/types/lesson';
 
 	interface Props {
 		data: {
-			config: string[];
+			config: LessonConfigMap['pairedReading']['data'][];
 		};
 	}
 
@@ -13,11 +14,10 @@
 
 <div class="flex flex-col items-center justify-center space-y-4">
 	<h1 class="text-3xl font-bold">Dublované čtení</h1>
-	<p>Choose your level:</p>
 	<div class="flex flex-col gap-1">
 		{#each data.config as level}
-			<ButtonStartLesson href="/lesson/paired-reading/{level}">
-				{level}
+			<ButtonStartLesson href="/lesson/paired-reading/{level.level}">
+				{level.label}
 			</ButtonStartLesson>
 		{/each}
 		<div class="mt-4 flex flex-col gap-1">
