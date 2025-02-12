@@ -742,7 +742,7 @@ const level6content: LessonConfigMap['pairedReading']['data']['content'] = [
 
 export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = [
 	{
-		level: 'main-level-1-errors',
+		level: 'level-1-errors',
 		label: 'Level 1 (Chyby)',
 		content: level1content,
 		partialProps: {
@@ -753,7 +753,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-1-noerrors',
+		level: 'level-1-noerrors',
 		label: 'Level 1 (Bez chyb)',
 		content: level1content,
 		partialProps: {
@@ -764,7 +764,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-2-errors',
+		level: 'level-2-errors',
 		label: 'Level 2 (Chyby)',
 		content: [
 			{
@@ -897,7 +897,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-2-noerrors',
+		level: 'level-2-noerrors',
 		label: 'Level 2 (Bez chyb)',
 		content: [
 			{
@@ -1030,7 +1030,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-3-errors',
+		level: 'level-3-errors',
 		label: 'Level 3 (Chyby)',
 		content: [
 			{
@@ -1460,7 +1460,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-3-noerrors',
+		level: 'level-3-noerrors',
 		label: 'Level 3 (Bez chyb)',
 		content: [
 			{
@@ -1890,7 +1890,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-4-errors',
+		level: 'level-4-errors',
 		label: 'Level 4 (Chyby)',
 		content: level4content,
 		partialProps: {
@@ -1902,7 +1902,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-4-noerrors',
+		level: 'level-4-noerrors',
 		label: 'Level 4 (Bez chyb)',
 		content: level4content,
 		partialProps: {
@@ -1914,7 +1914,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-5-errors',
+		level: 'level-5-errors',
 		label: 'Level 5 (Chyby)',
 		content: [
 			{
@@ -2090,7 +2090,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-5-noerrors',
+		level: 'level-5-noerrors',
 		label: 'Level 5 (Bez chyb)',
 		content: [
 			{
@@ -2266,7 +2266,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-6-errors',
+		level: 'level-6-errors',
 		label: 'Level 6 (Chyby)',
 		content: level6content,
 		partialProps: {
@@ -2278,7 +2278,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
-		level: 'main-level-6-noerrors',
+		level: 'level-6-noerrors',
 		label: 'Level 6 (Bez chyb)',
 		content: level6content,
 		partialProps: {
