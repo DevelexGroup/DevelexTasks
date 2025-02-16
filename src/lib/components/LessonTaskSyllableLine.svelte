@@ -3,7 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import LessonTaskSyllableItem from './LessonTaskSyllableItem.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import LessonWord from './LessonWord.svelte';
+	import LessonWordLight from './LessonWordLight.svelte';
 	import Icon from '@iconify/svelte';
 
 	interface Props {
@@ -166,7 +166,7 @@
 		{/if}
 		<!-- Shadow LessonWord without gaze registration to -->
 		<div class="pointer-events-none select-none opacity-0">
-			<LessonWord word={content.correctSyllable} id={idAssignementSyllable} />
+			<LessonWordLight word={content.correctSyllable} id={idAssignementSyllable} />
 		</div>
 	</div>
 {/if}

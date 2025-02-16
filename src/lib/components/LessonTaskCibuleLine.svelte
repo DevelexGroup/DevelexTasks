@@ -2,7 +2,7 @@
 	import type { CibuleTaskType } from '$lib/types/lesson';
 	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import LessonWord from './LessonWord.svelte';
+	import LessonWordLight from './LessonWordLight.svelte';
 	import LessonTaskCibuleItem from './LessonTaskCibuleItem.svelte';
 
 	interface Props {
@@ -169,7 +169,7 @@
 		{/if}
 		<!-- Shadow LessonWord without gaze registration to -->
 		<div class="pointer-events-none select-none text-red-400 opacity-0">
-			<LessonWord
+			<LessonWordLight
 				word={(content.correctSyllable == undefined
 					? content.incorrectSyllable
 					: content.correctSyllable) ?? ''}

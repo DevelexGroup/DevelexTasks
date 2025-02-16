@@ -33,13 +33,11 @@
 <div
 	{id}
 	bind:this={element}
-	class="inline-flex h-24 items-center justify-center rounded-md border px-1.5 font-serif text-[30px] {isHighlighted
-		? 'border-green-700'
+	class="inline-flex h-24 items-center justify-center rounded-md font-serif text-[30px] {isHighlighted
+		? 'text-green-500'
 		: isDeHighlighted
-			? 'border-gray-400'
-			: 'border-transparent'}"
+			? 'text-gray-400'
+			: 'text-gray-700'}"
 >
-	<div class="h-20 w-20">
-		<img src={`/img/lesson/VisualDiff/${word}.png`} alt={word} class="h-full w-full" />
-	</div>
+	{word}
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LessonWord from './LessonWord.svelte';
+	import LessonWordLight from './LessonWordLight.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	interface Props {
@@ -39,7 +39,14 @@
 	onclick={handleWordClick}
 	{disabled}
 >
-	<LessonWord {registerElement} {unregisterElement} {word} {id} {isHighlighted} {isDeHighlighted} />
+	<LessonWordLight
+		{registerElement}
+		{unregisterElement}
+		{word}
+		{id}
+		{isHighlighted}
+		{isDeHighlighted}
+	/>
 	<div
 		class="syllable-select absolute -left-2 top-0 -z-10 h-full rounded-md duration-500 {disabled
 			? ''

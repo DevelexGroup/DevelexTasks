@@ -2,7 +2,7 @@
 	import type { VisualDiffTaskType } from '$lib/types/lesson';
 	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import LessonWord from './LessonWord.svelte';
+	import LessonWordLight from './LessonWordLight.svelte';
 	import LessonTaskVisualDiffItem from './LessonTaskVisualDiffItem.svelte';
 	import LessonTaskVisualDiffGroup from './LessonTaskVisualDiffGroup.svelte';
 
@@ -133,7 +133,7 @@
 		{/if}
 		<!-- Shadow LessonWord without gaze registration to -->
 		<div class="pointer-events-none select-none text-red-400 opacity-0">
-			<LessonWord word={content.correctSyllable ?? ''} id={idCorrectSyllable} />
+			<LessonWordLight word={content.correctSyllable ?? ''} id={idCorrectSyllable} />
 		</div>
 	</div>
 {/if}

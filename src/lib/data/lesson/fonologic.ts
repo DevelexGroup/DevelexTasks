@@ -1,6 +1,6 @@
 import type { LessonConfigMap } from '$lib/types/lesson';
 
-const globalGap = 0;
+const globalGap = 50;
 
 export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 	{
@@ -38,7 +38,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: false,
 			isSyllableAssignmentPresent: true,
 			correctSyllableVisibilityTimeout: 0
@@ -72,14 +72,14 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'A',
-					correctIndexes: [1, 3],
+					correctIndexes: [1, 3, 4],
 					syllables: ['míč', 'koza', 'citron', 'kostka', 'květ']
 				}
 			]
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: true,
 			isSyllableAssignmentPresent: false,
 			correctSyllableVisibilityTimeout: 0
@@ -120,7 +120,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: false,
 			isSyllableAssignmentPresent: true,
 			correctSyllableVisibilityTimeout: 0
@@ -161,7 +161,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: true,
 			isSyllableAssignmentPresent: false,
 			correctSyllableVisibilityTimeout: 0
@@ -202,7 +202,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: false,
 			isSyllableAssignmentPresent: true,
 			correctSyllableVisibilityTimeout: 0
@@ -232,7 +232,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			],
 			[
 				{
-					correctIndexes: [0, 2, 3],
+					correctIndexes: [0, 1, 3],
 					syllables: ['pes', 'pila', 'jahoda', 'pravítkp', 'rajče']
 				}
 			],
@@ -251,7 +251,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: false,
 			isSyllableAssignmentPresent: false,
 			correctSyllableVisibilityTimeout: 0
@@ -292,7 +292,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: false,
 			isSyllableAssignmentPresent: true,
 			correctSyllableVisibilityTimeout: 0
@@ -341,7 +341,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: false,
 			isSyllableAssignmentPresent: false,
 			correctSyllableVisibilityTimeout: 0
@@ -394,7 +394,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: true,
 			isSyllableAssignmentPresent: true,
 			correctSyllableVisibilityTimeout: 0
@@ -423,7 +423,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		],
 		partialProps: {
 			assignmentGap: 200,
-			syllableGap: 8,
+			syllableGap: globalGap,
 			shouldReadCorrectSyllable: true,
 			isSyllableAssignmentPresent: true,
 			correctSyllableVisibilityTimeout: 0

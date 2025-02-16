@@ -19,27 +19,31 @@
 		unregisterElement = () => {}
 	}: Props = $props();
 
-	let element: HTMLElement = $state();
+	let element = $state<HTMLElement>();
 
 	onMount(() => {
-		registerElement(element);
+		element && registerElement(element);
 	});
 
 	onDestroy(() => {
-		unregisterElement(element);
+		element && unregisterElement(element);
 	});
 </script>
 
 <div
 	{id}
 	bind:this={element}
-	class="inline-flex h-24 items-center justify-center rounded-md border px-1.5 font-serif text-[30px] {isHighlighted
+	class="inline-flex h-28 items-center justify-center rounded-md border px-1.5 font-serif text-[30px] {isHighlighted
 		? 'border-green-700'
 		: isDeHighlighted
 			? 'border-gray-400'
 			: 'border-transparent'}"
 >
-	<div class="h-32 w-32">
-		<img src={`/img/lesson/fonologic/${word}.webp`} alt={word} class="h-full w-full" />
+	<div class="h-36 w-36">
+		<img
+			src={`/img/lesson/fonologic/${word}.webp`}
+			alt={word}
+			class="h-full w-full object-contain"
+		/>
 	</div>
 </div>
