@@ -749,7 +749,8 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 			bufferSize: 50,
 			logicType: 'main',
 			shouldListenForVoice: false,
-			shouldEmitMistake: true
+			shouldEmitMistake: true,
+			shouldHighlight: false
 		}
 	},
 	{
@@ -760,7 +761,8 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 			bufferSize: 50,
 			logicType: 'main',
 			shouldListenForVoice: false,
-			shouldEmitMistake: false
+			shouldEmitMistake: false,
+			shouldHighlight: false
 		}
 	},
 	{

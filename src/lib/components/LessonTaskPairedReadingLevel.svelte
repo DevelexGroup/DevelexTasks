@@ -7,7 +7,11 @@
 	} from './LessonTaskPairedReadingLevel.utility';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
-	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
+	import type {
+		GazeManager,
+		GazeInteractionObjectDwellEvent,
+		GazeInteractionObjectIntersectEvent
+	} from '@473783/develex-core';
 	import { getCancellableAsync, waitForConditionCancellable } from '$lib/utils/waitForCondition';
 	import { retry } from '$lib/utils/retry';
 
@@ -36,7 +40,6 @@
 	const hasFixatedStartCross = writable(false);
 	const hasFixatedEndCross = writable(false);
 	const currentlyReadingPhrase = writable<{ text: string; id: string } | null>(null);
-	let gazeMistakesDuringReading: number = 0;
 	let forceSuccess = false;
 	const abortController = new AbortController();
 
@@ -46,47 +49,27 @@
 
 	const wordStore = derived(wordsStore, ($wordsStore) => $wordsStore);
 
-	function evaluateFixations(event: GazeInteractionObjectFixationEvent) {
-		const { target } = event;
-
-		if (
-			target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId()) &&
-			get(gridStateStore) === 'crossStart'
-		) {
-			hasFixatedStartCross.set(true);
-			return;
-		}
-
-		if (
-			target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId()) &&
-			get(gridStateStore) === 'crossEnd'
-		) {
-			hasFixatedEndCross.set(true);
-			return;
-		}
-
-		const phrase = get(currentlyReadingPhrase);
-		if (!phrase || get(gridStateStore) !== 'reading') return;
-		const isGazePatternCorrect = target.some((target) =>
-			PairedReadingIdManager.isWordInEvaluationSegmentByIndex(phrase.id, target.id, currentContent)
-		);
-
-		if (!isGazePatternCorrect) {
-			gazeMistakesDuringReading++;
-		}
-	}
-
 	function evaluateReaderWordChange(phrase: { text: string; id: string } | null) {
 		currentlyReadingPhrase.set(phrase);
 	}
 
+	const MIN_GAZE_POINTS = 10;
+	const MIN_SUCCESS_PERCENTAGE = 60;
 	async function performSingleReadingSegment() {
 		const segment = pairedReadingManager.getReadingSegment();
-		gazeMistakesDuringReading = 0;
+		gazeMistakePoints = 0;
+		gazeCorrectPoints = 0;
 		forceSuccess = false;
 		try {
 			await wordReader.read([segment]);
-			if (gazeMistakesDuringReading > 1 && !forceSuccess) throw new Error('Too many mistakes');
+			const totalPoints = gazeCorrectPoints + gazeMistakePoints;
+			const successPercentage = (gazeCorrectPoints / totalPoints) * 100;
+			if (totalPoints < MIN_GAZE_POINTS && !forceSuccess) {
+				throw new Error('Less than 10 gaze points');
+			}
+			if (successPercentage < MIN_SUCCESS_PERCENTAGE && !forceSuccess) {
+				throw new Error('Less than 80% of the gaze points are correct');
+			}
 		} catch (error) {
 			// If we manually forced success, consider it a success
 			if (forceSuccess) {
@@ -144,7 +127,7 @@
 
 	function setupRegisterElement(element: HTMLElement) {
 		gazeManager.register({
-			interaction: 'fixation',
+			interaction: 'intersect',
 			element,
 			settings: {
 				bufferSize
@@ -154,7 +137,22 @@
 
 	function setupUnregisterElement(element: HTMLElement) {
 		gazeManager.unregister({
-			interaction: 'fixation',
+			interaction: 'intersect',
+			element
+		});
+	}
+
+	function setupCrossRegisterElement(element: HTMLElement) {
+		gazeManager.register({
+			interaction: 'dwell',
+			element,
+			settings: { bufferSize, dwellTime: 500 }
+		});
+	}
+
+	function setupCrossUnregisterElement(element: HTMLElement) {
+		gazeManager.unregister({
+			interaction: 'dwell',
 			element
 		});
 	}
@@ -178,17 +176,48 @@
 		}
 	}
 
+	function evaluateDwell(event: GazeInteractionObjectDwellEvent) {
+		const { target } = event;
+		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId())) {
+			hasFixatedStartCross.set(true);
+			return;
+		}
+		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId())) {
+			hasFixatedEndCross.set(true);
+			return;
+		}
+	}
+
+	let gazeCorrectPoints = 0;
+	let gazeMistakePoints = 0;
+	function evaluateIntersect(event: GazeInteractionObjectIntersectEvent) {
+		const { target } = event;
+		const phrase = get(currentlyReadingPhrase);
+		if (!phrase || get(gridStateStore) !== 'reading') return;
+		const isGazePatternCorrect = target.some((target) =>
+			PairedReadingIdManager.isWordInEvaluationSegmentByIndex(phrase.id, target.id, currentContent)
+		);
+
+		if (!isGazePatternCorrect) {
+			gazeMistakePoints++;
+		} else {
+			gazeCorrectPoints++;
+		}
+	}
+
 	onMount(() => {
 		wordReader.onWordChange = evaluateReaderWordChange;
 		performTask();
-		gazeManager.on('fixationObjectStart', evaluateFixations);
+		gazeManager.on('intersect', evaluateIntersect);
+		gazeManager.on('dwellFinish', evaluateDwell);
 		// Change from keypress to keydown
 		window.addEventListener('keydown', handleKeyPress);
 	});
 
 	onDestroy(() => {
 		abortController.abort('Task destroyed');
-		gazeManager.off('fixationObjectStart', evaluateFixations);
+		gazeManager.off('intersect', evaluateIntersect);
+		gazeManager.off('dwellFinish', evaluateDwell);
 		// Change from keypress to keydown
 		window.removeEventListener('keydown', handleKeyPress);
 	});
@@ -197,8 +226,8 @@
 <LessonTaskPairedReadingLayout
 	words={$wordStore}
 	stage={$gridStateStore}
-	crossRegisterFn={setupRegisterElement}
-	crossUnregisterFn={setupUnregisterElement}
+	crossRegisterFn={setupCrossRegisterElement}
+	crossUnregisterFn={setupCrossUnregisterElement}
 	wordsRegisterFn={setupRegisterElement}
 	wordsUnregisterFn={setupUnregisterElement}
 	{shouldHighlight}
