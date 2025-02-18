@@ -54,7 +54,7 @@
 	}
 
 	const MIN_GAZE_POINTS = 10;
-	const MIN_SUCCESS_PERCENTAGE = 60;
+	const MIN_SUCCESS_PERCENTAGE = 80;
 	async function performSingleReadingSegment() {
 		const segment = pairedReadingManager.getReadingSegment();
 		gazeMistakePoints = 0;
