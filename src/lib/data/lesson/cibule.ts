@@ -498,13 +498,35 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 		content: [
 			[
 				{
+					incorrectSyllable: 'k',
+					binding: {
+						5: 0,
+						3: 1,
+						1: 2
+					},
+					syllables: ['kkkkkkk', 'ta', 'kkkkkkkkkkk', 'pa', 'kkkkkkkkkk', 'lo', 'kkkkkk']
+				}
+			],
+			[
+				{
 					incorrectSyllable: 'p',
 					binding: {
 						3: 0,
 						1: 1,
 						5: 2
 					},
-					syllables: ['ppppppp', 'bu', 'ppppppppppppp', 'ta', 'pppppppp', 'le', 'ppppppp']
+					syllables: ['ppppppp', 'li', 'pppppppppp', 'ma', 'pppppppppp', 'na', 'pppppp']
+				}
+			],
+			[
+				{
+					incorrectSyllable: 'c',
+					binding: {
+						1: 0,
+						5: 1,
+						3: 2
+					},
+					syllables: ['ccccccc', 'no', 'ccccccccccc', 'ny', 'cccccccccc', 'vi', 'cccccc']
 				}
 			]
 		],
