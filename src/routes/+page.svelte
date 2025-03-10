@@ -1,13 +1,28 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
+	import DwellTargetAnimator from '$lib/components/DwellTargetAnimator.svelte';
+	import { GazeManager } from '@473783/develex-core';
+	import { inputCreationConfig } from '$lib/stores/gazeConfig';
+	import { onMount } from 'svelte';
 	import DwellTarget from '$lib/components/DwellTarget.svelte';
-	import DwellEye from '$lib/components/DwellTargetEye.svelte';
-	import DwellEyePupil from '$lib/components/DwellTargetEyePupil.svelte';
-
 	type DwellState = 'active' | 'disabled' | 'activeDwelling';
-	let primaryColor = '#50C878';
-	let pupilProportion = 0.32;
 	let dwellState: DwellState = 'active';
+
+	const gazeManager = new GazeManager();
+
+	onMount(() => {
+		gazeManager.createInput($inputCreationConfig);
+	});
+
+	const handleStart = (e: MouseEvent) => {
+		gazeManager.setWindowCalibration(e, window);
+		gazeManager.connect();
+		gazeManager.start();
+	};
+
+	const handleDwellComplete = (e: GazeInteractionObjectDwellEvent) => {
+		console.log('Dwell complete', e);
+	};
 </script>
 
 <img src="/img/peacock.png" alt="Logo" class="mx-auto h-24 w-auto" />
@@ -27,7 +42,14 @@
 		<option value="disabled">Disabled</option>
 		<option value="activeDwelling">Active Dwelling</option>
 	</select>
+	<button on:click={handleStart}>Start</button>
 	<div class="flex flex-col gap-1">
-		<DwellTarget {dwellState} />
+		<DwellTargetAnimator {dwellState} />
+		<DwellTarget
+			{gazeManager}
+			id="dwell-target"
+			dwellTimeMs={1200}
+			onDwellComplete={handleDwellComplete}
+		/>
 	</div>
 </div>
