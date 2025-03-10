@@ -7,11 +7,7 @@
 	} from './LessonTaskPairedReadingLevel.utility';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
-	import type {
-		GazeManager,
-		GazeInteractionObjectDwellEvent,
-		GazeInteractionObjectIntersectEvent
-	} from '@473783/develex-core';
+	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
 	import { getCancellableAsync, waitForConditionCancellable } from '$lib/utils/waitForCondition';
 	import { retry } from '$lib/utils/retry';
 
@@ -34,12 +30,15 @@
 		lessonFail: void;
 	}>();
 
+	shouldEmitMistake = false; // FORCE SETTING TO FALSE AS WE TRY POPUP DIRECTLY IN THE COMPONENT
+
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
 	// State variables
 	const hasFixatedStartCross = writable(false);
 	const hasFixatedEndCross = writable(false);
 	const currentlyReadingPhrase = writable<{ text: string; id: string } | null>(null);
+	const hasFirstFixationInSegment = writable(false);
 	let forceSuccess = false;
 	const abortController = new AbortController();
 
@@ -48,63 +47,126 @@
 	const gridStateStore = writable<'crossStart' | 'reading' | 'crossEnd'>('crossStart');
 
 	const wordStore = derived(wordsStore, ($wordsStore) => $wordsStore);
+	const showErrorPopup = writable(false);
+
+	// Constants for evaluation
+	const MIN_GAZE_POINTS = 1;
+	const MIN_SUCCESS_FIXATIONS_PERCENTAGE = 50;
+	const MAX_RETRY_ATTEMPTS = 3;
+	const FIXCROSS_DELAY_AFTER_AUDIO = 150; // ms
 
 	function evaluateReaderWordChange(phrase: { text: string; id: string } | null) {
 		currentlyReadingPhrase.set(phrase);
 	}
 
-	const MIN_GAZE_POINTS = 10;
-	const MIN_SUCCESS_PERCENTAGE = 80;
+	let retryCount = 0;
+
 	async function performSingleReadingSegment() {
 		const segment = pairedReadingManager.getReadingSegment();
-		gazeMistakePoints = 0;
-		gazeCorrectPoints = 0;
+		gazeFixationCorrect = 0;
+		gazeFixationMistake = 0;
 		forceSuccess = false;
+		retryCount = 0;
+		hasFirstFixationInSegment.set(false);
+
 		try {
-			await wordReader.read([segment]);
-			const totalPoints = gazeCorrectPoints + gazeMistakePoints;
-			const successPercentage = (gazeCorrectPoints / totalPoints) * 100;
-			if (totalPoints < MIN_GAZE_POINTS && !forceSuccess) {
-				throw new Error('Less than 10 gaze points');
-			}
-			if (successPercentage < MIN_SUCCESS_PERCENTAGE && !forceSuccess) {
-				throw new Error('Less than 80% of the gaze points are correct');
+			// Wait for first fixation in the segment
+			await waitForConditionCancellable(hasFirstFixationInSegment, 100000, abortController.signal);
+
+			while (retryCount < MAX_RETRY_ATTEMPTS) {
+				try {
+					// Reset counters for each attempt
+					gazeFixationCorrect = 1; // At least one fixation is correct because we waited for it before starting the reading
+					gazeFixationMistake = 0;
+
+					await wordReader.read([segment]);
+
+					// Add delay after audio finishes
+					await new Promise((resolve) => setTimeout(resolve, FIXCROSS_DELAY_AFTER_AUDIO));
+
+					const totalFixations = gazeFixationCorrect + gazeFixationMistake;
+					const successPercentage =
+						totalFixations > 0 ? (gazeFixationCorrect / totalFixations) * 100 : 0;
+
+					if (totalFixations < MIN_GAZE_POINTS && !forceSuccess) {
+						retryCount++;
+						if (retryCount >= MAX_RETRY_ATTEMPTS) {
+							showErrorPopup.set(true);
+							throw new Error('Less than 10 gaze points after maximum retries');
+						}
+						throw new Error('Less than 10 gaze points');
+					}
+
+					if (successPercentage < MIN_SUCCESS_FIXATIONS_PERCENTAGE && !forceSuccess) {
+						retryCount++;
+						if (retryCount >= MAX_RETRY_ATTEMPTS) {
+							showErrorPopup.set(true);
+							throw new Error('Less than 50% of the fixations are correct after maximum retries');
+						}
+						throw new Error('Less than 50% of the fixations are correct');
+					}
+
+					// Success case, break out of the loop
+					break;
+				} catch (error) {
+					// If we manually forced success, consider it a success
+					if (forceSuccess) {
+						break; // Success case
+					}
+
+					if (retryCount >= MAX_RETRY_ATTEMPTS) {
+						showErrorPopup.set(true);
+						throw error; // Re-throw after max retries
+					}
+
+					// Otherwise continue the loop for another retry
+					wordReader.abort();
+					if (shouldEmitMistake) {
+						dispatch('lessonMistake');
+					}
+
+					// Wait before retry
+					await new Promise((resolve) => setTimeout(resolve, shouldEmitMistake ? 5000 : 0));
+				}
 			}
 		} catch (error) {
-			// If we manually forced success, consider it a success
-			if (forceSuccess) {
-				return; // Success case
+			if (abortController.signal.aborted) {
+				throw error;
 			}
-			throw error; // Re-throw for actual errors
+			showErrorPopup.set(true);
+			throw error;
+		} finally {
+			currentlyReadingPhrase.set(null);
 		}
-		currentlyReadingPhrase.set(null);
 	}
 
 	async function performReadingSegments() {
 		for await (const segment of currentContent.evaluationSegment) {
 			wordsStore.set(pairedReadingManager.getWords());
 			void segment;
-			await retry(() => getCancellableAsync(performSingleReadingSegment, abortController.signal), {
-				retries: 999, // Virtually infinite retries
-				delay: 5000,
-				onRetry: () => {
-					wordReader.abort();
-					if (shouldEmitMistake) {
-						dispatch('lessonMistake');
-					}
+			try {
+				await getCancellableAsync(performSingleReadingSegment, abortController.signal);
+				pairedReadingManager.nextSegment();
+				dispatch('lessonSuccess');
+			} catch (error) {
+				if (abortController.signal.aborted) {
+					break;
 				}
-			});
-			pairedReadingManager.nextSegment();
-			dispatch('lessonSuccess');
+				// The error popup is already shown inside performSingleReadingSegment
+				wordReader.abort();
+				if (shouldEmitMistake) {
+					dispatch('lessonMistake');
+				}
+			}
 		}
 	}
 
-	// Handle dwell completion for cross A (start)
+	// Handle fixation for cross A (start)
 	function handleCrossAComplete() {
 		hasFixatedStartCross.set(true);
 	}
 
-	// Handle dwell completion for cross B (end)
+	// Handle fixation for cross B (end)
 	function handleCrossBComplete() {
 		hasFixatedEndCross.set(true);
 	}
@@ -153,7 +215,7 @@
 
 	function setupRegisterElement(element: HTMLElement) {
 		gazeManager.register({
-			interaction: 'intersect',
+			interaction: 'fixation',
 			element,
 			settings: {
 				bufferSize
@@ -163,7 +225,7 @@
 
 	function setupUnregisterElement(element: HTMLElement) {
 		gazeManager.unregister({
-			interaction: 'intersect',
+			interaction: 'fixation',
 			element
 		});
 	}
@@ -187,50 +249,56 @@
 		}
 	}
 
-	function evaluateDwell(event: GazeInteractionObjectDwellEvent) {
-		// DwellTarget components will handle this internally
-		// We leave this function in place for backward compatibility
-	}
+	let gazeFixationCorrect = 0;
+	let gazeFixationMistake = 0;
 
-	let gazeCorrectPoints = 0;
-	let gazeMistakePoints = 0;
-	function evaluateIntersect(event: GazeInteractionObjectIntersectEvent) {
-		const { target } = event;
+	function evaluateFixation(event: GazeInteractionObjectFixationEvent) {
+		if (get(gridStateStore) !== 'reading') return;
+
 		const phrase = get(currentlyReadingPhrase);
-		if (!phrase || get(gridStateStore) !== 'reading') return;
-		const isGazePatternCorrect = target.some((target) =>
-			PairedReadingIdManager.isWordInEvaluationSegmentByIndex(phrase.id, target.id, currentContent)
-		);
+		const segment = pairedReadingManager.getReadingSegment();
 
-		if (!isGazePatternCorrect) {
-			gazeMistakePoints++;
-		} else {
-			gazeCorrectPoints++;
+		// Track fixation starts for activating fixcross
+		if (event.type === 'fixationObjectStart') {
+			// If we have a current phrase (reading has started), use its ID
+			// Otherwise use the segment ID (before reading starts)
+			const evaluationId = phrase?.id ?? segment.id;
+
+			const isFixationCorrect = event.target.some((target) =>
+				PairedReadingIdManager.isWordInEvaluationSegmentByIndex(
+					evaluationId,
+					target.id,
+					currentContent
+				)
+			);
+
+			if (isFixationCorrect) {
+				gazeFixationCorrect++;
+				// Only set first fixation if we haven't started reading yet
+				if (!phrase) {
+					hasFirstFixationInSegment.set(true);
+				}
+			} else {
+				gazeFixationMistake++;
+			}
 		}
 	}
 
-	function handleCrossAFixated() {
-		hasFixatedStartCross.set(true);
-	}
-
-	function handleCrossBFixated() {
-		hasFixatedEndCross.set(true);
+	function closeErrorPopup() {
+		showErrorPopup.set(false);
+		dispatch('lessonFail');
 	}
 
 	onMount(() => {
 		wordReader.onWordChange = evaluateReaderWordChange;
 		performTask();
-		gazeManager.on('intersect', evaluateIntersect);
-		gazeManager.on('dwellFinish', evaluateDwell);
-		// Change from keypress to keydown
+		gazeManager.on('fixationObjectStart', evaluateFixation);
 		window.addEventListener('keydown', handleKeyPress);
 	});
 
 	onDestroy(() => {
 		abortController.abort('Task destroyed');
-		gazeManager.off('intersect', evaluateIntersect);
-		gazeManager.off('dwellFinish', evaluateDwell);
-		// Change from keypress to keydown
+		gazeManager.off('fixationObjectStart', evaluateFixation);
 		window.removeEventListener('keydown', handleKeyPress);
 	});
 </script>
@@ -247,9 +315,49 @@
 	dwellTimeMs={500}
 />
 
-<!-- <LessonLayoutPairedReading {validateFixation}>
-	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} slot="cross-fix" />
-	<svelte:fragment slot="word-area">
-		<LessonWord {registerElement} {unregisterElement} word={currentContent} id={FIXATION_WORD} />
-	</svelte:fragment>
-</LessonLayoutPairedReading> -->
+{#if $showErrorPopup}
+	<div class="error-popup">
+		<div class="error-popup-content">
+			<h3>Pozor!</h3>
+			<p>Nepodařilo se nám správně detekovat pozorování slov po několika pokusech.</p>
+			<button on:click={closeErrorPopup}>OK</button>
+		</div>
+	</div>
+{/if}
+
+<style>
+	.error-popup {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1000;
+	}
+
+	.error-popup-content {
+		background-color: white;
+		padding: 20px;
+		border-radius: 8px;
+		max-width: 400px;
+		text-align: center;
+	}
+
+	.error-popup-content button {
+		padding: 8px 16px;
+		background-color: #007bff;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		margin-top: 15px;
+	}
+
+	.error-popup-content button:hover {
+		background-color: #0056b3;
+	}
+</style>
