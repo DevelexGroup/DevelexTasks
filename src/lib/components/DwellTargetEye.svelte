@@ -10,7 +10,7 @@
 		pupilColor = '#50C878',
 		gemStyle = 'diamond',
 		colorTransitionDuration = 0.8,
-		pupilProportion = 0.32,
+		pupilProportion = 1,
 		reflectionOpacity = 0.6,
 		pulseEnabled = true
 	} = $props();
@@ -19,16 +19,22 @@
 	const eyeCenterX = $derived(eyeWidth / 2);
 	const eyeCenterY = $derived(eyeHeight / 2);
 
-	// Eye shape path
+	// Eye shape path - with protective margin for eyelids including shadow
+	const EYELID_MARGIN = 6; // Increased margin for eyelid border and shadow
+
 	const eyeShapePath = $derived(`
-		M ${eyeHeight / 2} ${eyeCenterY}
-		Q ${eyeCenterX} ${eyeCenterY - (eyeHeight / 2) * 0.8}, ${eyeWidth - eyeHeight / 2} ${eyeCenterY}
-		Q ${eyeCenterX} ${eyeCenterY + (eyeHeight / 2) * 0.8}, ${eyeHeight / 2} ${eyeCenterY}
+		M ${EYELID_MARGIN} ${eyeHeight / 2}
+		Q ${eyeWidth / 4} ${EYELID_MARGIN}, ${eyeWidth / 2} ${EYELID_MARGIN}
+		Q ${(eyeWidth / 4) * 3} ${EYELID_MARGIN}, ${eyeWidth - EYELID_MARGIN} ${eyeHeight / 2}
+		Q ${(eyeWidth / 4) * 3} ${eyeHeight - EYELID_MARGIN}, ${eyeWidth / 2} ${eyeHeight - EYELID_MARGIN}
+		Q ${eyeWidth / 4} ${eyeHeight - EYELID_MARGIN}, ${EYELID_MARGIN} ${eyeHeight / 2}
 		Z
 	`);
 
 	// Calculate the target pupil size (not tweened yet)
-	const targetPupilSize = $derived(Math.min(eyeHeight * pupilProportion, eyeWidth * 0.4));
+	const targetPupilSize = $derived(
+		Math.min(eyeHeight * pupilProportion, eyeWidth * pupilProportion)
+	);
 
 	// Create tweened store for pupil size
 	const pupilSizeTweened = tweened(targetPupilSize, {
@@ -46,11 +52,13 @@
 	const pupilY = $derived(eyeCenterY - $pupilSizeTweened / 2);
 </script>
 
-<div
-	class="eye-container"
-	style="width: {eyeWidth}px; height: {eyeHeight}px; --transition-duration: {colorTransitionDuration}s;"
->
-	<svg width="100%" height="100%" viewBox="0 0 {eyeWidth} {eyeHeight}">
+<div class="eye-container" style="--transition-duration: {colorTransitionDuration}s;">
+	<svg
+		width="100%"
+		height="100%"
+		viewBox={`0 0 ${eyeWidth} ${eyeHeight}`}
+		preserveAspectRatio="xMidYMid meet"
+	>
 		<defs>
 			<!-- Eye white gradient -->
 			<radialGradient id="eyeWhiteGradient" cx="50%" cy="50%" r="70%" fx="45%" fy="45%">
@@ -149,6 +157,9 @@
 	.eye-container {
 		position: relative;
 		filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.15));
+		width: 100%;
+		height: 100%;
+		display: block;
 	}
 
 	.eye-base {

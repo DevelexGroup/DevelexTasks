@@ -16,7 +16,7 @@
 		// Core options
 		eyeWidth = 250,
 		eyeHeight = 150,
-		defaultPupilProportion = 0.32,
+		defaultPupilProportion = 1,
 		dwellTimeMs = 2000, // Time needed to complete the dwell in milliseconds
 		dwellState = $bindable('active') as DwellState, // Make this bindable
 		pulseEnabled = true,
