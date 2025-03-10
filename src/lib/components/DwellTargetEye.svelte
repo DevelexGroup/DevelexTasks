@@ -1,14 +1,16 @@
 <script lang="ts">
-	import DwellEyePupil from './DwellEyePupil.svelte';
+	import DwellEyePupil from './DwellTargetEyePupil.svelte';
+	import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
 
 	let {
 		// Core options
 		eyeWidth = 250,
-		eyeHeight = 140,
+		eyeHeight = 150,
 		pupilColor = '#50C878',
 		gemStyle = 'diamond',
 		colorTransitionDuration = 0.8,
-		pupilProportion = 0.42,
+		pupilProportion = 0.32,
 		reflectionOpacity = 0.6,
 		pulseEnabled = true
 	} = $props();
@@ -25,13 +27,29 @@
 		Z
 	`);
 
-	// Pupil sizing and positioning
-	const pupilSize = $derived(Math.min(eyeHeight * pupilProportion, eyeWidth * 0.4));
-	const pupilX = $derived(eyeCenterX - pupilSize / 2);
-	const pupilY = $derived(eyeCenterY - pupilSize / 2);
+	// Calculate the target pupil size (not tweened yet)
+	const targetPupilSize = $derived(Math.min(eyeHeight * pupilProportion, eyeWidth * 0.4));
+
+	// Create tweened store for pupil size
+	const pupilSizeTweened = tweened(targetPupilSize, {
+		duration: colorTransitionDuration * 1000,
+		easing: cubicOut
+	});
+
+	// Update pupil size when proportion changes using $effect
+	$effect(() => {
+		pupilSizeTweened.set(targetPupilSize);
+	});
+
+	// Calculate pupil position based on the tweened size
+	const pupilX = $derived(eyeCenterX - $pupilSizeTweened / 2);
+	const pupilY = $derived(eyeCenterY - $pupilSizeTweened / 2);
 </script>
 
-<div class="eye-container" style="width: {eyeWidth}px; height: {eyeHeight}px;">
+<div
+	class="eye-container"
+	style="width: {eyeWidth}px; height: {eyeHeight}px; --transition-duration: {colorTransitionDuration}s;"
+>
 	<svg width="100%" height="100%" viewBox="0 0 {eyeWidth} {eyeHeight}">
 		<defs>
 			<!-- Eye white gradient -->
@@ -107,10 +125,10 @@
 				{gemStyle}
 				{pulseEnabled}
 				{colorTransitionDuration}
-				width={pupilSize + 10}
-				height={pupilSize + 10}
-				x={pupilX - 5}
-				y={pupilY - 5}
+				width={$pupilSizeTweened}
+				height={$pupilSizeTweened}
+				x={pupilX}
+				y={pupilY}
 			/>
 
 			<!-- Highlight reflection spot -->
@@ -135,7 +153,7 @@
 
 	.eye-base {
 		transition:
-			fill 0.3s ease,
-			stroke 0.3s ease;
+			fill var(--transition-duration) ease,
+			stroke var(--transition-duration) ease;
 	}
 </style>

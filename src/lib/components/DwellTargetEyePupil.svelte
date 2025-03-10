@@ -37,11 +37,11 @@
 <svg
 	viewBox="0 0 100 100"
 	xmlns="http://www.w3.org/2000/svg"
-	class="gem-iris"
 	{width}
 	{height}
 	{x}
 	{y}
+	class="gem-iris"
 	class:pulse={pulseEnabled}
 	style="--color-transition-duration: {colorTransitionDuration}s;"
 >
@@ -120,8 +120,7 @@
 
 <style>
 	.gem-iris {
-		width: 100%;
-		height: 100%;
+		/* Removing width/height/position transitions since those are now handled by tweened stores */
 	}
 
 	.color-transition {
