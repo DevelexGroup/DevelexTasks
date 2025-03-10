@@ -238,13 +238,20 @@
 			if (currentState === 'crossStart') {
 				hasFixatedStartCross.set(true);
 			} else if (currentState === 'reading') {
-				// Force success for current reading segment
+				// Force success for current reading segment and ensure we skip any waiting states
 				forceSuccess = true;
+				hasFirstFixationInSegment.set(true);
 				wordReader.abort();
+				wordReader.onWordChange = () => {}; // Prevent any queued word changes
+				currentlyReadingPhrase.set(null);
 			} else if (currentState === 'crossEnd') {
 				hasFixatedEndCross.set(true);
 			}
 		} else if (event.key === 'Escape') {
+			// Ensure all reading stops immediately
+			wordReader.abort();
+			wordReader.onWordChange = () => {};
+			currentlyReadingPhrase.set(null);
 			dispatch('lessonFail');
 		}
 	}
@@ -297,9 +304,27 @@
 	});
 
 	onDestroy(() => {
+		// Abort all ongoing async operations
 		abortController.abort('Task destroyed');
+
+		// Stop any ongoing word reading and prevent new ones
+		wordReader.abort();
+		wordReader.onWordChange = () => {}; // Empty function instead of null to satisfy TypeScript
+		currentlyReadingPhrase.set(null);
+
+		// Reset all state stores to prevent any lingering state
+		hasFixatedStartCross.set(false);
+		hasFixatedEndCross.set(false);
+		hasFirstFixationInSegment.set(false);
+		showErrorPopup.set(false);
+
+		// Remove all event listeners
 		gazeManager.off('fixationObjectStart', evaluateFixation);
 		window.removeEventListener('keydown', handleKeyPress);
+
+		// Reset counters
+		gazeFixationCorrect = 0;
+		gazeFixationMistake = 0;
 	});
 </script>
 
