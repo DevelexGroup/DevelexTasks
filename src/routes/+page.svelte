@@ -1,5 +1,9 @@
-<script>
+<script lang="ts">
 	import Button from '$lib/components/Button.svelte';
+	import DwellEye from '$lib/components/DwellEye.svelte';
+	import DwellEyePupil from '$lib/components/DwellEyePupil.svelte';
+
+	let primaryColor = '#50C878';
 </script>
 
 <img src="/img/peacock.png" alt="Logo" class="mx-auto h-24 w-auto" />
@@ -13,5 +17,16 @@
 	<div class="mt-4 flex flex-col gap-1">
 		<Button href="/settings">Změnit zařízení</Button>
 		<Button href="/download">Stáhnout data</Button>
+	</div>
+	<select class="mt-4" bind:value={primaryColor}>
+		<option value="#50C878">Green</option>
+		<option value="#808080">Gray</option>
+		<option value="#0000FF">Blue</option>
+		<option value="#FF0000">Red</option>
+		<option value="#FFFF00">Yellow</option>
+	</select>
+	<div class="flex flex-col gap-1">
+		<DwellEyePupil {primaryColor} />
+		<DwellEye pupilColor={primaryColor} />
 	</div>
 </div>
