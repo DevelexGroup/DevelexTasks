@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import LessonCross from './LessonCross.svelte';
 	import LessonWord from './LessonWord.svelte';
 	import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
 	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
+	import DwellTarget from './DwellTarget.svelte';
+
+	type DwellState = 'active' | 'disabled' | 'activeDwelling' | 'dwellCancelled';
 
 	interface Props {
 		words: WordMetadata[][];
@@ -17,8 +19,10 @@
 		shouldHighlight?: boolean;
 		wordsRegisterFn: (element: HTMLElement) => void;
 		wordsUnregisterFn: (element: HTMLElement) => void;
-		crossRegisterFn: (element: HTMLElement) => void;
-		crossUnregisterFn: (element: HTMLElement) => void;
+		gazeManager: any;
+		dwellTimeMs?: number;
+		onCrossAFixated?: () => void;
+		onCrossBFixated?: () => void;
 	}
 
 	let {
@@ -33,8 +37,10 @@
 		shouldHighlight = true,
 		wordsRegisterFn,
 		wordsUnregisterFn,
-		crossRegisterFn,
-		crossUnregisterFn
+		gazeManager,
+		dwellTimeMs = 800,
+		onCrossAFixated,
+		onCrossBFixated
 	}: Props = $props();
 
 	const fadeInParams = {
@@ -63,43 +69,50 @@
 			})
 		)
 	);
+
+	// Constants for eye dimensions
+	const EYE_WIDTH = 120;
+	const EYE_HEIGHT = 70;
+
+	// Determine the state of each cross based on the current stage
+	const crossAState = $derived<DwellState>(stage === 'crossStart' ? 'active' : 'disabled');
+	const crossBState = $derived<DwellState>(stage === 'crossEnd' ? 'active' : 'disabled');
 </script>
 
 <div
 	class="relative flex h-screen w-screen items-center justify-center p-20"
 	style="background-color: {backgroundColor};"
 >
-	{#if stage === 'crossStart'}
-		<div
-			class="absolute left-20"
-			class:top-20={crossStartPosition === 'top'}
-			in:fade={{ ...fadeInParams }}
-			out:fade={{ ...fadeOutParams }}
-		>
-			<LessonCross
-				id={PairedReadingIdManager.getFixCrossAId()}
-				registerElement={crossRegisterFn}
-				unregisterElement={crossUnregisterFn}
-			/>
-		</div>
-	{/if}
+	<!-- Start cross (always visible, state depends on stage) -->
+	<div class="absolute left-20" class:top-20={crossStartPosition === 'top'}>
+		<DwellTarget
+			{gazeManager}
+			id={PairedReadingIdManager.getFixCrossAId()}
+			{dwellTimeMs}
+			eyeWidth={EYE_WIDTH}
+			eyeHeight={EYE_HEIGHT}
+			onDwellComplete={onCrossAFixated}
+			dwellState={crossAState}
+		/>
+	</div>
 
-	{#if stage === 'crossEnd'}
-		<div
-			class="absolute bottom-20 right-20"
-			in:fade={{ ...fadeInParams }}
-			out:fade={{ ...fadeOutParams }}
-		>
-			<LessonCross
+	{#if stage === 'crossEnd' || stage === 'reading'}
+		<!-- End cross (always visible, state depends on stage) -->
+		<div class="absolute bottom-20 right-20" in:fade={{ ...fadeInParams }}>
+			<DwellTarget
+				{gazeManager}
 				id={PairedReadingIdManager.getFixCrossBId()}
-				registerElement={crossRegisterFn}
-				unregisterElement={crossUnregisterFn}
+				{dwellTimeMs}
+				eyeWidth={EYE_WIDTH}
+				eyeHeight={EYE_HEIGHT}
+				onDwellComplete={onCrossBFixated}
+				dwellState={crossBState}
 			/>
 		</div>
 	{/if}
 
+	<!-- Reading content (only visible during reading stage) -->
 	{#if stage === 'reading'}
-		<!-- This is the layout for the Paired Reading task content. -->
 		<div
 			class="absolute flex flex-col"
 			style="gap: {yGap}px;"

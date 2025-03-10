@@ -3,13 +3,13 @@
 	import { cubicIn, cubicOut, linear } from 'svelte/easing';
 	import { onDestroy, onMount } from 'svelte';
 
-	// Import DwellEye from relative path (assuming it's in the same directory)
-	// If the file is actually elsewhere, adjust the path accordingly
+	// Import DwellEye component
 	import DwellEye from './DwellTargetEye.svelte';
 
+	// Animation phases
 	type AnimationPhase = 'idle' | 'increase' | 'drop' | 'build' | 'complete';
 
-	// Update type definition to include dwellCancelled
+	// Dwell states
 	type DwellState = 'active' | 'disabled' | 'activeDwelling' | 'dwellCancelled';
 
 	let {
@@ -20,19 +20,16 @@
 		dwellTimeMs = 2000, // Time needed to complete the dwell in milliseconds
 		dwellState = $bindable('active') as DwellState, // Make this bindable
 		pulseEnabled = true,
-		onDwellComplete = (newState: DwellState) => {}, // Function to call when dwell completes
-		onStateChange = (newState: DwellState) => {} // Function to notify about state changes
+		onDwellComplete = (newState: DwellState) => {} // Function to call when dwell completes
 	} = $props();
 
-	// States for animation
+	// Internal state management
 	let dwellAnimationPhase = $state<AnimationPhase>('idle');
-	let animationTimeoutId = $state<number | null>(null);
-	let cancelTimeoutId = $state<number | null>(null);
-	// Track previous state to avoid restarting animations unnecessarily
-	let previousState = $state(dwellState);
-
-	// Debug flag
+	let previousState = $state<DwellState>(dwellState);
 	let initialized = $state(false);
+
+	// Array to track all timeouts for proper cleanup
+	let timeouts = $state<number[]>([]);
 
 	// Define colors for different states
 	const colors: Record<DwellState, string> = {
@@ -45,17 +42,17 @@
 	// Calculate color based on state
 	const pupilColor = $derived(colors[dwellState]);
 
-	// Define all animation proportions
-	const initialIncreaseProportion = $derived(defaultPupilProportion * 1.05); // Subtle initial increase
-	const decreasedProportion = $derived(defaultPupilProportion * 0.4); // Dramatic decrease
-	const finalIncreaseProportion = $derived(defaultPupilProportion + 0.12); // Subtle final increase
+	// Define animation proportions
+	const initialIncreaseProportion = $derived(defaultPupilProportion * 1.05);
+	const decreasedProportion = $derived(defaultPupilProportion * 0.4);
+	const finalIncreaseProportion = $derived(defaultPupilProportion + 0.12);
 
 	// Animation timings - keep start and end phases constant
 	const INITIAL_TRANSITION_MS = 100;
 	const FINAL_TRANSITION_MS = 100;
 
 	// Calculate actual build duration by subtracting fixed transitions
-	const calculateBuildDuration = $derived(
+	const buildDuration = $derived(
 		Math.max(dwellTimeMs - (2 * INITIAL_TRANSITION_MS + FINAL_TRANSITION_MS), 100)
 	);
 
@@ -65,143 +62,130 @@
 		easing: cubicOut
 	});
 
-	// Initialize after mount
-	onMount(() => {
-		initialized = true;
-		console.log('DwellTarget mounted, state:', dwellState);
-	});
+	// Safe setTimeout wrapper that tracks IDs for cleanup
+	function safeTimeout(callback: () => void, delay: number) {
+		const id = window.setTimeout(callback, delay);
+		timeouts = [...timeouts, id];
+		return id;
+	}
 
-	// Watch for state changes directly with $effect
+	// Clear all timeouts
+	function clearAllTimeouts() {
+		timeouts.forEach((id) => window.clearTimeout(id));
+		timeouts = [];
+	}
+
+	// Watch for dwell state changes
 	$effect(() => {
-		console.log(
-			'State changed:',
-			dwellState,
-			'Previous:',
-			previousState,
-			'Initialized:',
-			initialized
-		);
-
-		// Skip the initial effect run
+		// Skip initial effect run
 		if (!initialized) return;
 
-		if (dwellState !== previousState) {
-			previousState = dwellState;
+		// Only process when state actually changes
+		if (dwellState === previousState) return;
 
-			if (dwellState === 'activeDwelling') {
-				console.log('Starting dwell animation');
-				startDwellAnimation();
-			} else if (dwellState === 'disabled' || dwellState === 'active') {
-				console.log('Resetting dwell animation');
-				resetDwellAnimation();
-			} else if (dwellState === 'dwellCancelled') {
-				console.log('Dwell cancelled, switching to red');
-				resetDwellAnimation();
+		// Store new state and process the change
+		const oldState = previousState;
+		previousState = dwellState;
 
-				// Clear any existing cancel timeout
-				if (cancelTimeoutId !== null) {
-					clearTimeout(cancelTimeoutId);
-				}
+		// Clean up any existing animations
+		clearAllTimeouts();
 
-				// Automatically switch back to active after 300ms
-				cancelTimeoutId = window.setTimeout(() => {
-					console.log('Cancelled timeout over, returning to active');
-					previousState = 'active'; // Update this first to prevent circular updates
-					dwellState = 'active';
-				}, 300);
-			}
-
-			// Notify parent about state changes
-			onStateChange(dwellState);
+		// Only start animation if we're transitioning TO activeDwelling from active
+		if (dwellState === 'activeDwelling' && oldState === 'active') {
+			startDwellAnimation();
+		}
+		// Handle cancellation state with immediate animation reset
+		else if (dwellState === 'dwellCancelled') {
+			// Immediately reset the animation to show cancellation
+			handleCancelledDwell();
+		}
+		// Handle transition to active state (after cancellation or from disabled)
+		else if (dwellState === 'active') {
+			// Reset animation for active state
+			resetAnimation();
+		}
+		// Handle transition to disabled state
+		else if (dwellState === 'disabled') {
+			// Reset animation for disabled state
+			resetAnimation();
 		}
 	});
 
 	// Start the dwelling animation sequence
 	function startDwellAnimation() {
-		// Clear any existing animation
-		clearAnimationTimeout();
+		// Reset any existing animation state
+		clearAllTimeouts();
 		dwellAnimationPhase = 'increase';
-		console.log('Phase 1: subtle increase to', initialIncreaseProportion);
 
-		// Phase 1: Start with a subtle increase - fixed timing
+		// Phase 1: Subtle increase
 		pupilProportion.set(initialIncreaseProportion, {
 			duration: INITIAL_TRANSITION_MS,
 			easing: cubicOut
 		});
 
-		// Phase 2: Dramatic decrease - fixed timing
-		animationTimeoutId = window.setTimeout(() => {
+		// Phase 2: Dramatic decrease
+		safeTimeout(() => {
 			dwellAnimationPhase = 'drop';
-			console.log('Phase 2: dramatic decrease to', decreasedProportion);
 
 			pupilProportion.set(decreasedProportion, {
 				duration: INITIAL_TRANSITION_MS,
 				easing: cubicIn
 			});
 
-			// Phase 3: Slow build up to completion - dynamic timing based on dwellTimeMs
-			animationTimeoutId = window.setTimeout(() => {
+			// Phase 3: Build up
+			safeTimeout(() => {
 				dwellAnimationPhase = 'build';
-				console.log(
-					'Phase 3: build to',
-					finalIncreaseProportion,
-					'over',
-					calculateBuildDuration,
-					'ms (adjusted from',
-					dwellTimeMs,
-					'ms total)'
-				);
 
-				// Slowly increase to slightly larger than default over adjusted dwell time
+				// Slow build up over the dwell time
 				pupilProportion.set(finalIncreaseProportion, {
-					duration: calculateBuildDuration,
+					duration: buildDuration,
 					easing: linear
 				});
 
-				// Phase 4: Complete - fixed timing
-				animationTimeoutId = window.setTimeout(() => {
+				// Phase 4: Completion
+				safeTimeout(() => {
 					dwellAnimationPhase = 'complete';
-					console.log('Phase 4: complete');
 
 					// Update pupil proportion back to default
-					pupilProportion.set(defaultPupilProportion, { duration: FINAL_TRANSITION_MS });
-
-					// Auto-switch to disabled - use a separate timeout to avoid triggering effects in the same cycle
-					window.setTimeout(() => {
-						console.log('Switching to disabled state');
-						// Only update if we're still in activeDwelling state
-						if (previousState === 'activeDwelling') {
-							previousState = 'disabled'; // Update this first to prevent circular updates
-							dwellState = 'disabled';
-							// Notify about completion
-							onDwellComplete(dwellState);
-						}
-					}, 50);
-				}, calculateBuildDuration);
+					pupilProportion.set(defaultPupilProportion, {
+						duration: FINAL_TRANSITION_MS
+					});
+				}, buildDuration);
 			}, INITIAL_TRANSITION_MS);
 		}, INITIAL_TRANSITION_MS);
 	}
 
-	// Reset animation state
-	function resetDwellAnimation() {
-		clearAnimationTimeout();
+	// Handle the cancelled dwell state
+	function handleCancelledDwell() {
+		// Clear all timeouts to stop any ongoing animations
+		clearAllTimeouts();
+
+		// Set animation phase to idle
 		dwellAnimationPhase = 'idle';
-		pupilProportion.set(defaultPupilProportion, { duration: 300 });
+
+		// Immediately reset pupil size with a short transition
+		pupilProportion.set(defaultPupilProportion, { duration: 150 });
 	}
 
-	// Clean up timeouts
-	function clearAnimationTimeout() {
-		if (animationTimeoutId !== null) {
-			window.clearTimeout(animationTimeoutId);
-			animationTimeoutId = null;
-		}
+	// Reset animation to default state
+	function resetAnimation() {
+		clearAllTimeouts();
+		dwellAnimationPhase = 'idle';
+		pupilProportion.set(defaultPupilProportion, { duration: 150 });
 	}
 
+	// Initialize on mount
+	onMount(() => {
+		initialized = true;
+
+		// Set initial pupil size without animation
+		pupilProportion.set(defaultPupilProportion, { duration: 0 });
+	});
+
+	// Clean up all animations on component destroy
 	onDestroy(() => {
-		clearAnimationTimeout();
-		if (cancelTimeoutId !== null) {
-			clearTimeout(cancelTimeoutId);
-		}
+		clearAllTimeouts();
+		initialized = false;
 	});
 </script>
 
@@ -209,6 +193,7 @@
 	class="dwell-target"
 	class:disabled={dwellState === 'disabled'}
 	class:dwelling={dwellState === 'activeDwelling'}
+	class:cancelled={dwellState === 'dwellCancelled'}
 	style={`width: ${eyeWidth}px; height: ${eyeHeight}px;`}
 >
 	<DwellEye
@@ -234,5 +219,9 @@
 	.disabled {
 		opacity: 0.7;
 		cursor: default;
+	}
+
+	.cancelled {
+		opacity: 0.9;
 	}
 </style>

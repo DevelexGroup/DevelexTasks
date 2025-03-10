@@ -99,28 +99,54 @@
 		}
 	}
 
+	// Handle dwell completion for cross A (start)
+	function handleCrossAComplete() {
+		hasFixatedStartCross.set(true);
+	}
+
+	// Handle dwell completion for cross B (end)
+	function handleCrossBComplete() {
+		hasFixatedEndCross.set(true);
+	}
+
 	async function performWaitForStartCrossFixation() {
+		// Reset the fixation state before waiting
+		hasFixatedStartCross.set(false);
+
 		try {
 			await waitForConditionCancellable(hasFixatedStartCross, 100000, abortController.signal);
 			return true;
-		} catch {
+		} catch (error) {
 			dispatch('lessonFail');
 			return false;
 		}
 	}
 
 	async function performWaitForEndCrossFixation() {
-		await waitForConditionCancellable(hasFixatedEndCross, 100000, abortController.signal);
-		dispatch('lessonComplete');
+		// Reset the fixation state before waiting
+		hasFixatedEndCross.set(false);
+
+		try {
+			await waitForConditionCancellable(hasFixatedEndCross, 100000, abortController.signal);
+			dispatch('lessonComplete');
+		} catch (error) {
+			dispatch('lessonFail');
+		}
 	}
 
 	async function performTask() {
+		// Start with the start cross
+		gridStateStore.set('crossStart');
+
+		// Wait for start cross fixation
 		const started = await performWaitForStartCrossFixation();
 		if (!started) return;
 
+		// Move to reading phase
 		gridStateStore.set('reading');
 		await performReadingSegments();
 
+		// Move to end cross
 		gridStateStore.set('crossEnd');
 		await performWaitForEndCrossFixation();
 	}
@@ -138,21 +164,6 @@
 	function setupUnregisterElement(element: HTMLElement) {
 		gazeManager.unregister({
 			interaction: 'intersect',
-			element
-		});
-	}
-
-	function setupCrossRegisterElement(element: HTMLElement) {
-		gazeManager.register({
-			interaction: 'dwell',
-			element,
-			settings: { bufferSize, dwellTime: 500 }
-		});
-	}
-
-	function setupCrossUnregisterElement(element: HTMLElement) {
-		gazeManager.unregister({
-			interaction: 'dwell',
 			element
 		});
 	}
@@ -177,15 +188,8 @@
 	}
 
 	function evaluateDwell(event: GazeInteractionObjectDwellEvent) {
-		const { target } = event;
-		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossAId())) {
-			hasFixatedStartCross.set(true);
-			return;
-		}
-		if (target.some((t) => t.id === PairedReadingIdManager.getFixCrossBId())) {
-			hasFixatedEndCross.set(true);
-			return;
-		}
+		// DwellTarget components will handle this internally
+		// We leave this function in place for backward compatibility
 	}
 
 	let gazeCorrectPoints = 0;
@@ -203,6 +207,14 @@
 		} else {
 			gazeCorrectPoints++;
 		}
+	}
+
+	function handleCrossAFixated() {
+		hasFixatedStartCross.set(true);
+	}
+
+	function handleCrossBFixated() {
+		hasFixatedEndCross.set(true);
 	}
 
 	onMount(() => {
@@ -226,11 +238,13 @@
 <LessonTaskPairedReadingLayout
 	words={$wordStore}
 	stage={$gridStateStore}
-	crossRegisterFn={setupCrossRegisterElement}
-	crossUnregisterFn={setupCrossUnregisterElement}
 	wordsRegisterFn={setupRegisterElement}
 	wordsUnregisterFn={setupUnregisterElement}
 	{shouldHighlight}
+	{gazeManager}
+	onCrossAFixated={handleCrossAComplete}
+	onCrossBFixated={handleCrossBComplete}
+	dwellTimeMs={500}
 />
 
 <!-- <LessonLayoutPairedReading {validateFixation}>
