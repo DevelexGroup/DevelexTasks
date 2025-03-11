@@ -11,6 +11,7 @@ export class WordReaderSynthesis implements IWordReader {
 		end: number;
 	} | null = null;
 	speed: 'very-slow' | 'slow' | 'normal' = 'slow';
+	private isCancelled = false;
 	get utteranceRate() {
 		switch (this.speed) {
 			case 'very-slow':
@@ -64,10 +65,14 @@ export class WordReaderSynthesis implements IWordReader {
 	}
 
 	read(words: { text: string; id: string }[]): Promise<void> {
-		if (!this.utterance) {
-			this.initializeUtterance();
+		// Clean up any existing utterance first
+		if (this.utterance) {
+			this.abort();
 		}
 
+		// Initialize new utterance
+		this.initializeUtterance();
+		this.isCancelled = false;
 		let text = '';
 		let position = 0;
 		this.wordPositions = [];
@@ -90,9 +95,9 @@ export class WordReaderSynthesis implements IWordReader {
 
 		return new Promise((resolve, reject) => {
 			this.utterance!.onend = () => {
-				this.currentWord = null;
-				if (this.onWordChange) {
-					this.onWordChange(this.currentWord);
+				if (!this.isCancelled && this.onWordChange) {
+					this.currentWord = null;
+					this.onWordChange(null);
 				}
 				resolve();
 			};
@@ -102,7 +107,7 @@ export class WordReaderSynthesis implements IWordReader {
 
 			// Handle boundary events to track the current word
 			this.utterance!.onboundary = (event) => {
-				if (event.name === 'word') {
+				if (!this.isCancelled && event.name === 'word') {
 					const charIndex = event.charIndex;
 					const currentWord = this.getCurrentWord(charIndex);
 					this.currentWord = currentWord;
@@ -118,7 +123,27 @@ export class WordReaderSynthesis implements IWordReader {
 
 	abort(): void {
 		try {
+			this.isCancelled = true;
+
+			// Clean up the current utterance
+			if (this.utterance) {
+				// Remove all event listeners first
+				this.utterance.onend = null;
+				this.utterance.onerror = null;
+				this.utterance.onboundary = null;
+			}
+
+			// Clear the current word and notify
+			if (this.onWordChange) {
+				this.currentWord = null;
+				this.onWordChange(null);
+			}
+
+			// Cancel speech synthesis
 			speechSynthesis.cancel();
+
+			// Clear the utterance
+			this.utterance = null;
 		} catch (error) {
 			console.error(error);
 		}
