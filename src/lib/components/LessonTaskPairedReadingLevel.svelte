@@ -74,9 +74,10 @@
 			await waitForConditionCancellable(hasFirstFixationInSegment, 100000, abortController.signal);
 
 			while (retryCount < MAX_RETRY_ATTEMPTS) {
+				let isFirstRun = true;
 				try {
 					// Reset counters for each attempt
-					gazeFixationCorrect = 1; // At least one fixation is correct because we waited for it before starting the reading
+					gazeFixationCorrect = isFirstRun ? 1 : 0; // At least one fixation is correct because we waited for it before starting the reading
 					gazeFixationMistake = 0;
 
 					await wordReader.read([segment]);
