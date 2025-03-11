@@ -83,18 +83,25 @@
 	class="relative flex h-screen w-screen items-center justify-center p-20"
 	style="background-color: {backgroundColor};"
 >
-	<!-- Start cross (always visible, state depends on stage) -->
-	<div class="absolute left-20" class:top-20={crossStartPosition === 'top'}>
-		<DwellTarget
-			{gazeManager}
-			id={PairedReadingIdManager.getFixCrossAId()}
-			{dwellTimeMs}
-			eyeWidth={EYE_WIDTH}
-			eyeHeight={EYE_HEIGHT}
-			onDwellComplete={onCrossAFixated}
-			dwellState={crossAState}
-		/>
-	</div>
+	{#if stage === 'crossStart'}
+		<!-- Start cross (always visible, state depends on stage) -->
+		<div
+			class="absolute left-20"
+			class:top-20={crossStartPosition === 'top'}
+			in:fade={{ ...fadeInParams }}
+			out:fade={{ ...fadeOutParams }}
+		>
+			<DwellTarget
+				{gazeManager}
+				id={PairedReadingIdManager.getFixCrossAId()}
+				{dwellTimeMs}
+				eyeWidth={EYE_WIDTH}
+				eyeHeight={EYE_HEIGHT}
+				onDwellComplete={onCrossAFixated}
+				dwellState={crossAState}
+			/>
+		</div>
+	{/if}
 
 	{#if stage === 'crossEnd' || stage === 'reading'}
 		<!-- End cross (always visible, state depends on stage) -->
