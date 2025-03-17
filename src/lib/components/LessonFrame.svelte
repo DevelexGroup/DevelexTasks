@@ -10,6 +10,7 @@
 	import LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
 	import LessonTaskVisualDiffLevel from './LessonTaskVisualDiffLevel.svelte';
 	import LessonTaskFonologicLevel from './LessonTaskFonologicLevel.svelte';
+	import LessonTaskMeaningfulTextLevel from './LessonTaskMeaningfulTextLevel.svelte';
 
 	interface Props {
 		/**
@@ -129,6 +130,15 @@
 					/>
 				{:else if lessonConfig.type === 'fonologic'}
 					<LessonTaskFonologicLevel
+						{...lessonConfig.props}
+						currentContent={lessonConfig.content[$lessonProgress]}
+						on:lessonSuccess={handleLessonSuccess}
+						on:lessonMistake={handleLessonMistake}
+						on:lessonComplete={handleLessonComplete}
+						on:lessonFail={handleLessonFail}
+					/>
+				{:else if lessonConfig.type === 'meaningfulText'}
+					<LessonTaskMeaningfulTextLevel
 						{...lessonConfig.props}
 						currentContent={lessonConfig.content[$lessonProgress]}
 						on:lessonSuccess={handleLessonSuccess}

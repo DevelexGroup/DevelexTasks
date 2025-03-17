@@ -1,5 +1,6 @@
 import LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
 import LessonTaskFonologicLevel from '$lib/components/LessonTaskFonologicLevel.svelte';
+import LessonTaskMeaningfulTextLevel from '$lib/components/LessonTaskMeaningfulTextLevel.svelte';
 import LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
 import LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
 import LessonTaskVisualDiffLevel from '$lib/components/LessonTaskVisualDiffLevel.svelte';
@@ -50,6 +51,11 @@ export type CibuleTaskType = {
 	binding?: Record<number, number>;
 }[];
 
+export type MeaningfulTextTaskType = {
+	words: string[];
+	width: number;
+}[];
+
 export type VisualDiffTaskType = {
 	syllables: string[];
 	correctSyllable?: string;
@@ -78,7 +84,8 @@ export const lessonComponentMap = {
 	cibule: LessonTaskCibuleLevel,
 	pairedReading: LessonTaskPairedReadingLevel,
 	visualDiff: LessonTaskVisualDiffLevel,
-	fonologic: LessonTaskFonologicLevel
+	fonologic: LessonTaskFonologicLevel,
+	meaningfulText: LessonTaskMeaningfulTextLevel
 };
 
 export type LessonTypes = keyof typeof lessonComponentMap;

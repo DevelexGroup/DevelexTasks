@@ -116,7 +116,7 @@
 
 	// Event handlers for mouse events
 	const handleMouseMove = async (event: MouseEvent) => {
-		console.log(`Mouse moved to: (${event.clientX}, ${event.clientY})`);
+		// console.log(`Mouse moved to: (${event.clientX}, ${event.clientY})`);
 		await userEventsRepository.create({
 			sessionId,
 			timestamp: Date.now(),

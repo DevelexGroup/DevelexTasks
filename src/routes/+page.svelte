@@ -10,6 +10,7 @@
 	<Button href="/section/syllables">Slabiky</Button>
 	<Button href="/section/visual-diff">Baseline - Zraková difereciace</Button>
 	<Button href="/section/fonologic">Baseline - Fonologické uvědomění a manipulace</Button>
+	<Button href="/section/meaningful-text">Meaningful Text</Button>
 	<div class="mt-4 flex flex-col gap-1">
 		<Button href="/settings">Změnit zařízení</Button>
 		<Button href="/download">Stáhnout data</Button>
