@@ -188,7 +188,11 @@
 				}
 			},
 			IntermediateFail: {
-				on: { retry: 'WaitForFixation', forceCrash: 'Failed' }
+				on: { retry: 'WaitForFixation', forceCrash: 'Failed' },
+				exit: assign({
+					failExplanation: '',
+					retries: 0
+				})
 			},
 			Completed: {
 				type: 'final',
@@ -356,13 +360,18 @@
 	dwellTimeMs={500}
 />
 
+<div class="absolute bottom-0 left-0 right-0">
+	{currentState}
+	{JSON.stringify($snapshot.context)}
+</div>
+
 {#if showErrorPopup}
 	<div class="error-popup">
 		<div class="error-popup-content">
 			<h3>Pozor!</h3>
 			<p>Nepodařilo se nám správně detekovat pozorování slov po několika pokusech.</p>
-			<button on:click={closeErrorPopup}>Zkusit segment znovu</button>
-			<button on:click={() => send({ type: 'forceCrash' })}>Jít zpět</button>
+			<button onclick={closeErrorPopup}>Zkusit segment znovu</button>
+			<button onclick={() => send({ type: 'forceCrash' })}>Jít zpět</button>
 		</div>
 	</div>
 {/if}
