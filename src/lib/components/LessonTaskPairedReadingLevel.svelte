@@ -29,6 +29,17 @@
 		lessonFail: void;
 	}>();
 
+	/**
+	 * @description This is the machine that handles the paired reading task.
+	 * It is used to handle the fixation events and the reading events.
+	 * It is also used to handle the success and failure of the task.
+	 * It is used to handle the retry of the task.
+	 * It is used to handle the force success of the task.
+	 * It is used to handle the force crash of the task.
+	 *
+	 * Check the xstate 5 documentation for more information:
+	 * https://stately.ai/docs/xstate-5/
+	 */
 	export const pairedReadingInnerTaskMachine = createMachine({
 		id: 'pairedReadingInnerTask',
 		initial: 'CrossAPending',
@@ -62,6 +73,7 @@
 			},
 			ReadingSegment: {
 				invoke: {
+					id: 'readingWord',
 					src: fromPromise(async () => {
 						const segment = pairedReadingManager.getReadingSegment();
 						await wordReader.read([segment]);
@@ -118,7 +130,10 @@
 					{
 						target: 'FailedEvaluatedSegment'
 					}
-				]
+				],
+				exit: () => {
+					wordReader.abort();
+				}
 			},
 			CompletedEvaluatedSegment: {
 				always: [
@@ -133,15 +148,18 @@
 							() => {
 								pairedReadingManager.nextSegment();
 								wordsStore = pairedReadingManager.getWords();
+								wordReader.abort();
 							}
 						],
 						target: 'WaitForFixation'
 					},
 					{
-						guard: ({}) => !pairedReadingManager.hasMoreSegments(),
 						target: 'CrossBPending'
 					}
-				]
+				],
+				exit: () => {
+					wordReader.abort();
+				}
 			},
 			FailedEvaluatedSegment: {
 				always: [
@@ -158,7 +176,10 @@
 						}),
 						target: 'SetupReadingSegment'
 					}
-				]
+				],
+				exit: () => {
+					wordReader.abort();
+				}
 			},
 			CrossBPending: {
 				on: {
@@ -167,17 +188,26 @@
 				}
 			},
 			IntermediateFail: {
-				on: { retry: 'WaitForFixation' }
+				on: { retry: 'WaitForFixation', forceCrash: 'Failed' }
 			},
 			Completed: {
-				type: 'final'
+				type: 'final',
+				entry: () => {
+					wordReader.abort();
+				}
 			},
 			Failed: {
-				type: 'final'
+				type: 'final',
+				entry: () => {
+					wordReader.abort();
+				}
 			}
 		},
 		on: {
 			forceCrash: '.Failed'
+		},
+		exit: () => {
+			wordReader.abort();
 		}
 	});
 
