@@ -4,7 +4,6 @@
 	import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
 	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
 	import DwellTarget from './DwellTarget.svelte';
-
 	type DwellState = 'active' | 'disabled' | 'activeDwelling' | 'dwellCancelled';
 
 	interface Props {
@@ -13,7 +12,7 @@
 		yGap?: number;
 		fontSize?: number;
 		font?: 'times' | 'arial';
-		stage?: 'crossStart' | 'reading' | 'crossEnd';
+		stage: 'crossStart' | 'reading' | 'crossEnd';
 		crossStartPosition?: 'top' | 'center';
 		backgroundColor?: string;
 		shouldHighlight?: boolean;
@@ -31,7 +30,7 @@
 		yGap = 5,
 		fontSize = 30,
 		font = 'times',
-		stage = 'crossStart',
+		stage,
 		crossStartPosition = 'center',
 		backgroundColor = '#FFFEE8',
 		shouldHighlight = true,
@@ -75,8 +74,8 @@
 	const EYE_HEIGHT = 70;
 
 	// Determine the state of each cross based on the current stage
-	const crossAState = $derived<DwellState>(stage === 'crossStart' ? 'active' : 'disabled');
-	const crossBState = $derived<DwellState>(stage === 'crossEnd' ? 'active' : 'disabled');
+	const crossAState = $derived.by(() => (stage === 'crossStart' ? 'active' : 'disabled'));
+	const crossBState = $derived.by(() => (stage === 'crossEnd' ? 'active' : 'disabled'));
 </script>
 
 <div
