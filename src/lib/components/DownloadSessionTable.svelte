@@ -2,15 +2,11 @@
 	import JSZip from 'jszip';
 	import pkg from 'file-saver';
 	const { saveAs } = pkg;
-	import sessionRepository from '$lib/database/repositories/session.repository';
-	import { onMount } from 'svelte';
 	import { db } from '$lib/database/database';
+	import type { Session } from '$lib/database/models/Session';
 
-	let sessions = [];
-
-	onMount(async () => {
-		sessions = await sessionRepository.getAll();
-	});
+	// Receive data via props instead of loading it
+	export let sessionsWithFirstRecord: (Session & { firstRecordDate: string })[] = [];
 
 	const downloadAllDataAsZip = async (sessionId: string) => {
 		const zip = new JSZip();
@@ -72,38 +68,68 @@
 		return [keys.join(','), ...csvRows].join('\n');
 	}
 
-	function replacer(key, value) {
+	function replacer(key: string, value: any): any {
 		return value === null ? '' : value;
 	}
 </script>
 
-<div class="w-full max-w-screen-lg p-6">
-	<table
-		class="w-full"
-		style="border-collapse: collapse; border-spacing: 0; border: 1px solid #e0e0e0;"
+<div style="width: 100%; max-width: 1200px; padding: 24px;">
+	<div
+		style="max-height: 70vh; overflow: auto; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
 	>
-		<thead>
-			<tr class="border-b border-gray-200 bg-gray-100 text-left font-bold">
-				<th class="px-4 py-2">Session ID</th>
-				<th class="px-4 py-2">Level Name</th>
-				<th class="px-4 py-2">Username</th>
-				<th class="px-4 py-2">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each sessions as session, i}
-				<tr class="border-b border-gray-200 py-2 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50' : ''}">
-					<td class="px-4 py-2">{session.id}</td>
-					<td class="px-4 py-2">{session.name}</td>
-					<td class="px-4 py-2">{session.userName}</td>
-					<td class="px-4 py-2">
-						<button
-							class="rounded bg-[#0071bc] px-2 py-1 font-semibold text-white no-underline hover:bg-[#30c0f2]"
-							on:click={() => downloadAllDataAsZip(session.id)}>Download All as ZIP</button
-						>
-					</td>
+		<table style="width: 100%; border-collapse: collapse;">
+			<thead style="position: sticky; top: 0; background: #f8fafc; z-index: 10;">
+				<tr>
+					<th
+						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
+						>ID relace</th
+					>
+					<th
+						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
+						>Název úrovně</th
+					>
+					<th
+						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
+						>Uživatelské jméno</th
+					>
+					<th
+						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
+						>Datum prvního záznamu</th
+					>
+					<th
+						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
+						>Akce</th
+					>
 				</tr>
-			{/each}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				{#each sessionsWithFirstRecord as session, i}
+					<tr style="background: {i % 2 === 1 ? '#f8fafc' : 'white'};">
+						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0; color: #475569;"
+							>{session.id}</td
+						>
+						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0; color: #475569;"
+							>{session.name}</td
+						>
+						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0; color: #475569;"
+							>{session.userName}</td
+						>
+						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0; color: #475569;"
+							>{session.firstRecordDate}</td
+						>
+						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0;">
+							<button
+								style="padding: 8px 16px; background: #0071bc; color: white; border-radius: 4px; font-weight: 500; transition: background-color 0.2s;"
+								on:mouseover={(e) => (e.currentTarget.style.backgroundColor = '#30c0f2')}
+								on:mouseout={(e) => (e.currentTarget.style.backgroundColor = '#0071bc')}
+								on:click={() => downloadAllDataAsZip(session.id)}
+							>
+								Stáhnout vše jako ZIP
+							</button>
+						</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	</div>
 </div>
