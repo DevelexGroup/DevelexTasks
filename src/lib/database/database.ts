@@ -4,6 +4,7 @@ import type { Saccade } from './models/Saccade';
 import type { Intersect } from './models/Intersect';
 import type { RecordedEvent } from './models/RecordedEvent';
 import type { Session } from './models/Session';
+import type { Dwell } from './models/Dwell';
 
 export class DevelexIDB extends Dexie {
 	userEvents!: Table<RecordedEvent>;
@@ -12,6 +13,7 @@ export class DevelexIDB extends Dexie {
 	saccades!: Table<Saccade>;
 	intersects!: Table<Intersect>;
 	sessions!: Table<Session>;
+	dwells!: Table<Dwell>;
 
 	constructor() {
 		super('develex-task-idb');
@@ -22,7 +24,8 @@ export class DevelexIDB extends Dexie {
 			intersects: '++id, sessionId, timestamp, aoi',
 			userEvents: '++id, sessionId, timestamp, type',
 			stateEvents: '++id, sessionId, timestamp, type',
-			sessions: 'id, name, userName'
+			sessions: 'id, name, userName',
+			dwells: '++id, sessionId, timestamp'
 		});
 	}
 }

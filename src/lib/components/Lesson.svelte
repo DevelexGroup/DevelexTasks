@@ -7,9 +7,10 @@
 	import { onDestroy, getContext } from 'svelte';
 	import LessonDebug from './LessonDebug.svelte';
 	import type {
+		GazeInteractionObjectSaccadeEvent,
 		GazeInteractionObjectFixationEvent,
 		GazeInteractionObjectIntersectEvent,
-		GazeInteractionObjectSaccadeEvent,
+		GazeInteractionObjectDwellEvent,
 		GazeManager
 	} from '@473783/develex-core';
 	import { onMount } from 'svelte';
@@ -21,6 +22,7 @@
 	import fixationRepository from '$lib/database/repositories/fixation.repository';
 	import intersectionRepository from '$lib/database/repositories/intersect.repository';
 	import { browser } from '$app/environment';
+	import { dwellRepository } from '$lib/database/repositories/DwellRepository';
 
 	interface Props {
 		/**
@@ -84,6 +86,7 @@
 		gazeManager.on('saccadeObjectTo', handleSaccade);
 		gazeManager.on('fixationObjectEnd', handleFixation);
 		gazeManager.on('intersect', handleIntersection);
+		gazeManager.on('dwell', handleDwell);
 	});
 
 	onDestroy(() => {
@@ -101,6 +104,7 @@
 		gazeManager.off('saccadeObjectTo', handleSaccade);
 		gazeManager.off('fixationObjectEnd', handleFixation);
 		gazeManager.off('intersect', handleIntersection);
+		gazeManager.off('dwell', handleDwell);
 	});
 
 	// Subscribe to changes in lessonState and log them as stateEvents
@@ -207,6 +211,18 @@
 			timestamp: Date.now(),
 			type: 'lessonFrameTransition',
 			data: newState
+		});
+	};
+
+	const handleDwell = async (dwell: GazeInteractionObjectDwellEvent) => {
+		const aoi = transformAoiFromTargets(dwell.target);
+		await dwellRepository.create({
+			sessionId,
+			timestamp: dwell.timestamp.toString(),
+			type: dwell.type,
+			aoi,
+			duration: dwell.duration,
+			gazeData: dwell.gazeData
 		});
 	};
 </script>
