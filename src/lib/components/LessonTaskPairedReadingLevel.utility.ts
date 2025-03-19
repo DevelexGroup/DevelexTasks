@@ -159,4 +159,8 @@ export class PairedReadingManager {
 		if (this._activeEvaluationSegmentIndex < this.task.evaluationSegment.length - 1)
 			this.activeEvaluationSegmentIndex++;
 	}
+
+	hasMoreSegments(): boolean {
+		return this._activeEvaluationSegmentIndex < this.task.evaluationSegment.length - 1;
+	}
 }

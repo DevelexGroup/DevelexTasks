@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
-	import { derived, get, writable } from 'svelte/store';
 	import {
 		PairedReadingIdManager,
 		PairedReadingManager
@@ -8,8 +7,8 @@
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
-	import { getCancellableAsync, waitForConditionCancellable } from '$lib/utils/waitForCondition';
-	import { retry } from '$lib/utils/retry';
+	import { createMachine, createActor, assign, fromPromise } from 'xstate';
+	import { useMachine } from '@xstate/svelte';
 
 	let {
 		currentContent,
@@ -30,189 +29,253 @@
 		lessonFail: void;
 	}>();
 
+	/**
+	 * @description This is the machine that handles the paired reading task.
+	 * It is used to handle the fixation events and the reading events.
+	 * It is also used to handle the success and failure of the task.
+	 * It is used to handle the retry of the task.
+	 * It is used to handle the force success of the task.
+	 * It is used to handle the force crash of the task.
+	 *
+	 * Check the xstate 5 documentation for more information:
+	 * https://stately.ai/docs/xstate-5/
+	 */
+	export const pairedReadingInnerTaskMachine = createMachine({
+		id: 'pairedReadingInnerTask',
+		initial: 'CrossAPending',
+		context: {
+			retries: 0,
+			correctFixations: 0,
+			incorrectFixations: 0,
+			failExplanation: ''
+		},
+		states: {
+			CrossAPending: {
+				on: {
+					crossAFixated: 'WaitForFixation',
+					forceSuccess: 'WaitForFixation'
+				}
+			},
+			WaitForFixation: {
+				on: {
+					correctFixation: 'SetupReadingSegment',
+					forceSuccess: 'SetupReadingSegment'
+				}
+			},
+			SetupReadingSegment: {
+				always: {
+					actions: assign({
+						correctFixations: 0,
+						incorrectFixations: 0
+					}),
+					target: 'ReadingSegment'
+				}
+			},
+			ReadingSegment: {
+				invoke: {
+					id: 'readingWord',
+					src: fromPromise(async () => {
+						const segment = pairedReadingManager.getReadingSegment();
+						await wordReader.read([segment]);
+						return 'word read';
+					}),
+					onDone: {
+						target: 'AfterReadingBufferSegment'
+					},
+					onError: {
+						actions: assign({
+							failExplanation: 'Failed to read word (Technical error)'
+						}),
+						target: 'IntermediateFail'
+					}
+				},
+				on: {
+					forceSuccess: 'CompletedEvaluatedSegment',
+					correctFixation: {
+						actions: assign({
+							correctFixations: ({ context }) => context.correctFixations + 1
+						})
+					},
+					incorrectFixation: {
+						actions: assign({
+							incorrectFixations: ({ context }) => context.incorrectFixations + 1
+						})
+					}
+				}
+			},
+			AfterReadingBufferSegment: {
+				on: {
+					forceSuccess: 'CompletedEvaluatedSegment',
+					correctFixation: {
+						actions: assign({
+							correctFixations: ({ context }) => context.correctFixations + 1
+						})
+					},
+					incorrectFixation: {
+						actions: assign({
+							incorrectFixations: ({ context }) => context.incorrectFixations + 1
+						})
+					}
+				},
+				after: {
+					300: 'EvaluatingSuccessOfSegment'
+				}
+			},
+			EvaluatingSuccessOfSegment: {
+				always: [
+					{
+						guard: ({ context }) => context.correctFixations > context.incorrectFixations,
+						target: 'CompletedEvaluatedSegment'
+					},
+					{
+						target: 'FailedEvaluatedSegment'
+					}
+				],
+				exit: () => {
+					wordReader.abort();
+				}
+			},
+			CompletedEvaluatedSegment: {
+				always: [
+					{
+						guard: ({}) => pairedReadingManager.hasMoreSegments(),
+						actions: [
+							assign({
+								retries: 0,
+								correctFixations: 0,
+								incorrectFixations: 0
+							}),
+							() => {
+								pairedReadingManager.nextSegment();
+								wordsStore = pairedReadingManager.getWords();
+								wordReader.abort();
+							}
+						],
+						target: 'WaitForFixation'
+					},
+					{
+						target: 'CrossBPending'
+					}
+				],
+				exit: () => {
+					wordReader.abort();
+				}
+			},
+			FailedEvaluatedSegment: {
+				always: [
+					{
+						guard: ({ context }) => context.retries >= 3,
+						actions: assign({
+							failExplanation: 'After 3 retries, the word was not fixated correctly'
+						}),
+						target: 'IntermediateFail'
+					},
+					{
+						actions: assign({
+							retries: ({ context }) => context.retries + 1
+						}),
+						target: 'SetupReadingSegment'
+					}
+				],
+				exit: () => {
+					wordReader.abort();
+				}
+			},
+			CrossBPending: {
+				on: {
+					crossBFixated: 'Completed',
+					forceSuccess: 'Completed'
+				}
+			},
+			IntermediateFail: {
+				on: { retry: 'WaitForFixation', forceCrash: 'Failed' },
+				exit: assign({
+					failExplanation: '',
+					retries: 0
+				})
+			},
+			Completed: {
+				type: 'final',
+				entry: () => {
+					wordReader.abort();
+				}
+			},
+			Failed: {
+				type: 'final',
+				entry: () => {
+					wordReader.abort();
+				}
+			}
+		},
+		on: {
+			forceCrash: '.Failed'
+		},
+		exit: () => {
+			wordReader.abort();
+		}
+	});
+
+	const pairedReadingInnerTaskActor = createActor(pairedReadingInnerTaskMachine);
+
+	const { snapshot, send } = useMachine(pairedReadingInnerTaskMachine);
+	const currentState = $derived.by(() => {
+		return $snapshot.value;
+	});
+	const gridState = $derived.by(() => {
+		if (typeof currentState === 'string') {
+			if (currentState === 'CrossAPending') return 'crossStart';
+			if (currentState === 'CrossBPending') return 'crossEnd';
+			if (
+				[
+					'ReadingSegment',
+					'WaitForFixation',
+					'AfterReadingBufferSegment',
+					'IntermediateFail',
+					'FailedEvaluatedSegment',
+					'CompletedEvaluatedSegment',
+					'SetupReadingSegment'
+				].includes(currentState)
+			) {
+				return 'reading';
+			}
+		}
+		return 'reading'; // default
+	});
+
+	$effect(() => {
+		if (currentState === 'CompletedEvaluatedSegment') {
+			dispatch('lessonSuccess');
+			alert('lessonSuccess');
+		} else if (currentState === 'Failed') {
+			dispatch('lessonFail');
+		} else if (currentState === 'Completed') {
+			dispatch('lessonComplete');
+		}
+	});
+
+	snapshot.subscribe((state) => {
+		console.log('state', state.value);
+	});
+
 	shouldEmitMistake = false; // FORCE SETTING TO FALSE AS WE TRY POPUP DIRECTLY IN THE COMPONENT
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
-	// State variables
-	const hasFixatedStartCross = writable(false);
-	const hasFixatedEndCross = writable(false);
-	const currentlyReadingPhrase = writable<{ text: string; id: string } | null>(null);
-	const hasFirstFixationInSegment = writable(false);
-	let forceSuccess = false;
 	const abortController = new AbortController();
 
 	const pairedReadingManager = new PairedReadingManager(currentContent);
-	const wordsStore = writable(pairedReadingManager.getWords());
-	const gridStateStore = writable<'crossStart' | 'reading' | 'crossEnd'>('crossStart');
+	let wordsStore = $state(pairedReadingManager.getWords());
 
-	const wordStore = derived(wordsStore, ($wordsStore) => $wordsStore);
-	const showErrorPopup = writable(false);
+	const showErrorPopup = $derived.by(() => {
+		if (currentState === 'IntermediateFail') return true;
+		return false;
+	});
 
 	// Constants for evaluation
 	const MIN_GAZE_POINTS = 1;
 	const MIN_SUCCESS_FIXATIONS_PERCENTAGE = 50;
 	const MAX_RETRY_ATTEMPTS = 3;
 	const FIXCROSS_DELAY_AFTER_AUDIO = 150; // ms
-
-	function evaluateReaderWordChange(phrase: { text: string; id: string } | null) {
-		currentlyReadingPhrase.set(phrase);
-	}
-
-	let retryCount = 0;
-
-	async function performSingleReadingSegment() {
-		const segment = pairedReadingManager.getReadingSegment();
-		gazeFixationCorrect = 0;
-		gazeFixationMistake = 0;
-		forceSuccess = false;
-		retryCount = 0;
-		hasFirstFixationInSegment.set(false);
-
-		try {
-			// Wait for first fixation in the segment
-			await waitForConditionCancellable(hasFirstFixationInSegment, 100000, abortController.signal);
-
-			while (retryCount < MAX_RETRY_ATTEMPTS) {
-				let isFirstRun = true;
-				try {
-					// Reset counters for each attempt
-					gazeFixationCorrect = isFirstRun ? 1 : 0; // At least one fixation is correct because we waited for it before starting the reading
-					gazeFixationMistake = 0;
-
-					await wordReader.read([segment]);
-
-					// Add delay after audio finishes
-					await new Promise((resolve) => setTimeout(resolve, FIXCROSS_DELAY_AFTER_AUDIO));
-
-					const totalFixations = gazeFixationCorrect + gazeFixationMistake;
-					const successPercentage =
-						totalFixations > 0 ? (gazeFixationCorrect / totalFixations) * 100 : 0;
-
-					if (totalFixations < MIN_GAZE_POINTS && !forceSuccess) {
-						retryCount++;
-						if (retryCount >= MAX_RETRY_ATTEMPTS) {
-							showErrorPopup.set(true);
-							throw new Error('Less than 10 gaze points after maximum retries');
-						}
-						throw new Error('Less than 10 gaze points');
-					}
-
-					if (successPercentage < MIN_SUCCESS_FIXATIONS_PERCENTAGE && !forceSuccess) {
-						retryCount++;
-						if (retryCount >= MAX_RETRY_ATTEMPTS) {
-							showErrorPopup.set(true);
-							throw new Error('Less than 50% of the fixations are correct after maximum retries');
-						}
-						throw new Error('Less than 50% of the fixations are correct');
-					}
-
-					// Success case, break out of the loop
-					break;
-				} catch (error) {
-					// If we manually forced success, consider it a success
-					if (forceSuccess) {
-						break; // Success case
-					}
-
-					if (retryCount >= MAX_RETRY_ATTEMPTS) {
-						showErrorPopup.set(true);
-						throw error; // Re-throw after max retries
-					}
-
-					// Otherwise continue the loop for another retry
-					wordReader.abort();
-					if (shouldEmitMistake) {
-						dispatch('lessonMistake');
-					}
-
-					// Wait before retry
-					await new Promise((resolve) => setTimeout(resolve, shouldEmitMistake ? 5000 : 0));
-				}
-			}
-		} catch (error) {
-			if (abortController.signal.aborted) {
-				throw error;
-			}
-			showErrorPopup.set(true);
-			throw error;
-		} finally {
-			currentlyReadingPhrase.set(null);
-		}
-	}
-
-	async function performReadingSegments() {
-		for await (const segment of currentContent.evaluationSegment) {
-			wordsStore.set(pairedReadingManager.getWords());
-			void segment;
-			try {
-				await getCancellableAsync(performSingleReadingSegment, abortController.signal);
-				pairedReadingManager.nextSegment();
-				dispatch('lessonSuccess');
-			} catch (error) {
-				if (abortController.signal.aborted) {
-					break;
-				}
-				// The error popup is already shown inside performSingleReadingSegment
-				wordReader.abort();
-				if (shouldEmitMistake) {
-					dispatch('lessonMistake');
-				}
-			}
-		}
-	}
-
-	// Handle fixation for cross A (start)
-	function handleCrossAComplete() {
-		hasFixatedStartCross.set(true);
-	}
-
-	// Handle fixation for cross B (end)
-	function handleCrossBComplete() {
-		hasFixatedEndCross.set(true);
-	}
-
-	async function performWaitForStartCrossFixation() {
-		// Reset the fixation state before waiting
-		hasFixatedStartCross.set(false);
-
-		try {
-			await waitForConditionCancellable(hasFixatedStartCross, 100000, abortController.signal);
-			return true;
-		} catch (error) {
-			dispatch('lessonFail');
-			return false;
-		}
-	}
-
-	async function performWaitForEndCrossFixation() {
-		// Reset the fixation state before waiting
-		hasFixatedEndCross.set(false);
-
-		try {
-			await waitForConditionCancellable(hasFixatedEndCross, 100000, abortController.signal);
-			dispatch('lessonComplete');
-		} catch (error) {
-			dispatch('lessonFail');
-		}
-	}
-
-	async function performTask() {
-		// Start with the start cross
-		gridStateStore.set('crossStart');
-
-		// Wait for start cross fixation
-		const started = await performWaitForStartCrossFixation();
-		if (!started) return;
-
-		// Move to reading phase
-		gridStateStore.set('reading');
-		await performReadingSegments();
-
-		// Move to end cross
-		gridStateStore.set('crossEnd');
-		await performWaitForEndCrossFixation();
-	}
 
 	function setupRegisterElement(element: HTMLElement) {
 		gazeManager.register({
@@ -234,43 +297,20 @@
 	// Add keyboard event handler
 	function handleKeyPress(event: KeyboardEvent) {
 		if (event.key === 'Enter') {
-			const currentState = get(gridStateStore);
-
-			if (currentState === 'crossStart') {
-				hasFixatedStartCross.set(true);
-			} else if (currentState === 'reading') {
-				// Force success for current reading segment and ensure we skip any waiting states
-				forceSuccess = true;
-				hasFirstFixationInSegment.set(true);
-				wordReader.abort();
-				wordReader.onWordChange = () => {}; // Prevent any queued word changes
-				currentlyReadingPhrase.set(null);
-			} else if (currentState === 'crossEnd') {
-				hasFixatedEndCross.set(true);
-			}
+			send({ type: 'forceSuccess' });
 		} else if (event.key === 'Escape') {
-			// Ensure all reading stops immediately
-			wordReader.abort();
-			wordReader.onWordChange = () => {};
-			currentlyReadingPhrase.set(null);
-			dispatch('lessonFail');
+			send({ type: 'forceCrash' });
 		}
 	}
 
-	let gazeFixationCorrect = 0;
-	let gazeFixationMistake = 0;
-
 	function evaluateFixation(event: GazeInteractionObjectFixationEvent) {
-		if (get(gridStateStore) !== 'reading') return;
-
-		const phrase = get(currentlyReadingPhrase);
 		const segment = pairedReadingManager.getReadingSegment();
 
 		// Track fixation starts for activating fixcross
 		if (event.type === 'fixationObjectStart') {
 			// If we have a current phrase (reading has started), use its ID
 			// Otherwise use the segment ID (before reading starts)
-			const evaluationId = phrase?.id ?? segment.id;
+			const evaluationId = segment.id;
 
 			const isFixationCorrect = event.target.some((target) =>
 				PairedReadingIdManager.isWordInEvaluationSegmentByIndex(
@@ -281,72 +321,57 @@
 			);
 
 			if (isFixationCorrect) {
-				gazeFixationCorrect++;
-				// Only set first fixation if we haven't started reading yet
-				if (!phrase) {
-					hasFirstFixationInSegment.set(true);
-				}
+				send({ type: 'correctFixation' });
 			} else {
-				gazeFixationMistake++;
+				send({ type: 'incorrectFixation' });
 			}
 		}
 	}
 
 	function closeErrorPopup() {
-		showErrorPopup.set(false);
-		dispatch('lessonFail');
+		send({ type: 'retry' });
 	}
 
 	onMount(() => {
-		wordReader.onWordChange = evaluateReaderWordChange;
-		performTask();
 		gazeManager.on('fixationObjectStart', evaluateFixation);
 		window.addEventListener('keydown', handleKeyPress);
+		pairedReadingInnerTaskActor.start();
 	});
 
 	onDestroy(() => {
 		// Abort all ongoing async operations
 		abortController.abort('Task destroyed');
-
-		// Stop any ongoing word reading and prevent new ones
-		wordReader.abort();
-		wordReader.onWordChange = () => {}; // Empty function instead of null to satisfy TypeScript
-		currentlyReadingPhrase.set(null);
-
-		// Reset all state stores to prevent any lingering state
-		hasFixatedStartCross.set(false);
-		hasFixatedEndCross.set(false);
-		hasFirstFixationInSegment.set(false);
-		showErrorPopup.set(false);
-
 		// Remove all event listeners
 		gazeManager.off('fixationObjectStart', evaluateFixation);
 		window.removeEventListener('keydown', handleKeyPress);
-
-		// Reset counters
-		gazeFixationCorrect = 0;
-		gazeFixationMistake = 0;
+		pairedReadingInnerTaskActor.stop();
 	});
 </script>
 
 <LessonTaskPairedReadingLayout
-	words={$wordStore}
-	stage={$gridStateStore}
+	words={wordsStore}
+	stage={gridState}
 	wordsRegisterFn={setupRegisterElement}
 	wordsUnregisterFn={setupUnregisterElement}
 	{shouldHighlight}
 	{gazeManager}
-	onCrossAFixated={handleCrossAComplete}
-	onCrossBFixated={handleCrossBComplete}
+	onCrossAFixated={() => send({ type: 'crossAFixated' })}
+	onCrossBFixated={() => send({ type: 'crossBFixated' })}
 	dwellTimeMs={500}
 />
 
-{#if $showErrorPopup}
+<div class="absolute bottom-0 left-0 right-0">
+	{currentState}
+	{JSON.stringify($snapshot.context)}
+</div>
+
+{#if showErrorPopup}
 	<div class="error-popup">
 		<div class="error-popup-content">
 			<h3>Pozor!</h3>
 			<p>Nepodařilo se nám správně detekovat pozorování slov po několika pokusech.</p>
-			<button on:click={closeErrorPopup}>OK</button>
+			<button onclick={closeErrorPopup}>Zkusit segment znovu</button>
+			<button onclick={() => send({ type: 'forceCrash' })}>Jít zpět</button>
 		</div>
 	</div>
 {/if}
