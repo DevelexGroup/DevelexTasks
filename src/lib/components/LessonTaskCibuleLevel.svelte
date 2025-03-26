@@ -47,7 +47,9 @@
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
-		lessonComplete: void;
+		lessonComplete: {
+			playRoundComplete: boolean;
+		};
 		lessonFail: void;
 		lessonFrameTransition: string;
 	}>();
@@ -230,7 +232,9 @@
 			dispatch('lessonFrameTransition', `assignmentDone-${index + 1}-of-${currentContent.length}`);
 			await waitForTimeout(500);
 		}
-		dispatch('lessonComplete');
+		dispatch('lessonComplete', {
+			playRoundComplete: true
+		});
 	};
 
 	/**

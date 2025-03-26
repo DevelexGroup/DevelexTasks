@@ -48,7 +48,9 @@
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
-		lessonComplete: void;
+		lessonComplete: {
+			playRoundComplete: true;
+		};
 		lessonFail: void;
 	}>();
 
@@ -215,7 +217,10 @@
 			processStateCleanup();
 			await waitForTimeout(500);
 		}
-		dispatch('lessonComplete');
+
+		dispatch('lessonComplete', {
+			playRoundComplete: true
+		});
 	};
 
 	/**

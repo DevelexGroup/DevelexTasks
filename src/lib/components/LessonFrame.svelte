@@ -43,6 +43,7 @@
 
 	const successAudio = new Audio('/sound/success.wav');
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
+	roundCompleteAudio.volume = 0.1;
 	const warningAudio = new Audio('/sound/warning.wav');
 	const completeAudio = new Audio('/sound/complete.wav');
 	const failAudio = new Audio('/sound/fail.wav');
@@ -56,14 +57,17 @@
 		state = 'mistake';
 	};
 
-	const handleLessonComplete = () => {
+	const handleLessonComplete = (e: CustomEvent<{ playRoundComplete: boolean }>) => {
 		const isLessonComplete = $lessonProgress === lessonConfig.content.length - 1;
 
 		if (isLessonComplete) {
 			completeAudio.play();
 			state = 'complete';
 		} else {
-			roundCompleteAudio.play();
+			if (e.detail.playRoundComplete) {
+				roundCompleteAudio.play();
+			}
+
 			lessonProgress.update((n) => n + 1);
 		}
 	};

@@ -29,7 +29,9 @@
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
-		lessonComplete: void;
+		lessonComplete: {
+			playRoundComplete: boolean;
+		};
 		lessonFail: void;
 		lessonFrameTransition: string;
 	}>();
@@ -143,7 +145,9 @@
 		processStateCleanup();
 		dispatch('lessonFrameTransition', `assignmentDone-1-of-1`);
 		await waitForTimeout(500);
-		dispatch('lessonComplete');
+		dispatch('lessonComplete', {
+			playRoundComplete: true
+		});
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {

@@ -85,7 +85,7 @@
 </script>
 
 {#if isSyllableAssignmentPresent}
-	<div class="relative flex items-center">
+	<div class="relative mr-36 flex items-center">
 		{#if isSyllableAssignmentVisible && isSyllableAssignmentPresent}
 			<div in:fade={inOptions} out:fade={outOptions} class="absolute">
 				{#if content.correctImage}

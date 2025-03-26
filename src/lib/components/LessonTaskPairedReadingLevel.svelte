@@ -25,7 +25,9 @@
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
-		lessonComplete: void;
+		lessonComplete: {
+			playRoundComplete: boolean;
+		};
 		lessonFail: void;
 	}>();
 
@@ -249,7 +251,9 @@
 		} else if (currentState === 'Failed') {
 			dispatch('lessonFail');
 		} else if (currentState === 'Completed') {
-			dispatch('lessonComplete');
+			dispatch('lessonComplete', {
+				playRoundComplete: true
+			});
 		}
 	});
 
