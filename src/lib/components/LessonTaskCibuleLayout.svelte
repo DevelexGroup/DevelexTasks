@@ -14,7 +14,7 @@
 	const outOptions = { duration: 200 };
 </script>
 
-<div class="relative h-full w-full bg-[#FFFEE8]">
+<div class="z-0 h-full w-full bg-[#FFFEE8]">
 	<div class="relative mx-auto h-full w-full max-w-7xl p-12 py-32">
 		{#if isCrossfixVisible}
 			<div

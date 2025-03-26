@@ -150,21 +150,36 @@
 	const processReadingAssignmentSyllable = async () => {
 		if (!shouldReadCorrectSyllable) return;
 		await waitForTimeout(500);
-		void wordReader.read([
-			{
-				text: currentContent[currentRowIndex].correctSyllable,
-				id: 'correct-syllable'
-			}
-		]);
+
+		const content = currentContent[currentRowIndex];
+
+		if (content.wordToRead === undefined) {
+			void wordReader.read([
+				{
+					text: content.correctSyllable,
+					id: 'correct-syllable'
+				}
+			]);
+		} else {
+			const readingAudio = new Audio(`/sound/tasks/syllables/${content.wordToRead}.m4a`);
+			readingAudio.play();
+		}
 	};
 
 	const handleReadAssignemt = () => {
-		void wordReader.read([
-			{
-				text: currentContent[currentRowIndex].correctSyllable,
-				id: 'correct-syllable'
-			}
-		]);
+		const content = currentContent[currentRowIndex];
+
+		if (content.wordToRead === undefined) {
+			void wordReader.read([
+				{
+					text: content.correctSyllable,
+					id: 'correct-syllable'
+				}
+			]);
+		} else {
+			const readingAudio = new Audio(`/sound/tasks/syllables/${content.wordToRead}.m4a`);
+			readingAudio.play();
+		}
 	};
 
 	/**

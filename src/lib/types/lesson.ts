@@ -41,6 +41,7 @@ export type PairedReadingTaskType = {
 export type SyllableTaskType = {
 	syllables: string[];
 	correctSyllable: string;
+	wordToRead?: string;
 }[];
 
 export type CibuleTaskType = {

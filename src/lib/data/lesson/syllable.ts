@@ -8,12 +8,14 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			[
 				{
 					correctSyllable: 'do',
+					wordToRead: 'DO',
 					syllables: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be']
 				}
 			],
 			[
 				{
 					correctSyllable: 'se',
+					wordToRead: 'SE',
 					syllables: [
 						'sa',
 						'su',
@@ -36,6 +38,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			[
 				{
 					correctSyllable: 'po',
+					wordToRead: 'PO',
 					syllables: [
 						'bo',
 						'op',
@@ -56,6 +59,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'ja',
+					wordToRead: 'JA',
 					syllables: [
 						'je',
 						'je',
@@ -76,6 +80,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'ci',
+					wordToRead: 'CI',
 					syllables: [
 						'ci',
 						'ic',
@@ -96,6 +101,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'ku',
+					wordToRead: 'KU',
 					syllables: [
 						'ku',
 						'uk',
@@ -131,12 +137,14 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			[
 				{
 					correctSyllable: 'do',
+					wordToRead: 'DO',
 					syllables: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be']
 				}
 			],
 			[
 				{
 					correctSyllable: 'hůl',
+					wordToRead: 'HŮL',
 					syllables: [
 						'hůl',
 						'kůl',
@@ -156,6 +164,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			[
 				{
 					correctSyllable: 'kos',
+					wordToRead: 'KOS',
 					syllables: [
 						'koš',
 						'kus',
@@ -176,6 +185,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'nám',
+					wordToRead: 'NÁM',
 					syllables: [
 						'nám',
 						'nám',
@@ -196,6 +206,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'výr',
+					wordToRead: 'VÝR',
 					syllables: [
 						'vír',
 						'rýv',
@@ -216,6 +227,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'car',
+					wordToRead: 'CAR',
 					syllables: [
 						'cor',
 						'car',
@@ -251,18 +263,21 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			[
 				{
 					correctSyllable: 'do',
+					wordToRead: 'DO',
 					syllables: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be']
 				}
 			],
 			[
 				{
 					correctSyllable: 'vr',
+					wordToRead: 'VR',
 					syllables: ['nr', 'vr', 'vř', 'rv', 'vr', 'br', 'ir', 'vr', 'vl', 'ru', 'pr', 'vr']
 				}
 			],
 			[
 				{
 					correctSyllable: 'tr',
+					wordToRead: 'TR',
 					syllables: [
 						'tl',
 						'tr',
@@ -283,6 +298,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'mr',
+					wordToRead: 'MR',
 					syllables: [
 						'nr',
 						'ml',
@@ -303,6 +319,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'hr',
+					wordToRead: 'HR',
 					syllables: [
 						'rh',
 						'hr',
@@ -323,6 +340,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'br',
+					wordToRead: 'BR',
 					syllables: [
 						'dr',
 						'rb',
@@ -359,12 +377,14 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			[
 				{
 					correctSyllable: 'do',
+					wordToRead: 'DO',
 					syllables: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be']
 				}
 			],
 			[
 				{
 					correctSyllable: 'zrod',
+					wordToRead: 'ZROD',
 					syllables: [
 						'srod',
 						'zrod',
@@ -384,6 +404,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 			[
 				{
 					correctSyllable: 'plyš',
+					wordToRead: 'PLYŠ',
 					syllables: [
 						'plys',
 						'plyš',
@@ -404,6 +425,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'krám',
+					wordToRead: 'KRÁM',
 					syllables: [
 						'drám',
 						'hrám',
@@ -424,6 +446,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'gram',
+					wordToRead: 'GRAM',
 					syllables: [
 						'aram',
 						'gram',
@@ -444,6 +467,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 				},
 				{
 					correctSyllable: 'chlup',
+					wordToRead: 'CHLUP',
 					syllables: [
 						'chlup',
 						'clup',

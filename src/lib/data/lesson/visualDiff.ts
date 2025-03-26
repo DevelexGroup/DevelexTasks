@@ -71,7 +71,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 			[
 				{
 					correctSyllable: 'banana',
-					wordToRead: 'banán',
+					wordToRead: 'BANÁN',
 					syllables: [
 						'lemon',
 						'apple',
@@ -91,7 +91,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 			[
 				{
 					correctSyllable: 'lemon',
-					wordToRead: 'citrón',
+					wordToRead: 'CITRON',
 					syllables: [
 						'melon',
 						'apple',
@@ -111,7 +111,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 			[
 				{
 					correctSyllable: 'melon',
-					wordToRead: 'meloun',
+					wordToRead: 'MELOUN',
 					syllables: [
 						'banana',
 						'apple',
@@ -143,7 +143,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 		content: [
 			[
 				{
-					wordToRead: 'Vyznač skupinu, ve které je jablko první v pořadí',
+					wordToRead: 'JABLKOPRVNI',
 					correctGroupIndex: 1,
 					syllables: [],
 					groups: [
@@ -155,7 +155,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 			],
 			[
 				{
-					wordToRead: 'Vyznač skupinu, ve které je banán třetí v pořadí',
+					wordToRead: 'BANANTRETI',
 					correctGroupIndex: 2,
 					syllables: [],
 					groups: [
@@ -167,7 +167,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 			],
 			[
 				{
-					wordToRead: 'Vyznač skupinu, ve které je meloun na druhém místě v pořadí',
+					wordToRead: 'MELOUNDRUHY',
 					correctGroupIndex: 1,
 					syllables: [],
 					groups: [

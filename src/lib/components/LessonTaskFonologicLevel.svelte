@@ -137,18 +137,17 @@
 
 		const content = currentContent[currentRowIndex];
 
-		let textToRead = content.correctSyllable!;
-
-		if (content.wordToRead !== undefined) {
-			textToRead = content.wordToRead;
+		if (content.wordToRead === undefined) {
+			void wordReader.read([
+				{
+					text: content.correctSyllable!,
+					id: 'correct-syllable'
+				}
+			]);
+		} else {
+			const readingAudio = new Audio(`/sound/tasks/fonologic/${content.wordToRead}.m4a`);
+			readingAudio.play();
 		}
-
-		void wordReader.read([
-			{
-				text: textToRead,
-				id: 'correct-syllable'
-			}
-		]);
 	};
 
 	/**

@@ -151,16 +151,17 @@
 		let textToRead =
 			content.correctSyllable == undefined ? content.incorrectSyllable! : content.correctSyllable!;
 
-		if (content.wordToRead !== undefined) {
-			textToRead = content.wordToRead;
+		if (content.wordToRead === undefined) {
+			void wordReader.read([
+				{
+					text: textToRead,
+					id: 'correct-syllable'
+				}
+			]);
+		} else {
+			const readingAudio = new Audio(`/sound/tasks/cibule/${content.wordToRead}.m4a`);
+			readingAudio.play();
 		}
-
-		void wordReader.read([
-			{
-				text: textToRead,
-				id: 'correct-syllable'
-			}
-		]);
 	};
 
 	/**

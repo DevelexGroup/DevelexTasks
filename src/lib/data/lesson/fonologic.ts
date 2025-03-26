@@ -51,6 +51,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'K',
+					wordToRead: 'K',
 					correctIndexes: [1, 2],
 					syllables: ['duch', 'klaun', 'kůň', 'banán', 'nůž']
 				}
@@ -58,6 +59,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'L',
+					wordToRead: 'L',
 					correctIndexes: [3, 4],
 					syllables: ['čáp', 'dárek', 'kotva', 'plot', 'žalud']
 				}
@@ -65,6 +67,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'O',
+					wordToRead: 'O',
 					correctIndexes: [0, 1, 2, 4],
 					syllables: ['citron', 'obraz', 'noha', 'třešeň', 'pavouk']
 				}
@@ -72,6 +75,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'A',
+					wordToRead: 'A',
 					correctIndexes: [1, 3, 4],
 					syllables: ['míč', 'koza', 'citron', 'kostka', 'květ']
 				}
@@ -133,6 +137,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'KO',
+					wordToRead: 'KO',
 					correctIndexes: [1, 2],
 					syllables: ['víla', 'koruna', 'klubko', 'tygr', 'guma']
 				}
@@ -140,6 +145,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'LE',
+					wordToRead: 'LE',
 					correctIndexes: [0, 2],
 					syllables: ['brýle', 'mrkev', 'letadlo', 'motýl', 'ryba']
 				}
@@ -147,6 +153,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'CE',
+					wordToRead: 'CE',
 					correctIndexes: [0, 1, 4],
 					syllables: ['slepice', 'mince', 'prase', 'list', 'srdce']
 				}
@@ -154,6 +161,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			[
 				{
 					correctSyllable: 'ZÁ',
+					wordToRead: 'ZÁ',
 					correctIndexes: [0, 2, 4],
 					syllables: ['záda', 'vějíř', 'zámek', 'květák', 'zásuvka']
 				}
@@ -353,7 +361,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		content: [
 			[
 				{
-					wordToRead: 'Ve slově pes vyměň P za L.',
+					wordToRead: 'pes_les',
 					correctImage: 'pes',
 					correctIndexes: [1],
 					syllables: ['luk', 'les', 'nos']
@@ -361,7 +369,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			],
 			[
 				{
-					wordToRead: 'Ve slově mrak vyměň M za D.',
+					wordToRead: 'mrak_drak',
 					correctImage: 'mrak',
 					correctIndexes: [2],
 					syllables: ['pařát', 'mostík', 'drak']
@@ -369,7 +377,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			],
 			[
 				{
-					wordToRead: 'Ve slově dárek vyměň D za P.',
+					wordToRead: 'darek_parek',
 					correctImage: 'dárek',
 					correctIndexes: [0],
 					syllables: ['párek', 'lilek', 'šála']
@@ -377,7 +385,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			],
 			[
 				{
-					wordToRead: 'Ve slově cesta vyměň C za V.',
+					wordToRead: 'vesta_vesta',
 					correctImage: 'cesta',
 					correctIndexes: [1],
 					syllables: ['cela', 'vesta', 'vejce']
@@ -385,7 +393,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			],
 			[
 				{
-					wordToRead: 'Ve slově lev vyměň V za D.',
+					wordToRead: 'lev_led',
 					correctImage: 'lev',
 					correctIndexes: [0],
 					syllables: ['led', 'pilulka', 'les']
@@ -406,7 +414,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		content: [
 			[
 				{
-					wordToRead: 'Ve slově hrnec vyměň HR za KA.',
+					wordToRead: 'hrnec_kanec',
 					correctImage: 'hrnec',
 					correctIndexes: [0],
 					syllables: ['divočák', 'palec', 'tanečník']
@@ -414,7 +422,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			],
 			[
 				{
-					wordToRead: 'Ve slově váha vyměň HA za ZA.',
+					wordToRead: 'vaha_vaza',
 					correctImage: 'váha',
 					correctIndexes: [2],
 					syllables: ['záda', 'vana', 'váza']

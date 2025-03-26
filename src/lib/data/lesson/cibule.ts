@@ -10,6 +10,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'a',
+					wordToRead: 'A',
 					syllables: [
 						'ggggg',
 						'a',
@@ -32,6 +33,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 't',
+					wordToRead: 'T',
 					syllables: [
 						'hhhhh',
 						't',
@@ -54,6 +56,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'p',
+					wordToRead: 'P',
 					syllables: [
 						'bbbbb',
 						'p',
@@ -76,7 +79,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'c',
-					wordToRead: 'cé',
+					wordToRead: 'C',
 					syllables: [
 						'ooooo',
 						'c',
@@ -112,14 +115,14 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'k',
-					wordToRead: 'ká',
+					wordToRead: 'K',
 					syllables: ['k']
 				}
 			],
 			[
 				{
 					correctSyllable: 'k',
-					wordToRead: 'ká',
+					wordToRead: 'K',
 					syllables: [
 						'eeeee',
 						'k',
@@ -140,12 +143,14 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'v',
+					wordToRead: 'V',
 					syllables: ['v']
 				}
 			],
 			[
 				{
 					correctSyllable: 'v',
+					wordToRead: 'V',
 					syllables: [
 						'hhhhh',
 						'v',
@@ -166,12 +171,14 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'm',
+					wordToRead: 'M',
 					syllables: ['m']
 				}
 			],
 			[
 				{
 					correctSyllable: 'm',
+					wordToRead: 'M',
 					syllables: [
 						'nnnn',
 						'm',
@@ -192,12 +199,14 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'd',
+					wordToRead: 'D',
 					syllables: ['d']
 				}
 			],
 			[
 				{
 					correctSyllable: 'd',
+					wordToRead: 'D',
 					syllables: [
 						'bbbbb',
 						'd',
@@ -231,6 +240,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'da',
+					wordToRead: 'DA',
 					syllables: [
 						'oooo',
 						'da',
@@ -249,6 +259,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'lo',
+					wordToRead: 'LE',
 					syllables: [
 						'aaa',
 						'lo',
@@ -284,6 +295,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'pe',
+					wordToRead: 'PE',
 					syllables: ['pe']
 				}
 			],
@@ -311,12 +323,14 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'ma',
+					wordToRead: 'MA',
 					syllables: ['ma']
 				}
 			],
 			[
 				{
 					correctSyllable: 'ma',
+					wordToRead: 'MA',
 					syllables: [
 						'ma',
 						'iiiiiiiiii',
