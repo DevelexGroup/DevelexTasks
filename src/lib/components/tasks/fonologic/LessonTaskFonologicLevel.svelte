@@ -1,5 +1,4 @@
 <script lang="ts">
-	import LessonCross from './LessonCross.svelte';
 	import type {
 		GazeInteractionObjectDwellEvent,
 		GazeInteractionObjectFixationEvent,
@@ -12,6 +11,7 @@
 	import LessonTaskFonologicGrid from './LessonTaskFonologicGrid.svelte';
 	import LessonTaskFonologicLayout from './LessonTaskFonologicLayout.svelte';
 	import fixationRepository from '$lib/database/repositories/fixation.repository';
+	import LessonCross from '$lib/components/LessonCross.svelte';
 
 	let {
 		currentContent,

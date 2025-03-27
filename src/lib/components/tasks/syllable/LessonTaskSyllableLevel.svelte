@@ -1,16 +1,16 @@
 <script lang="ts">
-	import LessonCross from './LessonCross.svelte';
+	import LessonTaskSyllableLayout from './LessonTaskSyllableLayout.svelte';
+	import LessonCross from '$lib/components/LessonCross.svelte';
+	import LessonTaskSyllableGrid from './LessonTaskSyllableGrid.svelte';
+	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
+	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
+	import type { LessonTaskSyllableLevelProps } from './LessonTaskSyllableLevel.type';
 	import type {
 		GazeInteractionObjectDwellEvent,
 		GazeInteractionObjectFixationEvent,
 		GazeManager
 	} from '@473783/develex-core';
-	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
-	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
-	import LessonTaskCibuleLayout from './LessonTaskCibuleLayout.svelte';
-	import LessonTaskCibuleGrid from './LessonTaskCibuleGrid.svelte';
-	import type { LessonTaskCibuleLevelProps } from './LessonTaskCibuleLevel.type';
 
 	let {
 		currentContent,
@@ -18,10 +18,10 @@
 		shouldReadCorrectSyllable = true,
 		isSyllableAssignmentPresent = true,
 		correctSyllableVisibilityTimeout = 0,
-		markWantedSyllables = false,
 		assignmentGap = 120,
-		syllableGap = 12
-	}: LessonTaskCibuleLevelProps = $props();
+		syllableGap = 12,
+		highlightLine = false
+	}: LessonTaskSyllableLevelProps = $props();
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
@@ -47,9 +47,7 @@
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
-		lessonComplete: {
-			playRoundComplete: boolean;
-		};
+		lessonComplete: { playRoundComplete: boolean };
 		lessonFail: void;
 		lessonFrameTransition: string;
 	}>();
@@ -100,8 +98,12 @@
 		}
 	};
 
-	const handleCorrectSyllableClick = () => {
+	const handleAllCorrectSyllablesClicked = () => {
 		wasCorrectSyllableSelected.set(true);
+	};
+
+	const handleCorrectSyllableClick = () => {
+		dispatch('lessonSuccess');
 	};
 
 	const handleIncorrectSyllableClick = () => {
@@ -109,6 +111,11 @@
 		dispatch('lessonMistake');
 		if (mistakeCount >= MAXIMUM_MISTAKE_COUNT) {
 			wasMistakenTooManyTimes.set(true);
+		} else {
+			// TODO: tohle pak přes nějaký event, onLessonMistakeComplete
+			setTimeout(() => {
+				handleReadAssignemt();
+			}, 4500);
 		}
 	};
 
@@ -120,13 +127,6 @@
 	 */
 	const evaluateGazeEvent = (event: GazeInteractionObjectFixationEvent) => {
 		const { target } = event;
-
-		if (
-			target.some((t) => t.id === 'syllable-choice_0_0') &&
-			currentContent[currentRowIndex].syllables.length == 1
-		) {
-			handleCorrectSyllableClick();
-		}
 	};
 
 	const evaluateDwellEvent = (event: GazeInteractionObjectDwellEvent) => {
@@ -146,20 +146,21 @@
 		if (!shouldReadCorrectSyllable) return;
 		await waitForTimeout(500);
 
-		const content = currentContent[currentRowIndex];
+		handleReadAssignemt();
+	};
 
-		let textToRead =
-			content.correctSyllable == undefined ? content.incorrectSyllable! : content.correctSyllable!;
+	const handleReadAssignemt = () => {
+		const content = currentContent[currentRowIndex];
 
 		if (content.wordToRead === undefined) {
 			void wordReader.read([
 				{
-					text: textToRead,
+					text: content.correctSyllable,
 					id: 'correct-syllable'
 				}
 			]);
 		} else {
-			const readingAudio = new Audio(`/sound/tasks/cibule/${content.wordToRead}.m4a`);
+			const readingAudio = new Audio(`/sound/tasks/syllables/${content.wordToRead}.m4a`);
 			readingAudio.play();
 		}
 	};
@@ -200,7 +201,6 @@
 				SYLLABLE_SELECTION_TIMEOUT,
 				wasMistakenTooManyTimes
 			);
-			dispatch('lessonSuccess');
 			return true;
 		} catch {
 			dispatch('lessonFail');
@@ -263,7 +263,7 @@
 {/snippet}
 
 {#snippet taskArea()}
-	<LessonTaskCibuleGrid
+	<LessonTaskSyllableGrid
 		content={currentContent}
 		{registerElement}
 		{unregisterElement}
@@ -272,10 +272,12 @@
 		{assignmentGap}
 		{syllableGap}
 		{currentRowIndex}
-		{markWantedSyllables}
+		{highlightLine}
+		on:all-correct-syllables-clicked={handleAllCorrectSyllablesClicked}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}
+		on:read-assigment={handleReadAssignemt}
 	/>
 {/snippet}
 
-<LessonTaskCibuleLayout isCrossfixVisible={!$wasCrossFixated} {crossFixArea} {taskArea} />
+<LessonTaskSyllableLayout isCrossfixVisible={!$wasCrossFixated} {crossFixArea} {taskArea} />

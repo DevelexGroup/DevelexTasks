@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LessonWordLight from './LessonWordLight.svelte';
+	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	interface Props {

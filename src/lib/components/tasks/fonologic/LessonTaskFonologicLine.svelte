@@ -2,9 +2,9 @@
 	import type { FonologicTaskType } from '$lib/types/lesson';
 	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import LessonWordLight from './LessonWordLight.svelte';
 	import LessonTaskFonologicItem from './LessonTaskFonologicItem.svelte';
-	import LessonTaskSyllableItem from './LessonTaskSyllableItem.svelte';
+	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
+	import LessonTaskSyllableItem from '../syllable/LessonTaskSyllableItem.svelte';
 
 	interface Props {
 		isSyllableAssignmentVisible?: boolean;

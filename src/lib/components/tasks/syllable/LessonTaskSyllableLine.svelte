@@ -3,7 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import LessonTaskSyllableItem from './LessonTaskSyllableItem.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import LessonWordLight from './LessonWordLight.svelte';
+	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
 	import Icon from '@iconify/svelte';
 
 	interface Props {

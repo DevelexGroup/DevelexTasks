@@ -1,5 +1,4 @@
 <script lang="ts">
-	import LessonCross from './LessonCross.svelte';
 	import type {
 		GazeInteractionObjectDwellEvent,
 		GazeInteractionObjectFixationEvent,
@@ -8,9 +7,10 @@
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
-	import type { LessonTaskVisualDiffLevelProps } from './LessonTaskVisualDiffLevel.type';
-	import LessonTaskVisualDiffLayout from './LessonTaskVisualDiffLayout.svelte';
-	import LessonTaskVisualDiffGrid from './LessonTaskVisualDiffGrid.svelte';
+	import LessonTaskCibuleLayout from './LessonTaskCibuleLayout.svelte';
+	import LessonTaskCibuleGrid from './LessonTaskCibuleGrid.svelte';
+	import type { LessonTaskCibuleLevelProps } from './LessonTaskCibuleLevel.type';
+	import LessonCross from '$lib/components/LessonCross.svelte';
 
 	let {
 		currentContent,
@@ -20,9 +20,8 @@
 		correctSyllableVisibilityTimeout = 0,
 		markWantedSyllables = false,
 		assignmentGap = 120,
-		syllableGap = 12,
-		gridCols = 0
-	}: LessonTaskVisualDiffLevelProps = $props();
+		syllableGap = 12
+	}: LessonTaskCibuleLevelProps = $props();
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
@@ -49,14 +48,22 @@
 		lessonSuccess: void;
 		lessonMistake: void;
 		lessonComplete: {
-			playRoundComplete: true;
+			playRoundComplete: boolean;
 		};
 		lessonFail: void;
+		lessonFrameTransition: string;
 	}>();
 
 	const registerElement = (element: HTMLElement) => {
 		gazeManager.register({
 			interaction: 'fixation',
+			element,
+			settings: {
+				bufferSize: 150
+			}
+		});
+		gazeManager.register({
+			interaction: 'intersect',
 			element,
 			settings: {
 				bufferSize: 150
@@ -78,6 +85,10 @@
 	const unregisterElement = (element: HTMLElement) => {
 		gazeManager.unregister({
 			interaction: 'fixation',
+			element
+		});
+		gazeManager.unregister({
+			interaction: 'intersect',
 			element
 		});
 
@@ -111,7 +122,7 @@
 		const { target } = event;
 
 		if (
-			target.some((t) => t.id === 'visdiff-choice_0_0') &&
+			target.some((t) => t.id === 'syllable-choice_0_0') &&
 			currentContent[currentRowIndex].syllables.length == 1
 		) {
 			handleCorrectSyllableClick();
@@ -137,15 +148,18 @@
 
 		const content = currentContent[currentRowIndex];
 
+		let textToRead =
+			content.correctSyllable == undefined ? content.incorrectSyllable! : content.correctSyllable!;
+
 		if (content.wordToRead === undefined) {
 			void wordReader.read([
 				{
-					text: content.correctSyllable!,
+					text: textToRead,
 					id: 'correct-syllable'
 				}
 			]);
 		} else {
-			const readingAudio = new Audio(`/sound/tasks/vis-diff/${content.wordToRead}.m4a`);
+			const readingAudio = new Audio(`/sound/tasks/cibule/${content.wordToRead}.m4a`);
 			readingAudio.play();
 		}
 	};
@@ -204,8 +218,10 @@
 	 * @returns void
 	 */
 	const processTaskLogic = async () => {
+		dispatch('lessonFrameTransition', 'crossfixation');
 		await processCrossFixation(); // Step 1: Wait for the user to fixate on the crossfix
 		for await (const [index, _] of currentContent.entries()) {
+			dispatch('lessonFrameTransition', `assignment-${index + 1}-of-${currentContent.length}`);
 			currentRowIndex = index;
 			// hide every assignment syllable except the current one
 			hideAssignmentSyllables = currentContent.map((_, i) => (i === index ? -1 : i));
@@ -214,9 +230,9 @@
 			const wasSuccess = await processSyllableSelection(); // Step 3: Wait for the user to select the correct syllable
 			if (!wasSuccess) return;
 			processStateCleanup();
+			dispatch('lessonFrameTransition', `assignmentDone-${index + 1}-of-${currentContent.length}`);
 			await waitForTimeout(500);
 		}
-
 		dispatch('lessonComplete', {
 			playRoundComplete: true
 		});
@@ -247,7 +263,7 @@
 {/snippet}
 
 {#snippet taskArea()}
-	<LessonTaskVisualDiffGrid
+	<LessonTaskCibuleGrid
 		content={currentContent}
 		{registerElement}
 		{unregisterElement}
@@ -257,10 +273,9 @@
 		{syllableGap}
 		{currentRowIndex}
 		{markWantedSyllables}
-		{gridCols}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}
 	/>
 {/snippet}
 
-<LessonTaskVisualDiffLayout isCrossfixVisible={!$wasCrossFixated} {crossFixArea} {taskArea} />
+<LessonTaskCibuleLayout isCrossfixVisible={!$wasCrossFixated} {crossFixArea} {taskArea} />

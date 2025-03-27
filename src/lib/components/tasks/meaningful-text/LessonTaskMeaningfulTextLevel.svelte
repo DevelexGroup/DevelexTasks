@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LessonCross from './LessonCross.svelte';
+	import LessonCross from '$lib/components/LessonCross.svelte';
 	import type { GazeInteractionObjectDwellEvent, GazeManager } from '@473783/develex-core';
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';

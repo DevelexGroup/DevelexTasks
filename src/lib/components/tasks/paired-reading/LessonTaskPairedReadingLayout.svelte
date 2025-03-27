@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import LessonWord from './LessonWord.svelte';
+	import LessonWord from '../../LessonWord.svelte';
 	import type { WordMetadata } from './LessonTaskPairedReadingLevel.utility';
 	import { PairedReadingIdManager } from './LessonTaskPairedReadingLevel.utility';
-	import DwellTarget from './DwellTarget.svelte';
+	import DwellTarget from '../../DwellTarget.svelte';
 	type DwellState = 'active' | 'disabled' | 'activeDwelling' | 'dwellCancelled';
 
 	interface Props {

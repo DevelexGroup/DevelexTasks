@@ -5,12 +5,12 @@
 	import { fly } from 'svelte/transition';
 	import LessonMistake from './LessonMistake.svelte';
 	import LessonFail from './LessonFail.svelte';
-	import LessonTaskCibuleLevel from './LessonTaskCibuleLevel.svelte';
-	import LessonTaskSyllableLevel from './LessonTaskSyllableLevel.svelte';
-	import LessonTaskPairedReadingLevel from './LessonTaskPairedReadingLevel.svelte';
-	import LessonTaskVisualDiffLevel from './LessonTaskVisualDiffLevel.svelte';
-	import LessonTaskFonologicLevel from './LessonTaskFonologicLevel.svelte';
-	import LessonTaskMeaningfulTextLevel from './LessonTaskMeaningfulTextLevel.svelte';
+	import LessonTaskSyllableLevel from './tasks/syllable/LessonTaskSyllableLevel.svelte';
+	import LessonTaskPairedReadingLevel from './tasks/paired-reading/LessonTaskPairedReadingLevel.svelte';
+	import LessonTaskCibuleLevel from './tasks/cibule/LessonTaskCibuleLevel.svelte';
+	import LessonTaskFonologicLevel from './tasks/fonologic/LessonTaskFonologicLevel.svelte';
+	import LessonTaskVisualDiffLevel from './tasks/visual-diff/LessonTaskVisualDiffLevel.svelte';
+	import LessonTaskMeaningfulTextLevel from './tasks/meaningful-text/LessonTaskMeaningfulTextLevel.svelte';
 
 	interface Props {
 		/**

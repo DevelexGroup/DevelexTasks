@@ -2,7 +2,7 @@
 	import type { VisualDiffTaskType } from '$lib/types/lesson';
 	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import LessonWordLight from './LessonWordLight.svelte';
+	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
 	import LessonTaskVisualDiffItem from './LessonTaskVisualDiffItem.svelte';
 	import LessonTaskVisualDiffGroup from './LessonTaskVisualDiffGroup.svelte';
 

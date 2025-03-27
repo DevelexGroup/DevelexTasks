@@ -1,16 +1,16 @@
 <script lang="ts">
-	import LessonTaskSyllableLayout from './LessonTaskSyllableLayout.svelte';
-	import LessonCross from './LessonCross.svelte';
-	import LessonTaskSyllableGrid from './LessonTaskSyllableGrid.svelte';
-	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
-	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
-	import type { LessonTaskSyllableLevelProps } from './LessonTaskSyllableLevel.type';
+	import LessonCross from '$lib/components/LessonCross.svelte';
 	import type {
 		GazeInteractionObjectDwellEvent,
 		GazeInteractionObjectFixationEvent,
 		GazeManager
 	} from '@473783/develex-core';
+	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
+	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
+	import type { LessonTaskVisualDiffLevelProps } from './LessonTaskVisualDiffLevel.type';
+	import LessonTaskVisualDiffLayout from './LessonTaskVisualDiffLayout.svelte';
+	import LessonTaskVisualDiffGrid from './LessonTaskVisualDiffGrid.svelte';
 
 	let {
 		currentContent,
@@ -18,10 +18,11 @@
 		shouldReadCorrectSyllable = true,
 		isSyllableAssignmentPresent = true,
 		correctSyllableVisibilityTimeout = 0,
+		markWantedSyllables = false,
 		assignmentGap = 120,
 		syllableGap = 12,
-		highlightLine = false
-	}: LessonTaskSyllableLevelProps = $props();
+		gridCols = 0
+	}: LessonTaskVisualDiffLevelProps = $props();
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
@@ -47,21 +48,15 @@
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
 		lessonMistake: void;
-		lessonComplete: { playRoundComplete: boolean };
+		lessonComplete: {
+			playRoundComplete: true;
+		};
 		lessonFail: void;
-		lessonFrameTransition: string;
 	}>();
 
 	const registerElement = (element: HTMLElement) => {
 		gazeManager.register({
 			interaction: 'fixation',
-			element,
-			settings: {
-				bufferSize: 150
-			}
-		});
-		gazeManager.register({
-			interaction: 'intersect',
 			element,
 			settings: {
 				bufferSize: 150
@@ -85,10 +80,6 @@
 			interaction: 'fixation',
 			element
 		});
-		gazeManager.unregister({
-			interaction: 'intersect',
-			element
-		});
 
 		if (element.id == FIXATION_EYE) {
 			gazeManager.unregister({
@@ -98,12 +89,8 @@
 		}
 	};
 
-	const handleAllCorrectSyllablesClicked = () => {
-		wasCorrectSyllableSelected.set(true);
-	};
-
 	const handleCorrectSyllableClick = () => {
-		dispatch('lessonSuccess');
+		wasCorrectSyllableSelected.set(true);
 	};
 
 	const handleIncorrectSyllableClick = () => {
@@ -111,11 +98,6 @@
 		dispatch('lessonMistake');
 		if (mistakeCount >= MAXIMUM_MISTAKE_COUNT) {
 			wasMistakenTooManyTimes.set(true);
-		} else {
-			// TODO: tohle pak přes nějaký event, onLessonMistakeComplete
-			setTimeout(() => {
-				handleReadAssignemt();
-			}, 4500);
 		}
 	};
 
@@ -127,6 +109,13 @@
 	 */
 	const evaluateGazeEvent = (event: GazeInteractionObjectFixationEvent) => {
 		const { target } = event;
+
+		if (
+			target.some((t) => t.id === 'visdiff-choice_0_0') &&
+			currentContent[currentRowIndex].syllables.length == 1
+		) {
+			handleCorrectSyllableClick();
+		}
 	};
 
 	const evaluateDwellEvent = (event: GazeInteractionObjectDwellEvent) => {
@@ -146,21 +135,17 @@
 		if (!shouldReadCorrectSyllable) return;
 		await waitForTimeout(500);
 
-		handleReadAssignemt();
-	};
-
-	const handleReadAssignemt = () => {
 		const content = currentContent[currentRowIndex];
 
 		if (content.wordToRead === undefined) {
 			void wordReader.read([
 				{
-					text: content.correctSyllable,
+					text: content.correctSyllable!,
 					id: 'correct-syllable'
 				}
 			]);
 		} else {
-			const readingAudio = new Audio(`/sound/tasks/syllables/${content.wordToRead}.m4a`);
+			const readingAudio = new Audio(`/sound/tasks/vis-diff/${content.wordToRead}.m4a`);
 			readingAudio.play();
 		}
 	};
@@ -201,6 +186,7 @@
 				SYLLABLE_SELECTION_TIMEOUT,
 				wasMistakenTooManyTimes
 			);
+			dispatch('lessonSuccess');
 			return true;
 		} catch {
 			dispatch('lessonFail');
@@ -218,10 +204,8 @@
 	 * @returns void
 	 */
 	const processTaskLogic = async () => {
-		dispatch('lessonFrameTransition', 'crossfixation');
 		await processCrossFixation(); // Step 1: Wait for the user to fixate on the crossfix
 		for await (const [index, _] of currentContent.entries()) {
-			dispatch('lessonFrameTransition', `assignment-${index + 1}-of-${currentContent.length}`);
 			currentRowIndex = index;
 			// hide every assignment syllable except the current one
 			hideAssignmentSyllables = currentContent.map((_, i) => (i === index ? -1 : i));
@@ -230,9 +214,9 @@
 			const wasSuccess = await processSyllableSelection(); // Step 3: Wait for the user to select the correct syllable
 			if (!wasSuccess) return;
 			processStateCleanup();
-			dispatch('lessonFrameTransition', `assignmentDone-${index + 1}-of-${currentContent.length}`);
 			await waitForTimeout(500);
 		}
+
 		dispatch('lessonComplete', {
 			playRoundComplete: true
 		});
@@ -263,7 +247,7 @@
 {/snippet}
 
 {#snippet taskArea()}
-	<LessonTaskSyllableGrid
+	<LessonTaskVisualDiffGrid
 		content={currentContent}
 		{registerElement}
 		{unregisterElement}
@@ -272,12 +256,11 @@
 		{assignmentGap}
 		{syllableGap}
 		{currentRowIndex}
-		{highlightLine}
-		on:all-correct-syllables-clicked={handleAllCorrectSyllablesClicked}
+		{markWantedSyllables}
+		{gridCols}
 		on:correct-syllable-clicked={handleCorrectSyllableClick}
 		on:incorrect-syllable-clicked={handleIncorrectSyllableClick}
-		on:read-assigment={handleReadAssignemt}
 	/>
 {/snippet}
 
-<LessonTaskSyllableLayout isCrossfixVisible={!$wasCrossFixated} {crossFixArea} {taskArea} />
+<LessonTaskVisualDiffLayout isCrossfixVisible={!$wasCrossFixated} {crossFixArea} {taskArea} />
