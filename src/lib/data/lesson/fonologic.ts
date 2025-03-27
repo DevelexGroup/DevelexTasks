@@ -4,6 +4,7 @@ const globalGap = 50;
 
 export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level1.m4a',
 		level: 'one',
 		label: 'Úroveň 1',
 		content: [
@@ -45,6 +46,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level2.m4a',
 		level: 'two',
 		label: 'Úroveň 2',
 		content: [
@@ -90,6 +92,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level3.m4a',
 		level: 'three',
 		label: 'Úroveň 3',
 		content: [
@@ -131,6 +134,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level4.m4a',
 		level: 'four',
 		label: 'Úroveň 4',
 		content: [
@@ -176,6 +180,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level5.m4a',
 		level: 'five',
 		label: 'Úroveň 5',
 		content: [
@@ -217,6 +222,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level6.m4a',
 		level: 'six',
 		label: 'Úroveň 6',
 		content: [
@@ -266,6 +272,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level7.m4a',
 		level: 'seven',
 		label: 'Úroveň 7',
 		content: [
@@ -307,6 +314,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level8.m4a',
 		level: 'eight',
 		label: 'Úroveň 8',
 		content: [
@@ -356,6 +364,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level9.m4a',
 		level: 'nine',
 		label: 'Úroveň 9',
 		content: [
@@ -409,6 +418,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/fonologic/level10.m4a',
 		level: 'ten',
 		label: 'Úroveň 10',
 		content: [

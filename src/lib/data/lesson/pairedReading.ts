@@ -742,6 +742,7 @@ const level6content: LessonConfigMap['pairedReading']['data']['content'] = [
 
 export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = [
 	{
+		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level1.m4a',
 		level: 'level-1',
 		label: 'Level 1',
 		content: level1content,
@@ -754,6 +755,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level2.m4a',
 		level: 'level-2',
 		label: 'Level 2',
 		content: [
@@ -887,6 +889,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level3.m4a',
 		level: 'level-3',
 		label: 'Level 3',
 		content: [
@@ -1329,6 +1332,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level5.m4a',
 		level: 'level-5',
 		label: 'Level 5',
 		content: [
@@ -1505,6 +1509,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level6.m4a',
 		level: 'level-6',
 		label: 'Level 6',
 		content: level6content,

@@ -28,5 +28,10 @@
 </script>
 
 {#if data}
-	<Lesson lessonName={data.config.level} {getLessonConfig} isDebug={false} />
+	<Lesson
+		lessonName={data.config.level}
+		{getLessonConfig}
+		instructionAudioPath={data.config.instructionAudioPath}
+		isDebug={false}
+	/>
 {/if}

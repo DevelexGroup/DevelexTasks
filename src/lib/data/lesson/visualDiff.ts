@@ -4,6 +4,7 @@ const globalGap = 0;
 
 export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 	{
+		instructionAudioPath: '/sound/tasks/instructions/visual-diff/level1.m4a',
 		level: 'one',
 		label: 'Úroveň 1',
 		content: [
@@ -65,6 +66,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/visual-diff/level2.m4a',
 		level: 'two',
 		label: 'Úroveň 2',
 		content: [
@@ -138,6 +140,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/visual-diff/level3.m4a',
 		level: 'three',
 		label: 'Úroveň 3',
 		content: [
@@ -187,6 +190,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/visual-diff/level4.m4a',
 		level: 'four',
 		label: 'Úroveň 4',
 		content: [
@@ -266,6 +270,7 @@ export const visualDiffLessons: LessonConfigMap['visualDiff']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/visual-diff/level5.m4a',
 		level: 'five',
 		label: 'Úroveň 5',
 		content: [

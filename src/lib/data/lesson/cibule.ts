@@ -4,6 +4,7 @@ const globalGap = 0;
 
 export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 	{
+		instructionAudioPath: '/sound/tasks/instructions/cibule/level1.m4a',
 		level: 'one',
 		label: 'Úroveň 1',
 		content: [
@@ -109,6 +110,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/cibule/level2.m4a',
 		level: 'two',
 		label: 'Úroveň 2',
 		content: [
@@ -234,6 +236,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/cibule/level3.m4a',
 		level: 'three',
 		label: 'Úroveň 3',
 		content: [
@@ -289,6 +292,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/cibule/level4.m4a',
 		level: 'four',
 		label: 'Úroveň 4',
 		content: [
@@ -359,6 +363,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/cibule/level5.m4a',
 		level: 'five',
 		label: 'Úroveň 5',
 		content: [
@@ -444,6 +449,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/cibule/level6.m4a',
 		level: 'six',
 		label: 'Úroveň 6',
 		content: [
@@ -476,6 +482,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/cibule/level7.m4a',
 		level: 'seven',
 		label: 'Úroveň 7',
 		content: [
@@ -507,6 +514,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/cibule/level8.m4a',
 		level: 'eight',
 		label: 'Úroveň 8',
 		content: [

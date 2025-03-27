@@ -23,6 +23,7 @@
 	import intersectionRepository from '$lib/database/repositories/intersect.repository';
 	import { browser } from '$app/environment';
 	import { dwellRepository } from '$lib/database/repositories/DwellRepository';
+	import LessonInstructions from './LessonInstructions.svelte';
 
 	interface Props {
 		/**
@@ -37,9 +38,16 @@
 		isDebug: boolean;
 		lessonName: string;
 		backgroundColor?: string;
+		instructionAudioPath?: string;
 	}
 
-	let { getLessonConfig, isDebug, lessonName, backgroundColor = 'transparent' }: Props = $props();
+	let {
+		getLessonConfig,
+		isDebug,
+		lessonName,
+		backgroundColor = 'transparent',
+		instructionAudioPath = undefined
+	}: Props = $props();
 
 	let lessonConfig: LessonConfig['setup'] | null = $state(null);
 
@@ -52,7 +60,7 @@
 
 	let errorMessages: string[] = $state([]);
 
-	const lessonState = writable<'loading' | 'lessonFrame' | 'error'>('loading');
+	const lessonState = writable<'loading' | 'instructions' | 'lessonFrame' | 'error'>('loading');
 
 	const flyIn = { y: '100%', duration: 750, opacity: 0, delay: 500 };
 	const flyOut = { duration: 200, opacity: 0 };
@@ -61,8 +69,16 @@
 
 	const handleLoad = (obtainedLessonConfig: LessonConfig['setup']) => {
 		if (!browser) return;
-		lessonState.set('lessonFrame');
 		lessonConfig = obtainedLessonConfig;
+		if (instructionAudioPath) {
+			lessonState.set('instructions');
+		} else {
+			lessonState.set('lessonFrame');
+		}
+	};
+
+	const handleInsturctionsContinue = () => {
+		lessonState.set('lessonFrame');
 	};
 
 	// Function to generate a unique ID
@@ -243,6 +259,14 @@
 			out:fly={flyOut}
 		>
 			<LessonError {errorMessages} />
+		</div>
+	{:else if $lessonState === 'instructions' && instructionAudioPath !== undefined}
+		<div
+			class="absolute inset-0 left-0 top-0 flex h-full w-full items-center justify-center"
+			in:fly={flyIn}
+			out:fly={flyOut}
+		>
+			<LessonInstructions audioPath={instructionAudioPath} {handleInsturctionsContinue} />
 		</div>
 	{:else if $lessonState === 'lessonFrame'}
 		<div

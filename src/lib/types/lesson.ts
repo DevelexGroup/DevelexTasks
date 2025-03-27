@@ -1,9 +1,9 @@
-import LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
-import LessonTaskFonologicLevel from '$lib/components/LessonTaskFonologicLevel.svelte';
-import LessonTaskMeaningfulTextLevel from '$lib/components/LessonTaskMeaningfulTextLevel.svelte';
-import LessonTaskPairedReadingLevel from '$lib/components/LessonTaskPairedReadingLevel.svelte';
-import LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
-import LessonTaskVisualDiffLevel from '$lib/components/LessonTaskVisualDiffLevel.svelte';
+import LessonTaskCibuleLevel from '$lib/components/tasks/cibule/LessonTaskCibuleLevel.svelte';
+import LessonTaskFonologicLevel from '$lib/components/tasks/fonologic/LessonTaskFonologicLevel.svelte';
+import LessonTaskMeaningfulTextLevel from '$lib/components/tasks/meaningful-text/LessonTaskMeaningfulTextLevel.svelte';
+import LessonTaskPairedReadingLevel from '$lib/components/tasks/paired-reading/LessonTaskPairedReadingLevel.svelte';
+import LessonTaskSyllableLevel from '$lib/components/tasks/syllable/LessonTaskSyllableLevel.svelte';
+import LessonTaskVisualDiffLevel from '$lib/components/tasks/visual-diff/LessonTaskVisualDiffLevel.svelte';
 import type { Component, ComponentProps } from 'svelte';
 
 export type LessonWordType = {
@@ -111,6 +111,7 @@ export type LessonConfigBase<T extends LessonTypes> = {
 		>;
 		level: string;
 		label?: string;
+		instructionAudioPath?: string;
 	};
 };
 

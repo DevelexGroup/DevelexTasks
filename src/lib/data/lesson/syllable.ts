@@ -2,6 +2,7 @@ import type { LessonConfigMap } from '$lib/types/lesson';
 
 export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 	{
+		instructionAudioPath: '/sound/tasks/instructions/syllable/level1.m4a',
 		level: 'one',
 		label: 'Úroveň 1',
 		content: [
@@ -131,6 +132,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/syllable/level2.m4a',
 		level: 'two',
 		label: 'Úroveň 2',
 		content: [
@@ -257,6 +259,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/syllable/level3.m4a',
 		level: 'three',
 		label: 'Úroveň 3',
 		content: [
@@ -371,6 +374,7 @@ export const syllableLessons: LessonConfigMap['syllable']['data'][] = [
 		}
 	},
 	{
+		instructionAudioPath: '/sound/tasks/instructions/syllable/level4.m4a',
 		level: 'four',
 		label: 'Úroveň 4',
 		content: [

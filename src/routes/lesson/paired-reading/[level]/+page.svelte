@@ -33,6 +33,7 @@
 
 {#if data}
 	<Lesson
+		instructionAudioPath={data.config.instructionAudioPath}
 		lessonName={data.config.level}
 		{getLessonConfig}
 		isDebug={false}

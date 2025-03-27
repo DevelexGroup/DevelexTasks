@@ -1,5 +1,5 @@
-import LessonTaskSyllableLevel from '$lib/components/LessonTaskSyllableLevel.svelte';
-import LessonTaskCibuleLevel from '$lib/components/LessonTaskCibuleLevel.svelte';
+import LessonTaskSyllableLevel from '$lib/components/tasks/syllable/LessonTaskSyllableLevel.svelte';
+import LessonTaskCibuleLevel from '$lib/components/tasks/cibule/LessonTaskCibuleLevel.svelte';
 
 export const lessonComponentMap = {
 	syllables: LessonTaskSyllableLevel,
