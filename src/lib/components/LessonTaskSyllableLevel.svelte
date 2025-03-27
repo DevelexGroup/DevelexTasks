@@ -114,12 +114,7 @@
 		} else {
 			// TODO: tohle pak přes nějaký event, onLessonMistakeComplete
 			setTimeout(() => {
-				wordReader.read([
-					{
-						text: currentContent[currentRowIndex].correctSyllable,
-						id: 'correct-syllable'
-					}
-				]);
+				handleReadAssignemt();
 			}, 4500);
 		}
 	};
@@ -151,19 +146,7 @@
 		if (!shouldReadCorrectSyllable) return;
 		await waitForTimeout(500);
 
-		const content = currentContent[currentRowIndex];
-
-		if (content.wordToRead === undefined) {
-			void wordReader.read([
-				{
-					text: content.correctSyllable,
-					id: 'correct-syllable'
-				}
-			]);
-		} else {
-			const readingAudio = new Audio(`/sound/tasks/syllables/${content.wordToRead}.m4a`);
-			readingAudio.play();
-		}
+		handleReadAssignemt();
 	};
 
 	const handleReadAssignemt = () => {
