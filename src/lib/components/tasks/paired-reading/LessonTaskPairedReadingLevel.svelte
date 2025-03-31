@@ -7,7 +7,7 @@
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
-	import { createMachine, createActor, assign, fromPromise } from 'xstate';
+	import { createMachine, createActor, assign, fromPromise, interpret } from 'xstate';
 	import { useMachine } from '@xstate/svelte';
 
 	let {
@@ -217,9 +217,22 @@
 		}
 	});
 
-	const pairedReadingInnerTaskActor = createActor(pairedReadingInnerTaskMachine);
+	// Use useMachine with inspection option
+	const { snapshot, send } = useMachine(pairedReadingInnerTaskMachine, {
+		inspect: (inspectionEvent) => {
+			const actorRefId = inspectionEvent.actorRef.id;
+			const rootId = inspectionEvent.rootId;
+			if (inspectionEvent.type === '@xstate.snapshot' && actorRefId === rootId) {
+				console.log(`
+				context: ${JSON.stringify(inspectionEvent.snapshot.context)}
+				status: ${inspectionEvent.snapshot.status}
+				event: ${inspectionEvent.event.type}
+				`);
+				console.log('snapshot', inspectionEvent);
+			}
+		}
+	});
 
-	const { snapshot, send } = useMachine(pairedReadingInnerTaskMachine);
 	const currentState = $derived.by(() => {
 		return $snapshot.value;
 	});
@@ -255,10 +268,7 @@
 				playRoundComplete: true
 			});
 		}
-	});
-
-	snapshot.subscribe((state) => {
-		console.log('state', state.value);
+		console.log('currentState', currentState);
 	});
 
 	shouldEmitMistake = false; // FORCE SETTING TO FALSE AS WE TRY POPUP DIRECTLY IN THE COMPONENT
@@ -308,7 +318,9 @@
 	}
 
 	function evaluateFixation(event: GazeInteractionObjectFixationEvent) {
+		if (gridState !== 'reading') return;
 		const segment = pairedReadingManager.getReadingSegment();
+		// here check the state, only during reading segment
 
 		// Track fixation starts for activating fixcross
 		if (event.type === 'fixationObjectStart') {
@@ -339,7 +351,6 @@
 	onMount(() => {
 		gazeManager.on('fixationObjectStart', evaluateFixation);
 		window.addEventListener('keydown', handleKeyPress);
-		pairedReadingInnerTaskActor.start();
 	});
 
 	onDestroy(() => {
@@ -348,7 +359,6 @@
 		// Remove all event listeners
 		gazeManager.off('fixationObjectStart', evaluateFixation);
 		window.removeEventListener('keydown', handleKeyPress);
-		pairedReadingInnerTaskActor.stop();
 	});
 </script>
 
