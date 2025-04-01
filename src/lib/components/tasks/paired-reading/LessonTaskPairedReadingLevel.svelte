@@ -227,7 +227,7 @@
 			const rootId = inspectionEvent.rootId;
 			if (inspectionEvent.type === '@xstate.snapshot' && actorRefId === rootId) {
 				const context = (inspectionEvent.snapshot as any).context as object;
-				const status = inspectionEvent.snapshot.status;
+				const status = (inspectionEvent.snapshot as any).status;
 				const event = inspectionEvent.event.type;
 				const timestamp = new Date().toISOString();
 
