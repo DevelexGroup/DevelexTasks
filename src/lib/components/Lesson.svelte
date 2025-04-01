@@ -24,6 +24,7 @@
 	import { browser } from '$app/environment';
 	import { dwellRepository } from '$lib/database/repositories/DwellRepository';
 	import LessonInstructions from './LessonInstructions.svelte';
+	import { setContext } from 'svelte';
 
 	interface Props {
 		/**
@@ -85,6 +86,8 @@
 	const generateUniqueId = () => `session-${Date.now()}`;
 	const sessionId = generateUniqueId();
 	const userName = 'NoSpecificUser';
+
+	setContext('sessionId', sessionId);
 
 	onMount(async () => {
 		if (!browser) return;

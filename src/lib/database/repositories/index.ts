@@ -1,0 +1,19 @@
+import fixationRepository from './fixation.repository';
+import intersectRepository from './intersect.repository';
+import saccadeRepository from './saccade.repository';
+import sessionRepository from './session.repository';
+import stateEventsRepository from './stateEvents.repository';
+import userEventsRepository from './userEvents.repository';
+import { dwellRepository } from './DwellRepository';
+import xstateEventsRepository from './xstateEvents.repository';
+
+export {
+	fixationRepository,
+	intersectRepository,
+	saccadeRepository,
+	sessionRepository,
+	stateEventsRepository,
+	userEventsRepository,
+	dwellRepository,
+	xstateEventsRepository
+};

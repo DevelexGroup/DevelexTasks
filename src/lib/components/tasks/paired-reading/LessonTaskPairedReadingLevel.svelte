@@ -9,6 +9,7 @@
 	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
 	import { createMachine, createActor, assign, fromPromise, interpret } from 'xstate';
 	import { useMachine } from '@xstate/svelte';
+	import xstateEventsRepository from '$lib/database/repositories/xstateEvents.repository';
 
 	let {
 		currentContent,
@@ -220,15 +221,27 @@
 	// Use useMachine with inspection option
 	const { snapshot, send } = useMachine(pairedReadingInnerTaskMachine, {
 		inspect: (inspectionEvent) => {
-			const actorRefId = inspectionEvent.actorRef.id;
+			const actorRefId = (inspectionEvent.actorRef as any).id;
 			const rootId = inspectionEvent.rootId;
 			if (inspectionEvent.type === '@xstate.snapshot' && actorRefId === rootId) {
-				console.log(`
-				context: ${JSON.stringify(inspectionEvent.snapshot.context)}
-				status: ${inspectionEvent.snapshot.status}
-				event: ${inspectionEvent.event.type}
-				`);
-				console.log('snapshot', inspectionEvent);
+				const context = (inspectionEvent.snapshot as any).context as object;
+				const status = inspectionEvent.snapshot.status;
+				const event = inspectionEvent.event.type;
+				const sessionId = getContext<string>('sessionId');
+				const timestamp = new Date().toISOString();
+
+				// Store the XState event in IndexedDB
+				const xstateEvent = xstateEventsRepository.createFromInspectionEvent(
+					sessionId,
+					event,
+					status,
+					context,
+					timestamp
+				);
+
+				xstateEventsRepository.create(xstateEvent).catch((error) => {
+					console.error('Failed to store XState event:', error);
+				});
 			}
 		}
 	});
