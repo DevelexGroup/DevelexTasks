@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LessonError from '$lib/components/LessonError.svelte';
 	import LessonLoad from '$lib/components/LessonLoad.svelte';
-	import type { LessonConfig } from '$lib/types/lesson';
+	import type { LessonConfig, AnyLessonConfigSetup } from '$lib/types/lesson';
 	import { fly } from 'svelte/transition';
 	import LessonFrame from './LessonFrame.svelte';
 	import { onDestroy, getContext } from 'svelte';
@@ -30,7 +30,7 @@
 		 * The lesson component that will be displayed as a lesson.
 		 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
 		 */
-		getLessonConfig: () => Promise<LessonConfig['setup']>;
+		getLessonConfig: () => Promise<AnyLessonConfigSetup>;
 		/**
 		 * @type {boolean}
 		 * Indicates if the application is in debug mode. If so, the LessonDebug component will be displayed.
@@ -49,7 +49,7 @@
 		instructionAudioPath = undefined
 	}: Props = $props();
 
-	let lessonConfig: LessonConfig['setup'] | null = $state(null);
+	let lessonConfig: AnyLessonConfigSetup | null = $state(null);
 
 	const handleError = (event: Event) => {
 		console.log(event);
@@ -67,7 +67,7 @@
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
 
-	const handleLoad = (obtainedLessonConfig: LessonConfig['setup']) => {
+	const handleLoad = (obtainedLessonConfig: AnyLessonConfigSetup) => {
 		if (!browser) return;
 		lessonConfig = obtainedLessonConfig;
 		if (instructionAudioPath) {

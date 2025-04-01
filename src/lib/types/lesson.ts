@@ -94,11 +94,9 @@ export type LessonTypes = keyof typeof lessonComponentMap;
 export type LessonComponent = Component<ComponentProps<LessonTaskCibuleLevel>>;
 
 export type LessonConfigBase<T extends LessonTypes> = {
-	setup: {
-		type: T;
-		content: ComponentProps<(typeof lessonComponentMap)[T]>['currentContent'][];
-		props: Omit<ComponentProps<(typeof lessonComponentMap)[T]>, 'currentContent'>;
-	};
+	type: T;
+	content: ComponentProps<(typeof lessonComponentMap)[T]>['currentContent'][];
+	props: Omit<ComponentProps<(typeof lessonComponentMap)[T]>, 'currentContent'>;
 	data: {
 		content: ComponentProps<(typeof lessonComponentMap)[T]>['currentContent'][];
 		partialProps: Omit<
@@ -115,6 +113,8 @@ export type LessonConfigBase<T extends LessonTypes> = {
 	};
 };
 
+export type LessonConfigSetup<T extends LessonTypes> = Omit<LessonConfigBase<T>, 'data'>;
+
 /**
  * Complete configuration map for all lesson types.
  */
@@ -122,7 +122,13 @@ export type LessonConfigMap = {
 	[K in LessonTypes]: LessonConfigBase<K>;
 };
 
+export type LessonConfigSetupMap = {
+	[K in LessonTypes]: LessonConfigSetup<K>;
+};
+
 /**
  * Union of all possible lesson configurations.
  */
 export type LessonConfig = LessonConfigMap[LessonTypes];
+
+export type AnyLessonConfigSetup = LessonConfigSetupMap[LessonTypes];
