@@ -3,7 +3,7 @@
 	import { SpeechEvaluatorSimple } from '$lib/services/SpeechEvaluatorSimple';
 	import { SpeechRecognitionMdn } from '$lib/services/SpeechRecognitionMdn';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
-	import type { LessonConfigMap } from '$lib/types/lesson';
+	import type { LessonConfigMap, LessonConfigSetupMap } from '$lib/types/lesson';
 
 	interface Props {
 		data: {
@@ -17,7 +17,7 @@
 	 * It must return a lesson config object in a promise.
 	 * This is necessitated to prevent problems with SSR and to allow for async loading of the lesson config.
 	 */
-	const getLessonConfig = async (): Promise<LessonConfigMap['pairedReading']['setup']> => {
+	const getLessonConfig = async (): Promise<LessonConfigSetupMap['pairedReading']> => {
 		return {
 			type: 'pairedReading',
 			content: data.config.content,

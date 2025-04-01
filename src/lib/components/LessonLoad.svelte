@@ -3,7 +3,7 @@
 	import LessonLoadViewportCalibration from './LessonLoadViewportCalibration.svelte';
 	import { waitForTimeout } from '$lib/utils/waitForCondition';
 	import type { GazeManager } from '@473783/develex-core';
-	import type { LessonConfig } from '$lib/types/lesson';
+	import type { AnyLessonConfigSetup } from '$lib/types/lesson';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
@@ -12,8 +12,8 @@
 	import { extractErrorMessage } from '$lib/utils/errorUtility';
 
 	interface Props {
-		getLessonConfig: () => Promise<LessonConfig['setup']>;
-		onLoad: (lessonConfig: LessonConfig['setup']) => void;
+		getLessonConfig: () => Promise<AnyLessonConfigSetup>;
+		onLoad: (lessonConfig: AnyLessonConfigSetup) => void;
 	}
 
 	let { getLessonConfig, onLoad }: Props = $props();

@@ -39,6 +39,11 @@
 						.equals(session.id)
 						.sortBy('timestamp');
 
+					const xstateEvents = await db.xstateEvents
+						.where('sessionId')
+						.equals(session.id)
+						.toArray();
+
 					// Find the earliest timestamp from any table
 					let firstTimestamp: number | null = null;
 					if (userEvents.length > 0) firstTimestamp = userEvents[0].timestamp;
@@ -47,6 +52,16 @@
 						(!firstTimestamp || stateEvents[0].timestamp < firstTimestamp)
 					) {
 						firstTimestamp = stateEvents[0].timestamp;
+					}
+
+					// For XState events, we need to convert string timestamps to numbers for comparison
+					if (xstateEvents.length > 0) {
+						const firstXStateTimestamp = Math.min(
+							...xstateEvents.map((event) => new Date(event.timestamp).getTime())
+						);
+						if (!firstTimestamp || firstXStateTimestamp < firstTimestamp) {
+							firstTimestamp = firstXStateTimestamp;
+						}
 					}
 
 					// Format date if we have a timestamp

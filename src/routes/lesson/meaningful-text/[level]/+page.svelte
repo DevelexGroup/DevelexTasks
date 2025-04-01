@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Lesson from '$lib/components/Lesson.svelte';
-	import type { LessonConfigMap } from '$lib/types/lesson';
+	import type { LessonConfigMap, LessonConfigSetupMap } from '$lib/types/lesson';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 
 	interface Props {
@@ -15,7 +15,7 @@
 	 * It must return a lesson config object in a promise.
 	 * This is necessitated to prevent problems with SSR and to allow for async loading of the lesson config.
 	 */
-	const getLessonConfig = async (): Promise<LessonConfigMap['meaningfulText']['setup']> => {
+	const getLessonConfig = async (): Promise<LessonConfigSetupMap['meaningfulText']> => {
 		return {
 			type: 'meaningfulText',
 			content: data.config.content,
