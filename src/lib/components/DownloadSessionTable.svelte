@@ -18,6 +18,7 @@
 		const saccades = await db.saccades.where('sessionId').equals(sessionId).toArray();
 		const intersects = await db.intersects.where('sessionId').equals(sessionId).toArray();
 		const dwells = await db.dwells.where('sessionId').equals(sessionId).toArray();
+		const xstateEvents = await db.xstateEvents.where('sessionId').equals(sessionId).toArray();
 
 		// Convert data to CSV and add to ZIP
 		zip.file('userEvents.csv', convertToCSV(userEvents));
@@ -26,6 +27,7 @@
 		zip.file('saccades.csv', convertToCSV(saccades));
 		zip.file('intersects.csv', convertToCSV(intersects));
 		zip.file('dwells.csv', convertToCSV(dwells));
+		zip.file('xstateEvents.csv', convertToCSV(xstateEvents));
 
 		// Generate the ZIP file and trigger download
 		const content = await zip.generateAsync({ type: 'blob' });
