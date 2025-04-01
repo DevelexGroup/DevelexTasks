@@ -150,7 +150,8 @@
 			element,
 			settings: {
 				dwellTime: dwellTimeMs,
-				bufferSize: bufferSize
+				bufferSize: bufferSize,
+				toleranceTime: 100 // 100ms tolerance for dwell events
 			}
 		});
 	});
