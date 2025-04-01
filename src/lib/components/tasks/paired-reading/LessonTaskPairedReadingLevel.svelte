@@ -32,6 +32,8 @@
 		lessonFail: void;
 	}>();
 
+	const sessionId = getContext<string>('sessionId');
+
 	/**
 	 * @description This is the machine that handles the paired reading task.
 	 * It is used to handle the fixation events and the reading events.
@@ -227,7 +229,6 @@
 				const context = (inspectionEvent.snapshot as any).context as object;
 				const status = inspectionEvent.snapshot.status;
 				const event = inspectionEvent.event.type;
-				const sessionId = getContext<string>('sessionId');
 				const timestamp = new Date().toISOString();
 
 				// Store the XState event in IndexedDB
