@@ -47,7 +47,7 @@
 	}>();
 
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
-	roundCompleteAudio.volume = 0.1;
+	roundCompleteAudio.volume = 0.4;
 
 	const inOptions = { duration: 750, delay: 200 };
 	const outOptions = { duration: 200 };
@@ -85,7 +85,7 @@
 </script>
 
 {#if isSyllableAssignmentPresent}
-	<div class="relative mr-36 flex items-center">
+	<div class="relative mr-48 flex items-center">
 		{#if isSyllableAssignmentVisible && isSyllableAssignmentPresent}
 			<div in:fade={inOptions} out:fade={outOptions} class="absolute">
 				{#if content.correctImage}

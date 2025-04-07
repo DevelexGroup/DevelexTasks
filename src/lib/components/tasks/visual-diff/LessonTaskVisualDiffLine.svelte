@@ -64,7 +64,7 @@
 	let correctExpectingIndex = getNextExpectingIndex();
 
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
-	roundCompleteAudio.volume = 0.1;
+	roundCompleteAudio.volume = 0.4;
 
 	const inOptions = { duration: 750, delay: 200 };
 	const outOptions = { duration: 200 };
@@ -108,9 +108,6 @@
 		const isCorrect = content.correctGroupIndex == columnIndex;
 
 		if (isCorrect) {
-			roundCompleteAudio.pause();
-			roundCompleteAudio.currentTime = 0;
-			roundCompleteAudio.play();
 			dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
 		} else {
 			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });

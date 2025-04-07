@@ -37,10 +37,13 @@
 	const flyOut = { duration: 300, opacity: 0 };
 
 	const successAudio = new Audio('/sound/success.wav');
+	successAudio.volume = 0.4;
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
-	roundCompleteAudio.volume = 0.1;
+	roundCompleteAudio.volume = 0.4;
 	const warningAudio = new Audio('/sound/warning.wav');
+	warningAudio.volume = 0.4;
 	const completeAudio = new Audio('/sound/complete.wav');
+	completeAudio.volume = 0.4;
 	const failAudio = new Audio('/sound/fail.wav');
 
 	const handleLessonSuccess = () => {

@@ -16,7 +16,7 @@
 
 <div class="flex flex-col items-center justify-center space-y-4">
 	<h1 class="text-3xl font-bold">Zraková diferenciace</h1>
-	<p>Choose your level:</p>
+	<p>Vyber si úroveň:</p>
 	<div class="flex flex-col gap-1">
 		{#each data.config as item}
 			<ButtonStartLesson href="/lesson/visual-diff/{item.level}">

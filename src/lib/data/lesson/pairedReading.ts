@@ -744,7 +744,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level1.m4a',
 		level: 'level-1',
-		label: 'Level 1',
+		label: 'Úroveň 1',
 		content: level1content,
 		partialProps: {
 			bufferSize: 150,
@@ -757,7 +757,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level2.m4a',
 		level: 'level-2',
-		label: 'Level 2',
+		label: 'Úroveň 2',
 		content: [
 			{
 				text: [['auto']],
@@ -891,7 +891,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level3.m4a',
 		level: 'level-3',
-		label: 'Level 3',
+		label: 'Úroveň 3',
 		content: [
 			{
 				text: [['Máma', 'mele', 'maso']],
@@ -1321,7 +1321,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	},
 	{
 		level: 'level-4',
-		label: 'Level 4',
+		label: 'Úroveň 4',
 		content: level4content,
 		partialProps: {
 			bufferSize: 150,
@@ -1334,7 +1334,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level5.m4a',
 		level: 'level-5',
-		label: 'Level 5',
+		label: 'Úroveň 5',
 		content: [
 			{
 				text: [
@@ -1511,7 +1511,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 	{
 		instructionAudioPath: '/sound/tasks/instructions/paired-reading/level6.m4a',
 		level: 'level-6',
-		label: 'Level 6',
+		label: 'Úroveň 6',
 		content: level6content,
 		partialProps: {
 			bufferSize: 150,
@@ -1526,7 +1526,7 @@ export const pairedReadingLessons: LessonConfigMap['pairedReading']['data'][] = 
 export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] = [
 	{
 		level: 'level-1-errors',
-		label: 'Level 1 (Chyby)',
+		label: 'Úroveň 1 (Chyby)',
 		content: level1content,
 		partialProps: {
 			bufferSize: 50,
@@ -1538,7 +1538,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-1-noerrors',
-		label: 'Level 1 (Bez chyb)',
+		label: 'Úroveň 1 (Bez chyb)',
 		content: level1content,
 		partialProps: {
 			bufferSize: 50,
@@ -1550,7 +1550,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-2-errors',
-		label: 'Level 2 (Chyby)',
+		label: 'Úroveň 2 (Chyby)',
 		content: [
 			{
 				text: [['auto']],
@@ -1683,7 +1683,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-2-noerrors',
-		label: 'Level 2 (Bez chyb)',
+		label: 'Úroveň 2 (Bez chyb)',
 		content: [
 			{
 				text: [['auto']],
@@ -1816,7 +1816,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-3-errors',
-		label: 'Level 3 (Chyby)',
+		label: 'Úroveň 3 (Chyby)',
 		content: [
 			{
 				text: [['Máma', 'mele', 'maso']],
@@ -2246,7 +2246,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-3-noerrors',
-		label: 'Level 3 (Bez chyb)',
+		label: 'Úroveň 3 (Bez chyb)',
 		content: [
 			{
 				text: [['Máma', 'mele', 'maso']],
@@ -2676,7 +2676,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-4-errors',
-		label: 'Level 4 (Chyby)',
+		label: 'Úroveň 4 (Chyby)',
 		content: level4content,
 		partialProps: {
 			bufferSize: 50,
@@ -2688,7 +2688,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-4-noerrors',
-		label: 'Level 4 (Bez chyb)',
+		label: 'Úroveň 4 (Bez chyb)',
 		content: level4content,
 		partialProps: {
 			bufferSize: 50,
@@ -2700,7 +2700,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-5-errors',
-		label: 'Level 5 (Chyby)',
+		label: 'Úroveň 5 (Chyby)',
 		content: [
 			{
 				text: [
@@ -2876,7 +2876,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-5-noerrors',
-		label: 'Level 5 (Bez chyb)',
+		label: 'Úroveň 5 (Bez chyb)',
 		content: [
 			{
 				text: [
@@ -3052,7 +3052,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-6-errors',
-		label: 'Level 6 (Chyby)',
+		label: 'Úroveň 6 (Chyby)',
 		content: level6content,
 		partialProps: {
 			bufferSize: 50,
@@ -3064,7 +3064,7 @@ export const pairedReadingLessons2: LessonConfigMap['pairedReading']['data'][] =
 	},
 	{
 		level: 'level-6-noerrors',
-		label: 'Level 6 (Bez chyb)',
+		label: 'Úroveň 6 (Bez chyb)',
 		content: level6content,
 		partialProps: {
 			bufferSize: 50,

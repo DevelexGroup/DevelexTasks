@@ -88,7 +88,7 @@
 	const clickedIds = new Set<string>(); // Track clicked syllables
 	let correctExpectingIndex = getNextExpectingIndex();
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
-	roundCompleteAudio.volume = 0.1;
+	roundCompleteAudio.volume = 0.4;
 	let showProgressAfterMistake = $state(false);
 	let usedIndexes = $state<number[]>([]);
 

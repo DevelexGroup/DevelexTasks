@@ -394,7 +394,7 @@ export const fonologicLesson: LessonConfigMap['fonologic']['data'][] = [
 			],
 			[
 				{
-					wordToRead: 'vesta_vesta',
+					wordToRead: 'cesta_vesta',
 					correctImage: 'cesta',
 					correctIndexes: [1],
 					syllables: ['cela', 'vesta', 'vejce']
