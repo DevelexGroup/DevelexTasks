@@ -1,16 +1,11 @@
 <script lang="ts">
-	import { type LessonConfig } from '$lib/types/lesson';
-	import { writable } from 'svelte/store';
+	import { type AnyLessonConfigSetup } from '$lib/types/lesson';
+	import { writable, derived } from 'svelte/store';
 	import LessonCompleted from './LessonCompleted.svelte';
 	import { fly } from 'svelte/transition';
 	import LessonMistake from './LessonMistake.svelte';
 	import LessonFail from './LessonFail.svelte';
-	import LessonTaskSyllableLevel from './tasks/syllable/LessonTaskSyllableLevel.svelte';
-	import LessonTaskPairedReadingLevel from './tasks/paired-reading/LessonTaskPairedReadingLevel.svelte';
-	import LessonTaskCibuleLevel from './tasks/cibule/LessonTaskCibuleLevel.svelte';
-	import LessonTaskFonologicLevel from './tasks/fonologic/LessonTaskFonologicLevel.svelte';
-	import LessonTaskVisualDiffLevel from './tasks/visual-diff/LessonTaskVisualDiffLevel.svelte';
-	import LessonTaskMeaningfulTextLevel from './tasks/meaningful-text/LessonTaskMeaningfulTextLevel.svelte';
+	import { lessonComponentMap } from '$lib/types/lesson';
 
 	interface Props {
 		/**
@@ -18,7 +13,7 @@
 		 * The lesson component that will be displayed as a lesson.
 		 * It should accept a gazeFixationEmitter prop that will be used to register elements for fixation detection.
 		 */
-		lessonConfig: LessonConfig['setup'];
+		lessonConfig: AnyLessonConfigSetup;
 		backgroundColor?: string;
 		onLessonStateTransition: (newState: string) => void;
 	}
@@ -80,6 +75,8 @@
 	const handleStateTransition = (e: CustomEvent<string>) => {
 		onLessonStateTransition(e.detail);
 	};
+
+	const LessonComponent = lessonComponentMap[lessonConfig.type];
 </script>
 
 <div
@@ -93,64 +90,15 @@
 				in:fly={flyIn}
 				out:fly={flyOut}
 			>
-				{#if lessonConfig.type === 'syllable'}
-					<LessonTaskSyllableLevel
-						{...lessonConfig.props}
-						currentContent={lessonConfig.content[$lessonProgress]}
-						on:lessonSuccess={handleLessonSuccess}
-						on:lessonMistake={handleLessonMistake}
-						on:lessonComplete={handleLessonComplete}
-						on:lessonFail={handleLessonFail}
-						on:lessonFrameTransition={handleStateTransition}
-					/>
-				{:else if lessonConfig.type === 'pairedReading'}
-					<LessonTaskPairedReadingLevel
-						{...lessonConfig.props}
-						currentContent={lessonConfig.content[$lessonProgress]}
-						on:lessonSuccess={handleLessonSuccess}
-						on:lessonMistake={handleLessonMistake}
-						on:lessonComplete={handleLessonComplete}
-						on:lessonFail={handleLessonFail}
-						on:lessonFrameTransition={handleStateTransition}
-					/>
-				{:else if lessonConfig.type === 'cibule'}
-					<LessonTaskCibuleLevel
-						{...lessonConfig.props}
-						currentContent={lessonConfig.content[$lessonProgress]}
-						on:lessonSuccess={handleLessonSuccess}
-						on:lessonMistake={handleLessonMistake}
-						on:lessonComplete={handleLessonComplete}
-						on:lessonFail={handleLessonFail}
-						on:lessonFrameTransition={handleStateTransition}
-					/>
-				{:else if lessonConfig.type === 'visualDiff'}
-					<LessonTaskVisualDiffLevel
-						{...lessonConfig.props}
-						currentContent={lessonConfig.content[$lessonProgress]}
-						on:lessonSuccess={handleLessonSuccess}
-						on:lessonMistake={handleLessonMistake}
-						on:lessonComplete={handleLessonComplete}
-						on:lessonFail={handleLessonFail}
-					/>
-				{:else if lessonConfig.type === 'fonologic'}
-					<LessonTaskFonologicLevel
-						{...lessonConfig.props}
-						currentContent={lessonConfig.content[$lessonProgress]}
-						on:lessonSuccess={handleLessonSuccess}
-						on:lessonMistake={handleLessonMistake}
-						on:lessonComplete={handleLessonComplete}
-						on:lessonFail={handleLessonFail}
-					/>
-				{:else if lessonConfig.type === 'meaningfulText'}
-					<LessonTaskMeaningfulTextLevel
-						{...lessonConfig.props}
-						currentContent={lessonConfig.content[$lessonProgress]}
-						on:lessonSuccess={handleLessonSuccess}
-						on:lessonMistake={handleLessonMistake}
-						on:lessonComplete={handleLessonComplete}
-						on:lessonFail={handleLessonFail}
-					/>
-				{/if}
+				<LessonComponent
+					{...lessonConfig.props as any}
+					currentContent={lessonConfig.content[$lessonProgress] as any}
+					on:lessonSuccess={handleLessonSuccess}
+					on:lessonMistake={handleLessonMistake}
+					on:lessonComplete={handleLessonComplete}
+					on:lessonFail={handleLessonFail}
+					on:lessonFrameTransition={handleStateTransition}
+				/>
 			</div>
 		{/key}
 		{#if state === 'mistake'}

@@ -16,15 +16,15 @@
 			drawGazeIndicator = (data: GazeDataPoint) => {
 				gazeIndicator.draw(data);
 			};
-			gazeManager.on('data', drawGazeIndicator);
+			gazeManager.on('inputData', drawGazeIndicator);
 		} else {
-			gazeManager.off('data', drawGazeIndicator);
+			gazeManager.off('inputData', drawGazeIndicator);
 		}
 	}
 
 	onDestroy(() => {
 		if (isGazeActive) {
-			gazeManager.off('data', drawGazeIndicator);
+			gazeManager.off('inputData', drawGazeIndicator);
 		}
 	});
 </script>

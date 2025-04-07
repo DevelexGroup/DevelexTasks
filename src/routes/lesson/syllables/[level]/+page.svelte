@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Lesson from '$lib/components/Lesson.svelte';
-	import type { LessonConfigMap } from '$lib/types/lesson';
+	import type { LessonConfigMap, LessonConfigSetupMap } from '$lib/types/lesson';
 	import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 
 	interface Props {
@@ -15,7 +15,7 @@
 	 * It must return a lesson config object in a promise.
 	 * This is necessitated to prevent problems with SSR and to allow for async loading of the lesson config.
 	 */
-	const getLessonConfig = async (): Promise<LessonConfigMap['syllable']['setup']> => {
+	const getLessonConfig = async (): Promise<LessonConfigSetupMap['syllable']> => {
 		return {
 			type: 'syllable',
 			content: data.config.content,
@@ -30,7 +30,7 @@
 {#if data}
 	<Lesson
 		instructionAudioPath={data.config.instructionAudioPath}
-		lessonName={data.config.level}
+		lessonName={data.config.label ?? data.config.level}
 		{getLessonConfig}
 		isDebug={false}
 		backgroundColor="rgba(255, 254, 232, 0.5)"

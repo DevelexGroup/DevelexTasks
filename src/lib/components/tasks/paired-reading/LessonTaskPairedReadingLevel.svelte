@@ -7,8 +7,9 @@
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
-	import { createMachine, createActor, assign, fromPromise } from 'xstate';
+	import { createMachine, createActor, assign, fromPromise, interpret } from 'xstate';
 	import { useMachine } from '@xstate/svelte';
+	import xstateEventsRepository from '$lib/database/repositories/xstateEvents.repository';
 
 	let {
 		currentContent,
@@ -30,6 +31,8 @@
 		};
 		lessonFail: void;
 	}>();
+
+	const sessionId = getContext<string>('sessionId');
 
 	/**
 	 * @description This is the machine that handles the paired reading task.
@@ -217,9 +220,33 @@
 		}
 	});
 
-	const pairedReadingInnerTaskActor = createActor(pairedReadingInnerTaskMachine);
+	// Use useMachine with inspection option
+	const { snapshot, send } = useMachine(pairedReadingInnerTaskMachine, {
+		inspect: (inspectionEvent) => {
+			const actorRefId = (inspectionEvent.actorRef as any).id;
+			const rootId = inspectionEvent.rootId;
+			if (inspectionEvent.type === '@xstate.snapshot' && actorRefId === rootId) {
+				const context = (inspectionEvent.snapshot as any).context as object;
+				const status = (inspectionEvent.snapshot as any).status;
+				const event = inspectionEvent.event.type;
+				const timestamp = new Date().toISOString();
 
-	const { snapshot, send } = useMachine(pairedReadingInnerTaskMachine);
+				// Store the XState event in IndexedDB
+				const xstateEvent = xstateEventsRepository.createFromInspectionEvent(
+					sessionId,
+					event,
+					status,
+					context,
+					timestamp
+				);
+
+				xstateEventsRepository.create(xstateEvent).catch((error) => {
+					console.error('Failed to store XState event:', error);
+				});
+			}
+		}
+	});
+
 	const currentState = $derived.by(() => {
 		return $snapshot.value;
 	});
@@ -255,10 +282,7 @@
 				playRoundComplete: true
 			});
 		}
-	});
-
-	snapshot.subscribe((state) => {
-		console.log('state', state.value);
+		console.log('currentState', currentState);
 	});
 
 	shouldEmitMistake = false; // FORCE SETTING TO FALSE AS WE TRY POPUP DIRECTLY IN THE COMPONENT
@@ -308,7 +332,9 @@
 	}
 
 	function evaluateFixation(event: GazeInteractionObjectFixationEvent) {
+		if (gridState !== 'reading') return;
 		const segment = pairedReadingManager.getReadingSegment();
+		// here check the state, only during reading segment
 
 		// Track fixation starts for activating fixcross
 		if (event.type === 'fixationObjectStart') {
@@ -339,7 +365,6 @@
 	onMount(() => {
 		gazeManager.on('fixationObjectStart', evaluateFixation);
 		window.addEventListener('keydown', handleKeyPress);
-		pairedReadingInnerTaskActor.start();
 	});
 
 	onDestroy(() => {
@@ -348,7 +373,6 @@
 		// Remove all event listeners
 		gazeManager.off('fixationObjectStart', evaluateFixation);
 		window.removeEventListener('keydown', handleKeyPress);
-		pairedReadingInnerTaskActor.stop();
 	});
 </script>
 
