@@ -240,6 +240,20 @@
 		gazeManager.off('fixationObjectStart', evaluateGazeEvent);
 		gazeManager.off('dwellFinish', evaluateDwellEvent);
 	});
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (event.key == ' ') {
+			if (!$wasCrossFixated) {
+				wasCrossFixated.set(true);
+			} else {
+				handleCorrectSyllableClick();
+			}
+		}
+
+		if (event.key == 'Escape') {
+			dispatch('lessonFail');
+		}
+	};
 </script>
 
 {#snippet crossFixArea()}
@@ -264,3 +278,5 @@
 {/snippet}
 
 <LessonTaskVisualDiffLayout isCrossfixVisible={!$wasCrossFixated} {crossFixArea} {taskArea} />
+
+<svelte:window on:keydown={handleKeyDown} />
