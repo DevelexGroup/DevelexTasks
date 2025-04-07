@@ -6,15 +6,16 @@
 		isCrossfixVisible?: boolean;
 		crossFixArea?: Snippet;
 		taskArea?: Snippet;
+		backgroundColor?: string;
 	}
 
-	let { isCrossfixVisible = true, crossFixArea, taskArea }: Props = $props();
+	let { isCrossfixVisible = true, crossFixArea, taskArea, backgroundColor }: Props = $props();
 
 	const inOptions = { duration: 750, delay: 200 };
 	const outOptions = { duration: 200 };
 </script>
 
-<div class="z-0 h-full w-full bg-[#FFFEE8]">
+<div class="z-0 h-full w-full" style="background-color: {backgroundColor}">
 	<div class="relative mx-auto h-full w-full max-w-7xl p-12 py-32">
 		{#if isCrossfixVisible}
 			<div

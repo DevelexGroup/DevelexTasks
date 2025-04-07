@@ -201,7 +201,7 @@
 				class="flex h-16 w-16 items-center justify-center rounded-md border border-gray-300 shadow-sm"
 			>
 				{#if usedBoxIndexes.includes(orderIndex)}
-					<span class="font-serif text-[30px] text-gray-700">{content.syllables[+wordIndex]}</span>
+					<span class="font-serif text-[30px] text-black">{content.syllables[+wordIndex]}</span>
 				{/if}
 			</div>
 		{/each}

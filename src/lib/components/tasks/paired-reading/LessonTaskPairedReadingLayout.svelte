@@ -32,7 +32,7 @@
 		font = 'times',
 		stage,
 		crossStartPosition = 'center',
-		backgroundColor = '#FFFEE8',
+		backgroundColor = 'rgba(255, 254, 232, 0.5)',
 		shouldHighlight = true,
 		wordsRegisterFn,
 		wordsUnregisterFn,

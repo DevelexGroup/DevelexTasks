@@ -16,6 +16,5 @@
 		<Icon icon="material-symbols:thumb-up-outline-rounded" class="h-8 w-8 text-green-500" />
 	</div>
 
-	<p class="mb-4 text-lg text-gray-700">Páv je potěšen. Páv ti dnes neublíží.</p>
 	<Button href="/">Zpátky na výběr lekcí</Button>
 </div>

@@ -33,5 +33,6 @@
 		lessonName={data.config.level}
 		{getLessonConfig}
 		isDebug={false}
+		backgroundColor="rgba(255, 254, 232, 0.5)"
 	/>
 {/if}

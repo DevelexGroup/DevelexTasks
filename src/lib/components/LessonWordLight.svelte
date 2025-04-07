@@ -37,7 +37,7 @@
 		? 'text-green-500'
 		: isDeHighlighted
 			? 'text-gray-400'
-			: 'text-gray-700'}"
+			: 'text-black'}"
 >
 	{word}
 </div>

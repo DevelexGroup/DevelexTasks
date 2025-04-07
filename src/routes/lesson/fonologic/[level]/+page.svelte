@@ -32,5 +32,6 @@
 		instructionAudioPath={data.config.instructionAudioPath}
 		{getLessonConfig}
 		isDebug={false}
+		backgroundColor="rgba(255, 254, 232, 0.5)"
 	/>
 {/if}
