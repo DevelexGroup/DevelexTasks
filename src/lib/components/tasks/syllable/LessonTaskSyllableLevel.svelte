@@ -262,7 +262,7 @@
 			if (!$wasCrossFixated) {
 				wasCrossFixated.set(true);
 			} else {
-				handleCorrectSyllableClick();
+				handleAllCorrectSyllablesClicked();
 			}
 		}
 
