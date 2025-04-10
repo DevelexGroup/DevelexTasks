@@ -102,7 +102,7 @@
 				context.correctFixations + context.incorrectFixations === 0
 					? false
 					: context.correctFixations / (context.correctFixations + context.incorrectFixations) >=
-						MIN_SUCCESS_FIXATIONS_PERCENTAGE
+						MIN_SUCCESS_FIXATIONS_PERCENTAGE / 100
 		}
 	}).createMachine({
 		id: 'pairedReadingInnerTask',
@@ -128,7 +128,7 @@
 			},
 			SetupReadingSegment: {
 				always: {
-					actions: 'resetFixations',
+					actions: ['resetFixations', 'registerCorrectFixation'],
 					target: 'ReadingSegment'
 				}
 			},
@@ -295,7 +295,6 @@
 	$effect(() => {
 		if (currentState === 'CompletedEvaluatedSegment') {
 			dispatch('lessonSuccess');
-			alert('lessonSuccess');
 		} else if (currentState === 'Failed') {
 			dispatch('lessonFail');
 		} else if (currentState === 'Completed') {
