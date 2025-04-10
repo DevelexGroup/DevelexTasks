@@ -34,6 +34,13 @@
 
 	const sessionId = getContext<string>('sessionId');
 
+	// Constants for evaluation
+	// TODO: Use in the machine
+	const MIN_GAZE_POINTS = 1;
+	const MIN_SUCCESS_FIXATIONS_PERCENTAGE = 50;
+	const MAX_RETRY_ATTEMPTS = 3;
+	const FIXCROSS_DELAY_AFTER_AUDIO = 150; // ms
+
 	/**
 	 * @description This is the machine that handles the paired reading task.
 	 * It is used to handle the fixation events and the reading events.
@@ -227,7 +234,8 @@
 			const rootId = inspectionEvent.rootId;
 			if (inspectionEvent.type === '@xstate.snapshot' && actorRefId === rootId) {
 				const context = (inspectionEvent.snapshot as any).context as object;
-				const status = (inspectionEvent.snapshot as any).status;
+				// const status = (inspectionEvent.snapshot as any).status;
+				const value = (inspectionEvent.snapshot as any).value;
 				const event = inspectionEvent.event.type;
 				const timestamp = new Date().toISOString();
 
@@ -235,7 +243,7 @@
 				const xstateEvent = xstateEventsRepository.createFromInspectionEvent(
 					sessionId,
 					event,
-					status,
+					value,
 					context,
 					timestamp
 				);
@@ -282,7 +290,6 @@
 				playRoundComplete: true
 			});
 		}
-		console.log('currentState', currentState);
 	});
 
 	shouldEmitMistake = false; // FORCE SETTING TO FALSE AS WE TRY POPUP DIRECTLY IN THE COMPONENT
@@ -298,12 +305,6 @@
 		if (currentState === 'IntermediateFail') return true;
 		return false;
 	});
-
-	// Constants for evaluation
-	const MIN_GAZE_POINTS = 1;
-	const MIN_SUCCESS_FIXATIONS_PERCENTAGE = 50;
-	const MAX_RETRY_ATTEMPTS = 3;
-	const FIXCROSS_DELAY_AFTER_AUDIO = 150; // ms
 
 	function setupRegisterElement(element: HTMLElement) {
 		gazeManager.register({
