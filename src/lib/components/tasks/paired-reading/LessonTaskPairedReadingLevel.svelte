@@ -7,7 +7,7 @@
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
-	import { createMachine, createActor, assign, fromPromise, interpret } from 'xstate';
+	import { assign, fromPromise, setup } from 'xstate';
 	import { useMachine } from '@xstate/svelte';
 	import xstateEventsRepository from '$lib/database/repositories/xstateEvents.repository';
 
@@ -39,7 +39,7 @@
 	const MIN_GAZE_POINTS = 1;
 	const MIN_SUCCESS_FIXATIONS_PERCENTAGE = 50;
 	const MAX_RETRY_ATTEMPTS = 3;
-	const FIXCROSS_DELAY_AFTER_AUDIO = 150; // ms
+	const DELAY_AFTER_AUDIO_CONSTANT = 150; // ms
 
 	/**
 	 * @description This is the machine that handles the paired reading task.
@@ -52,7 +52,58 @@
 	 * Check the xstate 5 documentation for more information:
 	 * https://stately.ai/docs/xstate-5/
 	 */
-	export const pairedReadingInnerTaskMachine = createMachine({
+	export const pairedReadingInnerTaskMachine = setup({
+		delays: {
+			DELAY_AFTER_AUDIO: DELAY_AFTER_AUDIO_CONSTANT
+		},
+		actions: {
+			resetFixations: assign({
+				correctFixations: 0,
+				incorrectFixations: 0
+			}),
+			resetRetries: assign({
+				retries: 0
+			}),
+			resetFailExplanation: assign({
+				failExplanation: ''
+			}),
+			pairedReadingManagerNextSegment: () => {
+				pairedReadingManager.nextSegment();
+				wordsStore = pairedReadingManager.getWords();
+			},
+			registerCorrectFixation: assign({
+				correctFixations: ({ context }) => context.correctFixations + 1
+			}),
+			registerIncorrectFixation: assign({
+				incorrectFixations: ({ context }) => context.incorrectFixations + 1
+			}),
+			registerRetry: assign({
+				retries: ({ context }) => context.retries + 1
+			}),
+			setFailExplanationThreeRetries: assign({
+				failExplanation: 'After 3 retries, the word was not fixated correctly'
+			}),
+			setFailExplanationTechnicalError: assign({
+				failExplanation: 'Failed to read word (Technical error)'
+			}),
+			cancelAnyOngoingReading: () => {
+				wordReader.abort();
+			}
+		},
+		actors: {
+			wordReader: fromPromise(async () => {
+				const segment = pairedReadingManager.getReadingSegment();
+				await wordReader.read([segment]);
+				return 'word read';
+			})
+		},
+		guards: {
+			hasMoreSegments: ({ context }) => pairedReadingManager.hasMoreSegments(),
+			hasTooManyRetries: ({ context }) => context.retries >= MAX_RETRY_ATTEMPTS,
+			hasEnoughCorrectFixations: ({ context }) =>
+				context.correctFixations > context.incorrectFixations
+		}
+	}).createMachine({
 		id: 'pairedReadingInnerTask',
 		initial: 'CrossAPending',
 		context: {
@@ -76,42 +127,29 @@
 			},
 			SetupReadingSegment: {
 				always: {
-					actions: assign({
-						correctFixations: 0,
-						incorrectFixations: 0
-					}),
+					actions: 'resetFixations',
 					target: 'ReadingSegment'
 				}
 			},
 			ReadingSegment: {
 				invoke: {
 					id: 'readingWord',
-					src: fromPromise(async () => {
-						const segment = pairedReadingManager.getReadingSegment();
-						await wordReader.read([segment]);
-						return 'word read';
-					}),
+					src: 'wordReader', // LINKS TO THE ACTOR KEY IN THE SETUP
 					onDone: {
 						target: 'AfterReadingBufferSegment'
 					},
 					onError: {
-						actions: assign({
-							failExplanation: 'Failed to read word (Technical error)'
-						}),
+						actions: 'setFailExplanationTechnicalError',
 						target: 'IntermediateFail'
 					}
 				},
 				on: {
 					forceSuccess: 'CompletedEvaluatedSegment',
 					correctFixation: {
-						actions: assign({
-							correctFixations: ({ context }) => context.correctFixations + 1
-						})
+						actions: 'registerCorrectFixation'
 					},
 					incorrectFixation: {
-						actions: assign({
-							incorrectFixations: ({ context }) => context.incorrectFixations + 1
-						})
+						actions: 'registerIncorrectFixation'
 					}
 				}
 			},
@@ -119,49 +157,37 @@
 				on: {
 					forceSuccess: 'CompletedEvaluatedSegment',
 					correctFixation: {
-						actions: assign({
-							correctFixations: ({ context }) => context.correctFixations + 1
-						})
+						actions: 'registerCorrectFixation'
 					},
 					incorrectFixation: {
-						actions: assign({
-							incorrectFixations: ({ context }) => context.incorrectFixations + 1
-						})
+						actions: 'registerIncorrectFixation'
 					}
 				},
 				after: {
-					300: 'EvaluatingSuccessOfSegment'
+					DELAY_AFTER_AUDIO: 'EvaluatingSuccessOfSegment'
 				}
 			},
 			EvaluatingSuccessOfSegment: {
 				always: [
 					{
-						guard: ({ context }) => context.correctFixations > context.incorrectFixations,
+						guard: 'hasEnoughCorrectFixations',
 						target: 'CompletedEvaluatedSegment'
 					},
 					{
 						target: 'FailedEvaluatedSegment'
 					}
-				],
-				exit: () => {
-					wordReader.abort();
-				}
+				]
 			},
 			CompletedEvaluatedSegment: {
 				always: [
 					{
-						guard: ({}) => pairedReadingManager.hasMoreSegments(),
+						guard: 'hasMoreSegments',
 						actions: [
-							assign({
-								retries: 0,
-								correctFixations: 0,
-								incorrectFixations: 0
-							}),
-							() => {
-								pairedReadingManager.nextSegment();
-								wordsStore = pairedReadingManager.getWords();
-								wordReader.abort();
-							}
+							'resetRetries',
+							'resetFixations',
+							'resetFailExplanation',
+							'pairedReadingManagerNextSegment',
+							'cancelAnyOngoingReading'
 						],
 						target: 'WaitForFixation'
 					},
@@ -169,29 +195,21 @@
 						target: 'CrossBPending'
 					}
 				],
-				exit: () => {
-					wordReader.abort();
-				}
+				exit: 'cancelAnyOngoingReading'
 			},
 			FailedEvaluatedSegment: {
 				always: [
 					{
-						guard: ({ context }) => context.retries >= 3,
-						actions: assign({
-							failExplanation: 'After 3 retries, the word was not fixated correctly'
-						}),
+						guard: 'hasTooManyRetries',
+						actions: 'setFailExplanationThreeRetries',
 						target: 'IntermediateFail'
 					},
 					{
-						actions: assign({
-							retries: ({ context }) => context.retries + 1
-						}),
+						actions: 'registerRetry',
 						target: 'SetupReadingSegment'
 					}
 				],
-				exit: () => {
-					wordReader.abort();
-				}
+				exit: 'cancelAnyOngoingReading'
 			},
 			CrossBPending: {
 				on: {
@@ -201,30 +219,21 @@
 			},
 			IntermediateFail: {
 				on: { retry: 'WaitForFixation', forceCrash: 'Failed' },
-				exit: assign({
-					failExplanation: '',
-					retries: 0
-				})
+				exit: ['resetFailExplanation', 'resetRetries']
 			},
 			Completed: {
 				type: 'final',
-				entry: () => {
-					wordReader.abort();
-				}
+				entry: 'cancelAnyOngoingReading'
 			},
 			Failed: {
 				type: 'final',
-				entry: () => {
-					wordReader.abort();
-				}
+				entry: 'cancelAnyOngoingReading'
 			}
 		},
 		on: {
 			forceCrash: '.Failed'
 		},
-		exit: () => {
-			wordReader.abort();
-		}
+		exit: 'cancelAnyOngoingReading'
 	});
 
 	// Use useMachine with inspection option
