@@ -7,7 +7,7 @@
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
 	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
-	import { assign, fromPromise, setup } from 'xstate';
+	import { assign, fromPromise, setup, type InspectionEvent } from 'xstate';
 	import { useMachine } from '@xstate/svelte';
 	import xstateEventsRepository from '$lib/database/repositories/xstateEvents.repository';
 
@@ -35,9 +35,7 @@
 	const sessionId = getContext<string>('sessionId');
 
 	// Constants for evaluation
-	// TODO: Use in the machine
-	const MIN_GAZE_POINTS = 1;
-	const MIN_SUCCESS_FIXATIONS_PERCENTAGE = 50;
+	const MIN_SUCCESS_FIXATIONS_PERCENTAGE = 40;
 	const MAX_RETRY_ATTEMPTS = 3;
 	const DELAY_AFTER_AUDIO_CONSTANT = 150; // ms
 
@@ -101,7 +99,10 @@
 			hasMoreSegments: ({ context }) => pairedReadingManager.hasMoreSegments(),
 			hasTooManyRetries: ({ context }) => context.retries >= MAX_RETRY_ATTEMPTS,
 			hasEnoughCorrectFixations: ({ context }) =>
-				context.correctFixations > context.incorrectFixations
+				context.correctFixations + context.incorrectFixations === 0
+					? false
+					: context.correctFixations / (context.correctFixations + context.incorrectFixations) >=
+						MIN_SUCCESS_FIXATIONS_PERCENTAGE
 		}
 	}).createMachine({
 		id: 'pairedReadingInnerTask',
@@ -237,32 +238,35 @@
 	});
 
 	// Use useMachine with inspection option
-	const { snapshot, send } = useMachine(pairedReadingInnerTaskMachine, {
-		inspect: (inspectionEvent) => {
-			const actorRefId = (inspectionEvent.actorRef as any).id;
-			const rootId = inspectionEvent.rootId;
-			if (inspectionEvent.type === '@xstate.snapshot' && actorRefId === rootId) {
-				const context = (inspectionEvent.snapshot as any).context as object;
-				// const status = (inspectionEvent.snapshot as any).status;
-				const value = (inspectionEvent.snapshot as any).value;
-				const event = inspectionEvent.event.type;
-				const timestamp = new Date().toISOString();
+	const { snapshot, send } = useMachine<typeof pairedReadingInnerTaskMachine>(
+		pairedReadingInnerTaskMachine,
+		{
+			inspect: (inspectionEvent: InspectionEvent) => {
+				const actorRefId = (inspectionEvent.actorRef as any).id;
+				const rootId = inspectionEvent.rootId;
+				if (inspectionEvent.type === '@xstate.snapshot' && actorRefId === rootId) {
+					const context = (inspectionEvent.snapshot as any).context as object;
+					// const status = (inspectionEvent.snapshot as any).status;
+					const value = (inspectionEvent.snapshot as any).value;
+					const event = inspectionEvent.event.type;
+					const timestamp = new Date().toISOString();
 
-				// Store the XState event in IndexedDB
-				const xstateEvent = xstateEventsRepository.createFromInspectionEvent(
-					sessionId,
-					event,
-					value,
-					context,
-					timestamp
-				);
+					// Store the XState event in IndexedDB
+					const xstateEvent = xstateEventsRepository.createFromInspectionEvent(
+						sessionId,
+						event,
+						value,
+						context,
+						timestamp
+					);
 
-				xstateEventsRepository.create(xstateEvent).catch((error) => {
-					console.error('Failed to store XState event:', error);
-				});
+					xstateEventsRepository.create(xstateEvent).catch((error) => {
+						console.error('Failed to store XState event:', error);
+					});
+				}
 			}
 		}
-	});
+	);
 
 	const currentState = $derived.by(() => {
 		return $snapshot.value;
