@@ -262,7 +262,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'lo',
-					wordToRead: 'LE',
+					wordToRead: 'LO',
 					syllables: [
 						'aaa',
 						'lo',
