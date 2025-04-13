@@ -11,6 +11,8 @@
 		GazeInteractionObjectFixationEvent,
 		GazeManager
 	} from '@473783/develex-core';
+	import { goto } from '$app/navigation';
+	import LessonMistakesPopup from '$lib/components/LessonMistakesPopup.svelte';
 
 	let {
 		currentContent,
@@ -100,6 +102,7 @@
 
 	const handleAllCorrectSyllablesClicked = () => {
 		wasCorrectSyllableSelected.set(true);
+		processStateCleanup();
 	};
 
 	const handleCorrectSyllableClick = () => {
@@ -107,15 +110,16 @@
 	};
 
 	const handleIncorrectSyllableClick = () => {
+		const mistakeAudio = new Audio(`/sound/mistake.mp3`);
+		mistakeAudio.play();
+
 		mistakeCount++;
-		dispatch('lessonMistake');
 		if (mistakeCount >= MAXIMUM_MISTAKE_COUNT) {
 			wasMistakenTooManyTimes.set(true);
 		} else {
-			// TODO: tohle pak přes nějaký event, onLessonMistakeComplete
 			setTimeout(() => {
 				handleReadAssignemt();
-			}, 4500);
+			}, 1000);
 		}
 	};
 
@@ -196,11 +200,7 @@
 	 */
 	const processSyllableSelection = async () => {
 		try {
-			await waitForCondition(
-				wasCorrectSyllableSelected,
-				SYLLABLE_SELECTION_TIMEOUT,
-				wasMistakenTooManyTimes
-			);
+			await waitForCondition(wasCorrectSyllableSelected, SYLLABLE_SELECTION_TIMEOUT);
 			return true;
 		} catch {
 			dispatch('lessonFail');
@@ -209,6 +209,8 @@
 	};
 
 	const processStateCleanup = () => {
+		mistakeCount = 0;
+		wasMistakenTooManyTimes.set(false);
 		wasCorrectSyllableSelected.set(false);
 	};
 
@@ -270,7 +272,19 @@
 			dispatch('lessonFail');
 		}
 	};
+
+	const handleContinueNextSlide = () => {
+		handleAllCorrectSyllablesClicked();
+	};
+
+	const handleCancelLevel = () => {
+		goto('/');
+	};
 </script>
+
+{#if $wasMistakenTooManyTimes}
+	<LessonMistakesPopup {handleContinueNextSlide} {handleCancelLevel} />
+{/if}
 
 {#snippet crossFixArea()}
 	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} />

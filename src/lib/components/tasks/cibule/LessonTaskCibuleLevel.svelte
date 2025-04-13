@@ -11,6 +11,8 @@
 	import LessonTaskCibuleGrid from './LessonTaskCibuleGrid.svelte';
 	import type { LessonTaskCibuleLevelProps } from './LessonTaskCibuleLevel.type';
 	import LessonCross from '$lib/components/LessonCross.svelte';
+	import { goto } from '$app/navigation';
+	import LessonMistakesPopup from '$lib/components/LessonMistakesPopup.svelte';
 
 	let {
 		currentContent,
@@ -105,8 +107,10 @@
 	};
 
 	const handleIncorrectSyllableClick = () => {
+		const mistakeAudio = new Audio(`/sound/mistake.mp3`);
+		mistakeAudio.play();
+
 		mistakeCount++;
-		dispatch('lessonMistake');
 		if (mistakeCount >= MAXIMUM_MISTAKE_COUNT) {
 			wasMistakenTooManyTimes.set(true);
 		}
@@ -195,11 +199,7 @@
 	 */
 	const processSyllableSelection = async () => {
 		try {
-			await waitForCondition(
-				wasCorrectSyllableSelected,
-				SYLLABLE_SELECTION_TIMEOUT,
-				wasMistakenTooManyTimes
-			);
+			await waitForCondition(wasCorrectSyllableSelected, SYLLABLE_SELECTION_TIMEOUT);
 			dispatch('lessonSuccess');
 			return true;
 		} catch {
@@ -209,6 +209,8 @@
 	};
 
 	const processStateCleanup = () => {
+		mistakeCount = 0;
+		wasMistakenTooManyTimes.set(false);
 		wasCorrectSyllableSelected.set(false);
 	};
 
@@ -270,7 +272,19 @@
 			dispatch('lessonFail');
 		}
 	};
+
+	const handleContinueNextSlide = () => {
+		handleCorrectSyllableClick();
+	};
+
+	const handleCancelLevel = () => {
+		goto('/');
+	};
 </script>
+
+{#if $wasMistakenTooManyTimes}
+	<LessonMistakesPopup {handleContinueNextSlide} {handleCancelLevel} />
+{/if}
 
 {#snippet crossFixArea()}
 	<LessonCross {registerElement} {unregisterElement} id={FIXATION_EYE} />

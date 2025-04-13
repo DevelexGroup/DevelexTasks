@@ -87,20 +87,20 @@
 	let showProgressAfterMistake = $state(false);
 	let usedIndexes = $state<number[]>([]);
 	let usedBoxIndexes = $state<number[]>([]);
+	let timeout: number | null = null;
 
 	const evaluateSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
 		showProgressAfterMistake = false;
+		timeout != null && clearTimeout(timeout);
 
 		const columnIndex = +e.detail.id.replace(`${idOtherSyllableBase}`, '');
 		const isCorrect = correctExpectingIndex == columnIndex;
 
 		if (!isCorrect) {
-			setTimeout(() => {
-				showProgressAfterMistake = true;
-				setTimeout(() => {
-					showProgressAfterMistake = false;
-				}, 3500);
-			}, 4500);
+			showProgressAfterMistake = true;
+			timeout = setTimeout(() => {
+				showProgressAfterMistake = false;
+			}, 3500);
 
 			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 			return;
@@ -119,6 +119,7 @@
 
 	const evaluateBoxSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
 		showProgressAfterMistake = false;
+		timeout != null && clearTimeout(timeout);
 
 		if (content.binding == undefined) {
 			return;
@@ -128,12 +129,10 @@
 		const isCorrect = expectingBoxIndex == content.binding[columnIndex];
 
 		if (!isCorrect) {
-			setTimeout(() => {
-				showProgressAfterMistake = true;
-				setTimeout(() => {
-					showProgressAfterMistake = false;
-				}, 3500);
-			}, 4500);
+			showProgressAfterMistake = true;
+			timeout = setTimeout(() => {
+				showProgressAfterMistake = false;
+			}, 3500);
 
 			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 			return;

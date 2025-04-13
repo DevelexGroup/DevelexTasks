@@ -93,6 +93,7 @@
 			{rowIndex}
 			isActive={currentRowIndex === rowIndex}
 			{highlightLine}
+			isLast={rowIndex === content.length - 1}
 			on:correct-syllable-clicked
 			on:all-correct-syllables-clicked
 			on:incorrect-syllable-clicked

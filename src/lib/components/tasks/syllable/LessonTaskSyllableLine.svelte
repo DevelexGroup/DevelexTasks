@@ -30,6 +30,7 @@
 		idAssignementSyllable?: string;
 		idOtherSyllableBase?: string;
 		highlightLine?: boolean;
+		isLast?: boolean;
 	}
 
 	let {
@@ -47,15 +48,14 @@
 		unregisterElement,
 		idAssignementSyllable = 'syllable-assignement',
 		idOtherSyllableBase = 'syllable-choice-',
-		highlightLine = false
+		highlightLine = false,
+		isLast = false
 	}: Props = $props();
 
 	const correctIndexes = content.syllables
 		.map((item, index) => (item === content.correctSyllable ? index : -1))
 		.filter((index) => index !== -1)
 		.reverse();
-
-	console.log(highlightLine);
 
 	const getNextExpectingIndex = (): number => {
 		return correctIndexes.pop() ?? -1;
@@ -91,9 +91,11 @@
 	roundCompleteAudio.volume = 0.4;
 	let showProgressAfterMistake = $state(false);
 	let usedIndexes = $state<number[]>([]);
+	let timeout: number | null = null;
 
 	const evaluateSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
 		showProgressAfterMistake = false;
+		timeout != null && clearTimeout(timeout);
 
 		if (!isActive) {
 			mistake(e);
@@ -112,13 +114,17 @@
 
 		usedIndexes.push(correctExpectingIndex);
 		correctExpectingIndex = getNextExpectingIndex();
-		roundCompleteAudio.pause();
-		roundCompleteAudio.currentTime = 0;
-		roundCompleteAudio.play();
+
 		dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
 
 		if (currentCorrectIndexes <= 0) {
 			dispatch('all-correct-syllables-clicked', { ...e.detail, rowIndex });
+		}
+
+		if (currentCorrectIndexes > 0 || (currentCorrectIndexes <= 0 && !isLast)) {
+			roundCompleteAudio.pause();
+			roundCompleteAudio.currentTime = 0;
+			roundCompleteAudio.play();
 		}
 
 		// const { id } = e.detail;
@@ -140,12 +146,11 @@
 	};
 
 	const mistake = (e: CustomEvent<{ word: string; id: string }>) => {
-		setTimeout(() => {
-			showProgressAfterMistake = true;
-			setTimeout(() => {
-				showProgressAfterMistake = false;
-			}, 3500);
-		}, 4500);
+		showProgressAfterMistake = true;
+		timeout != null && clearTimeout(timeout);
+		timeout = setTimeout(() => {
+			showProgressAfterMistake = false;
+		}, 3500);
 
 		dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 	};

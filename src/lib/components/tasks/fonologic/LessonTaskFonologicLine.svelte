@@ -54,32 +54,33 @@
 
 	let showProgressAfterMistake = $state(false);
 	let usedIndexes = $state<number[]>([]);
+	let timeout: number | null = null;
 
 	const evaluateSyllable = (e: CustomEvent<{ word: string; id: string }>) => {
 		showProgressAfterMistake = false;
+		timeout != null && clearTimeout(timeout);
 
 		const columnIndex = +e.detail.id.replace(`${idOtherSyllableBase}`, '');
 		const isCorrect = content.correctIndexes?.includes(columnIndex);
 
 		if (!isCorrect || usedIndexes.includes(columnIndex)) {
-			setTimeout(() => {
-				showProgressAfterMistake = true;
-				setTimeout(() => {
-					showProgressAfterMistake = false;
-				}, 3500);
-			}, 4500);
+			showProgressAfterMistake = true;
+			timeout = setTimeout(() => {
+				showProgressAfterMistake = false;
+			}, 3500);
 
 			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 			return;
 		}
 
 		usedIndexes.push(columnIndex);
-		roundCompleteAudio.pause();
-		roundCompleteAudio.currentTime = 0;
-		roundCompleteAudio.play();
 
 		if (usedIndexes.length == content.correctIndexes?.length) {
 			dispatch('correct-syllable-clicked', { ...e.detail, rowIndex });
+		} else {
+			roundCompleteAudio.pause();
+			roundCompleteAudio.currentTime = 0;
+			roundCompleteAudio.play();
 		}
 	};
 </script>
