@@ -306,6 +306,7 @@ export const cibuleLessons: LessonConfigMap['cibule']['data'][] = [
 			[
 				{
 					correctSyllable: 'pe',
+					wordToRead: 'PE',
 					syllables: [
 						'aaaaaa',
 						'pe',
