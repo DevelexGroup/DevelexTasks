@@ -78,7 +78,8 @@
 				element,
 				settings: {
 					dwellTime: 700,
-					bufferSize: 50
+					bufferSize: 50,
+					toleranceTime: 100
 				}
 			});
 		}
