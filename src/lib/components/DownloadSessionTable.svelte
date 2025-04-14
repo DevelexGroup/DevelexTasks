@@ -4,9 +4,131 @@
 	const { saveAs } = pkg;
 	import { db } from '$lib/database/database';
 	import type { Session } from '$lib/database/models/Session';
+	import { onMount } from 'svelte';
 
-	// Receive data via props instead of loading it
-	export let sessionsWithFirstRecord: (Session & { firstRecordDate: string })[] = [];
+	// Define props with proper typing using $props
+	interface SessionWithDate extends Session {
+		firstRecordDate: string;
+		firstRecordTimestamp: number;
+	}
+
+	// Use $props for component props in Svelte 5
+	const props = $props<{
+		sessionsWithFirstRecord: SessionWithDate[];
+	}>();
+
+	// Type for sort configuration
+	type SortConfig = {
+		key: keyof SessionWithDate;
+		direction: 'asc' | 'desc';
+	};
+
+	// State management using Svelte 5 runes
+	const tableState = $state({
+		search: '',
+		currentPage: 1,
+		itemsPerPage: 10,
+		sortConfig: { key: 'firstRecordTimestamp', direction: 'desc' } as SortConfig
+	});
+
+	// Helper function to safely check if string includes another string, handling nulls/undefined
+	function safeIncludes(text: string | null | undefined, search: string): boolean {
+		return typeof text === 'string' ? text.toLowerCase().includes(search) : false;
+	}
+
+	// Use $derived.by for computed values with proper typing
+	// Filter sessions based on search
+	const filteredSessions = $derived.by(() => {
+		// Safety check: if sessionsWithFirstRecord is undefined or empty, return empty array
+		if (!props.sessionsWithFirstRecord || props.sessionsWithFirstRecord.length === 0) {
+			return [] as SessionWithDate[];
+		}
+
+		if (!tableState.search.trim()) return props.sessionsWithFirstRecord;
+
+		const searchLower = tableState.search.toLowerCase();
+		return props.sessionsWithFirstRecord.filter(
+			(session: SessionWithDate) =>
+				safeIncludes(session.id, searchLower) ||
+				safeIncludes(session.name, searchLower) ||
+				safeIncludes(session.userName, searchLower) ||
+				safeIncludes(session.firstRecordDate, searchLower)
+		);
+	}) as SessionWithDate[];
+
+	// Sort filtered sessions
+	const sortedSessions = $derived.by(() => {
+		if (filteredSessions.length === 0) return [] as SessionWithDate[];
+
+		const { key, direction } = tableState.sortConfig;
+		return [...filteredSessions].sort((a, b) => {
+			const valueA = a[key] ?? '';
+			const valueB = b[key] ?? '';
+
+			// Handle string comparison
+			if (typeof valueA === 'string' && typeof valueB === 'string') {
+				return direction === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+			}
+
+			// Handle number comparison
+			return direction === 'asc'
+				? valueA < valueB
+					? -1
+					: valueA > valueB
+						? 1
+						: 0
+				: valueB < valueA
+					? -1
+					: valueB > valueA
+						? 1
+						: 0;
+		});
+	}) as SessionWithDate[];
+
+	// Calculate total pages - make sure it returns a number
+	const totalPages = $derived.by(() => {
+		return Math.ceil(filteredSessions.length / tableState.itemsPerPage) || 1;
+	}) as number;
+
+	// Calculate paginated sessions
+	const paginatedSessions = $derived.by(() => {
+		if (sortedSessions.length === 0) return [] as SessionWithDate[];
+
+		const start = (tableState.currentPage - 1) * tableState.itemsPerPage;
+		return sortedSessions.slice(start, start + tableState.itemsPerPage);
+	}) as SessionWithDate[];
+
+	// Handle sort
+	function handleSort(key: keyof SessionWithDate) {
+		// Special case for date sorting - use timestamp for sorting
+		const sortKey =
+			key === 'firstRecordDate' ? ('firstRecordTimestamp' as keyof SessionWithDate) : key;
+
+		if (tableState.sortConfig.key === sortKey) {
+			tableState.sortConfig.direction = tableState.sortConfig.direction === 'asc' ? 'desc' : 'asc';
+		} else {
+			tableState.sortConfig.key = sortKey;
+			tableState.sortConfig.direction = 'asc';
+		}
+
+		// Reset to first page when sorting changes
+		tableState.currentPage = 1;
+	}
+
+	// Page change function
+	function changePage(page: number) {
+		if (page >= 1 && page <= totalPages) {
+			tableState.currentPage = page;
+		}
+	}
+
+	// Reset pagination when search changes
+	$effect(() => {
+		// Only this one effect is needed - it watches the search value
+		// and resets page when search changes
+		const _ = tableState.search;
+		tableState.currentPage = 1;
+	});
 
 	const downloadAllDataAsZip = async (sessionId: string) => {
 		const zip = new JSZip();
@@ -71,69 +193,213 @@
 
 		return [keys.join(','), ...csvRows].join('\n');
 	}
-
-	function replacer(key: string, value: any): any {
-		return value === null ? '' : value;
-	}
 </script>
 
-<div style="width: 100%; max-width: 1200px; padding: 24px;">
-	<div
-		style="max-height: 70vh; overflow: auto; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
-	>
-		<table style="width: 100%; border-collapse: collapse;">
-			<thead style="position: sticky; top: 0; background: #f8fafc; z-index: 10;">
+<div class="w-full">
+	<!-- Search and pagination controls -->
+	<div class="mb-4 flex flex-col items-start justify-between gap-4 sm:flex-row">
+		<div class="w-full sm:w-64">
+			<input
+				type="text"
+				placeholder="Hledat..."
+				class="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+				value={tableState.search}
+				oninput={(e) => (tableState.search = e.currentTarget.value)}
+			/>
+		</div>
+		<div class="flex items-center">
+			<select
+				class="rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+				onchange={(e) => {
+					tableState.itemsPerPage = Number(e.currentTarget.value);
+					tableState.currentPage = 1;
+				}}
+			>
+				<option value="5" selected={tableState.itemsPerPage === 5}>5 / strana</option>
+				<option value="10" selected={tableState.itemsPerPage === 10}>10 / strana</option>
+				<option value="25" selected={tableState.itemsPerPage === 25}>25 / strana</option>
+				<option value="50" selected={tableState.itemsPerPage === 50}>50 / strana</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- Table with responsive styles to prevent horizontal scrolling -->
+	<div class="overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+		<table class="w-full table-auto">
+			<thead class="bg-gray-50">
 				<tr>
 					<th
-						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
-						>ID relace</th
+						scope="col"
+						class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700 hover:bg-gray-100"
+						onclick={() => handleSort('id')}
 					>
+						<div class="flex items-center">
+							<span>ID relace</span>
+							{#if tableState.sortConfig.key === 'id'}
+								<span class="ml-1">{tableState.sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+							{/if}
+						</div>
+					</th>
 					<th
-						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
-						>Název úrovně</th
+						scope="col"
+						class="hidden cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700 hover:bg-gray-100 md:table-cell"
+						onclick={() => handleSort('name')}
 					>
+						<div class="flex items-center">
+							<span>Název úrovně</span>
+							{#if tableState.sortConfig.key === 'name'}
+								<span class="ml-1">{tableState.sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+							{/if}
+						</div>
+					</th>
 					<th
-						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
-						>Uživatelské jméno</th
+						scope="col"
+						class="hidden cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700 hover:bg-gray-100 sm:table-cell"
+						onclick={() => handleSort('userName')}
 					>
+						<div class="flex items-center">
+							<span>Uživatelské jméno</span>
+							{#if tableState.sortConfig.key === 'userName'}
+								<span class="ml-1">{tableState.sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+							{/if}
+						</div>
+					</th>
 					<th
-						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
-						>Datum prvního záznamu</th
+						scope="col"
+						class="cursor-pointer px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700 hover:bg-gray-100"
+						onclick={() => handleSort('firstRecordDate')}
 					>
+						<div class="flex items-center">
+							<span>Datum</span>
+							{#if tableState.sortConfig.key === 'firstRecordTimestamp'}
+								<span class="ml-1">{tableState.sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+							{/if}
+						</div>
+					</th>
 					<th
-						style="padding: 16px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0;"
-						>Akce</th
+						scope="col"
+						class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700"
 					>
+						Akce
+					</th>
 				</tr>
 			</thead>
-			<tbody>
-				{#each sessionsWithFirstRecord as session, i}
-					<tr style="background: {i % 2 === 1 ? '#f8fafc' : 'white'};">
-						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0; color: #475569;"
-							>{session.id}</td
-						>
-						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0; color: #475569;"
-							>{session.name}</td
-						>
-						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0; color: #475569;"
-							>{session.userName}</td
-						>
-						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0; color: #475569;"
-							>{session.firstRecordDate}</td
-						>
-						<td style="padding: 16px; border-bottom: 1px solid #e2e8f0;">
-							<button
-								style="padding: 8px 16px; background: #0071bc; color: white; border-radius: 4px; font-weight: 500; transition: background-color 0.2s;"
-								on:mouseover={(e) => (e.currentTarget.style.backgroundColor = '#30c0f2')}
-								on:mouseout={(e) => (e.currentTarget.style.backgroundColor = '#0071bc')}
-								on:click={() => downloadAllDataAsZip(session.id)}
-							>
-								Stáhnout vše jako ZIP
-							</button>
+			<tbody class="divide-y divide-gray-200 bg-white">
+				{#if paginatedSessions.length === 0}
+					<tr>
+						<td colspan="5" class="px-4 py-4 text-center text-sm text-gray-500">
+							{tableState.search
+								? 'Žádné výsledky pro zadané vyhledávání'
+								: 'Žádná data k zobrazení'}
 						</td>
 					</tr>
-				{/each}
+				{:else}
+					{#each paginatedSessions as session, i}
+						<tr class={i % 2 === 1 ? 'bg-gray-50' : 'bg-white'}>
+							<td class="max-w-[100px] truncate px-4 py-3 text-sm text-gray-700">
+								<span class="block truncate" title={session?.id || ''}>
+									{session?.id || ''}
+								</span>
+							</td>
+							<td class="hidden px-4 py-3 text-sm text-gray-700 md:table-cell">
+								{session?.name || ''}
+							</td>
+							<td class="hidden px-4 py-3 text-sm text-gray-700 sm:table-cell">
+								{session?.userName || ''}
+							</td>
+							<td class="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+								{session?.firstRecordDate || ''}
+							</td>
+							<td class="px-4 py-3 text-sm">
+								<button
+									class="whitespace-nowrap rounded bg-[#0071bc] px-3 py-1 text-sm font-medium text-white transition-colors hover:bg-[#30c0f2] sm:px-4 sm:py-2"
+									onclick={() => downloadAllDataAsZip(session.id)}
+								>
+									<span class="hidden sm:inline">Stáhnout vše jako</span>
+									<span class="sm:hidden">Stáhnout</span> ZIP
+								</button>
+							</td>
+						</tr>
+					{/each}
+				{/if}
 			</tbody>
 		</table>
+	</div>
+
+	<!-- Mobile view session details (for smaller screens) -->
+	<div class="mt-2 md:hidden">
+		{#each paginatedSessions as session, i}
+			<div
+				class="mb-2 rounded-lg border border-gray-200 bg-white p-4 {i % 2 === 1
+					? 'bg-gray-50'
+					: ''}"
+			>
+				<div class="mb-2 flex items-center justify-between">
+					<h3 class="font-medium text-gray-800">{session?.name || ''}</h3>
+					<span class="text-sm text-gray-600">{session?.firstRecordDate || ''}</span>
+				</div>
+				<div class="mb-1 text-sm text-gray-600">
+					<span class="font-medium">Uživatel:</span>
+					{session?.userName || ''}
+				</div>
+				<div class="mb-3 truncate text-sm text-gray-600">
+					<span class="font-medium">ID:</span>
+					<span title={session?.id || ''}>{session?.id || ''}</span>
+				</div>
+				<button
+					class="w-full rounded bg-[#0071bc] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#30c0f2]"
+					onclick={() => downloadAllDataAsZip(session.id)}
+				>
+					Stáhnout vše jako ZIP
+				</button>
+			</div>
+		{/each}
+	</div>
+
+	<!-- Pagination -->
+	{#if totalPages > 1}
+		<div class="mt-4 flex justify-center">
+			<nav class="flex items-center">
+				<button
+					class="mr-1 rounded-md border border-gray-300 p-2 text-sm hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
+					disabled={tableState.currentPage === 1}
+					onclick={() => changePage(tableState.currentPage - 1)}
+					aria-label="Předchozí stránka"
+				>
+					&laquo;
+				</button>
+
+				<div class="flex flex-wrap">
+					{#each Array.from({ length: totalPages }) as _, i}
+						{#if totalPages <= 5 || i + 1 === 1 || i + 1 === totalPages || (i + 1 >= tableState.currentPage - 1 && i + 1 <= tableState.currentPage + 1)}
+							<button
+								class={`mx-1 h-8 w-8 rounded-md border text-sm ${tableState.currentPage === i + 1 ? 'bg-blue-500 text-white' : 'border-gray-300 hover:bg-gray-100'}`}
+								onclick={() => changePage(i + 1)}
+							>
+								{i + 1}
+							</button>
+						{:else if (i + 1 === tableState.currentPage - 2 || i + 1 === tableState.currentPage + 2) && totalPages > 5}
+							<span class="mx-1 flex h-8 w-8 items-center justify-center text-sm text-gray-500">
+								...
+							</span>
+						{/if}
+					{/each}
+				</div>
+
+				<button
+					class="ml-1 rounded-md border border-gray-300 p-2 text-sm hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
+					disabled={tableState.currentPage === totalPages}
+					onclick={() => changePage(tableState.currentPage + 1)}
+					aria-label="Další stránka"
+				>
+					&raquo;
+				</button>
+			</nav>
+		</div>
+	{/if}
+
+	<!-- Status info -->
+	<div class="mt-2 text-right text-sm text-gray-500">
+		Zobrazeno {paginatedSessions.length} z {filteredSessions.length} záznamů
 	</div>
 </div>

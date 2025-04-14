@@ -10,11 +10,14 @@
 
 	interface SessionWithDate extends Session {
 		firstRecordDate: string;
+		firstRecordTimestamp: number;
 	}
 
-	let isLoading = true;
-	let sessions: Session[] = [];
-	let sessionsWithFirstRecord: SessionWithDate[] = [];
+	const appState = $state({
+		isLoading: true,
+		sessions: [] as Session[],
+		sessionsWithFirstRecord: [] as SessionWithDate[]
+	});
 
 	onMount(async () => {
 		if (browser) {
@@ -23,11 +26,11 @@
 			const minLoadTime = 300; // ms
 
 			// Start loading data
-			sessions = await sessionRepository.getAll();
+			appState.sessions = await sessionRepository.getAll();
 
 			// Get first record date for each session
-			sessionsWithFirstRecord = await Promise.all(
-				sessions.map(async (session) => {
+			appState.sessionsWithFirstRecord = await Promise.all(
+				appState.sessions.map(async (session) => {
 					// Find earliest timestamp in any event table
 					const userEvents = await db.userEvents
 						.where('sessionId')
@@ -66,6 +69,8 @@
 
 					// Format date if we have a timestamp
 					let formattedDate = 'N/A';
+					const actualTimestamp = firstTimestamp || 0; // Use 0 for sorting when no timestamp
+
 					if (firstTimestamp) {
 						const date = new Date(firstTimestamp);
 						formattedDate = date
@@ -81,7 +86,8 @@
 
 					return {
 						...session,
-						firstRecordDate: formattedDate
+						firstRecordDate: formattedDate,
+						firstRecordTimestamp: actualTimestamp
 					};
 				})
 			);
@@ -90,11 +96,11 @@
 			const checkLoadTime = () => {
 				const elapsedTime = Date.now() - startTime;
 				if (elapsedTime >= minLoadTime) {
-					isLoading = false;
+					appState.isLoading = false;
 				} else {
 					// Wait remaining time if needed
 					setTimeout(() => {
-						isLoading = false;
+						appState.isLoading = false;
 					}, minLoadTime - elapsedTime);
 				}
 			};
@@ -105,36 +111,31 @@
 	});
 </script>
 
-<h1 class="mb-4 text-2xl font-bold">Stáhnout data</h1>
+<div class="h-full w-full overflow-x-hidden px-4 py-6">
+	<h1 class="mb-6 w-full text-center text-2xl font-bold">Stáhnout data</h1>
 
-{#if browser}
-	<div style="position: relative; min-height: 400px;">
-		{#if isLoading}
-			<div
-				style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;"
-			>
+	<div class="w-full">
+		{#if appState.isLoading || !browser}
+			<div class="mb-6 flex w-full items-center justify-center">
 				<div transition:fade={{ duration: 200 }}>
-					<div
-						style="display: flex; align-items: center; gap: 12px; padding: 32px; background: #f9fafb; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);"
-					>
+					<div class="flex h-full items-center gap-3 rounded-lg bg-gray-50 p-6 shadow-sm">
 						<span
-							style="display: inline-block; width: 24px; height: 24px; border: 2px solid #3b82f6; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"
+							class="inline-block h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"
 						></span>
-						<span style="font-size: 1.125rem;">Načítání...</span>
+						<span class="text-lg">Načítání...</span>
 					</div>
 				</div>
 			</div>
 		{:else}
-			<div transition:fade={{ duration: 200 }}>
-				<DownloadSessionTable {sessionsWithFirstRecord} />
+			<div transition:fade={{ duration: 200 }} class="mb-8 w-full">
+				<DownloadSessionTable sessionsWithFirstRecord={appState.sessionsWithFirstRecord} />
 			</div>
 		{/if}
 	</div>
-{:else}
-	<p style="padding: 16px;">Chyba! Aplikace není dostupná mimo prohlížeč.</p>
-{/if}
-
-<Button href="/">Zpět</Button>
+	<div class="mt-4 flex w-full items-center justify-center">
+		<Button href="/">Zpět</Button>
+	</div>
+</div>
 
 <style>
 	@keyframes spin {
