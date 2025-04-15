@@ -119,10 +119,6 @@
 </svg>
 
 <style>
-	.gem-iris {
-		/* Removing width/height/position transitions since those are now handled by tweened stores */
-	}
-
 	.color-transition {
 		transition:
 			fill var(--color-transition-duration) ease,

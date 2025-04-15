@@ -14,7 +14,7 @@
     "build-storybook": "storybook build"
   },
   "devDependencies": {
-    "@473783/develex-core": "0.3.0",
+    "@473783/develex-core": "0.3.1",
     "@chromatic-com/storybook": "^1.6.1",
     "@fontsource/fira-mono": "^4.5.10",
     "@iconify/svelte": "^4.0.2",
