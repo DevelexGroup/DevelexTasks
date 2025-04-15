@@ -185,12 +185,16 @@
 
 	const handleSaccade = async (saccade: GazeInteractionObjectSaccadeEvent) => {
 		const aoi = transformAoiFromTargets(saccade.target);
-		await saccadeRepository.create({ ...saccade, aoi });
+		// remove target from saccade
+		const { target, settings, ...rest } = saccade;
+		await saccadeRepository.create({ ...rest, aoi });
 	};
 
 	const handleFixation = async (fixation: GazeInteractionObjectFixationEvent) => {
 		const aoi = transformAoiFromTargets(fixation.target);
-		await fixationRepository.create({ ...fixation, aoi });
+		// remove target from fixation
+		const { target, settings, ...rest } = fixation;
+		await fixationRepository.create({ ...rest, aoi });
 	};
 
 	const handleIntersection = async (intersection: GazeInteractionObjectIntersectEvent) => {
