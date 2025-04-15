@@ -184,32 +184,13 @@
 	};
 
 	const handleSaccade = async (saccade: GazeInteractionObjectSaccadeEvent) => {
-		// get aoi from targets id, diveded by ;
 		const aoi = transformAoiFromTargets(saccade.target);
-		await saccadeRepository.create({
-			sessionId,
-			timestamp: saccade.timestamp.toString(),
-			type: saccade.type,
-			aoi,
-			duration: saccade.duration,
-			distance: saccade.distance,
-			angleToScreen: saccade.angleToScreen,
-			gazeData: saccade.gazeData,
-			originGazeData: saccade.originGazeData
-		});
+		await saccadeRepository.create({ ...saccade, aoi });
 	};
 
 	const handleFixation = async (fixation: GazeInteractionObjectFixationEvent) => {
 		const aoi = transformAoiFromTargets(fixation.target);
-		await fixationRepository.create({
-			sessionId,
-			timestamp: fixation.timestamp.toString(),
-			type: fixation.type,
-			aoi,
-			duration: fixation.duration,
-			gazeData: fixation.gazeData,
-			fixationId: fixation.fixationId
-		});
+		await fixationRepository.create({ ...fixation, aoi });
 	};
 
 	const handleIntersection = async (intersection: GazeInteractionObjectIntersectEvent) => {
