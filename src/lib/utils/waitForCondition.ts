@@ -8,6 +8,12 @@ const cleanup = (...unsubscribers: Array<() => void>) => {
 	unsubscribers.forEach((unsubscribe) => unsubscribe && unsubscribe());
 };
 
+const cleanTimeout = (timeout: number | null) => {
+	if (timeout != null) {
+		clearTimeout(timeout);
+	}
+};
+
 class TimeoutError extends Error {
 	constructor(message: string) {
 		super(message);
@@ -38,9 +44,11 @@ export const waitForCondition = (
 ): Promise<void> => {
 	return new Promise((resolve, reject) => {
 		const unsubscribers: Array<() => void> = [];
+		let timeout: number | null = null;
 
 		const onSuccess = (value: boolean) => {
 			if (value) {
+				cleanTimeout(timeout);
 				cleanup(...unsubscribers);
 				resolve();
 			}
@@ -48,6 +56,7 @@ export const waitForCondition = (
 
 		const onFail = (failValue: boolean) => {
 			if (failValue) {
+				cleanTimeout(timeout);
 				cleanup(...unsubscribers);
 				reject(new InstantFailError('Instant fail condition met'));
 			}
@@ -63,7 +72,35 @@ export const waitForCondition = (
 			unsubscribers.push(instantFailStore.subscribe(onFail));
 		}
 
-		setTimeout(onTimeout, maxTimeout);
+		timeout = setTimeout(onTimeout, maxTimeout);
+	});
+};
+
+export const waitForConditionNoTimeout = (
+	store: Readable<boolean>,
+	instantFailStore?: Readable<boolean>
+): Promise<void> => {
+	return new Promise((resolve, reject) => {
+		const unsubscribers: Array<() => void> = [];
+
+		const onSuccess = (value: boolean) => {
+			if (value) {
+				cleanup(...unsubscribers);
+				resolve();
+			}
+		};
+
+		const onFail = (failValue: boolean) => {
+			if (failValue) {
+				cleanup(...unsubscribers);
+				reject(new InstantFailError('Instant fail condition met'));
+			}
+		};
+
+		unsubscribers.push(store.subscribe(onSuccess));
+		if (instantFailStore) {
+			unsubscribers.push(instantFailStore.subscribe(onFail));
+		}
 	});
 };
 
