@@ -6,11 +6,7 @@
 	} from '@473783/develex-core';
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
-	import {
-		waitForCondition,
-		waitForConditionNoTimeout,
-		waitForTimeout
-	} from '$lib/utils/waitForCondition';
+	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 	import type { LessonTaskFonologicLevelProps } from './LessonTaskFonologicLevel.type';
 	import LessonTaskFonologicGrid from './LessonTaskFonologicGrid.svelte';
 	import LessonTaskFonologicLayout from './LessonTaskFonologicLayout.svelte';
@@ -177,7 +173,7 @@
 	 */
 	const processCrossFixation = async () => {
 		try {
-			await waitForConditionNoTimeout(wasCrossFixated);
+			await waitForCondition(wasCrossFixated, CROSS_FIXATION_TIMEOUT);
 			dispatch('lessonSuccess');
 		} catch {
 			dispatch('lessonFail');

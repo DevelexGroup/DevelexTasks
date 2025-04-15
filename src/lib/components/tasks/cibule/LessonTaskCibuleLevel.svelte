@@ -6,11 +6,7 @@
 	} from '@473783/develex-core';
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
-	import {
-		waitForCondition,
-		waitForConditionNoTimeout,
-		waitForTimeout
-	} from '$lib/utils/waitForCondition';
+	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
 	import LessonTaskCibuleLayout from './LessonTaskCibuleLayout.svelte';
 	import LessonTaskCibuleGrid from './LessonTaskCibuleGrid.svelte';
 	import type { LessonTaskCibuleLevelProps } from './LessonTaskCibuleLevel.type';
@@ -46,6 +42,7 @@
 	let hideAssignmentSyllables: number[] = $state(currentContent.map((_, index) => index));
 
 	const FIXATION_EYE = 'fixation-eye';
+	const CROSS_FIXATION_TIMEOUT = 8000;
 	const SYLLABLE_SELECTION_TIMEOUT = 80000;
 	const MAXIMUM_MISTAKE_COUNT = 3;
 
@@ -190,7 +187,7 @@
 	 */
 	const processCrossFixation = async () => {
 		try {
-			await waitForConditionNoTimeout(wasCrossFixated);
+			await waitForCondition(wasCrossFixated, CROSS_FIXATION_TIMEOUT);
 			dispatch('lessonSuccess');
 		} catch {
 			dispatch('lessonFail');
