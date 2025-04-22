@@ -3,7 +3,11 @@
 	import type { GazeInteractionObjectDwellEvent, GazeManager } from '@473783/develex-core';
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
-	import { waitForCondition, waitForTimeout } from '$lib/utils/waitForCondition';
+	import {
+		waitForCondition,
+		waitForConditionNoTimeout,
+		waitForTimeout
+	} from '$lib/utils/waitForCondition';
 	import type { LessonTaskMeaningfulTextLevelProps } from './LessonTaskMeaningfulTextLevel.type';
 	import LessonTaskMeaningfulTextLayout from './LessonTaskMeaningfulTextLayout.svelte';
 	import LessonTaskMeaningfulTextGrid from './LessonTaskMeaningfulTextGrid.svelte';
@@ -18,13 +22,11 @@
 	 */
 	let wasCrossFixated: Writable<boolean> = writable(false);
 	let wasCorrectSyllableSelected: Writable<boolean> = writable(false);
-	let wasMistakenTooManyTimes: Writable<boolean> = writable(false);
 
 	// Hide every assignment syllable by default
 
 	const FIXATION_EYE = 'fixation-eye';
 	const CROSS_FIXATION_TIMEOUT = 8000;
-	const SYLLABLE_SELECTION_TIMEOUT = 80000;
 
 	const dispatch = createEventDispatcher<{
 		lessonSuccess: void;
@@ -113,12 +115,7 @@
 	 */
 	const processSyllableSelection = async () => {
 		try {
-			await waitForCondition(
-				wasCorrectSyllableSelected,
-				SYLLABLE_SELECTION_TIMEOUT * 9999,
-				wasMistakenTooManyTimes
-			);
-			console.log('asd');
+			await waitForConditionNoTimeout(wasCorrectSyllableSelected);
 			dispatch('lessonSuccess');
 			return true;
 		} catch {
