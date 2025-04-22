@@ -17,5 +17,15 @@ export const dwellRepository = {
 
 	deleteBySessionId: async (sessionId: string): Promise<void> => {
 		await db.dwells.where('sessionId').equals(sessionId).delete();
+	},
+
+	csvHeader(): string {
+		return 'sessionId, timestamp, type, aoi, duration, gazeData.x, gazeData.y, gazeData.xL, gazeData.yL, gazeData.xR, gazeData.yR, gazeData.fixationId, gazeData.fixationDuration';
+	},
+
+	toCsv(data: Dwell): string {
+		return `${data.sessionId},${data.timestamp},${data.type},${data.aoi},${data.duration},${data.gazeData.x},${data.gazeData.y},${data.gazeData.xL},${data.gazeData.yL},${data.gazeData.xR},${data.gazeData.yR},${data.gazeData.fixationId},${data.gazeData.fixationDuration}`;
 	}
 };
+
+export default dwellRepository;

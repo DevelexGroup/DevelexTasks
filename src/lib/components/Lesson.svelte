@@ -22,7 +22,7 @@
 	import fixationRepository from '$lib/database/repositories/fixation.repository';
 	import intersectionRepository from '$lib/database/repositories/intersect.repository';
 	import { browser } from '$app/environment';
-	import { dwellRepository } from '$lib/database/repositories/DwellRepository';
+	import dwellRepository from '$lib/database/repositories/dwell.repository';
 	import LessonInstructions from './LessonInstructions.svelte';
 	import { setContext } from 'svelte';
 
@@ -187,14 +187,14 @@
 		const aoi = transformAoiFromTargets(saccade.target);
 		// remove target from saccade
 		const { target, settings, ...rest } = saccade;
-		await saccadeRepository.create({ ...rest, aoi });
+		await saccadeRepository.create({ ...rest, aoi, sessionId });
 	};
 
 	const handleFixation = async (fixation: GazeInteractionObjectFixationEvent) => {
 		const aoi = transformAoiFromTargets(fixation.target);
 		// remove target from fixation
 		const { target, settings, ...rest } = fixation;
-		await fixationRepository.create({ ...rest, aoi });
+		await fixationRepository.create({ ...rest, aoi, sessionId });
 	};
 
 	const handleIntersection = async (intersection: GazeInteractionObjectIntersectEvent) => {

@@ -5,6 +5,13 @@
 	import { db } from '$lib/database/database';
 	import type { Session } from '$lib/database/models/Session';
 	import { onMount } from 'svelte';
+	import fixationRepository from '$lib/database/repositories/fixation.repository';
+	import saccadeRepository from '$lib/database/repositories/saccade.repository';
+	import intersectionRepository from '$lib/database/repositories/intersect.repository';
+	import dwellRepository from '$lib/database/repositories/dwell.repository';
+	import userEventsRepository from '$lib/database/repositories/userEvents.repository';
+	import stateEventsRepository from '$lib/database/repositories/stateEvents.repository';
+	import xstateEventsRepository from '$lib/database/repositories/xstateEvents.repository';
 
 	// Define props with proper typing using $props
 	interface SessionWithDate extends Session {
@@ -142,57 +149,50 @@
 		const dwells = await db.dwells.where('sessionId').equals(sessionId).toArray();
 		const xstateEvents = await db.xstateEvents.where('sessionId').equals(sessionId).toArray();
 
-		// Convert data to CSV and add to ZIP
-		zip.file('userEvents.csv', convertToCSV(userEvents));
-		zip.file('stateEvents.csv', convertToCSV(stateEvents));
-		zip.file('fixations.csv', convertToCSV(fixations));
-		zip.file('saccades.csv', convertToCSV(saccades));
-		zip.file('intersects.csv', convertToCSV(intersects));
-		zip.file('dwells.csv', convertToCSV(dwells));
-		zip.file('xstateEvents.csv', convertToCSV(xstateEvents));
+		alert(JSON.stringify(fixations));
+
+		// Convert data to CSV using repository-specific methods
+		zip.file(
+			'userEvents.csv',
+			userEventsRepository.csvHeader() +
+				'\n' +
+				userEvents.map(userEventsRepository.toCsv).join('\n')
+		);
+		zip.file(
+			'stateEvents.csv',
+			stateEventsRepository.csvHeader() +
+				'\n' +
+				stateEvents.map(stateEventsRepository.toCsv).join('\n')
+		);
+		zip.file(
+			'fixations.csv',
+			fixationRepository.csvHeader() + '\n' + fixations.map(fixationRepository.toCsv).join('\n')
+		);
+		zip.file(
+			'saccades.csv',
+			saccadeRepository.csvHeader() + '\n' + saccades.map(saccadeRepository.toCsv).join('\n')
+		);
+		zip.file(
+			'intersects.csv',
+			intersectionRepository.csvHeader() +
+				'\n' +
+				intersects.map(intersectionRepository.toCsv).join('\n')
+		);
+		zip.file(
+			'dwells.csv',
+			dwellRepository.csvHeader() + '\n' + dwells.map(dwellRepository.toCsv).join('\n')
+		);
+		zip.file(
+			'xstateEvents.csv',
+			xstateEventsRepository.csvHeader() +
+				'\n' +
+				xstateEvents.map(xstateEventsRepository.toCsv).join('\n')
+		);
 
 		// Generate the ZIP file and trigger download
 		const content = await zip.generateAsync({ type: 'blob' });
 		saveAs(content, `session-${sessionId}.zip`);
 	};
-
-	function convertToCSV(data: any[]): string {
-		if (data.length === 0) return '';
-
-		// Define column order with id and sessionId first
-		let keys = Object.keys(data[0]);
-		keys = [
-			// Ensure these columns come first if they exist
-			...keys.filter((k) => k === 'id'),
-			...keys.filter((k) => k === 'sessionId'),
-			// Then add all other columns
-			...keys.filter((k) => k !== 'id' && k !== 'sessionId')
-		];
-
-		// Properly escape and format values
-		const csvRows = data.map((row) =>
-			keys
-				.map((key) => {
-					const value = row[key];
-					if (value === null || value === undefined) return '';
-
-					// Handle objects and arrays by stringifying them with quotes
-					if (typeof value === 'object') {
-						return `"${JSON.stringify(value).replace(/"/g, '""')}"`;
-					}
-
-					// Handle strings with special characters
-					if (typeof value === 'string') {
-						return `"${value.replace(/"/g, '""')}"`;
-					}
-
-					return value;
-				})
-				.join(',')
-		);
-
-		return [keys.join(','), ...csvRows].join('\n');
-	}
 </script>
 
 <div class="w-full">
