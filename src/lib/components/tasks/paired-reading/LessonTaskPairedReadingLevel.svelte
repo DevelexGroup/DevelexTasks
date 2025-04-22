@@ -257,7 +257,8 @@
 						event,
 						value,
 						context,
-						timestamp
+						timestamp,
+						'paired-reading'
 					);
 
 					xstateEventsRepository.create(xstateEvent).catch((error) => {

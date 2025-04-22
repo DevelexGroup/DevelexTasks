@@ -5,4 +5,5 @@ export type XStateEvent = {
 	event: string;
 	status: string;
 	context: string; // We'll store the JSON stringified context here
+	task: string;
 };
