@@ -11,7 +11,9 @@
 		GazeInteractionObjectFixationEvent,
 		GazeInteractionObjectIntersectEvent,
 		GazeInteractionObjectDwellEvent,
-		GazeManager
+		GazeManager,
+		GazeDataPoint,
+		FixationDataPoint
 	} from '@473783/develex-core';
 	import { onMount } from 'svelte';
 	import sessionRepository from '$lib/database/repositories/session.repository';
@@ -25,6 +27,8 @@
 	import dwellRepository from '$lib/database/repositories/dwell.repository';
 	import LessonInstructions from './LessonInstructions.svelte';
 	import { setContext } from 'svelte';
+	import gazeInputRepository from '$lib/database/repositories/gazeInput.repository';
+	import fixationInputRepository from '$lib/database/repositories/fixationInput.repository';
 
 	interface Props {
 		/**
@@ -89,6 +93,18 @@
 
 	setContext('sessionId', sessionId);
 
+	const handleInputData = async (inputData: GazeDataPoint) => {
+		console.log('inputData', inputData);
+		const clientTimestamp = new Date().toISOString();
+		await gazeInputRepository.create({ ...inputData, sessionId, clientTimestamp });
+	};
+
+	const handleInputFixationStart = async (inputFixationStart: FixationDataPoint) => {
+		console.log('inputFixationStart', inputFixationStart);
+		const clientTimestamp = new Date().toISOString();
+		await fixationInputRepository.create({ ...inputFixationStart, sessionId, clientTimestamp });
+	};
+
 	onMount(async () => {
 		if (!browser) return;
 
@@ -103,9 +119,11 @@
 		window.addEventListener('click', handleClick);
 		gazeManager.on('saccadeObjectFrom', handleSaccade);
 		gazeManager.on('saccadeObjectTo', handleSaccade);
-		gazeManager.on('fixationObjectEnd', handleFixation);
+		gazeManager.on('fixationObjectStart', handleFixation);
 		gazeManager.on('intersect', handleIntersection);
 		gazeManager.on('dwell', handleDwell);
+		gazeManager.on('inputData', handleInputData);
+		gazeManager.on('inputFixationStart', handleInputFixationStart);
 	});
 
 	onDestroy(() => {
@@ -121,9 +139,11 @@
 		window.removeEventListener('click', handleClick);
 		gazeManager.off('saccadeObjectFrom', handleSaccade);
 		gazeManager.off('saccadeObjectTo', handleSaccade);
-		gazeManager.off('fixationObjectEnd', handleFixation);
+		gazeManager.off('fixationObjectStart', handleFixation);
 		gazeManager.off('intersect', handleIntersection);
 		gazeManager.off('dwell', handleDwell);
+		gazeManager.off('inputData', handleInputData);
+		gazeManager.off('inputFixationStart', handleInputFixationStart);
 	});
 
 	// Subscribe to changes in lessonState and log them as stateEvents

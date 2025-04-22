@@ -6,6 +6,7 @@ import type { RecordedEvent } from './models/RecordedEvent';
 import type { Session } from './models/Session';
 import type { Dwell } from './models/Dwell';
 import type { XStateEvent } from './models/XStateEvent';
+import type { GazeDataPoint, FixationDataPoint } from '@473783/develex-core';
 
 export class DevelexIDB extends Dexie {
 	userEvents!: Table<RecordedEvent>;
@@ -16,11 +17,13 @@ export class DevelexIDB extends Dexie {
 	sessions!: Table<Session>;
 	dwells!: Table<Dwell>;
 	xstateEvents!: Table<XStateEvent>;
+	gazeInputs!: Table<GazeDataPoint & { sessionId: string; clientTimestamp: string }>;
+	fixationInputs!: Table<FixationDataPoint & { sessionId: string; clientTimestamp: string }>;
 
 	constructor() {
 		super('develex-task-idb');
 
-		this.version(4).stores({
+		this.version(5).stores({
 			fixations: '++id, sessionId, timestamp, type, duration, aoi',
 			saccades: '++id, sessionId, timestamp, type, duration, aoi',
 			intersects: '++id, sessionId, timestamp, aoi',
@@ -28,7 +31,9 @@ export class DevelexIDB extends Dexie {
 			stateEvents: '++id, sessionId, timestamp, type',
 			sessions: 'id, name, userName',
 			dwells: '++id, sessionId, timestamp',
-			xstateEvents: '++id, sessionId, timestamp, event, status'
+			xstateEvents: '++id, sessionId, timestamp, event, status',
+			gazeInputs: '++id, sessionId, timestamp',
+			fixationInputs: '++id, sessionId, timestamp'
 		});
 	}
 }

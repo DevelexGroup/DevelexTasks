@@ -4,7 +4,6 @@
 	const { saveAs } = pkg;
 	import { db } from '$lib/database/database';
 	import type { Session } from '$lib/database/models/Session';
-	import { onMount } from 'svelte';
 	import fixationRepository from '$lib/database/repositories/fixation.repository';
 	import saccadeRepository from '$lib/database/repositories/saccade.repository';
 	import intersectionRepository from '$lib/database/repositories/intersect.repository';
@@ -12,6 +11,8 @@
 	import userEventsRepository from '$lib/database/repositories/userEvents.repository';
 	import stateEventsRepository from '$lib/database/repositories/stateEvents.repository';
 	import xstateEventsRepository from '$lib/database/repositories/xstateEvents.repository';
+	import gazeInputRepository from '$lib/database/repositories/gazeInput.repository';
+	import fixationInputRepository from '$lib/database/repositories/fixationInput.repository';
 
 	// Define props with proper typing using $props
 	interface SessionWithDate extends Session {
@@ -148,6 +149,8 @@
 		const intersects = await db.intersects.where('sessionId').equals(sessionId).toArray();
 		const dwells = await db.dwells.where('sessionId').equals(sessionId).toArray();
 		const xstateEvents = await db.xstateEvents.where('sessionId').equals(sessionId).toArray();
+		const gazeInputs = await db.gazeInputs.where('sessionId').equals(sessionId).toArray();
+		const fixationInputs = await db.fixationInputs.where('sessionId').equals(sessionId).toArray();
 
 		// Convert data to CSV using repository-specific methods
 		zip.file(
@@ -185,6 +188,18 @@
 			xstateEventsRepository.csvHeader() +
 				'\n' +
 				xstateEvents.map(xstateEventsRepository.toCsv).join('\n')
+		);
+		zip.file(
+			'gazeInputs.csv',
+			gazeInputRepository.csvHeader() +
+				'\n' +
+				gazeInputs.map((gazeInput) => gazeInputRepository.toCsv(gazeInput)).join('\n')
+		);
+		zip.file(
+			'fixationInputs.csv',
+			fixationInputRepository.csvHeader() +
+				'\n' +
+				fixationInputs.map(fixationInputRepository.toCsv).join('\n')
 		);
 
 		// Generate the ZIP file and trigger download
