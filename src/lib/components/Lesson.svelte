@@ -25,6 +25,7 @@
 	import dwellRepository from '$lib/database/repositories/dwell.repository';
 	import LessonInstructions from './LessonInstructions.svelte';
 	import { setContext } from 'svelte';
+	import LessonCompleted from './LessonCompleted.svelte';
 
 	interface Props {
 		/**
@@ -40,6 +41,7 @@
 		lessonName: string;
 		backgroundColor?: string;
 		instructionAudioPath?: string;
+		taskName?: string;
 	}
 
 	let {
@@ -47,7 +49,8 @@
 		isDebug,
 		lessonName,
 		backgroundColor = 'transparent',
-		instructionAudioPath = undefined
+		instructionAudioPath = undefined,
+		taskName = undefined
 	}: Props = $props();
 
 	let lessonConfig: AnyLessonConfigSetup | null = $state(null);
@@ -94,7 +97,7 @@
 
 		await sessionRepository.create({
 			id: sessionId,
-			name: lessonName,
+			name: `${taskName ?? 'Unknown'}: ${lessonName}`,
 			userName: userName
 		});
 		window.addEventListener('mousemove', handleMouseMove);
