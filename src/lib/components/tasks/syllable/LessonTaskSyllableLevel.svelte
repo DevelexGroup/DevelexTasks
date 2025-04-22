@@ -17,6 +17,7 @@
 	} from '@473783/develex-core';
 	import { goto } from '$app/navigation';
 	import LessonMistakesPopup from '$lib/components/LessonMistakesPopup.svelte';
+	import { handleLog } from '$lib/utils/logger';
 
 	let {
 		currentContent,
@@ -30,6 +31,7 @@
 	}: LessonTaskSyllableLevelProps = $props();
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
+	const sessionId = getContext<string>('sessionId');
 
 	/**
 	 * State stores to keep up with the state of the lesson
@@ -75,6 +77,8 @@
 		});
 
 		if (element.id == FIXATION_EYE) {
+			handleLog(sessionId, 'crossFixation', 'started', 'syllable');
+
 			gazeManager.register({
 				interaction: 'dwell',
 				element,
@@ -107,19 +111,23 @@
 
 	const handleAllCorrectSyllablesClicked = () => {
 		wasCorrectSyllableSelected.set(true);
+		handleLog(sessionId, 'line', 'completed', 'syllable');
 		processStateCleanup();
 	};
 
 	const handleCorrectSyllableClick = () => {
+		handleLog(sessionId, 'click', 'correct', 'syllable');
 		dispatch('lessonSuccess');
 	};
 
 	const handleIncorrectSyllableClick = () => {
 		const mistakeAudio = new Audio(`/sound/mistake.mp3`);
 		mistakeAudio.play();
+		handleLog(sessionId, 'click', 'incorrect', 'syllable');
 
 		mistakeCount++;
 		if (mistakeCount >= MAXIMUM_MISTAKE_COUNT) {
+			handleLog(sessionId, 'mistake', 'tooManyMistakes', 'syllable');
 			wasMistakenTooManyTimes.set(true);
 		} else {
 			setTimeout(() => {
@@ -142,6 +150,7 @@
 		const { target } = event;
 
 		if (target.some((t) => t.id === FIXATION_EYE)) {
+			handleLog(sessionId, 'crossFixation', 'completed', 'syllable');
 			wasCrossFixated.set(true);
 		}
 	};
@@ -195,6 +204,7 @@
 			await waitForConditionNoTimeout(wasCrossFixated);
 			dispatch('lessonSuccess');
 		} catch {
+			handleLog(sessionId, 'crossFixation', 'failed', 'syllable');
 			dispatch('lessonFail');
 		}
 	};

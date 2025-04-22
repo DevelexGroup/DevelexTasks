@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { VisualDiffTaskType } from '$lib/types/lesson';
 	import { fade } from 'svelte/transition';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
 	import LessonTaskVisualDiffItem from './LessonTaskVisualDiffItem.svelte';
 	import LessonTaskVisualDiffGroup from './LessonTaskVisualDiffGroup.svelte';
+	import { handleLog } from '$lib/utils/logger';
 
 	interface Props {
 		isSyllableAssignmentVisible?: boolean;
@@ -55,6 +56,7 @@
 		};
 	}>();
 
+	const sessionId = getContext<string>('sessionId');
 	const correctIndexesSet = new Set(correctIndexes);
 
 	const getNextExpectingIndex = (): number => {
@@ -89,6 +91,8 @@
 			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 			return;
 		}
+
+		handleLog(sessionId, 'click', 'correct', 'vis-diff');
 
 		if (correctIndexes.length > 0) {
 			usedIndexes.push(correctExpectingIndex);

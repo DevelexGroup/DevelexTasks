@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { FonologicTaskType } from '$lib/types/lesson';
 	import { fade } from 'svelte/transition';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import LessonTaskFonologicItem from './LessonTaskFonologicItem.svelte';
 	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
 	import LessonTaskSyllableItem from '../syllable/LessonTaskSyllableItem.svelte';
+	import { handleLog } from '$lib/utils/logger';
 
 	interface Props {
 		isSyllableAssignmentVisible?: boolean;
@@ -46,6 +47,8 @@
 		};
 	}>();
 
+	const sessionId = getContext<string>('sessionId');
+
 	const roundCompleteAudio = new Audio('/sound/positive.wav');
 	roundCompleteAudio.volume = 0.4;
 
@@ -72,6 +75,8 @@
 			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 			return;
 		}
+
+		handleLog(sessionId, 'click', 'correct', 'fonologic');
 
 		usedIndexes.push(columnIndex);
 

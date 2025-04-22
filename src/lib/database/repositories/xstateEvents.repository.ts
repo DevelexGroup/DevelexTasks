@@ -30,23 +30,25 @@ const xstateEventsRepository = {
 		event: string,
 		status: string,
 		context: object,
-		timestamp: string
+		timestamp: string,
+		task: string
 	): XStateEvent {
 		return {
 			sessionId,
 			event,
 			status,
 			context: JSON.stringify(context),
-			timestamp
+			timestamp,
+			task
 		};
 	},
 
 	csvHeader(): string {
-		return 'sessionId,timestamp,event,status,context';
+		return 'sessionId,timestamp,event,status,context,task';
 	},
 
 	toCsv(data: XStateEvent): string {
-		return `${data.sessionId},${data.timestamp},${data.event},${data.status},${data.context}`;
+		return `${data.sessionId},${data.task},${data.timestamp},${data.event},${data.status},${data.context}`;
 	}
 };
 

@@ -44,6 +44,7 @@
 		lessonName: string;
 		backgroundColor?: string;
 		instructionAudioPath?: string;
+		taskName?: string;
 	}
 
 	let {
@@ -51,7 +52,8 @@
 		isDebug,
 		lessonName,
 		backgroundColor = 'transparent',
-		instructionAudioPath = undefined
+		instructionAudioPath = undefined,
+		taskName = undefined
 	}: Props = $props();
 
 	let lessonConfig: AnyLessonConfigSetup | null = $state(null);
@@ -110,7 +112,7 @@
 
 		await sessionRepository.create({
 			id: sessionId,
-			name: lessonName,
+			name: `${taskName ?? 'Unknown'}: ${lessonName}`,
 			userName: userName
 		});
 		window.addEventListener('mousemove', handleMouseMove);

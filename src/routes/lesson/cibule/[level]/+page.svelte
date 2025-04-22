@@ -34,5 +34,6 @@
 		instructionAudioPath={data.config.instructionAudioPath}
 		isDebug={false}
 		backgroundColor="rgba(255, 254, 232, 0.5)"
+		taskName="Cibule"
 	/>
 {/if}

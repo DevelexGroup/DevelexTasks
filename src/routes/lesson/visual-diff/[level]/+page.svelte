@@ -34,5 +34,6 @@
 		isDebug={false}
 		backgroundColor="rgba(255, 254, 232, 0.5)"
 		lessonName={data.config.label ?? data.config.level}
+		taskName="Zraková diferenciace"
 	/>
 {/if}
