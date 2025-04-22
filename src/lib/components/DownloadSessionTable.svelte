@@ -149,8 +149,6 @@
 		const dwells = await db.dwells.where('sessionId').equals(sessionId).toArray();
 		const xstateEvents = await db.xstateEvents.where('sessionId').equals(sessionId).toArray();
 
-		alert(JSON.stringify(fixations));
-
 		// Convert data to CSV using repository-specific methods
 		zip.file(
 			'userEvents.csv',
