@@ -17,6 +17,7 @@
 	import LessonTaskVisualDiffGrid from './LessonTaskVisualDiffGrid.svelte';
 	import { goto } from '$app/navigation';
 	import LessonMistakesPopup from '$lib/components/LessonMistakesPopup.svelte';
+	import { handleLog } from '$lib/utils/logger';
 
 	let {
 		currentContent,
@@ -31,6 +32,7 @@
 	}: LessonTaskVisualDiffLevelProps = $props();
 
 	const gazeManager = getContext<GazeManager>('gazeManager');
+	const sessionId = getContext<string>('sessionId');
 
 	/**
 	 * State stores to keep up with the state of the lesson
@@ -70,6 +72,8 @@
 		});
 
 		if (element.id == FIXATION_EYE) {
+			handleLog(sessionId, 'crossFixation', 'started', 'vis-diff');
+
 			gazeManager.register({
 				interaction: 'dwell',
 				element,
@@ -98,14 +102,17 @@
 
 	const handleCorrectSyllableClick = () => {
 		wasCorrectSyllableSelected.set(true);
+		handleLog(sessionId, 'line', 'completed', 'vis-diff');
 	};
 
 	const handleIncorrectSyllableClick = () => {
 		const mistakeAudio = new Audio(`/sound/mistake.mp3`);
 		mistakeAudio.play();
+		handleLog(sessionId, 'click', 'incorrect', 'vis-diff');
 
 		mistakeCount++;
 		if (mistakeCount >= MAXIMUM_MISTAKE_COUNT) {
+			handleLog(sessionId, 'mistake', 'tooManyMistakes', 'vis-diff');
 			wasMistakenTooManyTimes.set(true);
 		}
 	};
@@ -131,6 +138,7 @@
 		const { target } = event;
 
 		if (target.some((t) => t.id === FIXATION_EYE)) {
+			handleLog(sessionId, 'crossFixation', 'completed', 'vis-diff');
 			wasCrossFixated.set(true);
 		}
 	};
@@ -180,6 +188,7 @@
 			await waitForConditionNoTimeout(wasCrossFixated);
 			dispatch('lessonSuccess');
 		} catch {
+			handleLog(sessionId, 'crossFixation', 'failed', 'vis-diff');
 			dispatch('lessonFail');
 		}
 	};

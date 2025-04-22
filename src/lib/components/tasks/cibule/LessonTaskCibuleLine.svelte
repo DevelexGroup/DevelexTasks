@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { CibuleTaskType } from '$lib/types/lesson';
 	import { fade } from 'svelte/transition';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
 	import LessonTaskCibuleItem from './LessonTaskCibuleItem.svelte';
+	import { handleLog } from '$lib/utils/logger';
 
 	interface Props {
 		/**
@@ -44,6 +45,8 @@
 		idCorrectSyllable = 'syllable-assignement',
 		idOtherSyllableBase = 'syllable-choice-'
 	}: Props = $props();
+
+	const sessionId = getContext<string>('sessionId');
 
 	const correctIndexes =
 		content.correctSyllable == undefined
@@ -106,6 +109,8 @@
 			return;
 		}
 
+		handleLog(sessionId, 'click', 'correct', 'cibule');
+
 		if (correctIndexes.length > 0) {
 			usedIndexes.push(correctExpectingIndex);
 			correctExpectingIndex = getNextExpectingIndex();
@@ -137,6 +142,8 @@
 			dispatch('incorrect-syllable-clicked', { ...e.detail, rowIndex });
 			return;
 		}
+
+		handleLog(sessionId, 'click', 'correct', 'cibule');
 
 		usedIndexes.push(columnIndex);
 		usedBoxIndexes.push(expectingBoxIndex);
