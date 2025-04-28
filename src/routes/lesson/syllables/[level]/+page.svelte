@@ -33,7 +33,7 @@
 		lessonName={data.config.label ?? data.config.level}
 		{getLessonConfig}
 		isDebug={false}
-		backgroundColor="rgba(255, 254, 232, 0.5)"
+		backgroundColor="rgba(255, 253, 208, 0.5)"
 		taskName="Slabiky"
 	/>
 {/if}

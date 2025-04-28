@@ -117,6 +117,7 @@
 
 	const handleIncorrectSyllableClick = () => {
 		const mistakeAudio = new Audio(`/sound/mistake.mp3`);
+		mistakeAudio.volume = 0.8;
 		mistakeAudio.play();
 		handleLog(sessionId, 'click', 'incorrect', 'cibule');
 

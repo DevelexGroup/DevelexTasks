@@ -33,7 +33,7 @@
 		{getLessonConfig}
 		isDebug={false}
 		lessonName={data.config.label ?? data.config.level}
-		backgroundColor="rgba(255, 254, 232, 0.5)"
+		backgroundColor="rgba(255, 253, 208, 0.5)"
 		taskName="Fonologické uvědomění"
 	/>
 {/if}
