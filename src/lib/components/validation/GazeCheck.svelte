@@ -51,7 +51,7 @@
 		topright: 'Pravý horní roh',
 		topmiddle: 'Střed nahoře',
 		average: 'Průměr',
-		continue: 'Pokračovat na experiment',
+		continue: 'Pokračovat',
 		validate: 'Znovu validovat',
 		calibrate: 'Spustit kalibraci'
 	};

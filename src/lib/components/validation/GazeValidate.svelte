@@ -94,7 +94,7 @@
 	};
 </script>
 
-<div class="relative h-full min-h-60 w-full p-8">
+<div class="relative h-full min-h-60 w-full overflow-visible p-8">
 	<!-- TOPLEFT -->
 	{#if stage === 'topleft'}
 		<div class="absolute left-0 top-0" transition:fade>
