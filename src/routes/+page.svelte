@@ -13,6 +13,7 @@
 	<Button href="/section/meaningful-text">Meaningful Text</Button>
 	<div class="mt-4 flex flex-col gap-1">
 		<Button href="/settings">Změnit zařízení</Button>
+		<Button href="/validate">Validace</Button>
 		<Button href="/download">Stáhnout data</Button>
 	</div>
 </div>
