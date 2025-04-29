@@ -6,6 +6,7 @@ import stateEventsRepository from './stateEvents.repository';
 import userEventsRepository from './userEvents.repository';
 import dwellRepository from './dwell.repository';
 import xstateEventsRepository from './xstateEvents.repository';
+import validationPointRepository from './validationPoint.repository';
 
 export {
 	fixationRepository,
@@ -15,5 +16,6 @@ export {
 	stateEventsRepository,
 	userEventsRepository,
 	dwellRepository,
-	xstateEventsRepository
+	xstateEventsRepository,
+	validationPointRepository
 };

@@ -1,5 +1,9 @@
 <script lang="ts">
-	import type { GazeManager, GazeInteractionObjectValidationSettings } from '@473783/develex-core';
+	import type {
+		GazeManager,
+		GazeInteractionObjectValidationSettings,
+		GazeDataPoint
+	} from '@473783/develex-core';
 	import GazeValidateCross from './GazeValidateCross.svelte';
 	import { fade } from 'svelte/transition';
 
@@ -16,7 +20,7 @@
 			accuracy: number;
 			precision: number;
 			gazePointCount: number;
-			gazeDataPoints: unknown[];
+			gazeDataPoints: GazeDataPoint[];
 		}) => void;
 		onValidated: () => void;
 	}
@@ -79,7 +83,7 @@
 
 	const saveResult = (
 		where: 'topleft' | 'middle' | 'bottomright' | 'topright' | 'topmiddle',
-		result: { accuracy: number; precision: number; gazeDataPoints: unknown[] }
+		result: { accuracy: number; precision: number; gazeDataPoints: GazeDataPoint[] }
 	) => {
 		results[where].accuracy = result.accuracy;
 		results[where].precision = result.precision;

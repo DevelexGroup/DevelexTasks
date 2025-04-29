@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy, setContext } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import { GazeManager } from '@473783/develex-core';
+	import type { GazeDataPoint, FixationDataPoint } from '@473783/develex-core';
 	import GazeValidate from '$lib/components/validation/GazeValidate.svelte';
 	import GazeCheck from '$lib/components/validation/GazeCheck.svelte';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';
@@ -12,6 +12,11 @@
 	import LessonLoadLine from '$lib/components/LessonLoadLine.svelte';
 	import { goto } from '$app/navigation';
 	import { extractErrorMessage } from '$lib/utils/errorUtility';
+	import sessionRepository from '$lib/database/repositories/session.repository';
+	import validationPointRepository from '$lib/database/repositories/validationPoint.repository';
+	import stateEventsRepository from '$lib/database/repositories/stateEvents.repository';
+	import gazeInputRepository from '$lib/database/repositories/gazeInput.repository';
+	import fixationInputRepository from '$lib/database/repositories/fixationInput.repository';
 
 	const gazeManager = new GazeManager();
 	setContext('gazeManager', gazeManager);
@@ -66,12 +71,24 @@
 		}
 	});
 
-	function handleValidatedPoint(result: {
+	const handleInputData = async (inputData: GazeDataPoint) => {
+		console.log('inputData', inputData);
+		const clientTimestamp = new Date().toISOString();
+		await gazeInputRepository.create({ ...inputData, sessionId, clientTimestamp });
+	};
+
+	const handleInputFixationStart = async (inputFixationStart: FixationDataPoint) => {
+		console.log('inputFixationStart', inputFixationStart);
+		const clientTimestamp = new Date().toISOString();
+		await fixationInputRepository.create({ ...inputFixationStart, sessionId, clientTimestamp });
+	};
+
+	async function handleValidatedPoint(result: {
 		where: 'topleft' | 'middle' | 'bottomright' | 'topright' | 'topmiddle';
 		accuracy: number;
 		precision: number;
 		gazePointCount: number;
-		gazeDataPoints: unknown[];
+		gazeDataPoints: GazeDataPoint[];
 	}) {
 		console.log('Validation point:', result);
 		// Save the result to our validation results
@@ -80,18 +97,64 @@
 			precision: result.precision,
 			gazePointCount: result.gazePointCount
 		};
+
+		// First save all individual gazeDataPoints
+		const gazePointIds: string[] = result.gazeDataPoints.map((gazePoint) => gazePoint.deviceId);
+		const timestamp = new Date().toISOString();
+
+		// Save validation point to IndexedDB with references to the gaze points
+		await validationPointRepository.create({
+			sessionId,
+			timestamp,
+			where: result.where,
+			accuracy: result.accuracy,
+			precision: result.precision,
+			gazePointCount: result.gazePointCount,
+			gazePointIds: `[${gazePointIds.join(',')}]` // to prevent interpreting in excel as a big number
+		});
+
+		// Log state event
+		await stateEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'validationPoint',
+			data: `${result.where}: accuracy=${result.accuracy}, precision=${result.precision}, points=${result.gazePointCount}`
+		});
 	}
 
-	function handleValidated() {
+	async function handleValidated() {
 		console.log('Validation completed');
+
+		// Log state event
+		await stateEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'validationComplete',
+			data: 'All validation points completed'
+		});
+
 		appState = 'results';
 	}
 
-	function handleValidateAgain() {
+	async function handleValidateAgain() {
+		await stateEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'validationRestart',
+			data: 'User chose to validate again'
+		});
+
 		appState = 'ready';
 	}
 
-	function handleContinue() {
+	async function handleContinue() {
+		await stateEventsRepository.create({
+			sessionId,
+			timestamp: Date.now(),
+			type: 'validationEnd',
+			data: 'User completed validation'
+		});
+
 		goto('/');
 	}
 
@@ -169,6 +232,21 @@
 
 	const initialize = async () => {
 		try {
+			// Create session record
+			await sessionRepository.create({
+				id: sessionId,
+				name: `Validation session ${new Date().toLocaleString('cs-CZ')}`,
+				userName: 'NoSpecificUser'
+			});
+
+			// Log session start
+			await stateEventsRepository.create({
+				sessionId,
+				timestamp: Date.now(), // this one is timestamp in milliseconds for ordering reasons later on
+				type: 'validationStart',
+				data: 'Validation session started'
+			});
+
 			await checkViewportCalibration();
 			loadStateViewportCalibration = 'loaded';
 
@@ -184,6 +262,8 @@
 	};
 
 	onMount(() => {
+		gazeManager.on('inputData', handleInputData);
+		gazeManager.on('inputFixationStart', handleInputFixationStart);
 		initialize();
 	});
 
@@ -193,6 +273,10 @@
 			gazeManager.disconnect();
 			gazeManager.close();
 		}
+
+		// Remove event handlers
+		gazeManager.off('inputData', handleInputData);
+		gazeManager.off('inputFixationStart', handleInputFixationStart);
 	});
 </script>
 
