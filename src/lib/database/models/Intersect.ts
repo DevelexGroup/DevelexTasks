@@ -1,4 +1,4 @@
-import type { GazeInteractionObjectIntersectEvent } from '@473783/develex-core';
+import type { GazeInteractionObjectIntersectEvent } from 'develex-js-sdk';
 
 export type Intersect = Omit<GazeInteractionObjectIntersectEvent, 'target' | 'settings'> & {
 	aoi: string; // stringified Array of AOI labels, split by ';' (e.g. 'AOI1;AOI2')

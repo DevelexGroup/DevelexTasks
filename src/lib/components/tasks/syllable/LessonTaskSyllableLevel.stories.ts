@@ -4,7 +4,7 @@ import {
 	createGazeInput,
 	GazeInteractionObjectFixation,
 	GazeInteractionScreenFixation
-} from '@473783/develex-core';
+} from 'develex-js-sdk';
 import { WordReaderSynthesis } from '$lib/services/WordReaderSynthesis';
 
 const mouseGazeInput = createGazeInput({

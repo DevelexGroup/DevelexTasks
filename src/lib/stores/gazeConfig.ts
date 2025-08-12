@@ -1,4 +1,4 @@
-import { type GazeInputConfigWithFixations } from '@473783/develex-core';
+import { type GazeInputConfigWithFixations } from 'develex-js-sdk';
 import { writable, type Writable } from 'svelte/store';
 
 export const inputCreationConfig: Writable<GazeInputConfigWithFixations> = writable({

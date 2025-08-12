@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GazeManager, GazeInteractionObjectDwellEvent } from '@473783/develex-core';
+	import type { GazeManager, GazeInteractionObjectDwellEvent } from 'develex-js-sdk';
 	import DwellTargetAnimator from './DwellTargetAnimator.svelte';
 	import { onMount, onDestroy } from 'svelte';
 

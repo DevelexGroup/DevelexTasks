@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
-	import type { GazeInteractionObjectValidationSettings } from '@473783/develex-core';
-	import type { GazeInteractionObjectValidationEvent } from '@473783/develex-core';
-	import type { GazeManager } from '@473783/develex-core';
+	import type { GazeInteractionObjectValidationSettings } from 'develex-js-sdk';
+	import type { GazeInteractionObjectValidationEvent } from 'develex-js-sdk';
+	import type { GazeManager } from 'develex-js-sdk';
 
 	interface Props {
 		validationSettings: Partial<GazeInteractionObjectValidationSettings> & {

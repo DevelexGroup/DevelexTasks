@@ -14,7 +14,7 @@
 		GazeInteractionObjectDwellEvent,
 		GazeInteractionObjectFixationEvent,
 		GazeManager
-	} from '@473783/develex-core';
+	} from 'develex-js-sdk';
 	import { goto } from '$app/navigation';
 	import LessonMistakesPopup from '$lib/components/LessonMistakesPopup.svelte';
 	import { handleLog } from '$lib/utils/logger';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { GazeManager } from '@473783/develex-core';
+	import { GazeManager } from 'develex-js-sdk';
 	import { getContext } from 'svelte';
 
 	interface Props {

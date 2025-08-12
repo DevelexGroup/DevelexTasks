@@ -2,7 +2,7 @@
 	import { getContext, onMount } from 'svelte';
 	import LessonLoadViewportCalibration from './LessonLoadViewportCalibration.svelte';
 	import { waitForTimeout } from '$lib/utils/waitForCondition';
-	import type { GazeManager } from '@473783/develex-core';
+	import type { GazeManager } from 'develex-js-sdk';
 	import type { AnyLessonConfigSetup } from '$lib/types/lesson';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';
 	import { get } from 'svelte/store';

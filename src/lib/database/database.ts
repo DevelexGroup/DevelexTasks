@@ -7,7 +7,7 @@ import type { Session } from './models/Session';
 import type { Dwell } from './models/Dwell';
 import type { XStateEvent } from './models/XStateEvent';
 import type { ValidationPoint } from './models/ValidationPoint';
-import type { GazeDataPoint, FixationDataPoint } from '@473783/develex-core';
+import type { GazeDataPoint, FixationDataPoint } from 'develex-js-sdk';
 
 export class DevelexIDB extends Dexie {
 	userEvents!: Table<RecordedEvent>;

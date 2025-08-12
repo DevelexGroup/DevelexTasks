@@ -3,7 +3,7 @@
 		GazeManager,
 		GazeInteractionObjectValidationSettings,
 		GazeDataPoint
-	} from '@473783/develex-core';
+	} from 'develex-js-sdk';
 	import GazeValidateCross from './GazeValidateCross.svelte';
 	import { fade } from 'svelte/transition';
 

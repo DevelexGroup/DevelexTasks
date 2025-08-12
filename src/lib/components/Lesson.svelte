@@ -14,7 +14,7 @@
 		GazeManager,
 		GazeDataPoint,
 		FixationDataPoint
-	} from '@473783/develex-core';
+	} from 'develex-js-sdk';
 	import { onMount } from 'svelte';
 	import sessionRepository from '$lib/database/repositories/session.repository';
 	import { writable } from 'svelte/store';

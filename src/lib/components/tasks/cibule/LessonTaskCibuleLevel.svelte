@@ -3,7 +3,7 @@
 		GazeInteractionObjectDwellEvent,
 		GazeInteractionObjectFixationEvent,
 		GazeManager
-	} from '@473783/develex-core';
+	} from 'develex-js-sdk';
 	import { createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import {

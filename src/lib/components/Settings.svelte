@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GazeInputConfig, GazeInputConfigWithFixations } from '@473783/develex-core';
+	import type { GazeInputConfig, GazeInputConfigWithFixations } from 'develex-js-sdk';
 	import SettingsGazeInput from './SettingsGazeInput.svelte';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';
 	import Button from './Button.svelte';

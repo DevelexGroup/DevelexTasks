@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { GazeIndicator, type GazeDataPoint, type GazeManager } from '@473783/develex-core';
+	import { GazeIndicator, type GazeDataPoint, type GazeManager } from 'develex-js-sdk';
 	import { getContext, onDestroy, onMount } from 'svelte';
 
 	let isGazeActive = false;

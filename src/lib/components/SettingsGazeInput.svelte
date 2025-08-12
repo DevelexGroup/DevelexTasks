@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 
-	import type { GazeInputConfig, GazeManager } from '@473783/develex-core';
+	import type { GazeInputConfig, GazeManager } from 'develex-js-sdk';
 	import { createEventDispatcher, getContext, onMount } from 'svelte';
 	import InputSelect from './InputSelect.svelte';
 	import { get } from 'svelte/store';

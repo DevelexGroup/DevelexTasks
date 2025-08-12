@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy, setContext } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import { GazeManager } from '@473783/develex-core';
-	import type { GazeDataPoint, FixationDataPoint } from '@473783/develex-core';
+	import { GazeManager } from 'develex-js-sdk';
+	import type { GazeDataPoint, FixationDataPoint } from 'develex-js-sdk';
 	import GazeValidate from '$lib/components/validation/GazeValidate.svelte';
 	import GazeCheck from '$lib/components/validation/GazeCheck.svelte';
 	import { inputCreationConfig } from '$lib/stores/gazeConfig';

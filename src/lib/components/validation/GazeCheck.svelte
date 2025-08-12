@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GazeManager } from '@473783/develex-core';
+	import type { GazeManager } from 'develex-js-sdk';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	type GazeValidationMetrics = {

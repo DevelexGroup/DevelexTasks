@@ -1,5 +1,5 @@
 import { db } from '../database';
-import type { FixationDataPoint } from '@473783/develex-core';
+import type { FixationDataPoint } from 'develex-js-sdk';
 
 const fixationInputRepository = {
 	async getAll(): Promise<(FixationDataPoint & { clientTimestamp: string })[]> {

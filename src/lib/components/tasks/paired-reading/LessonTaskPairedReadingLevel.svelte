@@ -6,7 +6,7 @@
 	} from './LessonTaskPairedReadingLevel.utility';
 	import LessonTaskPairedReadingLayout from './LessonTaskPairedReadingLayout.svelte';
 	import type { LessonTaskPairedReadingTaskProps } from './LessonTaskPairedReadingLevel.type';
-	import type { GazeManager, GazeInteractionObjectFixationEvent } from '@473783/develex-core';
+	import type { GazeManager, GazeInteractionObjectFixationEvent } from 'develex-js-sdk';
 	import { assign, fromPromise, setup, type InspectionEvent } from 'xstate';
 	import { useMachine } from '@xstate/svelte';
 	import xstateEventsRepository from '$lib/database/repositories/xstateEvents.repository';

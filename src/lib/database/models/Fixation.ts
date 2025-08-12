@@ -1,4 +1,4 @@
-import type { GazeInteractionObjectFixationEvent } from '@473783/develex-core';
+import type { GazeInteractionObjectFixationEvent } from 'develex-js-sdk';
 
 export type Fixation = Omit<GazeInteractionObjectFixationEvent, 'target' | 'settings'> & {
 	aoi: string; // stringified Array of AOI labels, split by ';' (e.g. 'AOI1;AOI2')

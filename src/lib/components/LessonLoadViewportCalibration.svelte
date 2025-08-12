@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { GazeManager } from '@473783/develex-core';
+	import type { GazeManager } from 'develex-js-sdk';
 
 	interface Props {
 		onCalibrated: () => void;

@@ -1,5 +1,5 @@
 import { db } from '../database';
-import type { GazeDataPoint } from '@473783/develex-core';
+import type { GazeDataPoint } from 'develex-js-sdk';
 
 const gazeInputRepository = {
 	async getAll(): Promise<(GazeDataPoint & { clientTimestamp: string })[]> {
