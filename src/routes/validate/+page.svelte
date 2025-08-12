@@ -17,6 +17,7 @@
 	import stateEventsRepository from '$lib/database/repositories/stateEvents.repository';
 	import gazeInputRepository from '$lib/database/repositories/gazeInput.repository';
 	import fixationInputRepository from '$lib/database/repositories/fixationInput.repository';
+	import { resolveAny } from '$lib/utils/resolveAny';
 
 	const gazeManager = new GazeManager();
 	setContext('gazeManager', gazeManager);
@@ -155,7 +156,7 @@
 			data: 'User completed validation'
 		});
 
-		goto('/');
+		goto(resolveAny('/'));
 	}
 
 	const checkViewportCalibration = async () => {
@@ -310,7 +311,7 @@
 							class="mt-4 rounded-md bg-neutral-200 px-4 py-2 text-left text-neutral-600 hover:bg-neutral-300"
 							in:fly={{ duration: 600, y: 200, delay: 50 }}
 							onclick={() => {
-								goto('/');
+								goto(resolveAny('/'));
 							}}
 						>
 							Přejít na hlavní stránku

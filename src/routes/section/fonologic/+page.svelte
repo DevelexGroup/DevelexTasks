@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolveAny } from '$lib/utils/resolveAny';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonStartLesson from '$lib/components/ButtonStartLesson.svelte';
 
@@ -19,13 +20,13 @@
 	<p>Vyber si úroveň:</p>
 	<div class="flex flex-col gap-1">
 		{#each data.config as item}
-			<ButtonStartLesson href="/lesson/fonologic/{item.level}">
+			<ButtonStartLesson href={resolveAny(`/lesson/fonologic/${item.level}`)}>
 				{item.label ?? `Úroveň ${item.level}`}
 			</ButtonStartLesson>
 		{/each}
 		<div class="mt-4 flex flex-col gap-1">
-			<Button href="/">Zpět na výběr úloh</Button>
-			<Button href="/settings">Změnit zařízení</Button>
+			<Button href={resolveAny('/')}>Zpět na výběr úloh</Button>
+			<Button href={resolveAny('/settings')}>Změnit zařízení</Button>
 		</div>
 	</div>
 </div>

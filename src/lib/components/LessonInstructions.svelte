@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolveAny } from '$lib/utils/resolveAny';
 	import { onMount } from 'svelte';
 
 	interface Props {
@@ -8,7 +9,7 @@
 
 	let { handleInsturctionsContinue, audioPath }: Props = $props();
 
-	const audio = new Audio(audioPath);
+	const audio = new Audio(resolveAny(audioPath));
 
 	const handlePlayAudio = () => {
 		audio.pause();
@@ -32,7 +33,7 @@
 		onclick={handlePlayAudio}
 		class="rounded-md p-4 transition duration-200 hover:bg-gray-200"
 	>
-		<img src="/icons/earhear.svg" class="h-36" alt="Poslouchej" />
+		<img src={resolveAny('/icons/earhear.svg')} class="h-36" alt="Poslouchej" />
 	</button>
 
 	<h2 class="text-2xl font-medium text-gray-800">Poslouchej instrukce</h2>

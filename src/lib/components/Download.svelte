@@ -7,6 +7,7 @@
 	import sessionRepository from '$lib/database/repositories/session.repository';
 	import { db } from '$lib/database/database';
 	import type { Session } from '$lib/database/models/Session';
+	import { resolveAny } from '$lib/utils/resolveAny';
 
 	interface SessionWithDate extends Session {
 		firstRecordDate: string;
@@ -133,7 +134,7 @@
 		{/if}
 	</div>
 	<div class="mt-4 flex w-full items-center justify-center">
-		<Button href="/">Zpět</Button>
+		<Button href={resolveAny('/')}>Zpět</Button>
 	</div>
 </div>
 

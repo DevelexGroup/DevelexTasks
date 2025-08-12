@@ -5,6 +5,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
 	import Icon from '@iconify/svelte';
+	import { resolveAny } from '$lib/utils/resolveAny';
 
 	interface Props {
 		/**
@@ -87,7 +88,7 @@
 	const correctIds = new Set(correctIdsInTheRow.map((ix) => getSyllableId(ix)));
 	const clickedIds = new Set<string>(); // Track clicked syllables
 	let correctExpectingIndex = getNextExpectingIndex();
-	const roundCompleteAudio = new Audio('/sound/positive.wav');
+	const roundCompleteAudio = new Audio(resolveAny('/sound/positive.wav'));
 	roundCompleteAudio.volume = 0.4;
 	let showProgressAfterMistake = $state(false);
 	let usedIndexes = $state<number[]>([]);

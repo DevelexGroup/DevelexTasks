@@ -96,7 +96,7 @@
 	setContext('sessionId', sessionId);
 
 	const handleInputData = async (inputData: GazeDataPoint) => {
-		console.log('inputData', inputData);
+		// console.log('inputData', inputData);
 		const clientTimestamp = new Date().toISOString();
 		await gazeInputRepository.create({ ...inputData, sessionId, clientTimestamp });
 	};

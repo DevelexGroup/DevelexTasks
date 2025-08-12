@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolveAny } from '$lib/utils/resolveAny';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 
 	interface Props {
@@ -45,7 +46,11 @@
 			class="inline-flex h-24 items-center justify-center rounded-md border px-1.5 font-serif text-[30px]"
 		>
 			<div class="h-20 w-20">
-				<img src={`/img/lesson/VisualDiff/${word}.png`} alt={word} class="h-full w-full" />
+				<img
+					src={resolveAny(`/img/lesson/VisualDiff/${word}.png`)}
+					alt={word}
+					class="h-full w-full"
+				/>
 			</div>
 		</div>
 	{/each}

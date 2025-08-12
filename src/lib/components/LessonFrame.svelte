@@ -6,6 +6,7 @@
 	import LessonMistake from './LessonMistake.svelte';
 	import LessonFail from './LessonFail.svelte';
 	import { lessonComponentMap } from '$lib/types/lesson';
+	import { resolveAny } from '$lib/utils/resolveAny';
 
 	interface Props {
 		/**
@@ -36,15 +37,15 @@
 	const flyIn = { y: '100%', duration: 500, opacity: 0, delay: 500 };
 	const flyOut = { duration: 300, opacity: 0 };
 
-	const successAudio = new Audio('/sound/success.wav');
+	const successAudio = new Audio(resolveAny('/sound/success.wav'));
 	successAudio.volume = 0.4;
-	const roundCompleteAudio = new Audio('/sound/positive.wav');
+	const roundCompleteAudio = new Audio(resolveAny('/sound/positive.wav'));
 	roundCompleteAudio.volume = 0.4;
-	const warningAudio = new Audio('/sound/warning.wav');
+	const warningAudio = new Audio(resolveAny('/sound/warning.wav'));
 	warningAudio.volume = 0.4;
-	const completeAudio = new Audio('/sound/complete.wav');
+	const completeAudio = new Audio(resolveAny('/sound/complete.wav'));
 	completeAudio.volume = 0.4;
-	const failAudio = new Audio('/sound/fail.wav');
+	const failAudio = new Audio(resolveAny('/sound/fail.wav'));
 
 	const handleLessonSuccess = () => {
 		successAudio.play(); // play success sound and do nothing

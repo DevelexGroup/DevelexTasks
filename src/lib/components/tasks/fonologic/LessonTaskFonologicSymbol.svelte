@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolveAny } from '$lib/utils/resolveAny';
 	import { onDestroy, onMount } from 'svelte';
 
 	interface Props {
@@ -41,7 +42,7 @@
 >
 	<div class="h-36 w-36">
 		<img
-			src={`/img/lesson/fonologic/${word}.webp`}
+			src={resolveAny(`/img/lesson/fonologic/${word}.webp`)}
 			alt={word}
 			class="h-full w-full object-contain"
 		/>

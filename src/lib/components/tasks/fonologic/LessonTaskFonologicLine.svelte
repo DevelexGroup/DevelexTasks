@@ -6,6 +6,7 @@
 	import LessonWordLight from '$lib/components/LessonWordLight.svelte';
 	import LessonTaskSyllableItem from '../syllable/LessonTaskSyllableItem.svelte';
 	import { handleLog } from '$lib/utils/logger';
+	import { resolveAny } from '$lib/utils/resolveAny';
 
 	interface Props {
 		isSyllableAssignmentVisible?: boolean;
@@ -49,7 +50,7 @@
 
 	const sessionId = getContext<string>('sessionId');
 
-	const roundCompleteAudio = new Audio('/sound/positive.wav');
+	const roundCompleteAudio = new Audio(resolveAny('/sound/positive.wav'));
 	roundCompleteAudio.volume = 0.4;
 
 	const inOptions = { duration: 750, delay: 200 };

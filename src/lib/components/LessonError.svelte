@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolveAny } from '$lib/utils/resolveAny';
 	import Button from './Button.svelte';
 
 	interface Props {
@@ -18,5 +19,5 @@
 			{/each}
 		</ul>
 	{/if}
-	<Button href="/">Back to Lessons</Button>
+	<Button href={resolveAny('/')}>Back to Lessons</Button>
 </div>

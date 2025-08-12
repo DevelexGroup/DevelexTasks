@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolveAny } from '$lib/utils/resolveAny';
 	import { onDestroy, onMount } from 'svelte';
 
 	interface Props {
@@ -40,6 +41,6 @@
 			: 'border-transparent'}"
 >
 	<div class="h-20 w-20">
-		<img src={`/img/lesson/VisualDiff/${word}.png`} alt={word} class="h-full w-full" />
+		<img src={resolveAny(`/img/lesson/VisualDiff/${word}.png`)} alt={word} class="h-full w-full" />
 	</div>
 </div>

@@ -18,6 +18,7 @@
 	import { goto } from '$app/navigation';
 	import LessonMistakesPopup from '$lib/components/LessonMistakesPopup.svelte';
 	import { handleLog } from '$lib/utils/logger';
+	import { resolveAny } from '$lib/utils/resolveAny';
 
 	let {
 		currentContent,
@@ -106,7 +107,7 @@
 	};
 
 	const handleIncorrectSyllableClick = () => {
-		const mistakeAudio = new Audio(`/sound/mistake.mp3`);
+		const mistakeAudio = new Audio(resolveAny(`/sound/mistake.mp3`));
 		mistakeAudio.volume = 0.8;
 		mistakeAudio.play();
 		handleLog(sessionId, 'click', 'incorrect', 'vis-diff');
@@ -163,7 +164,9 @@
 				}
 			]);
 		} else {
-			const readingAudio = new Audio(`/sound/tasks/vis-diff/${content.wordToRead}.m4a`);
+			const readingAudio = new Audio(
+				resolveAny(`/sound/tasks/visual-diff/${content.wordToRead}.m4a`)
+			);
 			readingAudio.play();
 		}
 	};
