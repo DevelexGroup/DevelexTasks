@@ -4,3 +4,7 @@
 @theme {
 	--color-background: #fffee8;
 }
+
+button {
+	@apply cursor-pointer;
+}

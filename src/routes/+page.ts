@@ -1,3 +1,20 @@
-// since there's no dynamic data here, we can prerender
-// it so that it gets served as a static asset in production
-export const prerender = true;
+import type { PageLoad } from './$types';
+
+export const load: PageLoad = async () => {
+	const modules = import.meta.glob('/src/lib/components/tasks/*/index.ts', { eager: true });
+
+	const tasks = Object.entries(modules)
+		.map(([path, mod]) => {
+			const task = mod as {
+				label: string;
+				addToList: boolean;
+			};
+
+			const slug = path.split('/').at(-2);
+
+			return { slug, ...task };
+		})
+		.filter((task) => task.addToList);
+
+	return { tasks };
+};

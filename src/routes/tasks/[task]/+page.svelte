@@ -5,21 +5,18 @@
 	let { data }: PageProps = $props();
 </script>
 
-<svelte:head>
-	<title>Develex Tasks</title>
-	<meta name="description" content="Various develex tasks" />
-</svelte:head>
-
 <section class="mt-8 flex flex-col items-center justify-center">
 	<h1 class="text-5xl font-bold text-red-400">Develex Tasks</h1>
 
 	<div class="mt-12 flex flex-col gap-2">
-		{#each data.tasks as task}
+		<h2>{data.task.label}</h2>
+
+		{#each data.levels as level}
 			<button
 				class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-				onclick={() => goto(`/tasks/${task.slug}`)}
+				onclick={() => goto(`/tasks/${data.task.slug}/${level}`)}
 			>
-				Task: {task.label}
+				level: {level}
 			</button>
 		{/each}
 	</div>
