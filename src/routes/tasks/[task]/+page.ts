@@ -1,12 +1,12 @@
+import type { TaskMetadata } from '$lib/types/task.types';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
 	const { task: taskSlug } = params;
 
-	const taskModules = import.meta.glob<{ label: string; addToList: boolean }>(
-		'/src/lib/components/tasks/*/index.ts',
-		{ eager: true }
-	);
+	const taskModules = import.meta.glob<TaskMetadata>('/src/lib/components/tasks/*/index.ts', {
+		eager: true
+	});
 
 	const taskPath = Object.keys(taskModules).find((path) =>
 		path.includes(`/tasks/${taskSlug}/index.ts`)
