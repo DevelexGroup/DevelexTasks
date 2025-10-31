@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+@import '@fontsource/fira-mono';
+
+@theme {
+	--color-background: #fffee8;
+}
