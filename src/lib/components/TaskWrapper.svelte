@@ -11,7 +11,7 @@
 	taskState.set(TaskState.Loading);
 
 	const handleGazeData = (gazeData: GazeDataPoint) => {
-		console.log(gazeData);
+		// console.log(gazeData);
 	};
 
 	onMount(() => {
