@@ -5,7 +5,7 @@
 	let { data }: PageProps = $props();
 
 	const CoreComponent = import(
-		'/src/lib/components/tasks/' + data.task + '/levels/' + data.level + '/Core.svelte'
+		`../../../../lib/components/tasks/${data.task}/levels/${data.level}/Core.svelte`
 	).then((mod) => mod.default);
 </script>
 
