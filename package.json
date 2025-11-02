@@ -19,6 +19,7 @@
 		"@eslint/compat": "^1.4.0",
 		"@eslint/js": "^9.38.0",
 		"@fontsource/fira-mono": "^5.2.7",
+		"@iconify/svelte": "^5.0.2",
 		"@neoconfetti/svelte": "^2.2.2",
 		"@sveltejs/adapter-auto": "^7.0.0",
 		"@sveltejs/adapter-static": "^3.0.10",
