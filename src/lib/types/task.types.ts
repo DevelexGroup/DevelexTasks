@@ -3,3 +3,10 @@ export interface TaskMetadata {
 	description: string;
 	addToList: boolean;
 }
+
+export enum TaskState {
+	Loading,
+	Instructions,
+	Task,
+	Error
+}
