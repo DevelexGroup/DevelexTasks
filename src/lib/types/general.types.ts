@@ -3,3 +3,10 @@ export enum LoadState {
 	Loaded,
 	Error
 }
+
+export enum DwellState {
+	Active,
+	Disabled,
+	ActiveDwelling,
+	DwellCancelled
+}
