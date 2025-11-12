@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { PageProps } from './$types';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 </script>
@@ -14,10 +15,10 @@
 	<h1 class="text-5xl font-bold text-red-400">Develex Tasks</h1>
 
 	<div class="mt-12 flex flex-col gap-2">
-		{#each data.tasks as task}
+		{#each data.tasks as task (task.slug)}
 			<button
 				class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-				onclick={() => goto(`/tasks/${task.slug}`)}
+				onclick={() => goto(resolve(`/tasks/${task.slug}`))}
 			>
 				Task: {task.label}
 			</button>

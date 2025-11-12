@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { PageProps } from './$types';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 </script>
@@ -11,10 +12,10 @@
 	<div class="mt-12 flex flex-col gap-2">
 		<h2>{data.task.label}</h2>
 
-		{#each data.levels as level}
+		{#each data.levels as level (level)}
 			<button
 				class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-				onclick={() => goto(`/tasks/${data.task.slug}/${level}`)}
+				onclick={() => goto(resolve(`/tasks/${data.task.slug}/${level}`))}
 			>
 				level: {level}
 			</button>
