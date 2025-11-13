@@ -17,7 +17,7 @@ export const load: PageLoad = async ({ params }) => {
 	}
 
 	const task = taskModules[taskPath];
-	const levelModules = import.meta.glob(`/src/lib/components/tasks/*/levels/*/Core.svelte`, {
+	const levelModules = import.meta.glob(`/src/lib/components/tasks/*/levels/*/Task.svelte`, {
 		eager: true
 	});
 

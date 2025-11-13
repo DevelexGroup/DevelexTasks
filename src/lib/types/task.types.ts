@@ -7,6 +7,13 @@ export interface TaskMetadata {
 export enum TaskState {
 	Loading,
 	Instructions,
+	Practice,
 	Task,
+	End,
 	Error
+}
+
+export interface TaskLevelProps {
+	id: string;
+	onCompleted: () => void;
 }
