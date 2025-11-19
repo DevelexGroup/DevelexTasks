@@ -6,6 +6,7 @@
 
 	const CANCEL_TIMEOUT_MS = 300;
 	const DWELL_TOLERANCE_MS = 100;
+	const DEFAULT_SIZE_RATIO = 0.6;
 
 	interface Props {
 		id: string;
@@ -22,7 +23,7 @@
 		dwellTimeMs = 800,
 		onDwellComplete = () => {},
 		eyeWidth = 250,
-		eyeHeight = 150,
+		eyeHeight = eyeWidth * DEFAULT_SIZE_RATIO,
 		bufferSize = 100,
 		dwellState = $bindable(DwellState.Active) as DwellState
 	}: Props = $props();
