@@ -4,6 +4,7 @@
 		CibuleLevelState,
 		type CibuleTaskProps
 	} from '$lib/components/tasks/cibule/cibule.types';
+	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
 
 	let {
 		id,
@@ -15,7 +16,9 @@
 	let currentState = $state<CibuleLevelState>(CibuleLevelState.InitialDwell);
 	let currentRepetition = $state<number>(1);
 
-	const advanceLevel = () => {
+	const symbols: string[] = data.syllables.flatMap(syllable => [...syllable]);
+
+	function advanceLevel() {
 		if (currentRepetition < repetitions) {
 			currentRepetition += 1;
 			currentState = CibuleLevelState.InitialDwell;
@@ -39,7 +42,12 @@
 		</div>
 	{:else if currentState === CibuleLevelState.Task}
 	<div class="text-center">
-		<div class="flex items-center justify-center gap-2">
+		<div class="flex items-center justify-center gap-16">
+			<div class="flex items-center justify-center gap-0">
+				{#each symbols as symbol, index (index)}
+					<CibuleSymbol {symbol} />
+				{/each}
+			</div>
 			<button class="mt-4 px-4 py-2 bg-green-500 text-white rounded"
 							onclick={() => {
 					currentState = CibuleLevelState.EndDwell;
