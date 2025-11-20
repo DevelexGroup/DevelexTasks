@@ -10,16 +10,17 @@
 		id,
 		data,
 		repetitions = 2,
+		isPractice = false,
 		onCompleted = () => {}
 	}: CibuleTaskProps = $props();
 
 	let currentState = $state<CibuleLevelState>(CibuleLevelState.InitialDwell);
-	let currentRepetition = $state<number>(1);
+	let currentRepetition = $state<number>(0);
 
 	const symbols: string[] = data.syllables.flatMap(syllable => [...syllable]);
 
 	function advanceLevel() {
-		if (currentRepetition < repetitions) {
+		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
 			currentState = CibuleLevelState.InitialDwell;
 		} else {
@@ -44,9 +45,9 @@
 	<div class="text-center">
 		<div class="flex items-center justify-center gap-32">
 			<CibuleSymbol symbol={data.correctSyllable ?? ""} interactable={false} />
-			<div class="flex items-center justify-center gap-0">
+			<div class="flex items-center justify-center gap-1">
 				{#each symbols as symbol, index (index)}
-					<CibuleSymbol {symbol} />
+					<CibuleSymbol {symbol} correctSymbol={symbol === data.correctSyllable} colorOnClick={isPractice} />
 				{/each}
 			</div>
 		</div>

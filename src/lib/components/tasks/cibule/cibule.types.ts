@@ -25,7 +25,7 @@ export const cibuleTestData: CibuleTaskLevelData = [
 	{
 		levelID: "level1",
 		label: 'Úroveň 1',
-		practice_content: [
+		practiceContent: [
 			{
 				syllables: [ 'ggggg', 'a', 'ggg', 'a', 'gggggggg', 'a', 'ggg', 'a', 'gg', 'a', 'gggggggg', 'a', 'gggg', 'a', 'gggg' ],
 				correctSyllable: 'a',

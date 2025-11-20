@@ -15,12 +15,13 @@ export enum TaskState {
 
 export interface TaskLevelProps {
 	id: string;
-	onCompleted: () => void;
+	onCompleted?: () => void;
+	isPractice?: boolean;
 }
 
 export type TaskLevelData<TaskContent> = {
 	levelID: string;
 	label: string;
-	practice_content: TaskContent[];
+	practiceContent: TaskContent[];
 	content: TaskContent[];
 }[];

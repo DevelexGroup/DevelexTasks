@@ -1,7 +1,11 @@
 ﻿<script lang="ts">
+	import { resolveAny } from '$lib/utils/resolveAny';
+
 	interface Props {
 		symbol: string;
+		correctSymbol?: boolean;
 		interactable?: boolean;
+		colorOnClick?: boolean;
 		onClick?: () => void;
 	}
 
@@ -9,15 +13,32 @@
 
 	let {
 		symbol,
+		correctSymbol = false,
 		interactable = true,
-		onClick = () => {
-			selected = !selected;
-		}
+		colorOnClick = true,
+		onClick = () => onSymbolClick(correctSymbol)
 	}: Props = $props();
+
+	function onSymbolClick(correct: boolean) {
+		selected = true;
+
+		const audio = new Audio(
+			resolveAny(correct ? '/sound/symbolCorrect.ogg' : '/sound/symbolMistake.ogg')
+		);
+		audio.play();
+	}
 </script>
 
 <div>
-	<button type="button" class="symbol font-serif text-4xl text-gray-800" class:non-interactable={!interactable} class:selected={selected} onclick={onClick}>{symbol}</button>
+	<button type="button" class="symbol font-serif text-4xl text-gray-800"
+					class:correct-symbol={correctSymbol}
+					class:incorrect-symbol={!correctSymbol}
+					class:non-interactable={!interactable}
+					class:selected={selected && colorOnClick}
+					onclick={onClick}
+	>
+		{symbol}
+	</button>
 </div>
 
 <style>
@@ -31,10 +52,20 @@
 			}
 
 			&.selected{
-					color: #1E40AF; /* Tailwind's blue-800 */
+					&.correct-symbol{
+              color: #1E40AF;
+              &::before {
+                  background-color: #bbc5e7;
+                  z-index: -1;
+              }
+					}
 
-					&::before {
-							background-color: rgba(30, 64, 175, 0.3);
+					&.incorrect-symbol{
+							color: #DC2626;
+							&::before {
+									background-color: #f4bdbd;
+									z-index: -2;
+							}
 					}
 			}
 
@@ -46,13 +77,6 @@
 					background-color: rgba(0, 0, 0, 0);
 					transition: all 200ms ease-in;
 					pointer-events: none;
-			}
-
-			&:hover{
-					&::before {
-							background-color: rgba(0, 0, 0, 0.3);
-							transition: all 200ms ease-out;
-          }
 			}
 	}
 </style>
