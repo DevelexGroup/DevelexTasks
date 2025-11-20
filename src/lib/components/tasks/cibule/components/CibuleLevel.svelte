@@ -1,11 +1,9 @@
 ﻿<script lang="ts">
 	import DwellTarget from '$lib/components/dwellTarget/DwellTarget.svelte';
-	import {
-		CibuleLevelState,
-		type CibuleTaskProps
-	} from '$lib/components/tasks/cibule/cibule.types';
+	import { CibuleLevelState, type CibuleTaskProps } from '$lib/components/tasks/cibule/cibule.types';
 	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { cursorVisible } from '$lib/stores/cursor';
 
 	let keydownHandler: (e: KeyboardEvent) => void;
 
@@ -38,6 +36,18 @@
 		return () => {
 			window.removeEventListener('keydown', keydownHandler);
 		};
+	});
+
+	$effect(() => {
+		if (currentState === CibuleLevelState.InitialDwell || currentState === CibuleLevelState.EndDwell) {
+			cursorVisible.set(false);
+		} else {
+			cursorVisible.set(true);
+		}
+	});
+
+	onDestroy(() => {
+		cursorVisible.set(true);
 	});
 
 	function advanceLevel() {
