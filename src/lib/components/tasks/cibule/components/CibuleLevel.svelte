@@ -5,6 +5,9 @@
 		type CibuleTaskProps
 	} from '$lib/components/tasks/cibule/cibule.types';
 	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
+	import { onMount } from 'svelte';
+
+	let keydownHandler: (e: KeyboardEvent) => void;
 
 	let {
 		id,
@@ -20,6 +23,23 @@
 	const currentData = $derived(() => data[currentRepetition % data.length]);
 	const symbols = $derived(() => currentData().syllables.flatMap(syllable => [...syllable]));
 
+	onMount(() => {
+		keydownHandler = (e: KeyboardEvent) => {
+			if (e.code === 'Space' || e.key === ' ') {
+				e.preventDefault();
+				if (currentState === CibuleLevelState.InitialDwell) {
+					currentState = CibuleLevelState.Task;
+				} else if (currentState === CibuleLevelState.EndDwell) {
+					advanceLevel();
+				}
+			}
+		};
+		window.addEventListener('keydown', keydownHandler);
+		return () => {
+			window.removeEventListener('keydown', keydownHandler);
+		};
+	});
+
 	function advanceLevel() {
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
@@ -34,7 +54,7 @@
 	{#if currentState === CibuleLevelState.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`}>
 			<DwellTarget id={`${id}_initial}`}
-									 dwellTimeMs={500}
+									 dwellTimeMs={300}
 									 bufferSize={50}
 									 eyeWidth={150}
 									 onDwellComplete={() => {
@@ -63,7 +83,7 @@
 	{:else if currentState === CibuleLevelState.EndDwell}
 		<div class="fixed bottom-16 right-16" id={`${id}_end}`}>
 			<DwellTarget id={`${id}_end}`}
-									 dwellTimeMs={500}
+									 dwellTimeMs={300}
 									 bufferSize={50}
 									 eyeWidth={150}
 									 onDwellComplete={() => {
