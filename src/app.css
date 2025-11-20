@@ -2,7 +2,7 @@
 @import '@fontsource/fira-mono';
 
 @theme {
-	--color-background: #fffee8;
+	--color-task-background: #fffee8;
 }
 
 button {
