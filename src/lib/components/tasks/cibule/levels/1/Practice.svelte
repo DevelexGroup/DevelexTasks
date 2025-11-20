@@ -5,7 +5,7 @@
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.types';
 
 	const id = 'level1';
-	const data = cibuleTestData.find((level => level.levelID === id))?.practiceContent[0];
+	const data = cibuleTestData.find((level => level.levelID === id))?.practiceContent;
 </script>
 
 {#if data}

@@ -9,7 +9,7 @@
 	let {
 		id,
 		data,
-		repetitions = 2,
+		repetitions = 1,
 		isPractice = false,
 		onCompleted = () => {}
 	}: CibuleTaskProps = $props();
@@ -17,7 +17,8 @@
 	let currentState = $state<CibuleLevelState>(CibuleLevelState.InitialDwell);
 	let currentRepetition = $state<number>(0);
 
-	const symbols: string[] = data.syllables.flatMap(syllable => [...syllable]);
+	const currentData = $derived(() => data[currentRepetition % data.length]);
+	const symbols = $derived(() => currentData().syllables.flatMap(syllable => [...syllable]));
 
 	function advanceLevel() {
 		if (currentRepetition < repetitions - 1) {
@@ -42,23 +43,23 @@
 			/>
 		</div>
 	{:else if currentState === CibuleLevelState.Task}
-	<div class="text-center">
-		<div class="flex items-center justify-center gap-32">
-			<CibuleSymbol symbol={data.correctSyllable ?? ""} interactable={false} />
-			<div class="flex items-center justify-center gap-1">
-				{#each symbols as symbol, index (index)}
-					<CibuleSymbol {symbol} correctSymbol={symbol === data.correctSyllable} colorOnClick={isPractice} />
-				{/each}
+		<div class="text-center">
+			<div class="flex items-center justify-center gap-32">
+				<CibuleSymbol symbol={currentData().correctSyllable ?? ""} interactable={false} />
+				<div class="flex items-center justify-center gap-1">
+					{#each symbols() as symbol, index (index)}
+						<CibuleSymbol {symbol} correctSymbol={symbol === currentData().correctSyllable} colorOnClick={isPractice} />
+					{/each}
+				</div>
 			</div>
 		</div>
-	</div>
-	<button class="absolute left-8 bottom-8 mt-4 px-4 py-2 bg-green-500 text-white rounded"
-					onclick={() => {
+		<button class="absolute left-8 bottom-8 mt-4 px-4 py-2 bg-green-500 text-white rounded"
+						onclick={() => {
 				currentState = CibuleLevelState.EndDwell;
 			}}
-	>
-		Skip
-	</button>
+		>
+			Skip
+		</button>
 	{:else if currentState === CibuleLevelState.EndDwell}
 		<div class="fixed bottom-16 right-16" id={`${id}_end}`}>
 			<DwellTarget id={`${id}_end}`}

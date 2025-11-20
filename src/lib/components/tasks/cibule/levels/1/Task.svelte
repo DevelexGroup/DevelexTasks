@@ -5,9 +5,9 @@
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.types';
 
 	const id = 'level1';
-	const data = cibuleTestData.find((level => level.levelID === id))?.content[0];
+	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} onCompleted={() => {taskState.set(TaskState.End)}} />
+<CibuleLevel {id} data={data} repetitions={2} onCompleted={() => {taskState.set(TaskState.End)}} />
 {/if}
