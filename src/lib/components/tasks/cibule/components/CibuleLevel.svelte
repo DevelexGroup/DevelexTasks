@@ -42,21 +42,22 @@
 		</div>
 	{:else if currentState === CibuleLevelState.Task}
 	<div class="text-center">
-		<div class="flex items-center justify-center gap-16">
+		<div class="flex items-center justify-center gap-32">
+			<CibuleSymbol symbol={data.correctSyllable ?? ""} interactable={false} />
 			<div class="flex items-center justify-center gap-0">
 				{#each symbols as symbol, index (index)}
 					<CibuleSymbol {symbol} />
 				{/each}
 			</div>
-			<button class="mt-4 px-4 py-2 bg-green-500 text-white rounded"
-							onclick={() => {
-					currentState = CibuleLevelState.EndDwell;
-				}}
-			>
-				Splněno ({currentRepetition}/{repetitions})
-			</button>
 		</div>
 	</div>
+	<button class="absolute left-8 bottom-8 mt-4 px-4 py-2 bg-green-500 text-white rounded"
+					onclick={() => {
+				currentState = CibuleLevelState.EndDwell;
+			}}
+	>
+		Skip
+	</button>
 	{:else if currentState === CibuleLevelState.EndDwell}
 		<div class="fixed bottom-16 right-16" id={`${id}_end}`}>
 			<DwellTarget id={`${id}_end}`}
