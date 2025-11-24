@@ -6,6 +6,7 @@
 	import { untilAbort } from '$lib/utils/untilAbort';
 	import { onDestroy, onMount, getContext } from 'svelte';
 	import DwellEye from '$lib/components/dwellTarget/eye/DwellEye.svelte';
+	import { resolveAny } from '$lib/utils/resolveAny';
 
 	const colors: Record<DwellState, string> = {
 		[DwellState.Active]: '#50C878',
@@ -50,88 +51,30 @@
 	const dwellTimeMs = $derived(dwellTimeMsProp ?? parentContext?.dwellTimeMs ?? 2000);
 	let dwellState = $derived(dwellStateProp ?? parentContext?.dwellState ?? DwellState.Active);
 
-	const initialIncreaseProportion = $derived(defaultPupilProportion * 1.05);
-	const decreasedProportion = $derived(defaultPupilProportion * 0.4);
-	const finalIncreaseProportion = $derived(defaultPupilProportion + 0.12);
-
-	const pupilColor = $derived(colors[dwellState]);
-
-	const buildDuration = $derived(
-		Math.max(dwellTimeMs - (2 * INITIAL_TRANSITION_MS + FINAL_TRANSITION_MS), 100)
-	);
-
-	const pupilProportion = new Tween(defaultPupilProportion, {
-		duration: 300,
-		easing: cubicOut
-	});
+	let wrapperElement: HTMLElement | null = null;
 
 	let previousState: DwellState = dwellState;
-	let animationAbortController: AbortController | null = null;
-
-	onMount(() => {
-		pupilProportion.set(defaultPupilProportion, { duration: 0 });
-	});
-
-	onDestroy(() => {
-		resetAnimation();
-	});
 
 	$effect(() => {
+		wrapperElement?.style.setProperty('--dwell-time-ms', `${dwellTimeMs}ms`);
+
 		if (dwellState === previousState)
 			return;
 
-		resetAnimation();
-
-		if (dwellState === DwellState.ActiveDwelling && previousState === DwellState.Active) {
-			animationAbortController = new AbortController();
-			startDwellAnimation(animationAbortController.signal);
-		}
-
 		previousState = dwellState;
 	});
-
-	async function startDwellAnimation(signal?: AbortSignal) {
-		const setProportion = (proportion: number, duration: number, easing: EasingFunction): Promise<void> => {
-			return untilAbort(pupilProportion.set(proportion, { duration, easing }), signal);
-		};
-
-		try {
-			await setProportion(initialIncreaseProportion, INITIAL_TRANSITION_MS, cubicOut);
-			await setProportion(decreasedProportion, INITIAL_TRANSITION_MS, cubicIn);
-			await setProportion(finalIncreaseProportion, buildDuration, linear);
-			await setProportion(defaultPupilProportion, FINAL_TRANSITION_MS, linear);
-		} catch (e) {
-			if (e instanceof DOMException && e.name === 'AbortError') {
-				pupilProportion.set(defaultPupilProportion, { duration: RESET_TRANSITION_MS, easing: linear });
-				return;
-			}
-			throw e;
-		}
-	}
-
-	function resetAnimation() {
-		if (animationAbortController) {
-			animationAbortController.abort();
-			animationAbortController = null;
-		}
-	}
 </script>
 
 <div
+	bind:this={wrapperElement}
 	class="dwell-target"
 	class:disabled={dwellState === DwellState.Disabled}
 	class:dwelling={dwellState === DwellState.ActiveDwelling}
 	class:cancelled={dwellState === DwellState.DwellCancelled}
 	style={`width: ${width}px; height: ${height}px;`}
 >
-	<DwellEye
-		eyeWidth={width}
-		eyeHeight={height}
-		pupilProportion={pupilProportion.current}
-		{pupilColor}
-		colorTransitionDuration={0.3}
-		{pulseEnabled}
-	/>
+	<img class="arrow--background" src={resolveAny('/images/common/dwell-arrow-grey.svg')} alt="&#8594;" />
+	<img class="arrow--fill fill--bar" src={resolveAny('/images/common/dwell-arrow-fill.svg')} alt="" />
 </div>
 
 <style>
@@ -152,4 +95,37 @@
 	.cancelled {
 		opacity: 0.9;
 	}
+
+  .dwell-target img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.arrow--background {
+		z-index: 1;
+	}
+
+  .arrow--fill {
+		z-index: 2;
+    pointer-events: none;
+	}
+
+	.arrow--fill.fill--bar {
+    clip-path: inset(0 100% 0 0 round 999px);
+	}
+
+	.dwelling .arrow--fill.fill--bar {
+    animation: dwell-bar-fill var(--dwell-time-ms) ease-out forwards;
+	}
+
+  @keyframes dwell-bar-fill {
+    0% {
+      clip-path: inset(0 100% 0 0 round 999px);
+    }
+    100% {
+      clip-path: inset(0 0 0 0 round 999px);
+    }
+  }
 </style>

@@ -8,8 +8,7 @@ export interface CibuleTaskProps extends TaskLevelProps {
 
 export enum CibuleLevelState {
 	InitialDwell,
-	Task,
-	EndDwell
+	Task
 }
 
 export type CibuleLevelDataEntry = {

@@ -56,7 +56,7 @@
 				id="practice-eye"
 				dwellTimeMs={300}
 				bufferSize={50}
-				eyeWidth={150}
+				width={150}
 				onDwellComplete={() => (currentState = ZrakovkaTaskState.Task)}
 			/>
 		</div>
@@ -87,7 +87,7 @@
 				id="practice-eye"
 				dwellTimeMs={300}
 				bufferSize={50}
-				eyeWidth={150}
+				width={150}
 				onDwellComplete={() => taskState.set(TaskState.Instructions)}
 			/>
 		</div>

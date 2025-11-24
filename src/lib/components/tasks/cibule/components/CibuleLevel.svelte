@@ -5,6 +5,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
+	import DwellTargetArrow from '$lib/components/dwellTarget/DwellTargetArrow.svelte';
 
 	let keydownHandler: (e: KeyboardEvent) => void;
 
@@ -37,8 +38,6 @@
 				if (currentState === CibuleLevelState.InitialDwell) {
 					currentState = CibuleLevelState.Task;
 				} else if (currentState === CibuleLevelState.Task) {
-					currentState = CibuleLevelState.EndDwell;
-				} else if (currentState === CibuleLevelState.EndDwell) {
 					advanceLevel();
 				}
 			}
@@ -50,14 +49,10 @@
 	});
 
 	$effect(() => {
-		if (currentState === CibuleLevelState.InitialDwell || currentState === CibuleLevelState.EndDwell) {
+		if (currentState === CibuleLevelState.InitialDwell) {
 			cursorVisible.set(false);
 		} else {
 			cursorVisible.set(true);
-		}
-
-		if (currentSymbolIndex === correctIndices()[correctIndices().length - 1]) {
-			setTimeout(() => currentState = CibuleLevelState.EndDwell, 1000);
 		}
 	});
 
@@ -90,7 +85,7 @@
 			<DwellTarget id={`${id}_initial}`}
 									 dwellTimeMs={300}
 									 bufferSize={50}
-									 eyeWidth={150}
+									 width={150}
 									 onDwellComplete={() => {
 									 	 currentState = CibuleLevelState.Task;
 									 }}
@@ -109,16 +104,17 @@
 				</div>
 			</div>
 		</div>
-	{:else if currentState === CibuleLevelState.EndDwell}
 		<div class="fixed bottom-16 right-16" id={`${id}_end}`} transition:fade>
 			<DwellTarget id={`${id}_end}`}
-									 dwellTimeMs={300}
+									 dwellTimeMs={2000}
 									 bufferSize={50}
-									 eyeWidth={150}
+									 width={150}
 									 onDwellComplete={() => {
 										 advanceLevel();
 									 }}
-			/>
+			>
+				<DwellTargetArrow />
+			</DwellTarget>
 		</div>
 	{/if}
 </div>

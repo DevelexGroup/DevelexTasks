@@ -1,8 +1,9 @@
 ﻿<script lang="ts">
-	import { getContext, onDestroy, onMount } from 'svelte';
+	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { type GazeInteractionObjectDwellEvent, GazeManager } from 'develex-js-sdk';
 	import { DwellState } from '$lib/types/general.types';
-	import DwellTargetAnimator from '$lib/components/dwellTarget/DwellTargetAnimator.svelte';
+	import DwellTargetEye from '$lib/components/dwellTarget/DwellTargetEye.svelte';
+	import type { Snippet } from 'svelte';
 
 	const CANCEL_TIMEOUT_MS = 300;
 	const DWELL_TOLERANCE_MS = 100;
@@ -12,21 +13,32 @@
 		id: string;
 		dwellTimeMs?: number;
 		onDwellComplete?: () => void;
-		eyeWidth?: number;
-		eyeHeight?: number;
+		width?: number;
+		height?: number;
 		dwellState?: DwellState;
 		bufferSize?: number;
+		children?: Snippet;
 	}
 
 	let {
 		id,
 		dwellTimeMs = 800,
 		onDwellComplete = () => {},
-		eyeWidth = 250,
-		eyeHeight = eyeWidth * DEFAULT_SIZE_RATIO,
+		width = 250,
+		height = width * DEFAULT_SIZE_RATIO,
 		bufferSize = 100,
-		dwellState = $bindable(DwellState.Active) as DwellState
+		dwellState = $bindable(DwellState.Active) as DwellState,
+		children
 	}: Props = $props();
+
+	// Set context so child components can access these props
+	setContext('dwellTargetProps', {
+		get dwellState() { return dwellState; },
+		set dwellState(value: DwellState) { dwellState = value; },
+		get dwellTimeMs() { return dwellTimeMs; },
+		get width() { return width; },
+		get height() { return height; }
+	});
 
 	let gazeManager = getContext<GazeManager>('gazeManager');
 
@@ -124,6 +136,10 @@
 	}
 </script>
 
-<div {id} bind:this={wrapperElement} style={`width: ${eyeWidth}px; height: ${eyeHeight}px;`}>
-	<DwellTargetAnimator bind:dwellState {dwellTimeMs} {eyeWidth} {eyeHeight} />
+<div {id} bind:this={wrapperElement} style={`width: ${width}px; height: ${height}px;`}>
+	{#if children}
+		{@render children()}
+	{:else}
+		<DwellTargetEye />
+	{/if}
 </div>
