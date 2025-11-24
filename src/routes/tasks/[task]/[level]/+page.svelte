@@ -23,6 +23,8 @@
 	{#if taskComponentPromise}
 		{#await taskComponentPromise then TaskComponent}
 				<TaskComponent />
+		{:catch error}
+			<p>Error loading Task component: {error.message}</p>
 		{/await}
 	{/if}
 	</svelte:fragment>
@@ -31,6 +33,8 @@
 		{#if practiceComponentPromise}
 			{#await practiceComponentPromise then PracticeComponent}
 				<PracticeComponent />
+			{:catch error}
+				<p>Error loading Practice component: {error.message}</p>
 			{/await}
 		{/if}
 	</svelte:fragment>
@@ -39,6 +43,8 @@
 		{#if instructionsComponentPromise}
 			{#await instructionsComponentPromise then InstructionsComponent}
 				<InstructionsComponent />
+			{:catch error}
+				<p>Error loading Instructions component: {error.message}</p>
 			{/await}
 		{/if}
 	</svelte:fragment>

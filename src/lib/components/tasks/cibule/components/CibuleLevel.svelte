@@ -6,6 +6,7 @@
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
 	import DwellTargetArrow from '$lib/components/dwellTarget/DwellTargetArrow.svelte';
+	import CibuleTrack from '$lib/components/tasks/cibule/components/CibuleTrack.svelte';
 
 	let keydownHandler: (e: KeyboardEvent) => void;
 
@@ -99,9 +100,7 @@
 					<CibuleSymbol symbol={currentData().correctSyllable ?? ""} interactable={false} />
 				</div>
 				<div class="flex items-center justify-center gap-1" in:fade={{ delay: 1500 }} out:fade>
-					{#each symbols() as symbol, index (index)}
-						<CibuleSymbol {symbol} {index} {validateSymbolClick} colorOnSelect={isPractice} />
-					{/each}
+					<CibuleTrack symbols={symbols()} {validateSymbolClick} {isPractice} />
 				</div>
 			</div>
 		</div>

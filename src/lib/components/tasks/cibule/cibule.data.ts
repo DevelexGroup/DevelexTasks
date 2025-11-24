@@ -34,4 +34,10 @@ export const cibuleTestData: CibuleTaskLevelData = [
 			}
 		]
 	},
+	{
+		levelID: "level2",
+		label: 'Úroveň 2',
+		practiceContent: [],
+		content: []
+	}
 ];
