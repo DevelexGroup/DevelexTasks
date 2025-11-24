@@ -52,6 +52,10 @@
 		} else {
 			cursorVisible.set(true);
 		}
+
+		if (currentSymbolIndex === correctIndices()[correctIndices().length - 1]) {
+			setTimeout(() => currentState = CibuleLevelState.EndDwell, 1000);
+		}
 	});
 
 	onDestroy(() => {
