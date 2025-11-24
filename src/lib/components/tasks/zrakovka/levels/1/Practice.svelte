@@ -12,8 +12,8 @@
 
 	const currentData = $derived(data[1][slide]);
 
-	const correctAudio = new Audio(resolveAny('/sound/symbolCorrect.ogg'));
-	const incorrectAudio = new Audio(resolveAny('/sound/symbolMistake.ogg'));
+	const correctAudio = new Audio(resolveAny('/sound/correct.mp3'));
+	const incorrectAudio = new Audio(resolveAny('/sound/mistake.mp3'));
 
 	const correctIndeces = $derived(
 		currentData.sequence
