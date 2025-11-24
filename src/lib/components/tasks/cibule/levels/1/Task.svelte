@@ -10,5 +10,5 @@
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} repetitions={2} onCompleted={() => {taskState.set(TaskState.End)}} />
+<CibuleLevel {id} data={data} {validateSymbol} repetitions={4} onCompleted={() => {taskState.set(TaskState.End)}} />
 {/if}

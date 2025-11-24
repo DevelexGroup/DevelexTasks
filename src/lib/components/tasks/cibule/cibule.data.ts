@@ -6,26 +6,31 @@ export const cibuleTestData: CibuleTaskLevelData = [
 		label: 'Úroveň 1',
 		practiceContent: [
 			{
-				syllables: [ 'ggggg', 'a', 'ggg', 'a', 'gggggggg', 'a', 'ggg', 'a', 'gg', 'a', 'gggggggg', 'a', 'gggg', 'a', 'gggg' ],
+				syllables: [ 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'a', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g' ],
 				correctSyllable: 'a',
 				wordToRead: 'A'
 			},
 		],
 		content: [
 			{
-				syllables: [ 'hhhhh', 't', 'hhh', 't', 'hhhhhhhh', 't', 'hhh', 't', 'hh', 't', 'hhhhhhh', 't', 'hhhh', 't', 'hhhh' ],
+				syllables: [ 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 't', 'h', 'h', 't', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h' ],
 				correctSyllable: 't',
 				wordToRead: 'T',
 			},
 			{
-				syllables: [ 'bbbbb', 'p', 'bbbb', 'p', 'bbbbbbbb', 'p', 'bbbb', 'p', 'bb', 'p', 'bbbbbbbb', 'p', 'bbbb', 'p', 'bbbb' ],
+				syllables: [ 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b' ],
 				correctSyllable: 'p',
 				wordToRead: 'P',
 			},
 			{
-				syllables: [ 'ooooo', 'c', 'ooo', 'c', 'ooooooo', 'c', 'ooo', 'c', 'oo', 'c', 'ooooooo', 'c', 'oooo', 'c', 'oooo' ],
-				correctSyllable: 'c',
-				wordToRead: 'C',
+				syllables: [ 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o', 'da', 'o', 'o', 'da', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o' ],
+				correctSyllable: 'da',
+				wordToRead: 'DA'
+			},
+			{
+				syllables: [ 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a' ],
+				correctSyllable: 'lo',
+				wordToRead: 'LO'
 			}
 		]
 	},

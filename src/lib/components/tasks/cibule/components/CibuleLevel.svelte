@@ -24,7 +24,7 @@
 	let currentSymbolIndex = $state<number | null>(null);
 
 	const currentData = $derived(() => data[currentRepetition % data.length]);
-	const symbols = $derived(() => currentData().syllables.flatMap(syllable => [...syllable]));
+	const symbols = $derived(() => currentData().syllables);
 	const correctIndices = $derived(() =>
 		symbols()
 			.map((symbol, index) => (symbol === currentData().correctSyllable ? index : -1))
@@ -64,6 +64,7 @@
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
 			currentState = CibuleLevelState.InitialDwell;
+			currentSymbolIndex = null;
 		} else {
 			onCompleted();
 		}
