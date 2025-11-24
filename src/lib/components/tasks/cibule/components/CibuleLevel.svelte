@@ -12,14 +12,22 @@
 		data,
 		repetitions = 1,
 		isPractice = false,
-		onCompleted = () => {}
+		onCompleted = () => {},
+		validateSymbol = (index: number, currentIndex: number | null, correctIndices: number[]) => false
 	}: CibuleTaskProps = $props();
 
 	let currentState = $state<CibuleLevelState>(CibuleLevelState.InitialDwell);
 	let currentRepetition = $state<number>(0);
 
+	let currentSymbolIndex = $state<number | null>(null);
+
 	const currentData = $derived(() => data[currentRepetition % data.length]);
 	const symbols = $derived(() => currentData().syllables.flatMap(syllable => [...syllable]));
+	const correctIndices = $derived(() =>
+		symbols()
+			.map((symbol, index) => (symbol === currentData().correctSyllable ? index : -1))
+			.filter((index) => index !== -1)
+	);
 
 	onMount(() => {
 		keydownHandler = (e: KeyboardEvent) => {
@@ -58,6 +66,15 @@
 			onCompleted();
 		}
 	}
+
+	function validateSymbolClick(symbol: string, index: number): boolean {
+		console.log('Validating symbol click:', { symbol, index, currentSymbolIndex, correctIndices: correctIndices() });
+		const validationResult = validateSymbol(index, currentSymbolIndex, correctIndices())
+		if (validationResult) {
+			currentSymbolIndex = index;
+		}
+		return validationResult;
+	}
 </script>
 
 <div class="flex h-screen w-full items-center justify-center">
@@ -78,7 +95,7 @@
 				<CibuleSymbol symbol={currentData().correctSyllable ?? ""} interactable={false} />
 				<div class="flex items-center justify-center gap-1">
 					{#each symbols() as symbol, index (index)}
-						<CibuleSymbol {symbol} correctSymbol={symbol === currentData().correctSyllable} colorOnClick={isPractice} />
+						<CibuleSymbol {symbol} {index} {validateSymbolClick} colorOnSelect={isPractice} />
 					{/each}
 				</div>
 			</div>

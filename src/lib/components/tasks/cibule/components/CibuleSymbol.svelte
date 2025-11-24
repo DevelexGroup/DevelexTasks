@@ -3,39 +3,43 @@
 
 	interface Props {
 		symbol: string;
-		correctSymbol?: boolean;
+		index?: number;
+		validateSymbolClick?: (symbol: string, index: number) => boolean;
 		interactable?: boolean;
-		colorOnClick?: boolean;
-		onClick?: () => void;
+		colorOnSelect?: boolean;
 	}
 
-	let selected = $state<boolean>(false);
+	let isCorrect = $state<boolean>(false);
+	let isSelected = $state<boolean>(false);
 
 	let {
 		symbol,
-		correctSymbol = false,
+		index = -1,
+		validateSymbolClick = () => false,
 		interactable = true,
-		colorOnClick = true,
-		onClick = () => onSymbolClick(correctSymbol)
+		colorOnSelect = true,
 	}: Props = $props();
 
-	function onSymbolClick(correct: boolean) {
-		selected = true;
+	function onSymbolClick(): void {
+		let validationResult = validateSymbolClick(symbol, index);
+		isSelected = true;
 
 		const audio = new Audio(
-			resolveAny(correct ? '/sound/symbolCorrect.ogg' : '/sound/symbolMistake.ogg')
+			resolveAny(validationResult ? '/sound/symbolCorrect.ogg' : '/sound/symbolMistake.ogg')
 		);
 		audio.play();
+
+		isCorrect = isCorrect || validationResult;
 	}
 </script>
 
 <div>
 	<button type="button" class="symbol font-serif text-4xl text-gray-800"
-					class:correct-symbol={correctSymbol}
-					class:incorrect-symbol={!correctSymbol}
+					class:correct-symbol={isCorrect}
+					class:incorrect-symbol={!isCorrect}
 					class:non-interactable={!interactable}
-					class:selected={selected && colorOnClick}
-					onclick={onClick}
+					class:selected={isSelected && colorOnSelect}
+					onclick={onSymbolClick}
 	>
 		{symbol}
 	</button>
