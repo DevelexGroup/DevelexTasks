@@ -36,6 +36,8 @@
 				e.preventDefault();
 				if (currentState === CibuleLevelState.InitialDwell) {
 					currentState = CibuleLevelState.Task;
+				} else if (currentState === CibuleLevelState.Task) {
+					currentState = CibuleLevelState.EndDwell;
 				} else if (currentState === CibuleLevelState.EndDwell) {
 					advanceLevel();
 				}
@@ -97,23 +99,16 @@
 	{:else if currentState === CibuleLevelState.Task}
 		<div class="text-center">
 			<div class="flex items-center justify-center gap-32">
-				<div in:fade={{ delay: 1000 }} out:fade>
+				<div in:fade={{ delay: 500 }} out:fade>
 					<CibuleSymbol symbol={currentData().correctSyllable ?? ""} interactable={false} />
 				</div>
-				<div class="flex items-center justify-center gap-1" in:fade={{ delay: 2000 }} out:fade>
+				<div class="flex items-center justify-center gap-1" in:fade={{ delay: 1500 }} out:fade>
 					{#each symbols() as symbol, index (index)}
 						<CibuleSymbol {symbol} {index} {validateSymbolClick} colorOnSelect={isPractice} />
 					{/each}
 				</div>
 			</div>
 		</div>
-		<button class="absolute left-8 bottom-8 mt-4 px-4 py-2 bg-green-500 text-white rounded"
-						onclick={() => {
-				currentState = CibuleLevelState.EndDwell;
-			}}
-		>
-			Skip
-		</button>
 	{:else if currentState === CibuleLevelState.EndDwell}
 		<div class="fixed bottom-16 right-16" id={`${id}_end}`} transition:fade>
 			<DwellTarget id={`${id}_end}`}

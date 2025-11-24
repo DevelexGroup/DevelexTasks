@@ -1,4 +1,8 @@
-﻿export function validateSymbol(index: number, currentIndex: number | null, correctIndices: number[]): boolean {
+﻿import { resolveAny } from '$lib/utils/resolveAny';
+
+export const instructionVideo = resolveAny('/video/cibule-instrukce-01.webm');
+
+export function validateSymbol(index: number, currentIndex: number | null, correctIndices: number[]): boolean {
 	if (currentIndex === null) {
 		return correctIndices.includes(index) && index === correctIndices[0];
 	}
