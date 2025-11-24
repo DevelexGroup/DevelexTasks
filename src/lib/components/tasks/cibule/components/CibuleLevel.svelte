@@ -4,6 +4,7 @@
 	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { cursorVisible } from '$lib/stores/cursor';
+	import { fade } from 'svelte/transition';
 
 	let keydownHandler: (e: KeyboardEvent) => void;
 
@@ -83,21 +84,23 @@
 
 <div class="flex h-screen w-full items-center justify-center">
 	{#if currentState === CibuleLevelState.InitialDwell}
-		<div class="fixed top-16 left-16" id={`${id}_initial}`}>
+		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget id={`${id}_initial}`}
 									 dwellTimeMs={300}
 									 bufferSize={50}
 									 eyeWidth={150}
 									 onDwellComplete={() => {
-					currentState = CibuleLevelState.Task;
-				}}
+									 	 currentState = CibuleLevelState.Task;
+									 }}
 			/>
 		</div>
 	{:else if currentState === CibuleLevelState.Task}
 		<div class="text-center">
 			<div class="flex items-center justify-center gap-32">
-				<CibuleSymbol symbol={currentData().correctSyllable ?? ""} interactable={false} />
-				<div class="flex items-center justify-center gap-1">
+				<div in:fade={{ delay: 1000 }} out:fade>
+					<CibuleSymbol symbol={currentData().correctSyllable ?? ""} interactable={false} />
+				</div>
+				<div class="flex items-center justify-center gap-1" in:fade={{ delay: 2000 }} out:fade>
 					{#each symbols() as symbol, index (index)}
 						<CibuleSymbol {symbol} {index} {validateSymbolClick} colorOnSelect={isPractice} />
 					{/each}
@@ -112,14 +115,14 @@
 			Skip
 		</button>
 	{:else if currentState === CibuleLevelState.EndDwell}
-		<div class="fixed bottom-16 right-16" id={`${id}_end}`}>
+		<div class="fixed bottom-16 right-16" id={`${id}_end}`} transition:fade>
 			<DwellTarget id={`${id}_end}`}
 									 dwellTimeMs={300}
 									 bufferSize={50}
 									 eyeWidth={150}
 									 onDwellComplete={() => {
-				 	advanceLevel();
-				}}
+										 advanceLevel();
+									 }}
 			/>
 		</div>
 	{/if}
