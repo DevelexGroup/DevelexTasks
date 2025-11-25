@@ -31,6 +31,7 @@
 		const audio = new Audio(
 			resolveAny(validationResult ? '/sound/correct.mp3' : '/sound/mistake.mp3')
 		);
+		audio.volume = 0.33;
 		audio.play();
 
 		isCorrect = isCorrect || validationResult;
