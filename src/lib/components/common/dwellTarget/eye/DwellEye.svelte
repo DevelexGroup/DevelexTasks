@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import { Tween } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
-	import DwellEyePupil from '$lib/components/dwellTarget/eye/DwellEyePupil.svelte';
+	import DwellEyePupil from '$lib/components/common/dwellTarget/eye/DwellEyePupil.svelte';
 
 	interface Props {
 		eyeWidth?: number;

@@ -2,22 +2,22 @@
 	import { resolveAny } from '$lib/utils/resolveAny';
 
 	interface Props {
-		symbol: string;
+		symbol?: string;
 		index?: number;
 		validateSymbolClick?: (symbol: string, index: number) => boolean;
 		interactable?: boolean;
-		colorOnSelect?: boolean;
+		isPractice?: boolean;
 	}
 
 	let isCorrect = $state<boolean>(false);
 	let isSelected = $state<boolean>(false);
 
 	let {
-		symbol,
+		symbol = '',
 		index = -1,
 		validateSymbolClick = () => false,
 		interactable = true,
-		colorOnSelect = true,
+		isPractice = true,
 	}: Props = $props();
 
 	function onSymbolClick(): void {
@@ -44,7 +44,7 @@
 					class:correct-symbol={isCorrect}
 					class:incorrect-symbol={!isCorrect}
 					class:non-interactable={!interactable}
-					class:selected={isSelected && colorOnSelect}
+					class:selected={isSelected && isPractice}
 					onclick={onSymbolClick}
 	>
 		{symbol}

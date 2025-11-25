@@ -1,11 +1,11 @@
 ﻿<script lang="ts">
-	import DwellTarget from '$lib/components/dwellTarget/DwellTarget.svelte';
+	import DwellTarget from '$lib/components/common/dwellTarget/DwellTarget.svelte';
 	import { CibuleLevelState, type CibuleTaskProps } from '$lib/components/tasks/cibule/cibule.types';
 	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
-	import DwellTargetArrow from '$lib/components/dwellTarget/DwellTargetArrow.svelte';
+	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
 	import CibuleTrack from '$lib/components/tasks/cibule/components/CibuleTrack.svelte';
 
 	let keydownHandler: (e: KeyboardEvent) => void;
@@ -16,7 +16,8 @@
 		repetitions = 1,
 		isPractice = false,
 		onCompleted = () => {},
-		validateSymbol = (index: number, currentIndex: number | null, correctIndices: number[]) => false
+		validateSymbol = (index: number, currentIndex: number | null, correctIndices: number[]) => false,
+		hintComponent
 	}: CibuleTaskProps = $props();
 
 	let currentState = $state<CibuleLevelState>(CibuleLevelState.InitialDwell);
@@ -97,7 +98,11 @@
 		<div class="text-center">
 			<div class="flex items-center justify-center gap-32">
 				<div in:fade={{ delay: 500 }} out:fade>
-					<CibuleSymbol symbol={currentData().correctSyllable ?? ""} interactable={false} />
+					{@render hintComponent({
+						symbol: currentData().correctSyllable ?? "",
+						wordToRead: currentData().wordToRead ?? "",
+						isPractice
+					})}
 				</div>
 				<div class="flex items-center justify-center gap-1" in:fade={{ delay: 1500 }} out:fade>
 					<CibuleTrack symbols={symbols()} {validateSymbolClick} {isPractice} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DwellTarget from '$lib/components/dwellTarget/DwellTarget.svelte';
+	import DwellTarget from '$lib/components/common/dwellTarget/DwellTarget.svelte';
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { resolveAny } from '$lib/utils/resolveAny';

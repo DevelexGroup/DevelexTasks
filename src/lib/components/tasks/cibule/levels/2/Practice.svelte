@@ -10,5 +10,9 @@
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}} />
+<CibuleLevel {id} data={data} {validateSymbol} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}}>
+	{#snippet hintComponent({ wordToRead })}
+		<
+	{/snippet}
+</CibuleLevel>
 {/if}

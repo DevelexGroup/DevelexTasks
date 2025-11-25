@@ -2,7 +2,7 @@
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { type GazeInteractionObjectDwellEvent, GazeManager } from 'develex-js-sdk';
 	import { DwellState } from '$lib/types/general.types';
-	import DwellTargetEye from '$lib/components/dwellTarget/DwellTargetEye.svelte';
+	import DwellTargetEye from '$lib/components/common/dwellTarget/DwellTargetEye.svelte';
 	import type { Snippet } from 'svelte';
 
 	const CANCEL_TIMEOUT_MS = 300;

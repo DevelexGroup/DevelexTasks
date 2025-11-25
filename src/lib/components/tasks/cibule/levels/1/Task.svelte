@@ -4,11 +4,16 @@
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
 	import { validateSymbol } from '$lib/components/tasks/cibule/levels/1/index';
+	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
 
 	const id = 'level1';
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} repetitions={4} onCompleted={() => {taskState.set(TaskState.End)}} />
+<CibuleLevel {id} data={data} {validateSymbol} repetitions={4} onCompleted={() => {taskState.set(TaskState.End)}}>
+	{#snippet hintComponent({ symbol, isPractice })}
+		<CibuleSymbol {symbol} {isPractice} interactable={false} />
+	{/snippet}
+</CibuleLevel>
 {/if}
