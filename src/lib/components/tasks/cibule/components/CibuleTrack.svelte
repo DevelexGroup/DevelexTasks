@@ -4,12 +4,11 @@
 	interface Props {
 		symbols: string[];
 		validateSymbolClick: (symbol: string, index: number) => boolean;
-		isPractice?: boolean;
 	}
 
-	let { symbols, validateSymbolClick, isPractice = false }: Props = $props();
+	let { symbols, validateSymbolClick }: Props = $props();
 </script>
 
 {#each symbols as symbol, index (index)}
-	<CibuleSymbol {symbol} {index} {validateSymbolClick} {isPractice} />
+	<CibuleSymbol {symbol} {index} {validateSymbolClick} />
 {/each}

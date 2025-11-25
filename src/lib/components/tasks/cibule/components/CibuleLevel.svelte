@@ -99,12 +99,12 @@
 					})}
 				</div>
 				<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
-					<CibuleTrack symbols={symbols()} {validateSymbolClick} {isPractice} />
+					<CibuleTrack symbols={symbols()} {validateSymbolClick} />
 				</div>
 			</div>
 			{:else}
 				<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
-					<CibuleTrack symbols={symbols()} {validateSymbolClick} {isPractice} />
+					<CibuleTrack symbols={symbols()} {validateSymbolClick} />
 				</div>
 			{/if}
 		</div>

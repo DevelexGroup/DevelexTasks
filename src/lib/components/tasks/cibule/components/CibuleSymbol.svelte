@@ -6,7 +6,6 @@
 		index?: number;
 		validateSymbolClick?: (symbol: string, index: number) => boolean;
 		interactable?: boolean;
-		isPractice?: boolean;
 	}
 
 	let isCorrect = $state<boolean>(false);
@@ -17,7 +16,6 @@
 		index = -1,
 		validateSymbolClick = () => false,
 		interactable = true,
-		isPractice = true,
 	}: Props = $props();
 
 	function onSymbolClick(): void {
@@ -44,7 +42,7 @@
 					class:correct-symbol={isCorrect}
 					class:incorrect-symbol={!isCorrect}
 					class:non-interactable={!interactable}
-					class:selected={isSelected && isPractice}
+					class:selected={isSelected}
 					onclick={onSymbolClick}
 	>
 		{symbol}
