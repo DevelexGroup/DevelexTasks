@@ -64,9 +64,9 @@
 
 		&.selected{
 			&.correct-symbol {
-				color: #1E40AF;
+				color: #15803D;
 				&::before {
-					background-color: #bbc5e7;
+					background-color: #bfe5cc;
 					z-index: -1;
 				}
 			}
