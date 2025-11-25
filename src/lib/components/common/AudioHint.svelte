@@ -1,5 +1,6 @@
 ﻿<script lang="ts">
 	import { onMount } from 'svelte';
+	import { resolveAny } from '$lib/utils/resolveAny';
 
 	interface Props {
 		audioSrc: string;
@@ -19,6 +20,9 @@
 
 	let isPlaying = $state(false);
 	let audioElement = $state<HTMLAudioElement | null>(null);
+
+	let inactiveSrc = resolveAny('/images/common/audio-player-inactive.svg');
+	let activeSrc = resolveAny('/images/common/audio-player-active.svg');
 
 	onMount(() => {
 		audioElement = new Audio(audioSrc);
@@ -64,8 +68,8 @@
 	aria-label="Play audio hint"
 	aria-pressed={isPlaying}
 >
-	<img src="/images/common/audio-player-inactive.svg" alt="Audio player" class="audio-icon" class:hidden={isPlaying} />
-	<img src="/images/common/audio-player-active.svg" alt="Audio player playing" class="audio-icon" class:hidden={!isPlaying} />
+	<img src={inactiveSrc} alt="Audio player" class="audio-icon" class:hidden={isPlaying} />
+	<img src={activeSrc} alt="Audio player playing" class="audio-icon" class:hidden={!isPlaying} />
 </button>
 
 <style>
