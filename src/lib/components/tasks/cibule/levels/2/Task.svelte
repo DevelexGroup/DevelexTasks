@@ -5,7 +5,7 @@
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
 	import { validateSymbol } from '$lib/components/tasks/cibule/levels/2/index';
 
-	const id = 'level1';
+	const id = 'level2';
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>
 
