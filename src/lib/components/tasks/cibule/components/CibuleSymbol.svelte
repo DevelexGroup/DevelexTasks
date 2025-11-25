@@ -56,6 +56,7 @@
 		cursor: pointer;
 		position: relative;
 		user-select: none;
+		letter-spacing: 4px;
 
 		&.non-interactable{
 				pointer-events: none;

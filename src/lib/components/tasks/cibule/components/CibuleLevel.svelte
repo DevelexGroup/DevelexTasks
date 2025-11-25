@@ -104,7 +104,7 @@
 						isPractice
 					})}
 				</div>
-				<div class="flex items-center justify-center gap-1" in:fade={{ delay: 1500 }} out:fade>
+				<div class="flex items-center justify-center" in:fade={{ delay: 1500 }} out:fade>
 					<CibuleTrack symbols={symbols()} {validateSymbolClick} {isPractice} />
 				</div>
 			</div>
