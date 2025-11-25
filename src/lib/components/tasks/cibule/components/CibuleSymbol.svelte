@@ -46,7 +46,7 @@
 					class:selected={isSelected}
 					onclick={onSymbolClick}
 	>
-		{symbol}
+		<span>{symbol}</span>
 	</button>
 </div>
 
@@ -65,8 +65,7 @@
 			&.correct-symbol {
 				color: #15803D;
 				&::before {
-					background-color: #bfe5cc;
-					z-index: -1;
+					animation: correct-flash-bg 1000ms ease-in-out;
 				}
 			}
 
@@ -87,6 +86,12 @@
 			background-color: rgba(0, 0, 0, 0);
 			transition: all 200ms ease-in;
 			pointer-events: none;
+      z-index: -2;
+		}
+
+		span {
+			position: relative;
+			z-index: 1;
 		}
 	}
 
@@ -108,7 +113,17 @@
 
 		50% {
 			background-color: #f4bdbd;
-			z-index: -2;
+		}
+	}
+
+	@keyframes correct-flash-bg {
+		0%, 100% {
+			background-color: rgba(0, 0, 0, 0);
+			z-index: auto;
+		}
+
+		33%, 66% {
+			background-color: #bfe5cc;
 		}
 	}
 </style>
