@@ -3,13 +3,17 @@
 
 	interface Props {
 		audioSrc: string;
+		playOnStart?: boolean;
+		playOnStartDelay?: number;
 		width?: number;
 		height?: number;
 	}
 
 	let {
-		width = 200,
-		height = 180,
+		width = 100,
+		height = width * 0.9,
+		playOnStart = false,
+		playOnStartDelay = 0,
 		audioSrc
 	}: Props = $props();
 
@@ -23,6 +27,12 @@
 			isPlaying = false;
 		});
 
+		if (playOnStart) {
+			setTimeout(() => {
+				playAudio();
+			}, playOnStartDelay);
+		}
+
 		return () => {
 			if (audioElement) {
 				audioElement.pause();
@@ -31,7 +41,7 @@
 		};
 	});
 
-	function handleClick() {
+	function playAudio() {
 		if (!audioElement) return;
 
 		if (isPlaying) {
@@ -49,7 +59,7 @@
 <button
 	class="audio-hint"
 	style={`width: ${width}px; height: ${height}px;`}
-	onclick={handleClick}
+	onclick={playAudio}
 	type="button"
 	aria-label="Play audio hint"
 	aria-pressed={isPlaying}

@@ -11,5 +11,5 @@
 </script>
 
 {#each symbols as symbol, index (index)}
-	<CibuleSymbol {symbol} {index} {validateSymbolClick} colorOnSelect={isPractice} />
+	<CibuleSymbol {symbol} {index} {validateSymbolClick} {isPractice} />
 {/each}

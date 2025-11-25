@@ -13,3 +13,7 @@ export function validateSymbol(index: number, currentIndex: number | null, corre
 	console.log(correctIndices.includes(index), indexOfCurrentIndex !== correctIndices.length - 1, index === correctIndices[indexOfCurrentIndex + 1])
 	return correctIndices.includes(index) && indexOfCurrentIndex !== correctIndices.length - 1 && index === correctIndices[indexOfCurrentIndex + 1];
 }
+
+export function getAudioSource(word: string): string {
+	return resolveAny(`/sound/words/${word}.ogg`);
+}

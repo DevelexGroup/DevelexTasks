@@ -37,7 +37,34 @@ export const cibuleTestData: CibuleTaskLevelData = [
 	{
 		levelID: "level2",
 		label: 'Úroveň 2',
-		practiceContent: [],
-		content: []
+		practiceContent: [
+			{
+				correctSyllable: 'k',
+				wordToRead: 'K',
+				syllables: [ 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e' ]
+			}
+		],
+		content: [
+			{
+				correctSyllable: 'v',
+				wordToRead: 'V',
+				syllables: [ 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h' ]
+			},
+			{
+				correctSyllable: 'm',
+				wordToRead: 'M',
+				syllables: [ 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n'	]
+			},
+			{
+				correctSyllable: 'pe',
+				wordToRead: 'PE',
+				syllables: [ 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'pe', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'pe' ]
+			},
+			{
+				correctSyllable: 'ma',
+				wordToRead: 'MA',
+				syllables: [ 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'i', 'ma', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i' ]
+			}
+		]
 	}
 ];
