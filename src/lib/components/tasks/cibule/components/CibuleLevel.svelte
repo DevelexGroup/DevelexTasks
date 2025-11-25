@@ -75,7 +75,7 @@
 	}
 </script>
 
-<div class="flex h-screen w-full items-center justify-center">
+<div class="flex h-screen w-full items-center justify-center bg-task-background">
 	{#if currentState === CibuleLevelState.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget id={`${id}_initial}`}
