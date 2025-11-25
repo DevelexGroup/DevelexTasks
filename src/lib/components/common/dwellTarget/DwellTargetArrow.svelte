@@ -73,8 +73,8 @@
 	class:cancelled={dwellState === DwellState.DwellCancelled}
 	style={`width: ${width}px; height: ${height}px;`}
 >
-	<img class="arrow--background" src={resolveAny('/images/common/dwell-arrow-grey.svg')} alt="&#8594;" />
-	<img class="arrow--fill fill--bar" src={resolveAny('/images/common/dwell-arrow-fill.svg')} alt="" />
+	<img class="arrow--background" src={resolveAny('/images/common/dwell-arrow-inactive.svg')} alt="&#8594;" />
+	<img class="arrow--fill fill--bar" src={resolveAny('/images/common/dwell-arrow-active.svg')} alt="" />
 </div>
 
 <style>
