@@ -1,7 +1,6 @@
 ﻿<script lang="ts">
 	import DwellTarget from '$lib/components/common/dwellTarget/DwellTarget.svelte';
 	import { CibuleLevelState, type CibuleTaskProps } from '$lib/components/tasks/cibule/cibule.types';
-	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
@@ -16,7 +15,7 @@
 		repetitions = 1,
 		isPractice = false,
 		onCompleted = () => {},
-		validateSymbol = (index: number, currentIndex: number | null, correctIndices: number[]) => false,
+		validateSymbol = () => false,
 		hintComponent
 	}: CibuleTaskProps = $props();
 
@@ -27,11 +26,6 @@
 
 	const currentData = $derived(() => data[currentRepetition % data.length]);
 	const symbols = $derived(() => currentData().syllables);
-	const correctIndices = $derived(() =>
-		symbols()
-			.map((symbol, index) => (symbol === currentData().correctSyllable ? index : -1))
-			.filter((index) => index !== -1)
-	);
 
 	onMount(() => {
 		keydownHandler = (e: KeyboardEvent) => {
@@ -73,8 +67,7 @@
 	}
 
 	function validateSymbolClick(symbol: string, index: number): boolean {
-		console.log('Validating symbol click:', { symbol, index, currentSymbolIndex, correctIndices: correctIndices() });
-		const validationResult = validateSymbol(index, currentSymbolIndex, correctIndices())
+		const validationResult = validateSymbol(index, currentSymbolIndex, currentData())
 		if (validationResult) {
 			currentSymbolIndex = index;
 		}
@@ -96,18 +89,24 @@
 		</div>
 	{:else if currentState === CibuleLevelState.Task}
 		<div class="text-center">
+			{#if hintComponent}
 			<div class="flex items-center justify-center gap-32">
-				<div in:fade={{ delay: 500 }} out:fade>
+				<div in:fade|global={{ delay: 500 }} out:fade|global>
 					{@render hintComponent({
-						symbol: currentData().correctSyllable ?? "",
+						symbol: currentData().correctSyllables?.[0] ?? "",
 						wordToRead: currentData().wordToRead ?? "",
 						isPractice
 					})}
 				</div>
-				<div class="flex items-center justify-center" in:fade={{ delay: 1500 }} out:fade>
+				<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
 					<CibuleTrack symbols={symbols()} {validateSymbolClick} {isPractice} />
 				</div>
 			</div>
+			{:else}
+				<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
+					<CibuleTrack symbols={symbols()} {validateSymbolClick} {isPractice} />
+				</div>
+			{/if}
 		</div>
 		<div class="fixed bottom-16 right-16" id={`${id}_end}`} transition:fade>
 			<DwellTarget id={`${id}_end}`}

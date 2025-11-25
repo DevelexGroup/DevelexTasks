@@ -7,11 +7,14 @@ export interface HintComponent {
 	isPractice?: boolean;
 }
 
+// export type CibuleValidateSymbolFunction = (index: number, currentIndex: number | null, correctIndices: number[]) => boolean;
+export type CibuleValidateSymbolFunction = (index: number, lastIndex: number | null, dataEntry: CibuleLevelDataEntry) => boolean;
+
 export interface CibuleTaskProps extends TaskLevelProps {
 	data: CibuleLevelDataEntry[];
 	repetitions?: number;
-	validateSymbol?: (index: number, currentIndex: number | null, correctIndices: number[]) => boolean;
-	hintComponent: Snippet<[HintComponent]>;
+	validateSymbol?: CibuleValidateSymbolFunction;
+	hintComponent?: Snippet<[HintComponent]>;
 }
 
 export enum CibuleLevelState {
@@ -21,10 +24,8 @@ export enum CibuleLevelState {
 
 export type CibuleLevelDataEntry = {
 	syllables: string[];
-	correctSyllable?: string;
-	incorrectSyllable?: string;
+	correctSyllables?: string[];
 	wordToRead?: string;
-	binding?: Record<number, number>;
 }
 
 export type CibuleTaskLevelData = TaskLevelData<CibuleLevelDataEntry>;
