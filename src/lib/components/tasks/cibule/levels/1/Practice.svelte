@@ -3,10 +3,9 @@
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
-	import { validateSymbol } from '$lib/components/tasks/cibule/levels/1/index';
+	import { id, validateSymbol } from '$lib/components/tasks/cibule/levels/1/index';
 	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
 
-	const id = 'level1';
 	const data = cibuleTestData.find((level => level.levelID === id))?.practiceContent;
 </script>
 

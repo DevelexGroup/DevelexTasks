@@ -1,5 +1,7 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
 
+export const id = 'level2';
+
 export const instructionVideo = resolveAny('/video/cibule-instrukce-02.webm');
 
 export function validateSymbol(index: number, currentIndex: number | null, correctIndices: number[]): boolean {

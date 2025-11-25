@@ -3,10 +3,9 @@
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
-	import { getAudioSource, validateSymbol } from '$lib/components/tasks/cibule/levels/2/index';
+	import { id, getAudioSource, validateSymbol } from '$lib/components/tasks/cibule/levels/2/index';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
 
-	const id = 'level2';
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>
 
