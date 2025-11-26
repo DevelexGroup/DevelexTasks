@@ -15,9 +15,15 @@ export interface CibuleTaskProps extends TaskLevelProps {
 	repetitions?: number;
 	validateSymbol?: CibuleValidateSymbolFunction;
 	hintComponent?: Snippet<[HintComponent]>;
+	onSpace?: (state: CibuleState) => void;
 }
 
-export enum CibuleLevelState {
+export type CibuleState = {
+	lastIndex: number | null;
+	dataEntry: CibuleLevelDataEntry
+}
+
+export enum CibuleLevelStage {
 	InitialDwell,
 	Task
 }

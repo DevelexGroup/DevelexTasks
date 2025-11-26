@@ -3,25 +3,34 @@
 	import '../app.css';
 	import { GazeManager } from 'develex-js-sdk';
 	import { cursorVisible } from '$lib/stores/cursor'
+	import { KeyboardManager } from '$lib/utils/keyboardManager';
 
 	let { children } = $props();
 
 	setContext('gazeManager', new GazeManager());
 
+	const keyboardManager = new KeyboardManager();
+	setContext('keyboardManager', keyboardManager);
+
 	onMount(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				cursorVisible.set(true);
-			}
-		};
-
-		window.addEventListener('keydown', handleKeyDown);
-
-		onDestroy(() => {
-			window.removeEventListener('keydown', handleKeyDown);
+		let escEvt = keyboardManager.onKeyDown('Escape', () => {
+			cursorVisible.set(true);
 		});
+
+		return () => {
+			escEvt.dispose();
+		};
+	});
+
+	onDestroy(() => {
+		keyboardManager.disposeAll();
 	});
 </script>
+
+<svelte:window
+	on:keydown={keyboardManager.dispatchOnKeyDown}
+	on:keyup={keyboardManager.dispatchOnKeyUp}
+/>
 
 <div class="app" class:cursor-hidden={!$cursorVisible}>
 	<main>

@@ -6,8 +6,12 @@
 	import { id, validateSymbol } from '$lib/components/tasks/cibule/levels/3a/index';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
+
+	const tryReadWord = (state: CibuleState) => {
+
+	};
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} repetitions={3} onCompleted={() => {taskState.set(TaskState.End)}} />
+<CibuleLevel {id} data={data} {validateSymbol} repetitions={3} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={tryReadWord}/>
 {/if}

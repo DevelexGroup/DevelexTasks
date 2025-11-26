@@ -1,13 +1,12 @@
 ﻿<script lang="ts">
 	import DwellTarget from '$lib/components/common/dwellTarget/DwellTarget.svelte';
-	import { CibuleLevelState, type CibuleTaskProps } from '$lib/components/tasks/cibule/cibule.types';
-	import { onDestroy, onMount } from 'svelte';
+	import { CibuleLevelStage, type CibuleTaskProps } from '$lib/components/tasks/cibule/cibule.types';
+	import { getContext, onDestroy, onMount } from 'svelte';
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
 	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
 	import CibuleTrack from '$lib/components/tasks/cibule/components/CibuleTrack.svelte';
-
-	let keydownHandler: (e: KeyboardEvent) => void;
+	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 
 	let {
 		id,
@@ -16,36 +15,35 @@
 		isPractice = false,
 		onCompleted = () => {},
 		validateSymbol = () => false,
-		hintComponent
+		hintComponent,
+		onSpace = () => {},
 	}: CibuleTaskProps = $props();
 
-	let currentState = $state<CibuleLevelState>(CibuleLevelState.InitialDwell);
+	let currentState = $state<CibuleLevelStage>(CibuleLevelStage.InitialDwell);
 	let currentRepetition = $state<number>(0);
 
-	let currentSymbolIndex = $state<number | null>(null);
+	let lastSymbolIndex = $state<number | null>(null);
 
 	const currentData = $derived(() => data[currentRepetition % data.length]);
 	const symbols = $derived(() => currentData().syllables);
 
 	onMount(() => {
-		keydownHandler = (e: KeyboardEvent) => {
-			if (e.code === 'Space' || e.key === ' ') {
-				e.preventDefault();
-				if (currentState === CibuleLevelState.InitialDwell) {
-					currentState = CibuleLevelState.Task;
-				} else if (currentState === CibuleLevelState.Task) {
-					advanceLevel();
-				}
-			}
-		};
-		window.addEventListener('keydown', keydownHandler);
+		let keyboardManager = getContext<KeyboardManager>('keyboardManager');
+
+		const skipEvt = keyboardManager.onKeyDown('Enter', skipStage, { preventDefault: true, ignoreRepeat: true });
+		const spaceEvt = keyboardManager.onKeyDown('Space', () => onSpace({
+			lastIndex: lastSymbolIndex,
+			dataEntry: currentData()
+		}), { preventDefault: true, ignoreRepeat: true });
+
 		return () => {
-			window.removeEventListener('keydown', keydownHandler);
+			skipEvt.dispose();
+			spaceEvt.dispose();
 		};
-	});
+	})
 
 	$effect(() => {
-		if (currentState === CibuleLevelState.InitialDwell) {
+		if (currentState === CibuleLevelStage.InitialDwell) {
 			cursorVisible.set(false);
 		} else {
 			cursorVisible.set(true);
@@ -56,38 +54,46 @@
 		cursorVisible.set(true);
 	});
 
+	function skipStage() {
+		if (currentState === CibuleLevelStage.InitialDwell) {
+			currentState = CibuleLevelStage.Task;
+		} else if (currentState === CibuleLevelStage.Task) {
+			advanceLevel();
+		}
+	}
+
 	function advanceLevel() {
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
-			currentState = CibuleLevelState.InitialDwell;
-			currentSymbolIndex = null;
+			currentState = CibuleLevelStage.InitialDwell;
+			lastSymbolIndex = null;
 		} else {
 			onCompleted();
 		}
 	}
 
 	function validateSymbolClick(symbol: string, index: number): boolean {
-		const validationResult = validateSymbol(index, currentSymbolIndex, currentData())
+		const validationResult = validateSymbol(index, lastSymbolIndex, currentData())
 		if (validationResult) {
-			currentSymbolIndex = index;
+			lastSymbolIndex = index;
 		}
 		return validationResult;
 	}
 </script>
 
 <div class="flex h-screen w-full items-center justify-center bg-task-background">
-	{#if currentState === CibuleLevelState.InitialDwell}
+	{#if currentState === CibuleLevelStage.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget id={`${id}_initial}`}
 									 dwellTimeMs={300}
 									 bufferSize={50}
 									 width={150}
 									 onDwellComplete={() => {
-									 	 currentState = CibuleLevelState.Task;
+									 	 currentState = CibuleLevelStage.Task;
 									 }}
 			/>
 		</div>
-	{:else if currentState === CibuleLevelState.Task}
+	{:else if currentState === CibuleLevelStage.Task}
 		<div class="text-center">
 			{#if hintComponent}
 			<div class="flex items-center justify-center gap-32">
