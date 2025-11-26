@@ -11,8 +11,8 @@
 
 {#if data}
 <CibuleLevel {id} data={data} {validateSymbol} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}}>
-	{#snippet hintComponent({ symbol, isPractice })}
-		<CibuleSymbol {symbol} {isPractice} interactable={false} />
+	{#snippet hintComponent({ symbol })}
+		<CibuleSymbol {symbol} interactable={false} />
 	{/snippet}
 </CibuleLevel>
 {/if}
