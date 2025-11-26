@@ -1,9 +1,13 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
-import type { CibuleValidateSymbolFunction } from '../../cibule.types';
+import type { CibuleState, CibuleValidateSymbolFunction } from '../../cibule.types';
 
 export const id = 'level1';
 
 export const instructionVideo = resolveAny('/video/cibule-instrukce-01.webm');
+
+export function validateStage(state: CibuleState) : boolean {
+	return state.lastIndex !== null;
+}
 
 export const validateSymbol: CibuleValidateSymbolFunction = (index, lastIndex, dataEntry) => {
 	const correctIndices = dataEntry.syllables

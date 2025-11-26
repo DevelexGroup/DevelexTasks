@@ -14,8 +14,10 @@ export interface CibuleTaskProps extends TaskLevelProps {
 	data: CibuleLevelDataEntry[];
 	repetitions?: number;
 	validateSymbol?: CibuleValidateSymbolFunction;
-	hintComponent?: Snippet<[HintComponent]>;
+	validateStage?: (state: CibuleState) => boolean;
 	onSpace?: (state: CibuleState) => void;
+	hintComponent?: Snippet<[HintComponent]>;
+	reportMistake?: () => void;
 }
 
 export type CibuleState = {

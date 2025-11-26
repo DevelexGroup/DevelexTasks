@@ -15,8 +15,10 @@
 		isPractice = false,
 		onCompleted = () => {},
 		validateSymbol = () => false,
-		hintComponent,
+		validateStage = () => true,
+		reportMistake = () => {},
 		onSpace = () => {},
+		hintComponent,
 	}: CibuleTaskProps = $props();
 
 	let currentState = $state<CibuleLevelStage>(CibuleLevelStage.InitialDwell);
@@ -79,6 +81,15 @@
 		}
 		return validationResult;
 	}
+
+	function onAdvanceDwellComplete() {
+		const state = {lastIndex: lastSymbolIndex, dataEntry: currentData()};
+		if (validateStage(state)) {
+			advanceLevel();
+		} else {
+			reportMistake()
+		}
+	}
 </script>
 
 <div class="flex h-screen w-full items-center justify-center bg-task-background">
@@ -119,9 +130,8 @@
 									 dwellTimeMs={2000}
 									 bufferSize={50}
 									 width={150}
-									 onDwellComplete={() => {
-										 advanceLevel();
-									 }}
+									 onDwellComplete={onAdvanceDwellComplete}
+									 disableOnComplete={false}
 			>
 				<DwellTargetArrow />
 			</DwellTarget>

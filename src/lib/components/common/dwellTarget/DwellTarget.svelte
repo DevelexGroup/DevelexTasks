@@ -17,6 +17,7 @@
 		height?: number;
 		dwellState?: DwellState;
 		bufferSize?: number;
+		disableOnComplete?: boolean;
 		children?: Snippet;
 	}
 
@@ -28,6 +29,7 @@
 		height = width * DEFAULT_SIZE_RATIO,
 		bufferSize = 100,
 		dwellState = $bindable(DwellState.Active) as DwellState,
+		disableOnComplete = true,
 		children
 	}: Props = $props();
 
@@ -98,7 +100,10 @@
 
 	function handleDwellFinish() {
 		if (dwellState === DwellState.ActiveDwelling) {
-			dwellState = DwellState.Disabled;
+			if (disableOnComplete)
+				dwellState = DwellState.Disabled;
+			else
+				dwellState = DwellState.Active;
 			onDwellComplete();
 		}
 	}
