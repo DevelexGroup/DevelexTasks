@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { trackerConfig } from '$lib/stores/tracker';
+	import { GAZE_INPUT_CONFIGS, trackerConfig } from '$lib/stores/tracker';
 	import { LoadState } from '$lib/types/general.types';
 	import { extractError } from '$lib/utils/error';
 	import { waitForStoreCondition, waitForTimeout } from '$lib/utils/waitFor';
@@ -30,7 +30,7 @@
 	const handleViewportCalibration = async () => {
 		try {
 			if (!gazeManager.input) {
-				gazeManager.createInput(get(trackerConfig));
+				gazeManager.createInput(GAZE_INPUT_CONFIGS[get(trackerConfig)]);
 
 				if (!gazeManager.windowCalibration) {
 					showCalibration.set(true);

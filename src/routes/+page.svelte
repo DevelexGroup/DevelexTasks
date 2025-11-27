@@ -24,4 +24,13 @@
 			</button>
 		{/each}
 	</div>
+
+	<div class="mt-12 flex flex-col gap-2">
+		<button
+			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
+			onclick={() => goto(resolve('/settings'))}
+		>
+			Nastavení
+		</button>
+	</div>
 </section>
