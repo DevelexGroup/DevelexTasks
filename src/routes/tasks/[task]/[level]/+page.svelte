@@ -2,6 +2,8 @@
 	import TaskWrapper from '$lib/components/TaskWrapper.svelte';
 	import type { PageProps } from './$types';
 	import type { Component } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 
@@ -46,6 +48,14 @@
 			{:catch error}
 				<p>Error loading Instructions component: {error.message}</p>
 			{/await}
+			<div class="absolute bottom-4 left-4">
+				<button
+					class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
+					onclick={() => goto(resolve(`/tasks/${data.task}`))}
+				>
+					Zpět
+				</button>
+			</div>
 		{/if}
 	</svelte:fragment>
 </TaskWrapper>

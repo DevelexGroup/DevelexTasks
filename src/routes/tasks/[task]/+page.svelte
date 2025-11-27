@@ -21,4 +21,13 @@
 			</button>
 		{/each}
 	</div>
+
+	<div class="absolute bottom-4 left-4">
+		<button
+			class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
+			onclick={() => goto(resolve(`/`))}
+		>
+			Zpět
+		</button>
+	</div>
 </section>
