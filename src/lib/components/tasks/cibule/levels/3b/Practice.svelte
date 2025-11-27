@@ -3,7 +3,7 @@
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
-	import { id, onSpace, validateSymbol, validateStage } from '$lib/components/tasks/cibule/levels/3b/index';
+	import { id, onSpace, validateSymbol, validateStage, isSyllableFrameVisible } from '$lib/components/tasks/cibule/levels/3b/index';
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.practiceContent;
@@ -14,7 +14,7 @@
 	{#snippet extraComponent({ state })}
 		<div class="flex gap-4">
 			{#each state.dataEntry.correctSyllables as syllable, index (index)}
-				<CibuleSyllableFrame {syllable} visible={state.lastIndex !== null && index >= state.lastIndex} />
+				<CibuleSyllableFrame {syllable} visible={isSyllableFrameVisible(state, syllable)} />
 			{/each}
 		</div>
 	{/snippet}

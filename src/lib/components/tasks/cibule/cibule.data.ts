@@ -105,6 +105,17 @@ export const cibuleTestData: CibuleTaskLevelData = [
 				syllables: ['k', 'k', 'k', 'k', 'k', 'k', 'k', 'ta', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'pa', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'lo', 'k', 'k', 'k', 'k', 'k', 'k']
 			}
 		],
-		content: []
+		content: [
+			{
+				correctSyllables: [ 'ma', 'li', 'na'],
+				wordToRead: 'GRAM',
+				syllables: [ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'li', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'ma', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'na', 'p', 'p', 'p', 'p', 'p', 'p' ]
+			},
+			{
+				correctSyllables: [ 'no', 'vi', 'ny' ],
+				wordToRead: 'GRAM',
+				syllables: ['c', 'c', 'c', 'c', 'c', 'c', 'c', 'no', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'ny', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'vi', 'c', 'c', 'c', 'c', 'c', 'c']
+			}
+		]
 	}
 ];

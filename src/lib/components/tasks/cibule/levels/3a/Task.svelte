@@ -9,5 +9,5 @@
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} {validateStage} repetitions={3} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={onSpace}/>
+<CibuleLevel {id} data={data} {validateSymbol} {validateStage} repetitions={2} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={onSpace}/>
 {/if}

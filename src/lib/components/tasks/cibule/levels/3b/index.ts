@@ -37,3 +37,16 @@ export const onSpace = (state: CibuleState) => {
 		playSound(SOUND_MISTAKE, 0.33);
 	}
 }
+
+export const getIndexOfSyllable = (state: CibuleState, syllable: string): number | null => {
+	if (!state.dataEntry.syllables) return null;
+	const index = state.dataEntry.syllables.indexOf(syllable);
+	return index !== -1 ? index : null;
+};
+
+export const isSyllableFrameVisible = (state: CibuleState, syllable: string): boolean => {
+	const index = getIndexOfSyllable(state, syllable);
+	if (index === null)
+		return false;
+	return state.selectedCorrectIndices.includes(index);
+};

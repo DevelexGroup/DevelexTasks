@@ -43,7 +43,7 @@
 		let keyboardManager = getContext<KeyboardManager>('keyboardManager');
 
 		const skipEvt = keyboardManager.onKeyDown('Enter', skipStage, { preventDefault: true, ignoreRepeat: true });
-		const spaceEvt = keyboardManager.onKeyDown('Space', () => onSpace(currentState()), { preventDefault: true, ignoreRepeat: true });
+		const spaceEvt = keyboardManager.onKeyDown('Space', () => onSpace(currentState()), { preventDefault: true, stopPropagation: true, ignoreRepeat: true });
 
 		return () => {
 			skipEvt.dispose();
