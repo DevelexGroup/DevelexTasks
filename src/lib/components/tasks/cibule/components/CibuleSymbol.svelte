@@ -1,5 +1,6 @@
 ﻿<script lang="ts">
 	import { resolveAny } from '$lib/utils/resolveAny';
+	import { playSound, SOUND_CORRECT, SOUND_MISTAKE } from '$lib/utils/sound';
 
 	interface Props {
 		symbol?: string;
@@ -28,11 +29,7 @@
 			}, 10);
 		}
 
-		const audio = new Audio(
-			resolveAny(validationResult ? '/sound/correct.mp3' : '/sound/mistake.mp3')
-		);
-		audio.volume = 0.33;
-		audio.play();
+		playSound(validationResult ? SOUND_CORRECT : SOUND_MISTAKE, 0.33);
 
 		isCorrect = isCorrect || validationResult;
 	}

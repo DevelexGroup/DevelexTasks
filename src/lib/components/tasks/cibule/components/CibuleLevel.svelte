@@ -7,6 +7,7 @@
 	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
 	import CibuleTrack from '$lib/components/tasks/cibule/components/CibuleTrack.svelte';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
+	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 
 	let {
 		id,
@@ -96,6 +97,7 @@
 			reportMistake(validationResult)
 			if (dwellArrowElement) {
 				shouldShakeArrow = true;
+				playSound(SOUND_MISTAKE, 0.33);
 				setTimeout(() => {
 					shouldShakeArrow = false;
 				}, 500);

@@ -5,6 +5,7 @@ import type {
 } from '$lib/components/tasks/cibule/cibule.types';
 import type { TaskMistake } from '$lib/types/task.types';
 import { MistakeUnfinished } from '$lib/components/tasks/cibule/mistakes.types';
+import { playSound } from '$lib/utils/sound';
 
 export const id = 'level3a';
 
@@ -41,18 +42,4 @@ export const validateSymbol: CibuleValidateSymbolFunction = (index, lastIndex, d
 		return false;
 	}
 	return correctIndices.includes(index) && indexOfLastIndex !== correctIndices.length - 1 && index === correctIndices[indexOfLastIndex + 1];
-}
-
-export function tryReadWordFromState(state: CibuleState) {
-	const wordToRead = state.dataEntry?.wordToRead;
-	if (wordToRead) {
-		const audioSrc = getWordAudioSource(wordToRead);
-		const audio = new Audio(audioSrc);
-		audio.volume = 0.5;
-		audio.play();
-	}
-}
-
-export function getWordAudioSource(word: string): string {
-	return resolveAny(`/sound/words/${word}.ogg`);
 }

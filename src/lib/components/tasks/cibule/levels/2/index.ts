@@ -31,7 +31,3 @@ export const validateSymbol: CibuleValidateSymbolFunction = (index, lastIndex, d
 	}
 	return correctIndices.includes(index) && indexOfLastIndex !== correctIndices.length - 1 && index === correctIndices[indexOfLastIndex + 1];
 }
-
-export function getAudioSource(word: string): string {
-	return resolveAny(`/sound/words/${word}.ogg`);
-}

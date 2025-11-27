@@ -3,11 +3,22 @@
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
-	import { id, tryReadWordFromState, validateStage, validateSymbol } from '$lib/components/tasks/cibule/levels/3a/index';
+	import { id, validateStage, validateSymbol } from '$lib/components/tasks/cibule/levels/3a/index';
+	import type { CibuleState } from '$lib/components/tasks/cibule/cibule.types';
+	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
+	import { tryReadWordFromState } from '$lib/components/tasks/cibule';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.practiceContent;
+
+	const onSpace = (state: CibuleState) => {
+		if (validateStage(state) === true)
+			tryReadWordFromState(state);
+		else {
+			playSound(SOUND_MISTAKE, 0.33);
+		}
+	}
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}} onSpace={tryReadWordFromState} />
+<CibuleLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}} onSpace={onSpace} />
 {/if}

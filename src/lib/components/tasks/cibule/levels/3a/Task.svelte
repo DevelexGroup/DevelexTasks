@@ -3,14 +3,10 @@
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
-	import {
-		id,
-		tryReadWordFromState,
-		validateStage,
-		validateSymbol
-	} from '$lib/components/tasks/cibule/levels/3a/index';
+	import { id, validateStage, validateSymbol } from '$lib/components/tasks/cibule/levels/3a/index';
 	import type { CibuleState } from '$lib/components/tasks/cibule/cibule.types';
-	import { resolveAny } from '$lib/utils/resolveAny';
+	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
+	import { tryReadWordFromState } from '$lib/components/tasks/cibule';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 
@@ -18,9 +14,7 @@
 		if (validateStage(state) === true)
 			tryReadWordFromState(state);
 		else {
-			const mistakeSound = new Audio(resolveAny('/sound/mistake.mp3'));
-			mistakeSound.volume = 0.4;
-			mistakeSound.play();
+			playSound(SOUND_MISTAKE, 0.33);
 		}
 	}
 </script>
