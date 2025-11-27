@@ -18,6 +18,7 @@
 		dwellState?: DwellState;
 		bufferSize?: number;
 		disableOnComplete?: boolean;
+		onCompleteCooldown?: number;
 		children?: Snippet;
 	}
 
@@ -30,6 +31,7 @@
 		bufferSize = 100,
 		dwellState = $bindable(DwellState.Active) as DwellState,
 		disableOnComplete = true,
+		onCompleteCooldown = 500,
 		children
 	}: Props = $props();
 
@@ -100,10 +102,12 @@
 
 	function handleDwellFinish() {
 		if (dwellState === DwellState.ActiveDwelling) {
-			if (disableOnComplete)
-				dwellState = DwellState.Disabled;
-			else
-				dwellState = DwellState.Active;
+			dwellState = DwellState.Disabled;
+			if (!disableOnComplete) {
+				setTimeout(() => {
+					dwellState = DwellState.Active;
+				}, onCompleteCooldown);
+			}
 			onDwellComplete();
 		}
 	}

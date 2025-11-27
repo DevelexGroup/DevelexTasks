@@ -125,7 +125,7 @@
       clip-path: inset(0 100% 0 0 round 999px);
     }
     100% {
-      clip-path: inset(0 0 0 0 round 999px);
+      clip-path: inset(0 20px 0 0 round 999px);
     }
   }
 </style>
