@@ -43,6 +43,16 @@ export const validateSymbol: CibuleValidateSymbolFunction = (index, lastIndex, d
 	return correctIndices.includes(index) && indexOfLastIndex !== correctIndices.length - 1 && index === correctIndices[indexOfLastIndex + 1];
 }
 
-export function getAudioSource(word: string): string {
+export function tryReadWordFromState(state: CibuleState) {
+	const wordToRead = state.dataEntry?.wordToRead;
+	if (wordToRead) {
+		const audioSrc = getWordAudioSource(wordToRead);
+		const audio = new Audio(audioSrc);
+		audio.volume = 0.5;
+		audio.play();
+	}
+}
+
+export function getWordAudioSource(word: string): string {
 	return resolveAny(`/sound/words/${word}.ogg`);
 }

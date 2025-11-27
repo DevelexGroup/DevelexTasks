@@ -73,24 +73,24 @@ export const cibuleTestData: CibuleTaskLevelData = [
 		practiceContent: [
 			{
 				correctSyllables: [ 'v', 'o', 'd', 'a' ],
-				wordToRead: 'A',
+				wordToRead: 'GRAM',
 				syllables: [ 'z', 'z', 'z', 'z', 'z', 'z', 'v',	'z', 'z', 'z', 'z', 'z', 'z', 'o', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'd', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'a', 'z', 'z', 'z', 'z', 'z', 'z' ]
 			}
 		],
 		content: [
 			{
 				correctSyllables: [ 'z', 'i', 'm', 'a' ],
-				wordToRead: 'A',
+				wordToRead: 'GRAM',
 				syllables: [ 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'z', 's', 's', 's', 's', 'i', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'm', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'a', 's', 's', 's', 's', 's', 's' ]
 			},
 			{
 				correctSyllables: [ 'c', 'i', 'b', 'u', 'l', 'e' ],
-				wordToRead: 'A',
+				wordToRead: 'GRAM',
 				syllables: [ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'c', 'p', 'p', 'p', 'i', 'p', 'p', 'p', 'p', 'p', 'p', 'b', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'u', 'p', 'p', 'p', 'l', 'p', 'p', 'p', 'p', 'e', 'p', 'p', 'p', 'p', 'p' ]
 			},
 			{
 				correctSyllables: [ 's', 'l', 'u', 'n', 'c', 'e' ],
-				wordToRead: 'A',
+				wordToRead: 'GRAM',
 				syllables: [ 'o', 'o', 'o', 'o', 'o', 's', 'o', 'o', 'o', 'o', 'l', 'o', 'o', 'o', 'o', 'o', 'u', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'n', 'o', 'o', 'o', 'c', 'o', 'o', 'o', 'o', 'o', 'e', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o' ]
 			}
 		]

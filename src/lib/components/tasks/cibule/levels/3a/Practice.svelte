@@ -3,11 +3,11 @@
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
-	import { id, validateStage, validateSymbol } from '$lib/components/tasks/cibule/levels/3a/index';
+	import { id, tryReadWordFromState, validateStage, validateSymbol } from '$lib/components/tasks/cibule/levels/3a/index';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.practiceContent;
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}} />
+<CibuleLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}} onSpace={tryReadWordFromState} />
 {/if}
