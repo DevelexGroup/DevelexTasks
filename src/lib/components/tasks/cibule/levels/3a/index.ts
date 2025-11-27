@@ -1,12 +1,9 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
-import type {
-	CibuleState,
-	CibuleValidateSymbolFunction
-} from '$lib/components/tasks/cibule/cibule.types';
-import type { TaskMistake } from '$lib/types/task.types';
-import { MistakeUnfinished } from '$lib/components/tasks/cibule/mistakes.types';
+import type { CibuleState } from '$lib/components/tasks/cibule/cibule.types';
 import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 import { tryReadWordFromState } from '$lib/components/tasks/cibule';
+import type { TaskMistake } from '$lib/types/task.types';
+import { MistakeUnfinished } from '$lib/components/tasks/cibule/mistakes.types';
 
 export const id = 'level3a';
 
@@ -14,35 +11,19 @@ export const instructionVideo = resolveAny('/video/cibule-instrukce-03a.webm');
 
 export function validateStage(state: CibuleState) : TaskMistake[] | true {
 	const lastSyllable = state.dataEntry.syllables.findLastIndex((syllable => syllable === state.dataEntry.correctSyllables?.[state.dataEntry.correctSyllables.length - 1]));
-	if (state.lastIndex === null || state.lastIndex < lastSyllable) {
+	if (!state.selectedCorrectIndices || state.selectedCorrectIndices.length === 0 || state.selectedCorrectIndices[state.selectedCorrectIndices.length - 1] !== lastSyllable) {
 		return [MistakeUnfinished];
 	}
 	return true;
 }
 
-export const validateSymbol: CibuleValidateSymbolFunction = (index, lastIndex, dataEntry) => {
-	const correctSyllables = dataEntry.correctSyllables ?? [];
-	const correctIndices: number[] = [];
+export function validateSymbol(clickedIndex: number, state: CibuleState) {
+	const correctSyllables = state.dataEntry.correctSyllables ?? [];
+	const correctIndices = correctSyllables.map(syllable => state.dataEntry.syllables.indexOf(syllable)).filter(i => i !== -1);
 
-	if (correctSyllables.length > 0) {
-		let charIndex = 0;
-		for (let i = 0; i < dataEntry.syllables.length; i++) {
-			const symbol = dataEntry.syllables[i];
-			if (symbol === correctSyllables[charIndex]) {
-				correctIndices.push(i);
-				charIndex = (charIndex + 1) % correctSyllables.length;
-			}
-		}
-	}
+	const testIndices = [...state.selectedCorrectIndices, clickedIndex];
 
-	if (lastIndex === null) {
-		return correctIndices.includes(index) && index === correctIndices[0];
-	}
-	const indexOfLastIndex = correctIndices.indexOf(lastIndex);
-	if (indexOfLastIndex === -1) {
-		return false;
-	}
-	return correctIndices.includes(index) && indexOfLastIndex !== correctIndices.length - 1 && index === correctIndices[indexOfLastIndex + 1];
+	return testIndices.every((value, i) => value === correctIndices[i]);
 }
 
 export const onSpace = (state: CibuleState) => {

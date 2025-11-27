@@ -3,7 +3,7 @@
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
-	import { id, onSpace, validateStage, validateSymbol } from '$lib/components/tasks/cibule/levels/3a/index';
+	import { id, onSpace, validateSymbol, validateStage } from '$lib/components/tasks/cibule/levels/3a/index';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>

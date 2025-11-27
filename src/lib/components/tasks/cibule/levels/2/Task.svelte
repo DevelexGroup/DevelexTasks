@@ -12,9 +12,9 @@
 
 {#if data}
 <CibuleLevel {id} data={data} {validateSymbol} {validateStage} repetitions={4} onCompleted={() => {taskState.set(TaskState.End)}}>
-	{#snippet hintComponent({ wordToRead })}
-		{#if wordToRead}
-			<AudioHint audioSrc={getWordAudioSource(wordToRead)} playOnStart playOnStartDelay={750} />
+	{#snippet hintComponent({ state })}
+		{#if state.dataEntry.wordToRead}
+			<AudioHint audioSrc={getWordAudioSource(state.dataEntry.wordToRead)} playOnStart playOnStartDelay={750} />
 		{/if}
 	{/snippet}
 </CibuleLevel>

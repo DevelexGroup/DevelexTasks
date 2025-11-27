@@ -1,6 +1,6 @@
 ﻿<script lang="ts">
 	import DwellTarget from '$lib/components/common/dwellTarget/DwellTarget.svelte';
-	import { CibuleLevelStage, type CibuleTaskProps } from '$lib/components/tasks/cibule/cibule.types';
+	import { CibuleLevelStage, type CibuleState, type CibuleTaskProps } from '$lib/components/tasks/cibule/cibule.types';
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
@@ -20,16 +20,22 @@
 		reportMistake = () => {},
 		onSpace = () => {},
 		hintComponent,
+		extraComponent
 	}: CibuleTaskProps = $props();
 
-	let currentState = $state<CibuleLevelStage>(CibuleLevelStage.InitialDwell);
+	let currentStage = $state<CibuleLevelStage>(CibuleLevelStage.InitialDwell);
 	let currentRepetition = $state<number>(0);
 
-	let lastSymbolIndex = $state<number | null>(null);
+	// let lastSymbolIndex = $state<number | null>(null);
+	let selectedIndices = $state<number[]>([]);
 	let shouldShakeArrow = $state<boolean>(false);
 
 	const currentData = $derived(() => data[currentRepetition % data.length]);
 	const symbols = $derived(() => currentData().syllables);
+	const currentState = $derived(() => ({
+		selectedCorrectIndices: selectedIndices,
+		dataEntry: currentData()
+	}));
 
 	let dwellArrowElement = $state<DwellTarget | null>(null);
 
@@ -37,10 +43,7 @@
 		let keyboardManager = getContext<KeyboardManager>('keyboardManager');
 
 		const skipEvt = keyboardManager.onKeyDown('Enter', skipStage, { preventDefault: true, ignoreRepeat: true });
-		const spaceEvt = keyboardManager.onKeyDown('Space', () => onSpace({
-			lastIndex: lastSymbolIndex,
-			dataEntry: currentData()
-		}), { preventDefault: true, ignoreRepeat: true });
+		const spaceEvt = keyboardManager.onKeyDown('Space', () => onSpace(currentState()), { preventDefault: true, ignoreRepeat: true });
 
 		return () => {
 			skipEvt.dispose();
@@ -49,7 +52,7 @@
 	})
 
 	$effect(() => {
-		if (currentState === CibuleLevelStage.InitialDwell) {
+		if (currentStage === CibuleLevelStage.InitialDwell) {
 			cursorVisible.set(false);
 		} else {
 			cursorVisible.set(true);
@@ -61,9 +64,9 @@
 	});
 
 	function skipStage() {
-		if (currentState === CibuleLevelStage.InitialDwell) {
-			currentState = CibuleLevelStage.Task;
-		} else if (currentState === CibuleLevelStage.Task) {
+		if (currentStage === CibuleLevelStage.InitialDwell) {
+			currentStage = CibuleLevelStage.Task;
+		} else if (currentStage === CibuleLevelStage.Task) {
 			advanceLevel();
 		}
 	}
@@ -71,24 +74,23 @@
 	function advanceLevel() {
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
-			currentState = CibuleLevelStage.InitialDwell;
-			lastSymbolIndex = null;
+			currentStage = CibuleLevelStage.InitialDwell;
+			selectedIndices = [];
 		} else {
 			onCompleted();
 		}
 	}
 
 	function validateSymbolClick(symbol: string, index: number): boolean {
-		const validationResult = validateSymbol(index, lastSymbolIndex, currentData())
+		const validationResult = validateSymbol(index, currentState())
 		if (validationResult) {
-			lastSymbolIndex = index;
+			selectedIndices = [...selectedIndices, index];
 		}
 		return validationResult;
 	}
 
 	function onAdvanceDwellComplete() {
-		const state = {lastIndex: lastSymbolIndex, dataEntry: currentData()};
-		const validationResult = validateStage(state);
+		const validationResult = validateStage(currentState());
 		if (validationResult === true) {
 			console.log('Stage validation succeeded');
 			advanceLevel();
@@ -107,7 +109,7 @@
 </script>
 
 <div class="flex h-screen w-full items-center justify-center bg-task-background">
-	{#if currentState === CibuleLevelStage.InitialDwell}
+	{#if currentStage === CibuleLevelStage.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget
 				id={`${id}_initial}`}
@@ -115,28 +117,37 @@
 			  bufferSize={50}
 			  width={150}
 			  onDwellComplete={() => {
-					currentState = CibuleLevelStage.Task;
+					currentStage = CibuleLevelStage.Task;
 			  }}
 			/>
 		</div>
-	{:else if currentState === CibuleLevelStage.Task}
-		<div class="text-center">
-			{#if hintComponent}
-			<div class="flex items-center justify-center gap-32">
+	{:else if currentStage === CibuleLevelStage.Task}
+		<div class="flex flex-col items-center justify-center gap-16">
+			<div class="text-center">
+				{#if hintComponent}
+				<div class="flex items-center justify-center gap-32">
+					<div in:fade|global={{ delay: 500 }} out:fade|global>
+						{@render hintComponent({
+							state: currentState(),
+							isPractice
+						})}
+					</div>
+					<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
+						<CibuleTrack symbols={symbols()} {validateSymbolClick} />
+					</div>
+				</div>
+				{:else}
+					<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
+						<CibuleTrack symbols={symbols()} {validateSymbolClick} />
+					</div>
+				{/if}
+			</div>
+			{#if extraComponent}
 				<div in:fade|global={{ delay: 500 }} out:fade|global>
-					{@render hintComponent({
-						symbol: currentData().correctSyllables?.[0] ?? "",
-						wordToRead: currentData().wordToRead ?? "",
+					{@render extraComponent({
+						state: currentState(),
 						isPractice
 					})}
-				</div>
-				<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
-					<CibuleTrack symbols={symbols()} {validateSymbolClick} />
-				</div>
-			</div>
-			{:else}
-				<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
-					<CibuleTrack symbols={symbols()} {validateSymbolClick} />
 				</div>
 			{/if}
 		</div>
@@ -144,7 +155,7 @@
 			<DwellTarget
 				bind:this={dwellArrowElement}
 			  id={`${id}_end}`}
-			  dwellTimeMs={2000}
+			  dwellTimeMs={1000}
 			  bufferSize={50}
 			  width={150}
 			  onDwellComplete={onAdvanceDwellComplete}

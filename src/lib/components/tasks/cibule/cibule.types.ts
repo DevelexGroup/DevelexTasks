@@ -1,27 +1,24 @@
 ﻿import type { TaskLevelData, TaskLevelProps, TaskMistake } from '$lib/types/task.types';
 import type { Snippet } from 'svelte';
 
-export interface HintComponent {
-	symbol?: string;
-	wordToRead?: string;
+export interface ExtraComponent {
+	state: CibuleState;
 	isPractice?: boolean;
 }
-
-// export type CibuleValidateSymbolFunction = (index: number, currentIndex: number | null, correctIndices: number[]) => boolean;
-export type CibuleValidateSymbolFunction = (index: number, lastIndex: number | null, dataEntry: CibuleLevelDataEntry) => boolean;
 
 export interface CibuleTaskProps extends TaskLevelProps {
 	data: CibuleLevelDataEntry[];
 	repetitions?: number;
-	validateSymbol?: CibuleValidateSymbolFunction;
+	validateSymbol?: (clickedIndex: number, state: CibuleState) => boolean;
 	validateStage?: (state: CibuleState) => TaskMistake[] | true;
 	onSpace?: (state: CibuleState) => void;
-	hintComponent?: Snippet<[HintComponent]>;
 	reportMistake?: (mistakes: TaskMistake[]) => void;
+	hintComponent?: Snippet<[ExtraComponent]>;
+	extraComponent?: Snippet<[ExtraComponent]>;
 }
 
 export type CibuleState = {
-	lastIndex: number | null;
+	selectedCorrectIndices: number[],
 	dataEntry: CibuleLevelDataEntry
 }
 
