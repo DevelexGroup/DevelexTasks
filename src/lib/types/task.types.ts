@@ -25,3 +25,9 @@ export type TaskLevelData<TaskContent> = {
 	practiceContent: TaskContent[];
 	content: TaskContent[];
 }[];
+
+export type TaskMistake = {
+	id: string;
+	details?: string;
+	audio?: string;
+};
