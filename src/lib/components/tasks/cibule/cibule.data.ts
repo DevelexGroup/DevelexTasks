@@ -94,5 +94,17 @@ export const cibuleTestData: CibuleTaskLevelData = [
 				syllables: [ 'o', 'o', 'o', 'o', 'o', 's', 'o', 'o', 'o', 'o', 'l', 'o', 'o', 'o', 'o', 'o', 'u', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'n', 'o', 'o', 'o', 'c', 'o', 'o', 'o', 'o', 'o', 'e', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o' ]
 			}
 		]
+	},
+	{
+		levelID: "level3b",
+		label: 'Úroveň 3B',
+		practiceContent: [
+			{
+				correctSyllables: [ 'lo', 'pa', 'ta' ],
+				wordToRead: 'GRAM',
+				syllables: ['k', 'k', 'k', 'k', 'k', 'k', 'k', 'ta', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'pa', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'lo', 'k', 'k', 'k', 'k', 'k', 'k']
+			}
+		],
+		content: []
 	}
 ];
