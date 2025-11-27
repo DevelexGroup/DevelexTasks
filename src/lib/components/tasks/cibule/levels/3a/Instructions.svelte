@@ -3,6 +3,8 @@
 import { taskState } from '$lib/stores/task';
 import { TaskState } from '$lib/types/task.types';
 import { instructionVideo } from '$lib/components/tasks/cibule/levels/3a/index';
+import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 </script>
 
 <div class="flex h-screen w-full items-center justify-center">

@@ -5,7 +5,8 @@ import type {
 } from '$lib/components/tasks/cibule/cibule.types';
 import type { TaskMistake } from '$lib/types/task.types';
 import { MistakeUnfinished } from '$lib/components/tasks/cibule/mistakes.types';
-import { playSound } from '$lib/utils/sound';
+import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
+import { tryReadWordFromState } from '$lib/components/tasks/cibule';
 
 export const id = 'level3a';
 
@@ -42,4 +43,12 @@ export const validateSymbol: CibuleValidateSymbolFunction = (index, lastIndex, d
 		return false;
 	}
 	return correctIndices.includes(index) && indexOfLastIndex !== correctIndices.length - 1 && index === correctIndices[indexOfLastIndex + 1];
+}
+
+export const onSpace = (state: CibuleState) => {
+	if (validateStage(state) === true)
+		tryReadWordFromState(state);
+	else {
+		playSound(SOUND_MISTAKE, 0.33);
+	}
 }

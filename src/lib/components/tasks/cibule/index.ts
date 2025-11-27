@@ -2,6 +2,7 @@ import type { TaskMetadata } from '$lib/types/task.types';
 import { playSound } from '$lib/utils/sound';
 import { resolveAny } from '$lib/utils/resolveAny';
 import type { CibuleState } from '$lib/components/tasks/cibule/cibule.types';
+
 export const addToList = true;
 export const label = 'Cibule';
 export const description = 'Example description';
