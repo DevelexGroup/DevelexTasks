@@ -34,7 +34,7 @@
 	const flatIndexFor = (rowIndex: number, colIndex: number) => rowOffsets[rowIndex] + colIndex;
 </script>
 
-<div class="flex flex-col items-center justify-center" style="gap: {symbolSpacing}px;">
+<div class="flex flex-col items-start justify-center" style="gap: {symbolSpacing}px;">
 	{#each symbolRows as symbolRow, rowIndex (rowIndex)}
 		<div class="flex items-center justify-center" style="gap: {symbolSpacing}px;">
 		{#each symbolRow as symbol, colIndex (`${rowIndex}-${colIndex}`)}
