@@ -11,7 +11,7 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} {validateStage} repetitions={2} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={onSpace}>
+<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={onSpace}>
 	{#snippet extraComponent({ state })}
 		<div class="flex gap-4">
 			{#each state.dataEntry.correctSyllables as syllable, index (index)}

@@ -4,7 +4,6 @@
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
 	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
-	import SymbolSingleTrack from '$lib/components/common/tracks/SymbolSingleTrack.svelte';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';
@@ -12,7 +11,6 @@
 	let {
 		id,
 		data,
-		repetitions = 1,
 		isPractice = false,
 		onCompleted = () => {},
 		validateSymbol = () => false,
@@ -31,6 +29,7 @@
 	let selectedIndices = $state<number[]>([]);
 	let shouldShakeArrow = $state<boolean>(false);
 
+	const repetitions = data.length;
 	const currentData = $derived(() => data[currentRepetition % data.length]);
 	const symbols = $derived(() => currentData().syllables);
 	const currentState = $derived(() => ({

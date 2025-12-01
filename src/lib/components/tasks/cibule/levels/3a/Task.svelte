@@ -10,7 +10,7 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} {validateStage} repetitions={2} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={onSpace}>
+<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={onSpace}>
 	{#snippet trackComponent({ symbols, validateSymbolClick })}
 		<SymbolSingleTrack {symbols} {validateSymbolClick} letterSpacing={4} />
 	{/snippet}

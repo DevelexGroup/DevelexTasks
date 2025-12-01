@@ -11,7 +11,7 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} {validateStage} repetitions={4} onCompleted={() => {taskState.set(TaskState.End)}}>
+<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskState.set(TaskState.End)}}>
 	{#snippet hintComponent({ state })}
 		<SymbolElement symbol={state.dataEntry.correctSyllables?.[0]} interactable={false} />
 	{/snippet}

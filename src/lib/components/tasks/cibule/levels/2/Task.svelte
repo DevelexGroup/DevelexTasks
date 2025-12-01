@@ -12,7 +12,7 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} {validateStage} repetitions={4} onCompleted={() => {taskState.set(TaskState.End)}}>
+<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskState.set(TaskState.End)}}>
 	{#snippet hintComponent({ state })}
 		{#if state.dataEntry.wordToRead}
 			<AudioHint audioSrc={getWordAudioSource(state.dataEntry.wordToRead)} playOnStart playOnStartDelay={750} />
