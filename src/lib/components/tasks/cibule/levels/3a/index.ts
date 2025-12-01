@@ -2,7 +2,7 @@
 import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 import { getFlattenedSymbols, tryReadWordFromState } from '$lib/components/tasks/cibule';
 import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
-import { MistakeUnfinished } from '$lib/components/tasks/cibule/mistakes.types';
+import { MistakeUnfinished } from '$lib/types/mistakes.types';
 
 export const id = 'level3a';
 

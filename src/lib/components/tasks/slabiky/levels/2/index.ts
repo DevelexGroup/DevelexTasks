@@ -1,9 +1,9 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
 import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
 import { MistakeUnfinished } from '$lib/types/mistakes.types';
-import { getFlattenedSymbols } from '$lib/components/tasks/cibule';
+import { getFlattenedSymbols } from '$lib/components/tasks/slabiky';
 
-export const id = 'level1';
+export const id = 'level2';
 
 export const instructionVideo = resolveAny('/video/cibule-instrukce-01.webm');
 

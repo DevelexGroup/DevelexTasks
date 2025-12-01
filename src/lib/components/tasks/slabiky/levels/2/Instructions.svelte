@@ -2,7 +2,7 @@
 
 import { taskState } from '$lib/stores/task';
 import { TaskState } from '$lib/types/task.types';
-import { instructionVideo } from '$lib/components/tasks/slabiky/levels/1/index';
+import { instructionVideo } from '$lib/components/tasks/slabiky/levels/2/index';
 </script>
 
 <div class="flex h-screen w-full items-center justify-center">
