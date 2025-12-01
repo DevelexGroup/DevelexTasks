@@ -1,16 +1,17 @@
 ﻿<script lang="ts">
-	import CibuleLevel from '$lib/components/tasks/cibule/components/CibuleLevel.svelte';
+	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
 	import { id, onSpace, validateSymbol, validateStage, isSyllableFrameVisible	} from '$lib/components/tasks/cibule/levels/3b/index';
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
+	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} {validateStage} repetitions={2} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={onSpace}>
+<TrackLevel {id} data={data} {validateSymbol} {validateStage} repetitions={2} onCompleted={() => {taskState.set(TaskState.End)}} onSpace={onSpace}>
 	{#snippet extraComponent({ state })}
 		<div class="flex gap-4">
 			{#each state.dataEntry.correctSyllables as syllable, index (index)}
@@ -18,5 +19,8 @@
 			{/each}
 		</div>
 	{/snippet}
-</CibuleLevel>
+	{#snippet trackComponent({ symbols, validateSymbolClick })}
+		<SymbolTrack {symbols} {validateSymbolClick} letterSpacing={4} />
+	{/snippet}
+</TrackLevel>
 {/if}

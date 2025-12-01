@@ -1,14 +1,12 @@
-import type { TaskMetadata, TaskMistake } from '$lib/types/task.types';
+import type { TaskMetadata, TrackLevelState } from '$lib/types/task.types';
 import { playSound } from '$lib/utils/sound';
 import { resolveAny } from '$lib/utils/resolveAny';
-import type { CibuleState } from '$lib/components/tasks/cibule/cibule.types';
-import { MistakeUnfinished } from '$lib/components/tasks/cibule/mistakes.types';
 
 export const addToList = true;
 export const label = 'Cibule';
 export const description = 'Example description';
 
-export function tryReadWordFromState(state: CibuleState) {
+export function tryReadWordFromState(state: TrackLevelState) {
 	const wordToRead = state.dataEntry?.wordToRead;
 	if (wordToRead) {
 		playSound(getWordAudioSource(wordToRead), 0.5);

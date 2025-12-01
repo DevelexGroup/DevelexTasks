@@ -1,18 +1,22 @@
 ﻿<script lang="ts">
-	import CibuleLevel from '$lib/components/tasks/cibule/components/CibuleLevel.svelte';
+	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/cibule/levels/1/index';
-	import CibuleSymbol from '$lib/components/tasks/cibule/components/CibuleSymbol.svelte';
+	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
+	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.practiceContent;
 </script>
 
 {#if data}
-<CibuleLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}}>
+<TrackLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}}>
 	{#snippet hintComponent({ state })}
-		<CibuleSymbol symbol={state.dataEntry.correctSyllables?.[0]} interactable={false} />
+		<SymbolElement symbol={state.dataEntry.correctSyllables?.[0]} interactable={false} />
 	{/snippet}
-</CibuleLevel>
+	{#snippet trackComponent({ symbols, validateSymbolClick })}
+		<SymbolTrack {symbols} {validateSymbolClick} letterSpacing={4} />
+	{/snippet}
+</TrackLevel>
 {/if}

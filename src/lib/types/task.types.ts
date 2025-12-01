@@ -1,3 +1,5 @@
+import type { Snippet } from 'svelte';
+
 export interface TaskMetadata {
 	label: string;
 	description: string;
@@ -31,3 +33,47 @@ export type TaskMistake = {
 	details?: string;
 	audio?: string;
 };
+
+// Track task types
+
+export interface TrackTaskProps extends TaskLevelProps {
+	data: TrackLevelDataEntry[];
+	repetitions?: number;
+	validateSymbol?: (clickedIndex: number, state: TrackLevelState) => boolean;
+	validateStage?: (state: TrackLevelState) => TaskMistake[] | true;
+	onSpace?: (state: TrackLevelState) => void;
+	reportMistake?: (mistakes: TaskMistake[]) => void;
+	trackComponent?: Snippet<[TrackComponent]>;
+	hintComponent?: Snippet<[ExtraComponent]>;
+	extraComponent?: Snippet<[ExtraComponent]>;
+}
+
+export type TrackLevelState = {
+	selectedCorrectIndices: number[],
+	dataEntry: TrackLevelDataEntry
+}
+
+export enum TrackLevelStage {
+	InitialDwell,
+	Task
+}
+
+export type TrackLevelDataEntry = {
+	syllables: string[];
+	correctSyllables?: string[];
+	wordToRead?: string;
+}
+
+export type TrackTaskData = TaskLevelData<TrackLevelDataEntry>;
+
+export interface ExtraComponent {
+	state: TrackLevelState;
+	isPractice?: boolean;
+}
+
+export interface TrackComponent {
+	symbols: string[];
+	validateSymbolClick: (symbol: string, index: number) => boolean;
+	letterSpacing?: number;
+	symbolSpacing?: number;
+}

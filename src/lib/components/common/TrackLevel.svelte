@@ -1,13 +1,13 @@
 ﻿<script lang="ts">
 	import DwellTarget from '$lib/components/common/dwellTarget/DwellTarget.svelte';
-	import { CibuleLevelStage, type CibuleState, type CibuleTaskProps } from '$lib/components/tasks/cibule/cibule.types';
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
 	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
-	import CibuleTrack from '$lib/components/tasks/cibule/components/CibuleTrack.svelte';
+	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
+	import { TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';
 
 	let {
 		id,
@@ -19,11 +19,12 @@
 		validateStage = () => true,
 		reportMistake = () => {},
 		onSpace = () => {},
+		trackComponent,
 		hintComponent,
 		extraComponent
-	}: CibuleTaskProps = $props();
+	}: TrackTaskProps = $props();
 
-	let currentStage = $state<CibuleLevelStage>(CibuleLevelStage.InitialDwell);
+	let currentStage = $state<TrackLevelStage>(TrackLevelStage.InitialDwell);
 	let currentRepetition = $state<number>(0);
 
 	// let lastSymbolIndex = $state<number | null>(null);
@@ -52,7 +53,7 @@
 	})
 
 	$effect(() => {
-		if (currentStage === CibuleLevelStage.InitialDwell) {
+		if (currentStage === TrackLevelStage.InitialDwell) {
 			cursorVisible.set(false);
 		} else {
 			cursorVisible.set(true);
@@ -64,9 +65,9 @@
 	});
 
 	function skipStage() {
-		if (currentStage === CibuleLevelStage.InitialDwell) {
-			currentStage = CibuleLevelStage.Task;
-		} else if (currentStage === CibuleLevelStage.Task) {
+		if (currentStage === TrackLevelStage.InitialDwell) {
+			currentStage = TrackLevelStage.Task;
+		} else if (currentStage === TrackLevelStage.Task) {
 			advanceLevel();
 		}
 	}
@@ -74,7 +75,7 @@
 	function advanceLevel() {
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
-			currentStage = CibuleLevelStage.InitialDwell;
+			currentStage = TrackLevelStage.InitialDwell;
 			selectedIndices = [];
 		} else {
 			onCompleted();
@@ -109,7 +110,7 @@
 </script>
 
 <div class="flex h-screen w-full items-center justify-center bg-task-background">
-	{#if currentStage === CibuleLevelStage.InitialDwell}
+	{#if currentStage === TrackLevelStage.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget
 				id={`${id}_initial}`}
@@ -117,11 +118,11 @@
 			  bufferSize={50}
 			  width={150}
 			  onDwellComplete={() => {
-					currentStage = CibuleLevelStage.Task;
+					currentStage = TrackLevelStage.Task;
 			  }}
 			/>
 		</div>
-	{:else if currentStage === CibuleLevelStage.Task}
+	{:else if currentStage === TrackLevelStage.Task}
 		<div class="flex flex-col items-center justify-center gap-16">
 			<div class="text-center">
 				{#if hintComponent}
@@ -132,14 +133,24 @@
 							isPractice
 						})}
 					</div>
+					{#if trackComponent}
 					<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
-						<CibuleTrack symbols={symbols()} {validateSymbolClick} />
+						{@render trackComponent({
+							symbols: symbols(),
+							validateSymbolClick
+						})}
 					</div>
+					{/if}
 				</div>
 				{:else}
+					{#if trackComponent}
 					<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
-						<CibuleTrack symbols={symbols()} {validateSymbolClick} />
+						{@render trackComponent({
+							symbols: symbols(),
+							validateSymbolClick
+						})}
 					</div>
+					{/if}
 				{/if}
 			</div>
 			{#if extraComponent}

@@ -1,5 +1,4 @@
 ﻿<script lang="ts">
-	import { resolveAny } from '$lib/utils/resolveAny';
 	import { playSound, SOUND_CORRECT, SOUND_MISTAKE } from '$lib/utils/sound';
 
 	interface Props {
@@ -7,6 +6,7 @@
 		index?: number;
 		validateSymbolClick?: (symbol: string, index: number) => boolean;
 		interactable?: boolean;
+		letterSpacing?: number;
 	}
 
 	let isCorrect = $state<boolean>(false);
@@ -17,6 +17,7 @@
 		index = -1,
 		validateSymbolClick = () => false,
 		interactable = true,
+		letterSpacing = 0
 	}: Props = $props();
 
 	function onSymbolClick(): void {
@@ -37,6 +38,7 @@
 
 <div>
 	<button type="button" class="symbol font-serif text-4xl text-gray-800"
+					style="letter-spacing: {letterSpacing}px;"
 					class:correct-symbol={isCorrect}
 					class:incorrect-symbol={!isCorrect}
 					class:non-interactable={!interactable}
@@ -52,7 +54,6 @@
 		cursor: pointer;
 		position: relative;
 		user-select: none;
-		letter-spacing: 4px;
 
 		&.non-interactable{
 				pointer-events: none;

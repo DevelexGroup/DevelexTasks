@@ -1,6 +1,6 @@
-﻿import type { CibuleTaskLevelData } from '$lib/components/tasks/cibule/cibule.types';
+﻿import type { TrackTaskData } from '$lib/types/task.types';
 
-export const cibuleTestData: CibuleTaskLevelData = [
+export const cibuleTestData: TrackTaskData = [
 	{
 		levelID: "level1",
 		label: 'Úroveň 1',
