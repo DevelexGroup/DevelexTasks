@@ -4,7 +4,7 @@
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
 	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
-	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
+	import SymbolSingleTrack from '$lib/components/common/tracks/SymbolSingleTrack.svelte';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';

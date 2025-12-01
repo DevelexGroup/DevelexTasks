@@ -36,7 +36,7 @@
 	}
 </script>
 
-<div>
+<div id="symbol-element-{index}">
 	<button type="button" class="symbol font-serif text-4xl text-gray-800"
 					style="letter-spacing: {letterSpacing}px;"
 					class:correct-symbol={isCorrect}

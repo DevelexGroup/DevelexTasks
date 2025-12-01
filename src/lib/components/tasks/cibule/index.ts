@@ -17,6 +17,11 @@ export function getWordAudioSource(word: string): string {
 	return resolveAny(`/sound/words/${word}.ogg`);
 }
 
+export function getFlattenedSymbols(state: TrackLevelState): string[] {
+	if (!state.dataEntry.syllables) return [];
+	return Array.isArray(state.dataEntry.syllables[0]) ? (state.dataEntry.syllables as string[][]).flat() : (state.dataEntry.syllables as string[]);
+}
+
 export default {
 	label,
 	description,

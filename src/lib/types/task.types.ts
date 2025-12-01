@@ -59,7 +59,7 @@ export enum TrackLevelStage {
 }
 
 export type TrackLevelDataEntry = {
-	syllables: string[];
+	syllables: string[] | string[][];
 	correctSyllables?: string[];
 	wordToRead?: string;
 }
@@ -72,7 +72,7 @@ export interface ExtraComponent {
 }
 
 export interface TrackComponent {
-	symbols: string[];
+	symbols: string[] | string[][];
 	validateSymbolClick: (symbol: string, index: number) => boolean;
 	letterSpacing?: number;
 	symbolSpacing?: number;
