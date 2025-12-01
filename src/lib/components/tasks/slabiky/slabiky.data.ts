@@ -46,6 +46,41 @@ export const slabikyTestData: TrackTaskData = [
 				],
 				correctSyllables: ['ku'],
 				wordToRead: 'KU'
+			},
+			{
+				syllables: ['hůl', 'kůl', 'hlů', 'hůl', 'nůl', 'húl', 'tůl', 'lůh', 'hůl', 'hul', 'luh', 'hól'],
+				correctSyllables: ['hůl'],
+				wordToRead: 'HŮL'
+			},
+			{
+				syllables: ['koš', 'kus', 'kos', 'kso', 'kos', 'sok', 'kos', 'kas', 'kos', 'kos', 'hos', 'koš', 'kos', 'sok', 'šok'],
+				correctSyllables: ['kos'],
+				wordToRead: 'KOS'
+			},
+			{
+				syllables: ['nám', 'nám', 'mán', 'nám', 'nam', 'ném', 'nem', 'nán', 'mná', 'ném', 'nám', 'máu', 'ním', 'míň', 'nám'],
+				correctSyllables: ['nám'],
+				wordToRead: 'NÁM'
+			},
+			{
+				syllables: [
+					['vír', 'rýv', 'výr', 'vir', 'vrý', 'vír', 'výr'],
+					['vyr', 'výz', 'výr', 'vzý', 'výr', 'zvý', 'vír'],
+					['viz', 'výr', 'vrý', 'výr', 'vír', 'výr', 'vří'],
+					['výr', 'vír', 'rýv', 'výr', 'vír', 'výr', 'výr']
+				],
+				correctSyllables: ['výr'],
+				wordToRead: 'VÝR'
+			},
+			{
+				syllables: [
+					['cor', 'car', 'rac', 'cer', 'rec', 'car', 'cac'],
+					['sar', 'ras', 'čar', 'rač', 'car', 'car', 'čer'],
+					['cra', 'car', 'car', 'cac', 'rac', 'car', 'ras'],
+					['cer', 'sar', 'car', 'cra', 'car', 'čar', 'rec']
+				],
+				correctSyllables: ['car'],
+				wordToRead: 'CAR'
 			}
 		]
 	}
