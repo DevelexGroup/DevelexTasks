@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import type { PageProps } from './$types';
 	import { resolve } from '$app/paths';
+	import UserSelect from '$lib/components/UserSelect.svelte';
 
 	let { data }: PageProps = $props();
 </script>
@@ -34,3 +35,5 @@
 		</button>
 	</div>
 </section>
+
+<UserSelect />
