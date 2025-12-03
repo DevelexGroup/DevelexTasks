@@ -26,8 +26,8 @@
 		{/snippet}
 		{#snippet trackComponent({ symbols, validateSymbolClick })}
 			<SymbolTrack {symbols} {validateSymbolClick} symbolSpacing={16}>
-				{#snippet symbolSnippet()}
-					<ImageSymbolElement />
+				{#snippet symbolSnippet({ symbol, index })}
+					<ImageSymbolElement {symbol} {index} {validateSymbolClick} />
 				{/snippet}
 			</SymbolTrack>
 		{/snippet}
