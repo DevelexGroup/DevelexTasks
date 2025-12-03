@@ -1,8 +1,8 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
 import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
-import { getFlattenedSymbols, tryReadWordFromState } from '$lib/components/tasks/cibule';
 import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
 import { MistakeUnfinished } from '$lib/types/mistakes.types';
+import { getFlattenedSymbols, tryReadWordFromState } from '$lib/utils/trackLevelUtils';
 
 export const id = 'level3b';
 

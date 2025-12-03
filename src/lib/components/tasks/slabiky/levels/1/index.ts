@@ -1,7 +1,7 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
 import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
 import { MistakeUnfinished } from '$lib/types/mistakes.types';
-import { getFlattenedSymbols } from '$lib/components/tasks/slabiky';
+import { getFlattenedSymbols } from '$lib/utils/trackLevelUtils';
 
 export const id = 'level1';
 
