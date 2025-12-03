@@ -9,11 +9,15 @@ import { instructionVideo } from '$lib/components/tasks/cibule/levels/2/index';
 	<div class="text-center">
 		<h2>Instrukce</h2>
 		<div class="max-w-4xl mx-auto">
-			<video class="w-full rounded" controls>
-				<source src={instructionVideo} type="video/webm" />
-				<track kind="captions" />
-				Váš prohlížeč nepodporuje přehrávání videa.
-			</video>
+			{#if instructionVideo}
+				<video class="w-full rounded" controls>
+					<source src={instructionVideo} type="video/webm" />
+					<track kind="captions" />
+					Váš prohlížeč nepodporuje přehrávání videa.
+				</video>
+			{:else}
+				<p>Instrukční video není k dispozici.</p>
+			{/if}
 		</div>
 		<div class="flex items-center justify-center gap-2">
 			<button class="mt-4 px-4 py-2 bg-gray-500 text-white rounded"
