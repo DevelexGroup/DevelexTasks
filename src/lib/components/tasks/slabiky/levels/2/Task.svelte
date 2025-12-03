@@ -5,8 +5,8 @@
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/slabiky/levels/2/index';
 	import SymbolMultiTrack from '$lib/components/common/tracks/SymbolMultiTrack.svelte';
 	import { slabikyTestData } from '$lib/components/tasks/slabiky/slabiky.data';
-	import { getWordAudioSource } from '$lib/components/tasks/cibule';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
+	import { getWordAudioSource } from '$lib/utils/trackLevelUtils';
 
 	const data = slabikyTestData.find((level => level.levelID === id))?.content;
 </script>

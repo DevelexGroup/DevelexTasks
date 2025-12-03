@@ -5,8 +5,8 @@
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/cibule/levels/2/index';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
-	import { getWordAudioSource } from '$lib/components/tasks/cibule';
 	import SymbolSingleTrack from '$lib/components/common/tracks/SymbolSingleTrack.svelte';
+	import { getWordAudioSource } from '$lib/utils/trackLevelUtils';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>
