@@ -6,30 +6,30 @@ export const cibuleTestData: TrackTaskData = [
 		label: 'Úroveň 1',
 		practiceContent: [
 			{
-				syllables: [ 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'a', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g' ],
-				correctSyllables: [ 'a' ],
+				sequence: [ 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'a', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g' ],
+				correct: [ 'a' ],
 				wordToRead: 'A'
 			},
 		],
 		content: [
 			{
-				syllables: [ 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 't', 'h', 'h', 't', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h' ],
-				correctSyllables: [ 't' ],
+				sequence: [ 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 't', 'h', 'h', 't', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h' ],
+				correct: [ 't' ],
 				wordToRead: 'T',
 			},
 			{
-				syllables: [ 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b' ],
-				correctSyllables: [ 'p' ],
+				sequence: [ 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b' ],
+				correct: [ 'p' ],
 				wordToRead: 'P',
 			},
 			{
-				syllables: [ 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o', 'da', 'o', 'o', 'da', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o' ],
-				correctSyllables: [ 'da' ],
+				sequence: [ 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o', 'da', 'o', 'o', 'da', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o' ],
+				correct: [ 'da' ],
 				wordToRead: 'DA'
 			},
 			{
-				syllables: [ 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a' ],
-				correctSyllables: [ 'lo' ],
+				sequence: [ 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a' ],
+				correct: [ 'lo' ],
 				wordToRead: 'LO'
 			}
 		]
@@ -39,31 +39,31 @@ export const cibuleTestData: TrackTaskData = [
 		label: 'Úroveň 2',
 		practiceContent: [
 			{
-				correctSyllables: [ 'k' ],
+				correct: [ 'k' ],
 				wordToRead: 'K',
-				syllables: [ 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e' ]
+				sequence: [ 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e' ]
 			}
 		],
 		content: [
 			{
-				correctSyllables: [ 'v' ],
+				correct: [ 'v' ],
 				wordToRead: 'V',
-				syllables: [ 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h' ]
+				sequence: [ 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h' ]
 			},
 			{
-				correctSyllables: [ 'm' ],
+				correct: [ 'm' ],
 				wordToRead: 'M',
-				syllables: [ 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n'	]
+				sequence: [ 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n'	]
 			},
 			{
-				correctSyllables: [ 'pe' ],
+				correct: [ 'pe' ],
 				wordToRead: 'PE',
-				syllables: [ 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'pe', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'pe' ]
+				sequence: [ 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'pe', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'pe' ]
 			},
 			{
-				correctSyllables: [ 'ma' ],
+				correct: [ 'ma' ],
 				wordToRead: 'MA',
-				syllables: [ 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'i', 'ma', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i' ]
+				sequence: [ 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'i', 'ma', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i' ]
 			}
 		]
 	},
@@ -72,26 +72,26 @@ export const cibuleTestData: TrackTaskData = [
 		label: 'Úroveň 3A',
 		practiceContent: [
 			{
-				correctSyllables: [ 'v', 'o', 'd', 'a' ],
+				correct: [ 'v', 'o', 'd', 'a' ],
 				wordToRead: 'GRAM',
-				syllables: [ 'z', 'z', 'z', 'z', 'z', 'z', 'v',	'z', 'z', 'z', 'z', 'z', 'z', 'o', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'd', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'a', 'z', 'z', 'z', 'z', 'z', 'z' ]
+				sequence: [ 'z', 'z', 'z', 'z', 'z', 'z', 'v',	'z', 'z', 'z', 'z', 'z', 'z', 'o', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'd', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'a', 'z', 'z', 'z', 'z', 'z', 'z' ]
 			}
 		],
 		content: [
 			{
-				correctSyllables: [ 'z', 'i', 'm', 'a' ],
+				correct: [ 'z', 'i', 'm', 'a' ],
 				wordToRead: 'GRAM',
-				syllables: [ 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'z', 's', 's', 's', 's', 'i', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'm', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'a', 's', 's', 's', 's', 's', 's' ]
+				sequence: [ 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'z', 's', 's', 's', 's', 'i', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'm', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'a', 's', 's', 's', 's', 's', 's' ]
 			},
 			{
-				correctSyllables: [ 'c', 'i', 'b', 'u', 'l', 'e' ],
+				correct: [ 'c', 'i', 'b', 'u', 'l', 'e' ],
 				wordToRead: 'GRAM',
-				syllables: [ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'c', 'p', 'p', 'p', 'i', 'p', 'p', 'p', 'p', 'p', 'p', 'b', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'u', 'p', 'p', 'p', 'l', 'p', 'p', 'p', 'p', 'e', 'p', 'p', 'p', 'p', 'p' ]
+				sequence: [ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'c', 'p', 'p', 'p', 'i', 'p', 'p', 'p', 'p', 'p', 'p', 'b', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'u', 'p', 'p', 'p', 'l', 'p', 'p', 'p', 'p', 'e', 'p', 'p', 'p', 'p', 'p' ]
 			},
 			{
-				correctSyllables: [ 's', 'l', 'u', 'n', 'c', 'e' ],
+				correct: [ 's', 'l', 'u', 'n', 'c', 'e' ],
 				wordToRead: 'GRAM',
-				syllables: [ 'o', 'o', 'o', 'o', 'o', 's', 'o', 'o', 'o', 'o', 'l', 'o', 'o', 'o', 'o', 'o', 'u', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'n', 'o', 'o', 'o', 'c', 'o', 'o', 'o', 'o', 'o', 'e', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o' ]
+				sequence: [ 'o', 'o', 'o', 'o', 'o', 's', 'o', 'o', 'o', 'o', 'l', 'o', 'o', 'o', 'o', 'o', 'u', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'n', 'o', 'o', 'o', 'c', 'o', 'o', 'o', 'o', 'o', 'e', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o' ]
 			}
 		]
 	},
@@ -100,21 +100,21 @@ export const cibuleTestData: TrackTaskData = [
 		label: 'Úroveň 3B',
 		practiceContent: [
 			{
-				correctSyllables: [ 'lo', 'pa', 'ta' ],
+				correct: [ 'lo', 'pa', 'ta' ],
 				wordToRead: 'GRAM',
-				syllables: ['k', 'k', 'k', 'k', 'k', 'k', 'k', 'ta', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'pa', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'lo', 'k', 'k', 'k', 'k', 'k', 'k']
+				sequence: ['k', 'k', 'k', 'k', 'k', 'k', 'k', 'ta', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'pa', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'lo', 'k', 'k', 'k', 'k', 'k', 'k']
 			}
 		],
 		content: [
 			{
-				correctSyllables: [ 'ma', 'li', 'na'],
+				correct: [ 'ma', 'li', 'na'],
 				wordToRead: 'GRAM',
-				syllables: [ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'li', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'ma', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'na', 'p', 'p', 'p', 'p', 'p', 'p' ]
+				sequence: [ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'li', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'ma', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'na', 'p', 'p', 'p', 'p', 'p', 'p' ]
 			},
 			{
-				correctSyllables: [ 'no', 'vi', 'ny' ],
+				correct: [ 'no', 'vi', 'ny' ],
 				wordToRead: 'GRAM',
-				syllables: ['c', 'c', 'c', 'c', 'c', 'c', 'c', 'no', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'ny', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'vi', 'c', 'c', 'c', 'c', 'c', 'c']
+				sequence: ['c', 'c', 'c', 'c', 'c', 'c', 'c', 'no', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'ny', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'vi', 'c', 'c', 'c', 'c', 'c', 'c']
 			}
 		]
 	}

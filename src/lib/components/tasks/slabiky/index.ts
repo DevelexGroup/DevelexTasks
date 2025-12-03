@@ -18,8 +18,8 @@ export function getWordAudioSource(word: string): string {
 }
 
 export function getFlattenedSymbols(state: TrackLevelState): string[] {
-	if (!state.dataEntry.syllables) return [];
-	return Array.isArray(state.dataEntry.syllables[0]) ? (state.dataEntry.syllables as string[][]).flat() : (state.dataEntry.syllables as string[]);
+	if (!state.dataEntry.sequence) return [];
+	return Array.isArray(state.dataEntry.sequence[0]) ? (state.dataEntry.sequence as string[][]).flat() : (state.dataEntry.sequence as string[]);
 }
 
 export default {

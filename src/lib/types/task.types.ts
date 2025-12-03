@@ -58,8 +58,8 @@ export enum TrackLevelStage {
 }
 
 export type TrackLevelDataEntry = {
-	syllables: string[] | string[][];
-	correctSyllables?: string[];
+	sequence: string[] | string[][];
+	correct?: string[];
 	wordToRead?: string;
 }
 

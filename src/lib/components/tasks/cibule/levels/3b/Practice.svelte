@@ -14,7 +14,7 @@
 <TrackLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}} onSpace={onSpace}>
 	{#snippet extraComponent({ state })}
 		<div class="flex gap-4">
-			{#each state.dataEntry.correctSyllables as syllable, index (index)}
+			{#each state.dataEntry.correct as syllable, index (index)}
 				<CibuleSyllableFrame {syllable} visible={isSyllableFrameVisible(state, syllable)} />
 			{/each}
 		</div>

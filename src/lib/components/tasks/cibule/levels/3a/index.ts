@@ -9,7 +9,7 @@ export const id = 'level3a';
 export const instructionVideo = resolveAny('/video/cibule-instrukce-03a.webm');
 
 export function validateStage(state: TrackLevelState) : TaskMistake[] | true {
-	const lastSyllable = getFlattenedSymbols(state).findLastIndex((syllable => syllable === state.dataEntry.correctSyllables?.[state.dataEntry.correctSyllables.length - 1]));
+	const lastSyllable = getFlattenedSymbols(state).findLastIndex((syllable => syllable === state.dataEntry.correct?.[state.dataEntry.correct.length - 1]));
 	if (!state.selectedCorrectIndices || state.selectedCorrectIndices.length === 0 || state.selectedCorrectIndices[state.selectedCorrectIndices.length - 1] !== lastSyllable) {
 		return [MistakeUnfinished];
 	}
@@ -17,7 +17,7 @@ export function validateStage(state: TrackLevelState) : TaskMistake[] | true {
 }
 
 export function validateSymbol(clickedIndex: number, state: TrackLevelState) {
-	const correctSyllables = state.dataEntry.correctSyllables ?? [];
+	const correctSyllables = state.dataEntry.correct ?? [];
 	const correctIndices = correctSyllables.map(syllable => getFlattenedSymbols(state).indexOf(syllable)).filter(i => i !== -1);
 
 	const testIndices = [...state.selectedCorrectIndices, clickedIndex];

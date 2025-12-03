@@ -13,7 +13,7 @@
 {#if data}
 <TrackLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}}>
 	{#snippet hintComponent({ state })}
-		<SymbolElement symbol={state.dataEntry.correctSyllables?.[0]} interactable={false} />
+		<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
 	{/snippet}
 	{#snippet trackComponent({ symbols, validateSymbolClick })}
 		<SymbolMultiTrack {symbols} {validateSymbolClick} symbolSpacing={16} />

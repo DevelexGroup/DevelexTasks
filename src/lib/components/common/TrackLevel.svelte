@@ -31,7 +31,7 @@
 
 	const repetitions = data.length;
 	const currentData = $derived(() => data[currentRepetition % data.length]);
-	const symbols = $derived(() => currentData().syllables);
+	const symbols = $derived(() => currentData().sequence);
 	const currentState = $derived(() => ({
 		selectedCorrectIndices: selectedIndices,
 		dataEntry: currentData()
