@@ -5,8 +5,8 @@
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/cibule/levels/2/index';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
-	import SymbolSingleTrack from '$lib/components/common/tracks/SymbolSingleTrack.svelte';
 	import { getWordAudioSource } from '$lib/utils/trackLevelUtils';
+	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>
@@ -19,7 +19,7 @@
 		{/if}
 	{/snippet}
 	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolSingleTrack {symbols} {validateSymbolClick} letterSpacing={4} />
+		<SymbolTrack {symbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} />
 	{/snippet}
 </TrackLevel>
 {/if}

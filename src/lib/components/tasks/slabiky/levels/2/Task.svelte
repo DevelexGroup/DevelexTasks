@@ -3,7 +3,7 @@
 	import { taskState } from '$lib/stores/task';
 	import { TaskState } from '$lib/types/task.types';
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/slabiky/levels/2/index';
-	import SymbolMultiTrack from '$lib/components/common/tracks/SymbolMultiTrack.svelte';
+	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { slabikyTestData } from '$lib/components/tasks/slabiky/slabiky.data';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
 	import { getWordAudioSource } from '$lib/utils/trackLevelUtils';
@@ -19,7 +19,7 @@
 		{/if}
 	{/snippet}
 	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolMultiTrack {symbols} {validateSymbolClick} symbolSpacing={16} />
+		<SymbolTrack {symbols} {validateSymbolClick} symbolSpacing={16} />
 	{/snippet}
 </TrackLevel>
 {/if}

@@ -4,9 +4,9 @@
 	import { slabikyTestData } from '$lib/components/tasks/slabiky/slabiky.data';
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/slabiky/levels/2/index';
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
-	import SymbolMultiTrack from '$lib/components/common/tracks/SymbolMultiTrack.svelte';
-	import { getWordAudioSource } from '$lib/components/tasks/cibule';
+	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
+	import { getWordAudioSource } from '$lib/utils/trackLevelUtils';
 
 	const data = slabikyTestData.find((level => level.levelID === id))?.practiceContent;
 </script>
@@ -19,7 +19,7 @@
 		{/if}
 	{/snippet}
 	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolMultiTrack {symbols} {validateSymbolClick} symbolSpacing={16} />
+		<SymbolTrack {symbols} {validateSymbolClick} symbolSpacing={16} />
 	{/snippet}
 </TrackLevel>
 {/if}

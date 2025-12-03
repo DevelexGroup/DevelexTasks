@@ -5,7 +5,7 @@
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
 	import { id, onSpace, validateSymbol, validateStage, isSyllableFrameVisible } from '$lib/components/tasks/cibule/levels/3b/index';
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
-	import SymbolSingleTrack from '$lib/components/common/tracks/SymbolSingleTrack.svelte';
+	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.practiceContent;
 </script>
@@ -20,7 +20,7 @@
 		</div>
 	{/snippet}
 	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolSingleTrack {symbols} {validateSymbolClick} letterSpacing={4} />
+		<SymbolTrack {symbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} />
 	{/snippet}
 </TrackLevel>
 {/if}

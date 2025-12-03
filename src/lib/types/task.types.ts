@@ -76,3 +76,11 @@ export interface TrackComponent {
 	letterSpacing?: number;
 	symbolSpacing?: number;
 }
+
+export interface TrackSymbolComponent {
+	symbol?: string;
+	index?: number;
+	validateSymbolClick?: (symbol: string, index: number) => boolean;
+	interactable?: boolean;
+	letterSpacing?: number;
+}

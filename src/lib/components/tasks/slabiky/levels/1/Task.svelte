@@ -4,7 +4,7 @@
 	import { TaskState } from '$lib/types/task.types';
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/slabiky/levels/1/index';
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
-	import SymbolMultiTrack from '$lib/components/common/tracks/SymbolMultiTrack.svelte';
+	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { slabikyTestData } from '$lib/components/tasks/slabiky/slabiky.data';
 
 	const data = slabikyTestData.find((level => level.levelID === id))?.content;
@@ -16,7 +16,7 @@
 		<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
 	{/snippet}
 	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolMultiTrack {symbols} {validateSymbolClick} symbolSpacing={16} />
+		<SymbolTrack {symbols} {validateSymbolClick} symbolSpacing={16} />
 	{/snippet}
 </TrackLevel>
 {/if}
