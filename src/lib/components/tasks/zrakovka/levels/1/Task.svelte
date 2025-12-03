@@ -15,11 +15,13 @@
 	<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskState.set(TaskState.End)}}>
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
-				<img
-					class="h-full w-full object-contain"
-					src={resolveAny(`/images/tasks/zrakovka/${state.dataEntry.correct[0]}.png`)}
-					alt={state.dataEntry.correct[0]}
-				/>
+				<div class="h-20 w-20">
+					<img
+						class="h-full w-full object-contain h-20 w-20"
+						src={resolveAny(`/images/tasks/zrakovka/${state.dataEntry.correct[0]}.png`)}
+						alt={state.dataEntry.correct[0]}
+					/>
+				</div>
 			{/if}
 		{/snippet}
 		{#snippet trackComponent({ symbols, validateSymbolClick })}
