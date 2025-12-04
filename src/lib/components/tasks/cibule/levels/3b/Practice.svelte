@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
-	import { taskState } from '$lib/stores/task';
-	import { TaskState } from '$lib/types/task.types';
+	import { taskStage } from '$lib/stores/task';
+	import { TaskStage } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
 	import { id, onSpace, validateSymbol, validateStage, isSyllableFrameVisible } from '$lib/components/tasks/cibule/levels/3b/index';
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
@@ -11,7 +11,7 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskState.set(TaskState.Instructions)}} onSpace={onSpace}>
+<TrackLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskStage.set(TaskStage.Instructions)}} onSpace={onSpace}>
 	{#snippet extraComponent({ state })}
 		<div class="flex gap-4">
 			{#each state.dataEntry.correct as syllable, index (index)}

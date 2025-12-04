@@ -1,6 +1,6 @@
 ﻿<script lang="ts">
-import { taskState } from '$lib/stores/task';
-import { TaskState } from '$lib/types/task.types';
+import { taskStage } from '$lib/stores/task';
+import { TaskStage } from '$lib/types/task.types';
 import { instructionVideo } from '$lib/components/tasks/cibule/levels/3a/index';
 </script>
 
@@ -20,12 +20,12 @@ import { instructionVideo } from '$lib/components/tasks/cibule/levels/3a/index';
 		</div>
 		<div class="flex items-center justify-center gap-2">
 			<button class="mt-4 px-4 py-2 bg-gray-500 text-white rounded"
-							onclick={() => taskState.set(TaskState.Practice)}
+							onclick={() => taskStage.set(TaskStage.Practice)}
 			>
 				Zácvik
 			</button>
 			<button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-							onclick={() => taskState.set(TaskState.Task)}
+							onclick={() => taskStage.set(TaskStage.Task)}
 			>
 				Začít úkol
 			</button>

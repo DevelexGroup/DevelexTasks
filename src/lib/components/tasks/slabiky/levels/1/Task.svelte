@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
-	import { taskState } from '$lib/stores/task';
-	import { TaskState } from '$lib/types/task.types';
+	import { taskStage } from '$lib/stores/task';
+	import { TaskStage } from '$lib/types/task.types';
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/slabiky/levels/1/index';
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
@@ -11,7 +11,7 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskState.set(TaskState.End)}}>
+<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
 	{#snippet hintComponent({ state })}
 		<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
 	{/snippet}

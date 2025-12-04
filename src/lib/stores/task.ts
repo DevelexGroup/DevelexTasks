@@ -1,4 +1,4 @@
-import { TaskState } from '$lib/types/task.types';
+import { TaskStage } from '$lib/types/task.types';
 import { writable } from 'svelte/store';
 
-export const taskState = writable<TaskState>(TaskState.Loading);
+export const taskStage = writable<TaskStage>(TaskStage.Loading);

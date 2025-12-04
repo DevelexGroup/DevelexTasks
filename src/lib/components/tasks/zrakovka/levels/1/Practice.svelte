@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
-	import { taskState } from '$lib/stores/task';
-	import { TaskState } from '$lib/types/task.types';
+	import { taskStage } from '$lib/stores/task';
+	import { TaskStage } from '$lib/types/task.types';
 	import { id, validateSymbol, validateStage } from '$lib/components/tasks/zrakovka/levels/1/index';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import { zrakovkaTestData } from '$lib/components/tasks/zrakovka/zrakovka.data';
@@ -12,7 +12,7 @@
 </script>
 
 {#if data}
-	<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskState.set(TaskState.End)}}>
+	<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
 				<div class="h-20 w-20">

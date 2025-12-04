@@ -6,7 +6,7 @@ export interface TaskMetadata {
 	addToList: boolean;
 }
 
-export enum TaskState {
+export enum TaskStage {
 	Loading,
 	Instructions,
 	Practice,
