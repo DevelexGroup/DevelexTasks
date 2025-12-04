@@ -1,9 +1,12 @@
-﻿export interface GazeSampleDataEntry {
-	id?: number;
+﻿export interface BaseDataEntry {
 	child_id: string;
 	session_id: string;
 	task_name: string;
 	timestamp: Date;
+}
+
+export interface GazeSampleDataEntry extends BaseDataEntry {
+	id?: number;
 	eyetracker_x: number | null;
 	eyetracker_y: number | null;
 	aoi: string[];
@@ -11,16 +14,12 @@
 	mouse_y: number;
 	key_event: string[];
 	sound_name: string | null;
-	error_type: string[];
-	task_result: 'natural' | 'escape' | 'error'
+	mistake_type: string[];
+	task_result: 'natural' | 'escape' | 'error' | null;
 }
 
-export interface FixationDataEntry {
+export interface FixationDataEntry extends BaseDataEntry {
 	id?: number;
-	child_id: string;
-	session_id: string;
-	task_name: string;
-	timestamp: Date;
 	eyetracker_x: number | null;
 	eyetracker_y: number | null;
 	duration: number;

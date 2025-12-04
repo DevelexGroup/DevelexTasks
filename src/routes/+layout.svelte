@@ -4,10 +4,14 @@
 	import { GazeManager } from 'develex-js-sdk';
 	import { cursorVisible } from '$lib/stores/cursor'
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
+	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 
 	let { children } = $props();
 
 	setContext('gazeManager', new GazeManager());
+
+	const analyticsManager = new AnalyticsManager();
+	setContext('analyticsManager', analyticsManager);
 
 	const keyboardManager = new KeyboardManager();
 	setContext('keyboardManager', keyboardManager);

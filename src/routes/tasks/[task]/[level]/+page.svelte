@@ -1,9 +1,11 @@
 <script lang="ts">
 	import TaskWrapper from '$lib/components/TaskWrapper.svelte';
 	import type { PageProps } from './$types';
-	import type { Component } from 'svelte';
+	import { type Component, onDestroy, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { currentTask } from '$lib/stores/task';
+	import { randomUUID } from 'node:crypto';
 
 	let { data }: PageProps = $props();
 
@@ -18,6 +20,18 @@
 	const taskComponentPromise = modules[getComponentPath("Task")]?.()?.then(mod => mod.default) || null;
 	const practiceComponentPromise = modules[getComponentPath("Practice")]?.()?.then(mod => mod.default) || null;
 	const instructionsComponentPromise = modules[getComponentPath("Instructions")]?.()?.then(mod => mod.default) || null;
+
+	onMount(() => {
+		$currentTask = {
+			slug: data.task,
+			level: data.level,
+			session: randomUUID()
+		}
+	});
+
+	onDestroy(() => {
+		$currentTask = null;
+	});
 </script>
 
 <TaskWrapper>
