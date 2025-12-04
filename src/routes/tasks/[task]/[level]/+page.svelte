@@ -5,7 +5,6 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { currentTask } from '$lib/stores/task';
-	import { randomUUID } from 'node:crypto';
 
 	let { data }: PageProps = $props();
 
@@ -25,7 +24,7 @@
 		$currentTask = {
 			slug: data.task,
 			level: data.level,
-			session: randomUUID()
+			session: Date.now().toString()
 		}
 	});
 
