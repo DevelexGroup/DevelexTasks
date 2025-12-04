@@ -34,6 +34,8 @@
 			Nastavení
 		</button>
 	</div>
-</section>
 
-<UserSelect />
+	<div class="mt-3">
+		<UserSelect />
+	</div>
+</section>
