@@ -1,8 +1,17 @@
 ﻿<script lang="ts">
 	import { userStore } from '$lib/stores/user';
+	import { Dialog, DialogClose } from '$lib/components/ui/dialog';
+	import { DialogContent, DialogTrigger } from '$lib/components/ui/dialog/index';
 
 	const userName = $derived($userStore?.id?.trim() || 'Unknown user');
 	const initials = $derived(userName.charAt(0).toUpperCase());
+
+	let formUserName = $state<string>('');
+	const onDialogOpen = (open: boolean) => {
+		if (open) {
+			formUserName = $userStore.id;
+		}
+	};
 
 	// Generate a consistent color based on the username
 	function stringToColor(str: string): { bg: string; text: string; ring: string } {
@@ -32,26 +41,33 @@
 	const colorScheme = $derived(stringToColor(userName));
 </script>
 
-<button type="button" class="group flex items-center rounded-lg transition-colors px-4 py-3 gap-4 absolute bottom-4 left-4 select-none">
-	<span class="group__icon flex h-10 w-10 items-center justify-center rounded-full {colorScheme.bg} text-base font-bold {colorScheme.text} shadow-md ring-2 ring-white/20 transition-transform duration-200 group-hover:scale-110 group-hover:ring-4 group-hover:{colorScheme.ring}">
-		{initials}
-	</span>
-	<span class="group__text text-base font-semibold text-foreground">{userName}</span>
-</button>
-
-<style>
-	.group {
-		background: transparent;
-
-		.group__icon {
-			flex-shrink: 0;
-		}
-
-		&:hover {
-			background: rgba(0, 0, 0, 0.1);
-      .group__icon {
-        transform: scale(1.05);
-      }
-		}
-	}
-</style>
+<div class="absolute bottom-4 left-4 select-none">
+	<Dialog onOpenChange={onDialogOpen}>
+		<DialogTrigger class="group flex items-center rounded-lg transition-colors px-4 py-3 gap-4 hover:bg-gray-100">
+			<span class="group__icon flex h-10 w-10 items-center justify-center rounded-full {colorScheme.bg} text-base font-bold {colorScheme.text} shadow-md ring-2 ring-white/20 transition-transform duration-200 group-hover:scale-110 group-hover:ring-4 group-hover:{colorScheme.ring}">
+				{initials}
+			</span>
+			<span class="group__text text-base font-semibold text-foreground">{userName}</span>
+		</DialogTrigger>
+		<DialogContent>
+			<div class="p-4">
+				<!-- change user ID -->
+				<label for="userId" class="block mb-2 font-medium text-foreground">Změnit uživatelské ID:</label>
+				<input
+					id="userId"
+					type="text"
+					bind:value={formUserName}
+					class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+				/>
+				<DialogClose
+					class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+					onclick={() => {
+						userStore.set({ id: formUserName });
+					}}
+				>
+					Uložit
+				</DialogClose>
+			</div>
+		</DialogContent>
+	</Dialog>
+</div>
