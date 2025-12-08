@@ -1,5 +1,6 @@
 ﻿<script lang="ts">
 	import { playSound, SOUND_CORRECT, SOUND_MISTAKE } from '$lib/utils/sound';
+	import GazeArea from '$lib/components/common/GazeArea.svelte';
 
 	interface Props {
 		symbol?: string;
@@ -36,7 +37,7 @@
 	}
 </script>
 
-<div id="symbol-element-{index}">
+<GazeArea id={index === -1 ? 'sym-hint' : `sym-${index}`} bufferSize={50}>
 	<button type="button" class="symbol font-serif text-4xl text-gray-800"
 					style="letter-spacing: {letterSpacing}px;"
 					class:correct-symbol={isCorrect}
@@ -47,7 +48,7 @@
 	>
 		<span>{symbol}</span>
 	</button>
-</div>
+</GazeArea>
 
 <style>
 	.symbol {

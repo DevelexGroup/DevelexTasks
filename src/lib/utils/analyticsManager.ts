@@ -3,7 +3,12 @@ import { userStore } from '$lib/stores/user';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
 import type { TaskMistake } from '$lib/types/task.types';
-import type { GazeDataPoint, GazeManager } from 'develex-js-sdk';
+import type {
+	GazeDataPoint,
+	GazeInteractionObjectFixationEvent,
+	GazeInteractionObjectIntersectEvent,
+	GazeManager
+} from 'develex-js-sdk';
 import { browser } from '$app/environment';
 import { db } from '$lib/database/db';
 
@@ -140,6 +145,8 @@ export class AnalyticsManager {
 		window.addEventListener('keydown', this.handleKeyDown);
 
 		this.gazeManager.on('inputData', this.handleInputData);
+		this.gazeManager.on('fixationObjectEnd', this.handleFixation);
+		this.gazeManager.on('intersect', this.handleIntersection);
 	}
 
 	private unregisterListeners() {
@@ -151,6 +158,8 @@ export class AnalyticsManager {
 		window.removeEventListener('keydown', this.handleKeyDown);
 
 		this.gazeManager.off('inputData', this.handleInputData);
+		this.gazeManager.off('fixationObjectEnd', this.handleFixation);
+		this.gazeManager.off('intersect', this.handleIntersection);
 	}
 
 	private handleMouseMove = (event: MouseEvent) => {
@@ -171,4 +180,12 @@ export class AnalyticsManager {
 			this.updateEyetrackerPosition(inputData.x, inputData.y);
 		}
 	};
+
+	private handleFixation = (fixationData: GazeInteractionObjectFixationEvent) => {
+		// todo
+	};
+
+	private handleIntersection = (intersectionData: GazeInteractionObjectIntersectEvent) => {
+		this.updateActiveAOI(intersectionData.target.map(target => target.id));
+	}
 }

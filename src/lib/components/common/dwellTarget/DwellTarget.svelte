@@ -133,6 +133,22 @@
 				toleranceTime: DWELL_TOLERANCE_MS
 			}
 		});
+
+		gazeManager.register({
+			interaction: 'fixation',
+			element: wrapperElement,
+			settings: {
+				bufferSize: bufferSize
+			}
+		});
+
+		gazeManager.register({
+			interaction: 'intersect',
+			element: wrapperElement,
+			settings: {
+				bufferSize: bufferSize
+			}
+		});
 	}
 
 	function unregisterDwellTarget() {
@@ -141,6 +157,16 @@
 
 		gazeManager.unregister({
 			interaction: 'dwell',
+			element: wrapperElement
+		});
+
+		gazeManager.unregister({
+			interaction: 'fixation',
+			element: wrapperElement
+		});
+
+		gazeManager.unregister({
+			interaction: 'intersect',
 			element: wrapperElement
 		});
 	}

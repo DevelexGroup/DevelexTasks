@@ -113,7 +113,7 @@
 	{#if currentStage === TrackLevelStage.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget
-				id={`${id}_initial}`}
+				id={`${id}_initial`}
 			  dwellTimeMs={300}
 			  bufferSize={50}
 			  width={150}
@@ -165,7 +165,7 @@
 		<div class="fixed bottom-16 right-16" class:shake={shouldShakeArrow} id={`${id}_end}`} transition:fade>
 			<DwellTarget
 				bind:this={dwellArrowElement}
-			  id={`${id}_end}`}
+			  id={`${id}_end`}
 			  dwellTimeMs={1000}
 			  bufferSize={50}
 			  width={150}
