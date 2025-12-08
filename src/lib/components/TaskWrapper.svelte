@@ -2,29 +2,34 @@
 	import { browser } from '$app/environment';
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
-	import type { GazeDataPoint, GazeManager } from 'develex-js-sdk';
-	import { getContext, onMount } from 'svelte';
+	import { getContext, onDestroy, onMount } from 'svelte';
 	import TaskTrackerLoader from './TaskTrackerLoader.svelte';
 	import TaskEndScreen from '$lib/components/TaskEndScreen.svelte';
+	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY } from '$lib/types/general.types';
+	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
+	import { TaskResult } from '$lib/database/db.types';
 
-	const gazeManager = getContext<GazeManager>('gazeManager');
+	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
 	taskStage.set(TaskStage.Loading);
-
-	const handleGazeData = (gazeData: GazeDataPoint) => {
-		// console.log(gazeData);
-	};
 
 	onMount(() => {
 		if (!browser) {
 			return;
 		}
+	});
 
-		gazeManager.on('inputData', handleGazeData);
+	$effect(() => {
+		if ($taskStage === TaskStage.Task) {
+			analyticsManager.startLogging();
+		}
+		if ($taskStage === TaskStage.End) {
+			analyticsManager.stopLogging(TaskResult.Natural);
+		}
+	});
 
-		return () => {
-			gazeManager.off('inputData', handleGazeData);
-		};
+	onDestroy(() => {
+		analyticsManager.stopLogging(TaskResult.Death);
 	});
 </script>
 

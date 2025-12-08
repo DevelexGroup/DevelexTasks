@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { GazeManager } from 'develex-js-sdk';
+	import { GAZE_MANAGER_KEY } from '$lib/types/general.types';
 
 	interface Props {
 		onCalibrated: () => void;
@@ -8,7 +9,7 @@
 
 	let { onCalibrated }: Props = $props();
 
-	const gazeManager = getContext<GazeManager>('gazeManager');
+	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
 
 	const load = async (e: MouseEvent) => {
 		e.preventDefault();

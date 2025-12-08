@@ -7,6 +7,7 @@
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';
+	import { KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 
 	let {
 		id,
@@ -40,7 +41,7 @@
 	let dwellArrowElement = $state<DwellTarget | null>(null);
 
 	onMount(() => {
-		let keyboardManager = getContext<KeyboardManager>('keyboardManager');
+		let keyboardManager = getContext<KeyboardManager>(KEYBOARD_MANAGER_KEY);
 
 		const skipEvt = keyboardManager.onKeyDown('Enter', skipStage, { preventDefault: true, ignoreRepeat: true });
 		const spaceEvt = keyboardManager.onKeyDown('Space', () => onSpace(currentState()), { preventDefault: true, stopPropagation: true, ignoreRepeat: true });

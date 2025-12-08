@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { GAZE_INPUT_CONFIGS, trackerConfig } from '$lib/stores/tracker';
-	import { LoadState } from '$lib/types/general.types';
+	import { GAZE_MANAGER_KEY, LoadState } from '$lib/types/general.types';
 	import { extractError } from '$lib/utils/error';
 	import { waitForStoreCondition, waitForTimeout } from '$lib/utils/waitFor';
 	import { type GazeManager } from 'develex-js-sdk';
@@ -17,7 +17,7 @@
 
 	let { onCompleted }: Props = $props();
 
-	const gazeManager = getContext<GazeManager>('gazeManager');
+	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
 
 	let showCalibration = writable(false);
 	let errorMessage = $state('');

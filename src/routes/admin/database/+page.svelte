@@ -4,6 +4,7 @@
 	import { db } from '$lib/database/db';
 	import type { GazeSampleDataEntry, FixationDataEntry } from '$lib/database/db.types';
 	import { SvelteMap } from 'svelte/reactivity';
+	import { untrack } from 'svelte';
 
 	let selectedTable = $state<'gazeSamples' | 'fixationData' | ''>('');
 	let childIds = $state<string[]>([]);
@@ -20,34 +21,51 @@
 
 	// Reset filters when table changes
 	$effect(() => {
-		if (selectedTable) {
-			selectedChildId = '';
-			selectedSessionId = '';
-			tableData = [];
-			loadedCount = 0;
-			hasMore = true;
-			loadChildIds();
+		// Only track selectedTable
+		const table = selectedTable;
+		if (table) {
+			// Use untrack for side effects to prevent infinite loops
+			untrack(() => {
+				selectedChildId = '';
+				selectedSessionId = '';
+				tableData = [];
+				loadedCount = 0;
+				hasMore = true;
+				loadChildIds();
+			});
 		}
 	});
 
 	// Load session IDs when child is selected
 	$effect(() => {
-		if (selectedChildId && selectedTable) {
-			selectedSessionId = '';
-			tableData = [];
-			loadedCount = 0;
-			hasMore = true;
-			loadSessionIds();
+		// Only track selectedChildId and selectedTable
+		const childId = selectedChildId;
+		const table = selectedTable;
+		if (childId && table) {
+			untrack(() => {
+				selectedSessionId = '';
+				tableData = [];
+				loadedCount = 0;
+				hasMore = true;
+				loadSessionIds();
+			});
 		}
 	});
 
 	// Load data when session is selected
 	$effect(() => {
-		if (selectedSessionId && selectedTable && selectedChildId) {
-			tableData = [];
-			loadedCount = 0;
-			hasMore = true;
-			loadTableData();
+		// Only track the filter selections, not the data
+		const sessionId = selectedSessionId;
+		const table = selectedTable;
+		const childId = selectedChildId;
+
+		if (sessionId && table && childId) {
+			untrack(() => {
+				tableData = [];
+				loadedCount = 0;
+				hasMore = true;
+				loadTableData();
+			});
 		}
 	});
 
@@ -74,7 +92,7 @@
 
 		sessionIds = Array.from(sessionMap.entries())
 			.map(([sessionId, taskName]) => ({ sessionId, taskName }))
-			.sort((a, b) => a.sessionId.localeCompare(b.sessionId));
+			.sort((a, b) => -a.sessionId.localeCompare(b.sessionId));
 	}
 
 	async function loadTableData() {
@@ -106,13 +124,34 @@
 	function handleScroll(event: Event) {
 		const target = event.target as HTMLElement;
 		const scrollBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
+		console.log("Scroll bottom:", scrollBottom);
 
 		if (scrollBottom < 200 && hasMore && !isLoading) {
 			loadMoreData();
 		}
 	}
 
-	function getTableHeaders(): string[] {
+	async function getTotalCount(): Promise<number> {
+		if (!selectedTable || !selectedChildId || !selectedSessionId) return 0;
+
+		const table = db[selectedTable];
+		const count = await table
+			.where('child_id').equals(selectedChildId)
+			.and(entry => entry.session_id === selectedSessionId)
+			.count();
+		return count;
+	}
+
+	function getTableHeaders(): (string | null)[] {
+		if (selectedTable === 'gazeSamples') {
+			return [null, null, null, null, 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Error Type', 'Result'];
+		} else if (selectedTable === 'fixationData') {
+			return [null, null, null, null, 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+		}
+		return [];
+	}
+
+	function getTableExportHeaders(): string[] {
 		if (selectedTable === 'gazeSamples') {
 			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Error Type', 'Result'];
 		} else if (selectedTable === 'fixationData') {
@@ -121,11 +160,37 @@
 		return [];
 	}
 
-	function formatValue(value: unknown): string {
+	function formatTimestamp(unixTimestamp: number): string {
+		const date = new Date(Math.floor(unixTimestamp));
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		const hours = String(date.getHours()).padStart(2, '0');
+		const minutes = String(date.getMinutes()).padStart(2, '0');
+		const seconds = String(date.getSeconds()).padStart(2, '0');
+		const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+		const microseconds = String(Math.floor((unixTimestamp % 1) * 1000)).padStart(3, '0');
+		return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}.${milliseconds}${microseconds}`;
+	}
+
+	function formatColumnValue(column: string, value: unknown): string {
 		if (value === null || value === undefined) return '-';
-		if (value instanceof Date) return value.toLocaleString();
+		if (column == 'Timestamp') {
+			const timestampNum = typeof value === 'number' ? value : parseFloat(String(value));
+			return formatTimestamp(timestampNum);
+		}
 		if (Array.isArray(value)) return value.length > 0 ? value.join(', ') : '-';
 		if (typeof value === 'number') return value.toFixed(2);
+		return String(value);
+	}
+
+	function formatExportedColumnValue(column: string, value: unknown): string {
+		if (value === null || value === undefined) return '';
+		if (column == 'Timestamp') {
+			const timestampNum = typeof value === 'number' ? value : parseFloat(String(value));
+			return formatTimestamp(timestampNum);
+		}
+		if (Array.isArray(value)) return value.length > 0 ? value.join(';') : '';
 		return String(value);
 	}
 
@@ -135,7 +200,7 @@
 			const values = [
 				data.id, data.child_id, data.session_id, data.task_name, data.timestamp,
 				data.eyetracker_x, data.eyetracker_y, data.aoi, data.mouse_x, data.mouse_y,
-				data.key_event, data.sound_name, data.error_type, data.task_result
+				data.key_event, data.sound_name, data.mistake_type, data.task_result
 			];
 			return values[index];
 		} else if (selectedTable === 'fixationData') {
@@ -160,13 +225,13 @@
 			.sortBy('timestamp');
 
 		// Convert to CSV
-		const headers = getTableHeaders();
+		const headers = getTableExportHeaders();
 		const csvRows = [headers.join(',')];
 
 		allData.forEach(entry => {
-			const row = headers.map((_, index) => {
+			const row = headers.map((column, index) => {
 				const value = getCellValue(entry, index);
-				const formatted = formatValue(value);
+				const formatted = formatExportedColumnValue(column, value);
 				// Escape quotes and wrap in quotes if contains comma
 				return formatted.includes(',') ? `"${formatted.replace(/"/g, '""')}"` : formatted;
 			});
@@ -234,7 +299,7 @@
 		>
 			<option value="">Select session&hellip;</option>
 			{#each sessionIds as session (session.sessionId)}
-				<option value={session.sessionId}>[{session.taskName}] {session.sessionId}</option>
+				<option value={session.sessionId}>[{session.taskName}] {formatTimestamp(parseFloat(String(session.sessionId)))}</option>
 			{/each}
 		</select>
 	</div>
@@ -249,9 +314,7 @@
 </section>
 
 <section
-	class="w-full h-full flex flex-col overflow-auto mt-24 mb-16 bg-gray-100 px-4"
-	bind:this={scrollContainer}
-	onscroll={handleScroll}
+	class="table-container w-full flex flex-col overflow-auto mt-24 mb-16 bg-gray-100 px-4"
 >
 	{#if !selectedTable}
 		<div class="flex items-center justify-center h-full">
@@ -270,24 +333,32 @@
 			<p class="text-gray-500 text-lg">Žádná data k zobrazení</p>
 		</div>
 	{:else}
-		<div class="overflow-x-auto bg-white rounded-lg shadow">
+		<div
+			class="overflow-x-auto bg-white rounded-lg shadow"
+			bind:this={scrollContainer}
+			onscroll={handleScroll}
+		>
 			<table class="min-w-full divide-y divide-gray-200">
 				<thead class="bg-gray-50 sticky top-0">
 					<tr>
-						{#each getTableHeaders() as header (header)}
-							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-								{header}
-							</th>
+						{#each getTableHeaders() as header, colIndex (colIndex)}
+							{#if header !== null}
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+									{header}
+								</th>
+							{/if}
 						{/each}
 					</tr>
 				</thead>
 				<tbody class="bg-white divide-y divide-gray-200">
 					{#each tableData as entry, rowIndex (entry.id)}
 						<tr class={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-							{#each getTableHeaders() as header, colIndex (header)}
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-									{formatValue(getCellValue(entry, colIndex))}
-								</td>
+							{#each getTableHeaders() as header, colIndex (colIndex)}
+								{#if header !== null}
+									<td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">
+										{formatColumnValue(header, getCellValue(entry, colIndex))}
+									</td>
+								{/if}
 							{/each}
 						</tr>
 					{/each}
@@ -296,7 +367,7 @@
 
 			{#if isLoading}
 				<div class="flex items-center justify-center py-4">
-					<p class="text-gray-500">Načítání...</p>
+					<p class="text-gray-500">Načítání&hellip;</p>
 				</div>
 			{/if}
 
@@ -309,7 +380,7 @@
 	{/if}
 </section>
 
-<div class="absolute bottom-4 left-4">
+<div class="fixed flex gap-1 bottom-4 left-4">
 	<button
 		class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
 		onclick={() => goto(resolve(`/`))}
@@ -318,7 +389,17 @@
 	</button>
 </div>
 
+<div class="fixed flex gap-1 bottom-4 right-4">
+	{#if selectedTable && selectedChildId && selectedSessionId}
+		<span class="text-gray-700">Zobrazeno záznamů: {tableData.length} (z celkem {#await getTotalCount() then totalCount}{totalCount}{/await})</span>
+	{/if}
+</div>
+
 <style>
+	.table-container{
+		height: calc(100vh - 10rem);
+	}
+
 	button.selected {
 		background-color: #3b82f6;
 		color: white;

@@ -1,12 +1,17 @@
-﻿import type { BaseDataEntry, GazeSampleDataEntry } from '$lib/database/db.types';
+﻿import { type BaseDataEntry, type GazeSampleDataEntry, TaskResult } from '$lib/database/db.types';
 import { userStore } from '$lib/stores/user';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
 import type { TaskMistake } from '$lib/types/task.types';
+import type { GazeDataPoint, GazeManager } from 'develex-js-sdk';
+import { browser } from '$app/environment';
+import { db } from '$lib/database/db';
 
 export class AnalyticsManager {
-	private POLLING_RATE_HZ = 10;
+	private POLLING_RATE_HZ = 120;
 	private POLLING_INTERVAL_MS = 1000 / this.POLLING_RATE_HZ;
+
+	private CLICK_EVENT = 'mouse_click';
 
 	private pollingTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -17,18 +22,24 @@ export class AnalyticsManager {
 
 	private eventBuffer = {
 		key_event: new Set<string>(),
-		mistake_type: new Set<string>(),
+		mistake_type: new Set<string>()
 	};
+
+	private gazeManager: GazeManager;
+
+	constructor(gazeManager: GazeManager) {
+		this.gazeManager = gazeManager;
+	}
 
 	private getBaseDataEntry(): BaseDataEntry {
 		const childId = get(userStore);
-		const task = get(currentTask)
+		const task = get(currentTask);
 
 		return {
 			child_id: childId.id,
 			session_id: task ? task.session : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
-			timestamp: new Date(),
+			timestamp: window.performance.timeOrigin + window.performance.now()
 		};
 	}
 
@@ -57,8 +68,9 @@ export class AnalyticsManager {
 	}
 
 	public startLogging() {
-		if (this.pollingTimer)
-			return;
+		if (this.pollingTimer) return;
+
+		this.registerListeners();
 
 		this.pollingTimer = setInterval(() => {
 			const baseData = this.getBaseDataEntry();
@@ -72,17 +84,21 @@ export class AnalyticsManager {
 				key_event: Array.from(this.eventBuffer.key_event),
 				sound_name: this.playedSound,
 				mistake_type: Array.from(this.eventBuffer.mistake_type),
-				task_result: null,
+				task_result: null
 			};
 
-			console.log('Logged Gaze Sample:', gazeSample);
+			db.gazeSamples.add(gazeSample).then((id) => {
+				console.log('Logged Gaze Sample with ID:', id, gazeSample);
+			}).catch((error) => {
+				console.error('Error logging Gaze Sample:', error);
+			});
 
 			this.eventBuffer.key_event.clear();
 			this.eventBuffer.mistake_type.clear();
 		}, this.POLLING_INTERVAL_MS);
 	}
 
-	public stopLogging(exitType: 'natural' | 'escape' | 'error') {
+	public stopLogging(exitType: TaskResult) {
 		if (this.pollingTimer) {
 			clearInterval(this.pollingTimer);
 			this.pollingTimer = null;
@@ -99,12 +115,60 @@ export class AnalyticsManager {
 			key_event: Array.from(this.eventBuffer.key_event),
 			sound_name: this.playedSound,
 			mistake_type: Array.from(this.eventBuffer.mistake_type),
-			task_result: exitType,
+			task_result: exitType
 		};
 
-		console.log('Logged Final Gaze Sample:', finalGazeSample);
+		db.gazeSamples.add(finalGazeSample).then((id) => {
+			console.log('Logged Final Gaze Sample with ID:', id, finalGazeSample);
+		}).catch((error) => {
+			console.error('Error logging Final Gaze Sample:', error);
+		});
+
+		this.unregisterListeners();
 
 		this.eventBuffer.key_event.clear();
 		this.eventBuffer.mistake_type.clear();
 	}
+
+	// Event handlers
+	private registerListeners() {
+		if (!browser)
+			return;
+
+		window.addEventListener('mousemove', this.handleMouseMove);
+		window.addEventListener('mouseup', this.handleMouseUp);
+		window.addEventListener('keydown', this.handleKeyDown);
+
+		this.gazeManager.on('inputData', this.handleInputData);
+	}
+
+	private unregisterListeners() {
+		if (!browser)
+			return;
+
+		window.removeEventListener('mousemove', this.handleMouseMove);
+		window.removeEventListener('mouseup', this.handleMouseUp);
+		window.removeEventListener('keydown', this.handleKeyDown);
+
+		this.gazeManager.off('inputData', this.handleInputData);
+	}
+
+	private handleMouseMove = (event: MouseEvent) => {
+		this.updateMousePosition(event.clientX, event.clientY);
+	};
+
+	private handleMouseUp = () => {
+		this.logKeyEvent(this.CLICK_EVENT);
+	};
+
+	private handleKeyDown = (event: KeyboardEvent) => {
+		if (event.repeat) return;
+		this.logKeyEvent(event.key);
+	};
+
+	private handleInputData = (inputData: GazeDataPoint) => {
+		if (inputData.parseValidity) {
+			this.updateEyetrackerPosition(inputData.x, inputData.y);
+		}
+	};
 }

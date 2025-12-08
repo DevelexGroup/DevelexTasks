@@ -2,7 +2,14 @@
 	child_id: string;
 	session_id: string;
 	task_name: string;
-	timestamp: Date;
+	timestamp: number;
+}
+
+export enum TaskResult {
+	Natural = 'natural',
+	Escape = 'escape',
+	Mistake = 'mistake',
+	Death = 'death'
 }
 
 export interface GazeSampleDataEntry extends BaseDataEntry {
@@ -15,7 +22,7 @@ export interface GazeSampleDataEntry extends BaseDataEntry {
 	key_event: string[];
 	sound_name: string | null;
 	mistake_type: string[];
-	task_result: 'natural' | 'escape' | 'error' | null;
+	task_result: TaskResult | null;
 }
 
 export interface FixationDataEntry extends BaseDataEntry {

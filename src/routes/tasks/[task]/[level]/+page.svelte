@@ -1,12 +1,16 @@
 <script lang="ts">
 	import TaskWrapper from '$lib/components/TaskWrapper.svelte';
 	import type { PageProps } from './$types';
-	import { type Component, onDestroy, onMount } from 'svelte';
+	import { type Component, getContext, onDestroy, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { currentTask } from '$lib/stores/task';
+	import { AnalyticsManager } from '$lib/utils/analyticsManager';
+	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 
 	let { data }: PageProps = $props();
+
+	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
 	const modules = import.meta.glob<{ default: Component }>(
 		`$lib/components/tasks/**/{Task,Practice,Instructions}.svelte`

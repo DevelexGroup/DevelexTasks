@@ -4,6 +4,7 @@
 	import { DwellState } from '$lib/types/general.types';
 	import DwellTargetEye from '$lib/components/common/dwellTarget/DwellTargetEye.svelte';
 	import type { Snippet } from 'svelte';
+	import { GAZE_MANAGER_KEY } from '$lib/types/general.types';
 
 	const CANCEL_TIMEOUT_MS = 300;
 	const DWELL_TOLERANCE_MS = 100;
@@ -44,7 +45,7 @@
 		get height() { return height; }
 	});
 
-	let gazeManager = getContext<GazeManager>('gazeManager');
+	let gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
 
 	let wrapperElement = $state<HTMLElement | null>(null);
 	let isCooldownActive = $state(false);

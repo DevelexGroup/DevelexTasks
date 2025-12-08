@@ -5,16 +5,18 @@
 	import { cursorVisible } from '$lib/stores/cursor'
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
+	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 
 	let { children } = $props();
 
-	setContext('gazeManager', new GazeManager());
-
-	const analyticsManager = new AnalyticsManager();
-	setContext('analyticsManager', analyticsManager);
+	const gazeManager = new GazeManager();
+	setContext(GAZE_MANAGER_KEY, gazeManager);
 
 	const keyboardManager = new KeyboardManager();
-	setContext('keyboardManager', keyboardManager);
+	setContext(KEYBOARD_MANAGER_KEY, keyboardManager);
+
+	const analyticsManager = new AnalyticsManager(gazeManager);
+	setContext(ANALYTICS_MANAGER_KEY, analyticsManager);
 
 	onMount(() => {
 		let escEvt = keyboardManager.onKeyDown('Escape', () => {
