@@ -1,11 +1,19 @@
 ﻿import type { TrackLevelState } from '$lib/types/task.types';
 import { playSound } from '$lib/utils/sound';
 import { resolveAny } from '$lib/utils/resolveAny';
+import { getContext } from 'svelte';
+import { AnalyticsManager } from '$lib/utils/analyticsManager';
+import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 
 export function tryReadWordFromState(state: TrackLevelState) {
 	const wordToRead = state.dataEntry?.wordToRead;
 	if (wordToRead) {
-		playSound(getWordAudioSource(wordToRead), 0.5);
+		const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
+		const audioSource = getWordAudioSource(wordToRead);
+		analyticsManager.setSoundActive(audioSource, true);
+		playSound(audioSource, 0.5).finally(() => {
+			analyticsManager.setSoundActive(audioSource, false);
+		});
 	}
 }
 
