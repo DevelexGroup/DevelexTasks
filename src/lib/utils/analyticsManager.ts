@@ -22,7 +22,7 @@ export class AnalyticsManager {
 
 	private eyetrackerPosition: { x: number; y: number } = { x: 0, y: 0 };
 	private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
-	private playedSound: string | null = null;
+	private playedSounds: Set<string> = new Set<string>();
 	private activeAOI: Set<string> = new Set<string>();
 
 	private eventBuffer = {
@@ -56,8 +56,12 @@ export class AnalyticsManager {
 		this.eventBuffer.mistake_type.add(mistakeType.id);
 	}
 
-	public logSoundPlayed(soundName: string | null) {
-		this.playedSound = soundName;
+	public setSoundActive(soundName: string, isActive: boolean) {
+		if (isActive) {
+			this.playedSounds.add(soundName);
+		} else {
+			this.playedSounds.delete(soundName);
+		}
 	}
 
 	public updateEyetrackerPosition(x: number, y: number) {
@@ -87,7 +91,7 @@ export class AnalyticsManager {
 				mouse_x: this.mousePosition.x,
 				mouse_y: this.mousePosition.y,
 				key_event: Array.from(this.eventBuffer.key_event),
-				sound_name: this.playedSound,
+				sound_name: Array.from(this.playedSounds),
 				mistake_type: Array.from(this.eventBuffer.mistake_type),
 				task_result: null
 			};
@@ -117,7 +121,7 @@ export class AnalyticsManager {
 			mouse_x: this.mousePosition.x,
 			mouse_y: this.mousePosition.y,
 			key_event: Array.from(this.eventBuffer.key_event),
-			sound_name: this.playedSound,
+			sound_name: Array.from(this.playedSounds),
 			mistake_type: Array.from(this.eventBuffer.mistake_type),
 			task_result: exitType
 		};

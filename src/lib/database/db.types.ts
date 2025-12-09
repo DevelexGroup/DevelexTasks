@@ -20,7 +20,7 @@ export interface GazeSampleDataEntry extends BaseDataEntry {
 	mouse_x: number;
 	mouse_y: number;
 	key_event: string[];
-	sound_name: string | null;
+	sound_name: string[];
 	mistake_type: string[];
 	task_result: TaskResult | null;
 }

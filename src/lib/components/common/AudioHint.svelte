@@ -1,7 +1,9 @@
 ﻿<script lang="ts">
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
+	import { AnalyticsManager } from '$lib/utils/analyticsManager';
+	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 
 	interface Props {
 		audioSrc: string;
@@ -9,6 +11,7 @@
 		playOnStartDelay?: number;
 		width?: number;
 		height?: number;
+		reportToAnalytics?: boolean;
 	}
 
 	let {
@@ -16,7 +19,8 @@
 		height = width * 0.9,
 		playOnStart = false,
 		playOnStartDelay = 0,
-		audioSrc
+		reportToAnalytics = true,
+		audioSrc,
 	}: Props = $props();
 
 	let isPlaying = $state(false);
@@ -24,6 +28,8 @@
 
 	let inactiveSrc = resolveAny('/images/common/audio-player-inactive.svg');
 	let activeSrc = resolveAny('/images/common/audio-player-active.svg');
+
+	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
 	onMount(() => {
 		audioElement = new Audio(audioSrc);
@@ -59,6 +65,12 @@
 			isPlaying = true;
 		}
 	}
+
+	$effect(() => {
+		if (reportToAnalytics) {
+			analyticsManager.setSoundActive(audioSrc, isPlaying);
+		}
+	});
 </script>
 
 <GazeArea id="audio-hint">
