@@ -159,7 +159,7 @@
 		return [];
 	}
 
-	function formatTimestamp(unixTimestamp: number): string {
+	function formatTimestamp(unixTimestamp: number, format: 'full' | 'simple' | 'filename' = 'full'): string {
 		const date = new Date(Math.floor(unixTimestamp));
 		const year = date.getFullYear();
 		const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -167,16 +167,27 @@
 		const hours = String(date.getHours()).padStart(2, '0');
 		const minutes = String(date.getMinutes()).padStart(2, '0');
 		const seconds = String(date.getSeconds()).padStart(2, '0');
+
+		if (format === 'filename') {
+			return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+		}
+
+		if (format === 'simple') {
+			return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+		}
+
+		// format === 'full'
 		const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
 		const microseconds = String(Math.floor((unixTimestamp % 1) * 1000)).padStart(3, '0');
 		return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}.${milliseconds}${microseconds}`;
 	}
 
+
 	function formatColumnValue(column: string, value: unknown): string {
 		if (value === null || value === undefined) return '-';
-		if (column == 'Timestamp') {
+		if (column == 'Timestamp' || column == 'Session ID') {
 			const timestampNum = typeof value === 'number' ? value : parseFloat(String(value));
-			return formatTimestamp(timestampNum);
+			return formatTimestamp(timestampNum, column == 'Timestamp' ? 'full' : 'simple');
 		}
 		if (Array.isArray(value)) return value.length > 0 ? value.join(', ') : '-';
 		if (typeof value === 'number') return value.toFixed(2);
@@ -185,9 +196,9 @@
 
 	function formatExportedColumnValue(column: string, value: unknown): string {
 		if (value === null || value === undefined) return '';
-		if (column == 'Timestamp') {
+		if (column == 'Timestamp' || column == 'Session ID') {
 			const timestampNum = typeof value === 'number' ? value : parseFloat(String(value));
-			return formatTimestamp(timestampNum);
+			return formatTimestamp(timestampNum, column == 'Timestamp' ? 'full' : 'simple');
 		}
 		if (Array.isArray(value)) return value.length > 0 ? value.join(';') : '';
 		return String(value);
@@ -222,6 +233,12 @@
 			.and(entry => entry.session_id === selectedSessionId)
 			.sortBy('timestamp');
 
+		// Get task name from the first entry
+		const taskName = allData.length > 0 ? allData[0].task_name : 'unknown';
+
+		// Format session ID as timestamp for filename
+		const formattedSessionId = formatTimestamp(parseFloat(selectedSessionId), 'filename');
+
 		// Convert to CSV
 		const headers = getTableExportHeaders();
 		const csvRows = [headers.join(',')];
@@ -241,7 +258,7 @@
 		const link = document.createElement('a');
 		const url = URL.createObjectURL(blob);
 		link.setAttribute('href', url);
-		link.setAttribute('download', `${selectedTable}_${selectedChildId}_${selectedSessionId}_${new Date().toISOString().split('T')[0]}.csv`);
+		link.setAttribute('download', `${selectedTable}_${selectedChildId}_${taskName}_${formattedSessionId}.csv`);
 		link.style.visibility = 'hidden';
 		document.body.appendChild(link);
 		link.click();
@@ -297,7 +314,7 @@
 		>
 			<option value="">Select session&hellip;</option>
 			{#each sessionIds as session (session.sessionId)}
-				<option value={session.sessionId}>[{session.taskName}] {formatTimestamp(parseFloat(String(session.sessionId)))}</option>
+				<option value={session.sessionId}>[{session.taskName}] {formatTimestamp(parseFloat(String(session.sessionId)), 'simple')}</option>
 			{/each}
 		</select>
 	</div>
