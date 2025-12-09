@@ -9,7 +9,7 @@ export enum TaskResult {
 	Natural = 'natural',
 	Escape = 'escape',
 	Mistake = 'mistake',
-	Death = 'death'
+	Terminate = 'terminate'
 }
 
 export interface GazeSampleDataEntry extends BaseDataEntry {

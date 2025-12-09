@@ -29,7 +29,7 @@
 	});
 
 	onDestroy(() => {
-		analyticsManager.stopLogging(TaskResult.Death);
+		analyticsManager.stopLogging(TaskResult.Terminate);
 	});
 </script>
 
