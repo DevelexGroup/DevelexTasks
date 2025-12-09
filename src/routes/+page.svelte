@@ -35,6 +35,13 @@
 		</button>
 	</div>
 
+	<button
+		class="fixed bottom-4 right-4 rounded-md bg-purple-500 px-3 py-1.5 text-gray-50 hover:bg-purple-600"
+		onclick={() => goto(resolve('/admin'))}
+	>
+		Administrace
+	</button>
+
 	<div class="mt-3">
 		<UserSelect />
 	</div>
