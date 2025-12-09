@@ -52,7 +52,7 @@ export class AnalyticsManager {
 		this.eventBuffer.key_event.add(key);
 	}
 
-	public logErrorType(mistakeType: TaskMistake) {
+	public logMistakeType(mistakeType: TaskMistake) {
 		this.eventBuffer.mistake_type.add(mistakeType.id);
 	}
 
@@ -92,9 +92,7 @@ export class AnalyticsManager {
 				task_result: null
 			};
 
-			db.gazeSamples.add(gazeSample).then((id) => {
-				console.log('Logged Gaze Sample with ID:', id, gazeSample);
-			}).catch((error) => {
+			db.gazeSamples.add(gazeSample).catch((error) => {
 				console.error('Error logging Gaze Sample:', error);
 			});
 
@@ -104,10 +102,11 @@ export class AnalyticsManager {
 	}
 
 	public stopLogging(exitType: TaskResult) {
-		if (this.pollingTimer) {
-			clearInterval(this.pollingTimer);
-			this.pollingTimer = null;
-		}
+		if (!this.pollingTimer)
+			return;
+
+		clearInterval(this.pollingTimer);
+		this.pollingTimer = null;
 
 		const baseData = this.getBaseDataEntry();
 		const finalGazeSample: GazeSampleDataEntry = {
