@@ -221,7 +221,6 @@
 		const allData = await table
 			.where('child_id').equals(selectedChildId)
 			.and(entry => entry.session_id === selectedSessionId)
-			.reverse()
 			.sortBy('timestamp');
 
 		// Convert to CSV
