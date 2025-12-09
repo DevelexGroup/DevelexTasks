@@ -38,10 +38,9 @@ export type TaskMistake = {
 
 export interface TrackTaskProps extends TaskLevelProps {
 	data: TrackLevelDataEntry[];
-	validateSymbol?: (clickedIndex: number, state: TrackLevelState) => boolean;
+	validateSymbol?: (clickedIndex: number, state: TrackLevelState) => TaskMistake[] | true;
 	validateStage?: (state: TrackLevelState) => TaskMistake[] | true;
 	onSpace?: (state: TrackLevelState) => void;
-	reportMistake?: (mistakes: TaskMistake[]) => void;
 	trackComponent?: Snippet<[TrackComponent]>;
 	hintComponent?: Snippet<[ExtraComponent]>;
 	extraComponent?: Snippet<[ExtraComponent]>;

@@ -52,8 +52,13 @@ export class AnalyticsManager {
 		this.eventBuffer.key_event.add(key);
 	}
 
-	public logMistakeType(mistakeType: TaskMistake) {
-		this.eventBuffer.mistake_type.add(mistakeType.id);
+	public logMistakeType(mistakeType: TaskMistake | TaskMistake[]) {
+		console.log('Logging mistake type:', mistakeType);
+		if (Array.isArray(mistakeType)) {
+			mistakeType.forEach(mistake => this.eventBuffer.mistake_type.add(mistake.id));
+		} else {
+			this.eventBuffer.mistake_type.add(mistakeType.id);
+		}
 	}
 
 	public setSoundActive(soundName: string, isActive: boolean) {

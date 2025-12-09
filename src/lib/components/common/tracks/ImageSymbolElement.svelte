@@ -1,5 +1,4 @@
 ﻿<script lang="ts">
-	import { playSound, SOUND_CORRECT, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
 
@@ -17,7 +16,7 @@
 	let {
 		symbol = '',
 		index = -1,
-		validateSymbolClick = () => false,
+		validateSymbolClick = () => true,
 		interactable = true,
 		letterSpacing = 0
 	}: Props = $props();
@@ -31,8 +30,6 @@
 				isSelected = true;
 			}, 10);
 		}
-
-		playSound(validationResult ? SOUND_CORRECT : SOUND_MISTAKE, 0.33);
 
 		isCorrect = isCorrect || validationResult;
 	}

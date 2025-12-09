@@ -2,17 +2,18 @@
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
-	import { id, validateSymbol, validateStage } from '$lib/components/tasks/zrakovka/levels/1/index';
+	import { id } from '$lib/components/tasks/zrakovka/levels/1/index';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import { zrakovkaTestData } from '$lib/components/tasks/zrakovka/zrakovka.data';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
+	import { defaultValidateStage, defaultValidateSymbol } from '$lib/utils/trackLevelUtils';
 
 	const data = zrakovkaTestData.find((level => level.levelID === id))?.practiceContent;
 </script>
 
 {#if data}
-	<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
+	<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
 				<div class="h-20 w-20">

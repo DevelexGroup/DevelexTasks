@@ -5,19 +5,19 @@
 	import { fade } from 'svelte/transition';
 	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
-	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
+	import { playSound, SOUND_CORRECT, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';
-	import { KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
+	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 
 	let {
 		id,
 		data,
 		isPractice = false,
 		onCompleted = () => {},
-		validateSymbol = () => false,
+		validateSymbol = () => true,
 		validateStage = () => true,
-		reportMistake = () => {},
 		onSpace = () => {},
 		trackComponent,
 		hintComponent,
@@ -40,6 +40,8 @@
 	}));
 
 	let dwellArrowElement = $state<DwellTarget | null>(null);
+
+	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
 	onMount(() => {
 		let keyboardManager = getContext<KeyboardManager>(KEYBOARD_MANAGER_KEY);
@@ -85,20 +87,22 @@
 
 	function validateSymbolClick(symbol: string, index: number): boolean {
 		const validationResult = validateSymbol(index, currentState())
-		if (validationResult) {
+		if (validationResult === true) {
 			selectedIndices = [...selectedIndices, index];
+			playSound(SOUND_CORRECT, 0.33);
+			return true;
 		}
-		return validationResult;
+		analyticsManager.logMistakeType(validationResult);
+		playSound(SOUND_MISTAKE, 0.33);
+		return false;
 	}
 
 	function onAdvanceDwellComplete() {
 		const validationResult = validateStage(currentState());
 		if (validationResult === true) {
-			console.log('Stage validation succeeded');
 			advanceLevel();
 		} else {
-			console.log('Stage validation failed:', validationResult);
-			reportMistake(validationResult)
+			analyticsManager.logMistakeType(validationResult)
 			if (dwellArrowElement) {
 				shouldShakeArrow = true;
 				playSound(SOUND_MISTAKE, 0.33);

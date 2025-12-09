@@ -1,5 +1,4 @@
 ﻿<script lang="ts">
-	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import type { Snippet } from 'svelte';
 	import type { TrackSymbolComponent } from '$lib/types/task.types';
 	import SymbolGroup from '$lib/components/common/tracks/SymbolGroup.svelte';
@@ -48,11 +47,7 @@
 	const flatIndexFor = (rowIndex: number, colIndex: number) => rowOffsets[rowIndex] + colIndex;
 
 	console.log(correctSymbols);
-	const isCorrectSymbol = (symbol: string): boolean => {
-		let yep = correctSymbols ? correctSymbols.includes(symbol) : false;
-		console.log(`Symbol "${symbol}" is correct: ${yep}`);
-		return yep;
-	};
+	const isCorrectSymbol = (symbol: string): boolean => correctSymbols ? correctSymbols.includes(symbol) : false;
 </script>
 
 {#if flattenRows}

@@ -3,15 +3,16 @@
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
 	import { cibuleTestData } from '$lib/components/tasks/cibule/cibule.data';
-	import { id, validateSymbol, validateStage } from '$lib/components/tasks/cibule/levels/1/index';
+	import { id } from '$lib/components/tasks/cibule/levels/1/index';
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
+	import { defaultValidateStage, defaultValidateSymbol } from '$lib/utils/trackLevelUtils';
 
 	const data = cibuleTestData.find((level => level.levelID === id))?.content;
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} {validateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
+<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
 	{#snippet hintComponent({ state })}
 		<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
 	{/snippet}

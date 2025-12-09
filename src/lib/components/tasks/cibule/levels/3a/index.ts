@@ -1,7 +1,7 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
 import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
-import { MistakeUnfinished } from '$lib/types/mistakes.types';
+import { MistakeMisclick, MistakeSkipped, MistakeUnfinished } from '$lib/types/mistakes.types';
 import { getFlattenedSymbols, tryReadWordFromState } from '$lib/utils/trackLevelUtils';
 
 export const id = 'level3a';
@@ -16,13 +16,23 @@ export function validateStage(state: TrackLevelState) : TaskMistake[] | true {
 	return true;
 }
 
-export function validateSymbol(clickedIndex: number, state: TrackLevelState) {
+export function validateSymbol(clickedIndex: number, state: TrackLevelState): TaskMistake[] | true {
 	const correctSyllables = state.dataEntry.correct ?? [];
 	const correctIndices = correctSyllables.map(syllable => getFlattenedSymbols(state).indexOf(syllable)).filter(i => i !== -1);
 
 	const testIndices = [...state.selectedCorrectIndices, clickedIndex];
 
-	return testIndices.every((value, i) => value === correctIndices[i]);
+	if (testIndices.every((value, i) => value === correctIndices[i])) {
+		return true;
+	}
+
+	// Skipped check
+	if (correctIndices.includes(clickedIndex)){
+		return [MistakeSkipped];
+	}
+
+	// Otherwise we misclicked
+	return [MistakeMisclick];
 }
 
 export const onSpace = (state: TrackLevelState) => {

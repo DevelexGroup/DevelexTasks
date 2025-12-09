@@ -124,7 +124,6 @@
 	function handleScroll(event: Event) {
 		const target = event.target as HTMLElement;
 		const scrollBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
-		console.log("Scroll bottom:", scrollBottom);
 
 		if (scrollBottom < 200 && hasMore && !isLoading) {
 			loadMoreData();
@@ -144,7 +143,7 @@
 
 	function getTableHeaders(): (string | null)[] {
 		if (selectedTable === 'gazeSamples') {
-			return [null, null, null, null, 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Error Type', 'Result'];
+			return [null, null, null, null, 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Mistake Type', 'Result'];
 		} else if (selectedTable === 'fixationData') {
 			return [null, null, null, null, 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		}
@@ -153,7 +152,7 @@
 
 	function getTableExportHeaders(): string[] {
 		if (selectedTable === 'gazeSamples') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Error Type', 'Result'];
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Mistake Type', 'Result'];
 		} else if (selectedTable === 'fixationData') {
 			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		}
