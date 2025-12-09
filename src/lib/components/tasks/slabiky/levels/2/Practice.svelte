@@ -18,8 +18,8 @@
 			<AudioHint audioSrc={getWordAudioSource(state.dataEntry.wordToRead)} playOnStart playOnStartDelay={750} />
 		{/if}
 	{/snippet}
-	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolTrack {symbols} {validateSymbolClick} symbolSpacing={16} />
+	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16} />
 	{/snippet}
 </TrackLevel>
 {/if}

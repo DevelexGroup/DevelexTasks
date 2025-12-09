@@ -2,23 +2,28 @@
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import type { Snippet } from 'svelte';
 	import type { TrackSymbolComponent } from '$lib/types/task.types';
+	import SymbolGroup from '$lib/components/common/tracks/SymbolGroup.svelte';
 
 	interface Props {
 		symbols: string[] | string[][];
 		validateSymbolClick: (symbol: string, index: number) => boolean;
+		correctSymbols?: string[];
 		letterSpacing?: number;
 		symbolSpacing?: number;
 		flattenRows?: boolean;
+		splitFiller?: boolean;
 		symbolSnippet?: Snippet<[TrackSymbolComponent]>;
 	}
 
 	// Snippet from SymbolElement
 	let {
 		symbols,
+		correctSymbols,
 		validateSymbolClick,
 		letterSpacing = 0,
 		symbolSpacing = 0,
 		flattenRows = false,
+		splitFiller = false,
 		symbolSnippet = undefined
 	}: Props = $props();
 
@@ -41,38 +46,41 @@
 	);
 
 	const flatIndexFor = (rowIndex: number, colIndex: number) => rowOffsets[rowIndex] + colIndex;
+
+	console.log(correctSymbols);
+	const isCorrectSymbol = (symbol: string): boolean => {
+		let yep = correctSymbols ? correctSymbols.includes(symbol) : false;
+		console.log(`Symbol "${symbol}" is correct: ${yep}`);
+		return yep;
+	};
 </script>
 
 {#if flattenRows}
 	<div class="flex items-center justify-center" style="gap: {symbolSpacing}px;">
-		{#each singleRowSymbols() as symbol, index (index)}
-			{#if symbolSnippet}
-				{@render symbolSnippet({
-					symbol,
-					index,
-					letterSpacing,
-					validateSymbolClick
-				})}
-			{:else}
-				<SymbolElement {symbol} {index} {letterSpacing} {validateSymbolClick} />
-			{/if}
+		{#each singleRowSymbols() as symbolGroup, index (index)}
+			<SymbolGroup
+				id={`group-${index}`}
+				index={index}
+				symbols={splitFiller && !isCorrectSymbol(symbolGroup) ? symbolGroup.split('') : [symbolGroup]}
+				{letterSpacing}
+				{validateSymbolClick}
+				{symbolSnippet}
+			/>
 		{/each}
 	</div>
 {:else}
 	<div class="flex flex-col items-start justify-center" style="gap: {symbolSpacing}px;">
 		{#each symbolRows as symbolRow, rowIndex (rowIndex)}
 			<div class="flex items-center justify-center" style="gap: {symbolSpacing}px;">
-			{#each symbolRow as symbol, colIndex (`${rowIndex}-${colIndex}`)}
-				{#if symbolSnippet}
-					{@render symbolSnippet({
-						symbol,
-						index: flatIndexFor(rowIndex, colIndex),
-						letterSpacing,
-						validateSymbolClick
-					})}
-				{:else}
-					<SymbolElement {symbol} {letterSpacing} {validateSymbolClick} index={flatIndexFor(rowIndex, colIndex)} />
-				{/if}
+			{#each symbolRow as symbolGroup, colIndex (`${rowIndex}-${colIndex}`)}
+				<SymbolGroup
+					id={`group-${flatIndexFor(rowIndex, colIndex)}`}
+					index={flatIndexFor(rowIndex, colIndex)}
+					symbols={splitFiller && !isCorrectSymbol(symbolGroup) ? symbolGroup.split('') : [symbolGroup]}
+					{letterSpacing}
+					{validateSymbolClick}
+					{symbolSnippet}
+				/>
 			{/each}
 			</div>
 		{/each}

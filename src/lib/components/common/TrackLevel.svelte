@@ -8,6 +8,7 @@
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';
 	import { KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import GazeArea from '$lib/components/common/GazeArea.svelte';
 
 	let {
 		id,
@@ -126,27 +127,31 @@
 		<div class="flex flex-col items-center justify-center gap-16">
 			<div class="text-center">
 				{#if hintComponent}
-				<div class="flex items-start justify-center gap-32">
-					<div in:fade|global={{ delay: 500 }} out:fade|global>
-						{@render hintComponent({
-							state: currentState(),
-							isPractice
-						})}
-					</div>
-					{#if trackComponent}
-					<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
-						{@render trackComponent({
-							symbols: symbols(),
-							validateSymbolClick
-						})}
-					</div>
-					{/if}
-				</div>
+					<GazeArea id="hint" bufferSize={50}>
+						<div class="flex items-start justify-center gap-32">
+							<div in:fade|global={{ delay: 500 }} out:fade|global>
+								{@render hintComponent({
+									state: currentState(),
+									isPractice
+								})}
+							</div>
+							{#if trackComponent}
+							<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
+								{@render trackComponent({
+									symbols: symbols(),
+									correctSymbols: currentData().correct,
+									validateSymbolClick
+								})}
+							</div>
+							{/if}
+						</div>
+					</GazeArea>
 				{:else}
 					{#if trackComponent}
 					<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
 						{@render trackComponent({
 							symbols: symbols(),
+							correctSymbols: currentData().correct,
 							validateSymbolClick
 						})}
 					</div>

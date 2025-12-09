@@ -11,8 +11,8 @@
 
 {#if data}
 <TrackLevel {id} data={data} {validateSymbol} {validateStage} isPractice={true} onCompleted={() => {taskStage.set(TaskStage.Instructions)}} onSpace={onSpace}>
-	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolTrack {symbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} />
+	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} splitFiller={true} />
 	{/snippet}
 </TrackLevel>
 {/if}

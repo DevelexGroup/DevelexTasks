@@ -73,6 +73,7 @@ export interface ExtraComponent {
 export interface TrackComponent {
 	symbols: string[] | string[][];
 	validateSymbolClick: (symbol: string, index: number) => boolean;
+	correctSymbols?: string[];
 	letterSpacing?: number;
 	symbolSpacing?: number;
 }

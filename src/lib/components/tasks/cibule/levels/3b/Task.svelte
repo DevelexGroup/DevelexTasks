@@ -19,8 +19,8 @@
 			{/each}
 		</div>
 	{/snippet}
-	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolTrack {symbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} />
+	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} splitFiller={true} />
 	{/snippet}
 </TrackLevel>
 {/if}

@@ -73,19 +73,17 @@
 	});
 </script>
 
-<GazeArea id="audio-hint">
-	<button
-		class="audio-hint"
-		style={`width: ${width}px; height: ${height}px;`}
-		onclick={playAudio}
-		type="button"
-		aria-label="Play audio hint"
-		aria-pressed={isPlaying}
-	>
-		<img src={inactiveSrc} alt="Audio player" class="audio-icon" class:hidden={isPlaying} />
-		<img src={activeSrc} alt="Audio player playing" class="audio-icon" class:hidden={!isPlaying} />
-	</button>
-</GazeArea>
+<button
+	class="audio-hint"
+	style={`width: ${width}px; height: ${height}px;`}
+	onclick={playAudio}
+	type="button"
+	aria-label="Play audio hint"
+	aria-pressed={isPlaying}
+>
+	<img src={inactiveSrc} alt="Audio player" class="audio-icon" class:hidden={isPlaying} />
+	<img src={activeSrc} alt="Audio player playing" class="audio-icon" class:hidden={!isPlaying} />
+</button>
 
 <style>
 	.audio-hint {

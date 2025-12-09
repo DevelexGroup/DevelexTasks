@@ -37,18 +37,16 @@
 	}
 </script>
 
-<GazeArea id={index === -1 ? 'sym-hint' : `sym-${index}`} bufferSize={50}>
-	<button type="button" class="symbol font-serif text-4xl text-gray-800"
-					style="letter-spacing: {letterSpacing}px;"
-					class:correct-symbol={isCorrect}
-					class:incorrect-symbol={!isCorrect}
-					class:non-interactable={!interactable}
-					class:selected={isSelected}
-					onclick={onSymbolClick}
-	>
-		<span>{symbol}</span>
-	</button>
-</GazeArea>
+<button type="button" class="symbol font-serif text-4xl text-gray-800"
+				style="letter-spacing: {letterSpacing}px;"
+				class:correct-symbol={isCorrect}
+				class:incorrect-symbol={!isCorrect}
+				class:non-interactable={!interactable}
+				class:selected={isSelected}
+				onclick={onSymbolClick}
+>
+	<span>{symbol}</span>
+</button>
 
 <style>
 	.symbol {

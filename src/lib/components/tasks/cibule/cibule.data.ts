@@ -6,29 +6,29 @@ export const cibuleTestData: TrackTaskData = [
 		label: 'Úroveň 1',
 		practiceContent: [
 			{
-				sequence: [ 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'a', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g', 'a', 'g', 'g', 'g', 'g' ],
+				sequence: [ 'ggggg', 'a', 'ggg', 'a', 'gggggggg', 'a', 'ggg', 'a', 'gg', 'a', 'gggggggg', 'a', 'gggg', 'a', 'gggg' ],
 				correct: [ 'a' ],
 				wordToRead: 'A'
 			},
 		],
 		content: [
 			{
-				sequence: [ 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 't', 'h', 'h', 't', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h', 't', 'h', 'h', 'h', 'h' ],
+				sequence: [ 'hhhhh', 't', 'hhh', 't', 'hhhhhhhh', 't', 'hhh', 't', 'hh', 't', 'hhhhhhh', 't', 'hhhh', 't', 'hhhh' ],
 				correct: [ 't' ],
 				wordToRead: 'T',
 			},
 			{
-				sequence: [ 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b', 'p', 'b', 'b', 'b', 'b' ],
+				sequence: [ 'bbbbb', 'p', 'bbbb', 'p', 'bbbbbbbb', 'p', 'bbbb', 'p', 'bb', 'p', 'bbbbbbbb', 'p', 'bbbb', 'p', 'bbbb' ],
 				correct: [ 'p' ],
 				wordToRead: 'P',
 			},
 			{
-				sequence: [ 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o', 'da', 'o', 'o', 'da', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'da', 'o', 'o', 'o' ],
+				sequence: [ 'oooo', 'da', 'ooo', 'da', 'oo', 'da', 'ooooooo', 'da', 'ooooooo', 'da', 'ooo' ],
 				correct: [ 'da' ],
 				wordToRead: 'DA'
 			},
 			{
-				sequence: [ 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'lo', 'a', 'a', 'a', 'a', 'a' ],
+				sequence: [ 'aaa', 'lo', 'aaaaaa', 'lo', 'aaaaa', 'lo', 'aa', 'lo', 'aaaa', 'lo', 'aaaaaaa', 'lo', 'aaa', 'lo', 'aaaaa' ],
 				correct: [ 'lo' ],
 				wordToRead: 'LO'
 			}
@@ -41,29 +41,29 @@ export const cibuleTestData: TrackTaskData = [
 			{
 				correct: [ 'k' ],
 				wordToRead: 'K',
-				sequence: [ 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'k', 'e', 'e', 'e', 'e', 'e' ]
+				sequence: [ 'eeeee', 'k', 'eeeeeee', 'k', 'eeeeeeeeee', 'k', 'eeeee', 'k', 'eee', 'k', 'eeeeeee', 'k', 'eeeee' ]
 			}
 		],
 		content: [
 			{
 				correct: [ 'v' ],
 				wordToRead: 'V',
-				sequence: [ 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'v', 'h', 'h', 'h', 'h', 'h' ]
+				sequence: [ 'hhhhh', 'v', 'hhhhhhh', 'v', 'hhhhhhhhhh', 'v', 'hhhhh', 'v', 'hhhh', 'v', 'hhhhhhhh', 'v', 'hhhhh' ]
 			},
 			{
 				correct: [ 'm' ],
 				wordToRead: 'M',
-				sequence: [ 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'm', 'n', 'n', 'n', 'n', 'n'	]
+				sequence: [ 'nnnn', 'm', 'nnnnnnn', 'm', 'nnnnnnnnnn', 'm', 'nnnnn', 'm', 'nnnn', 'm', 'nnnnnnn', 'm', 'nnnnn'	]
 			},
 			{
 				correct: [ 'pe' ],
 				wordToRead: 'PE',
-				sequence: [ 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'pe', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'pe', 'a', 'a', 'a', 'a', 'a', 'pe' ]
+				sequence: [ 'aaaaaa', 'pe', 'aaaaaa', 'pe', 'aa', 'pe', 'aa', 'pe', 'aaaaa', 'pe', 'aaaaaaaaaa', 'pe', 'aaaaa', 'pe' ]
 			},
 			{
 				correct: [ 'ma' ],
 				wordToRead: 'MA',
-				sequence: [ 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'i', 'ma', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ma', 'i', 'i', 'ma', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i' ]
+				sequence: [ 'ma', 'iiiiiiiiii', 'ma', 'iiiiiiii', 'ma', 'iii', 'ma', 'ii', 'ma', 'iiiiiiiiiiiiii', 'ma', 'ii', 'ma', 'iiiiiiii' ]
 			}
 		]
 	},
@@ -74,24 +74,24 @@ export const cibuleTestData: TrackTaskData = [
 			{
 				correct: [ 'v', 'o', 'd', 'a' ],
 				wordToRead: 'GRAM',
-				sequence: [ 'z', 'z', 'z', 'z', 'z', 'z', 'v',	'z', 'z', 'z', 'z', 'z', 'z', 'o', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'd', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'z', 'a', 'z', 'z', 'z', 'z', 'z', 'z' ]
+				sequence: [ 'zzzzzz', 'v',	'zzzzzz', 'o', 'zzzzzzzzz', 'd', 'zzzzzzzzzzzzzz', 'a', 'zzzzzz' ]
 			}
 		],
 		content: [
 			{
 				correct: [ 'z', 'i', 'm', 'a' ],
 				wordToRead: 'GRAM',
-				sequence: [ 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'z', 's', 's', 's', 's', 'i', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'm', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'a', 's', 's', 's', 's', 's', 's' ]
+				sequence: [ 'sssssssssssss', 'z', 'ssss', 'i', 'sssssssssssssssss', 'm', 'ssssssssss', 'a', 'ssssss' ]
 			},
 			{
 				correct: [ 'c', 'i', 'b', 'u', 'l', 'e' ],
 				wordToRead: 'GRAM',
-				sequence: [ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'c', 'p', 'p', 'p', 'i', 'p', 'p', 'p', 'p', 'p', 'p', 'b', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'u', 'p', 'p', 'p', 'l', 'p', 'p', 'p', 'p', 'e', 'p', 'p', 'p', 'p', 'p' ]
+				sequence: [ 'ppppppp', 'c', 'ppp', 'i', 'pppppp', 'b', 'pppppppp', 'u', 'ppp', 'l', 'pppp', 'e', 'ppppp' ]
 			},
 			{
 				correct: [ 's', 'l', 'u', 'n', 'c', 'e' ],
 				wordToRead: 'GRAM',
-				sequence: [ 'o', 'o', 'o', 'o', 'o', 's', 'o', 'o', 'o', 'o', 'l', 'o', 'o', 'o', 'o', 'o', 'u', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'n', 'o', 'o', 'o', 'c', 'o', 'o', 'o', 'o', 'o', 'e', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o' ]
+				sequence: [ 'ooooo', 's', 'oooo', 'l', 'ooooo', 'u', 'ooooooooo', 'n', 'ooo', 'c', 'ooooo', 'e', 'oooooooo' ]
 			}
 		]
 	},
@@ -102,19 +102,19 @@ export const cibuleTestData: TrackTaskData = [
 			{
 				correct: [ 'lo', 'pa', 'ta' ],
 				wordToRead: 'GRAM',
-				sequence: ['k', 'k', 'k', 'k', 'k', 'k', 'k', 'ta', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'pa', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'k', 'lo', 'k', 'k', 'k', 'k', 'k', 'k']
+				sequence: ['kkkkkkk', 'ta', 'kkkkkkkkkkk', 'pa', 'kkkkkkkkkk', 'lo', 'kkkkkk']
 			}
 		],
 		content: [
 			{
 				correct: [ 'ma', 'li', 'na'],
 				wordToRead: 'GRAM',
-				sequence: [ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'li', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'ma', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'na', 'p', 'p', 'p', 'p', 'p', 'p' ]
+				sequence: [ 'ppppppp', 'li', 'pppppppppp', 'ma', 'pppppppppp', 'na', 'pppppp' ]
 			},
 			{
 				correct: [ 'no', 'vi', 'ny' ],
 				wordToRead: 'GRAM',
-				sequence: ['c', 'c', 'c', 'c', 'c', 'c', 'c', 'no', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'ny', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'vi', 'c', 'c', 'c', 'c', 'c', 'c']
+				sequence: ['ccccccc', 'no', 'ccccccccccc', 'ny', 'cccccccccc', 'vi', 'cccccc']
 			}
 		]
 	}

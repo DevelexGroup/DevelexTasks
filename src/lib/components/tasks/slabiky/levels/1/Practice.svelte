@@ -15,8 +15,8 @@
 	{#snippet hintComponent({ state })}
 		<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
 	{/snippet}
-	{#snippet trackComponent({ symbols, validateSymbolClick })}
-		<SymbolTrack {symbols} {validateSymbolClick} symbolSpacing={16} />
+	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16} />
 	{/snippet}
 </TrackLevel>
 {/if}
