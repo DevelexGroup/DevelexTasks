@@ -131,14 +131,15 @@
 		<div class="flex flex-col items-center justify-center gap-16">
 			<div class="text-center">
 				{#if hintComponent}
-					<GazeArea id="hint" bufferSize={50}>
 						<div class="flex items-start justify-center gap-32">
-							<div in:fade|global={{ delay: 500 }} out:fade|global>
-								{@render hintComponent({
-									state: currentState(),
-									isPractice
-								})}
-							</div>
+							<GazeArea id="hint" bufferSize={50}>
+								<div in:fade|global={{ delay: 500 }} out:fade|global>
+									{@render hintComponent({
+										state: currentState(),
+										isPractice
+									})}
+								</div>
+							</GazeArea>
 							{#if trackComponent}
 							<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
 								{@render trackComponent({
@@ -149,7 +150,6 @@
 							</div>
 							{/if}
 						</div>
-					</GazeArea>
 				{:else}
 					{#if trackComponent}
 					<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
