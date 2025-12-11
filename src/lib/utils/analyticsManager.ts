@@ -4,6 +4,7 @@ import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
 import type { TaskMistake } from '$lib/types/task.types';
 import type {
+	FixationDataPoint,
 	GazeDataPoint,
 	GazeInteractionObjectFixationEvent,
 	GazeInteractionObjectIntersectEvent,
@@ -153,7 +154,7 @@ export class AnalyticsManager {
 		window.addEventListener('keydown', this.handleKeyDown);
 
 		this.gazeManager.on('inputData', this.handleInputData);
-		this.gazeManager.on('fixationObjectEnd', this.handleFixation);
+		this.gazeManager.on('inputFixationEnd', this.handleFixation);
 		this.gazeManager.on('intersect', this.handleIntersection);
 	}
 
@@ -166,7 +167,7 @@ export class AnalyticsManager {
 		window.removeEventListener('keydown', this.handleKeyDown);
 
 		this.gazeManager.off('inputData', this.handleInputData);
-		this.gazeManager.off('fixationObjectEnd', this.handleFixation);
+		this.gazeManager.off('inputFixationEnd', this.handleFixation);
 		this.gazeManager.off('intersect', this.handleIntersection);
 	}
 
@@ -189,8 +190,20 @@ export class AnalyticsManager {
 		}
 	};
 
-	private handleFixation = (fixationData: GazeInteractionObjectFixationEvent) => {
-		// todo
+	private handleFixation = (fixationData: FixationDataPoint) => {
+		console.log("Fixation Data Received:", fixationData);
+		const dataEntry = this.getBaseDataEntry();
+		const fixationEntry = {
+			...dataEntry,
+			eyetracker_x: fixationData.x,
+			eyetracker_y: fixationData.y,
+			duration: fixationData.duration,
+			aoi: Array.from(this.activeAOI),
+			fixation_index: fixationData.fixationId
+		};
+		db.fixationData.add(fixationEntry).catch((error) => {
+			console.error('Error logging Fixation Data:', error);
+		});
 	};
 
 	private handleIntersection = (intersectionData: GazeInteractionObjectIntersectEvent) => {
