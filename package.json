@@ -32,7 +32,7 @@
 		"@vitest/browser": "^3.2.4",
 		"bits-ui": "^2.14.4",
 		"clsx": "^2.1.1",
-		"develex-js-sdk": "^0.3.8",
+		"develex-js-sdk": "^0.3.9",
 		"eslint": "^9.38.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.12.4",
