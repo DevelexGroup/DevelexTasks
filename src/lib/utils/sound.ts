@@ -10,22 +10,28 @@ export function playSound(soundPath: string, volume = 0.5): Promise<void> {
 }
 
 export function playSoundOrTTS(soundPath: string, word: string, ttsLang: string, volume = 0.5): Promise<void> {
-	return new Promise((resolve, reject) => {
-		const audio = new Audio(resolveAny(soundPath));
-		audio.volume = volume;
+  const playTTS = () => {
+    return new Promise<void>((resolve, reject) => {
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = ttsLang;
+      utterance.volume = volume;
+      utterance.onend = () => resolve();
+      utterance.onerror = (event) => reject(event.error);
+      window.speechSynthesis.speak(utterance);
+    });
+  };
 
-		audio.addEventListener('canplaythrough', () => {
-			audio.play().then(resolve).catch(reject);
-		});
+  return new Promise((resolve) => {
+    const resolvedPath = resolveAny(soundPath);
+    const audio = new Audio(resolvedPath);
+    audio.volume = volume;
 
-		audio.addEventListener('error', () => {
-			// Sound file not found, use TTS instead
-			const utterance = new SpeechSynthesisUtterance(word);
-			utterance.lang = ttsLang;
-			utterance.volume = volume;
-			utterance.onend = () => resolve();
-			utterance.onerror = (event) => reject(event.error);
-			speechSynthesis.speak(utterance);
-		});
-	});
+    audio.onerror = () => {
+      playTTS().then(resolve).catch(() => resolve());
+    };
+
+    audio.oncanplaythrough = () => {
+      audio.play().then(resolve).catch(() => playTTS().then(resolve));
+    };
+  });
 }

@@ -5,11 +5,7 @@
 	import { fonologieTestData } from '$lib/components/tasks/fonologie/fonologie.data';
 	import { getShowcaseData, id } from '$lib/components/tasks/fonologie/levels/1/index';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import {
-		defaultValidateStage,
-		defaultValidateSymbol,
-		getWordAudioSource
-	} from '$lib/utils/trackLevelUtils';
+	import { getWordAudioSource	} from '$lib/utils/trackLevelUtils';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
 	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
