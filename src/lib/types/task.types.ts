@@ -40,6 +40,7 @@ export interface TrackTaskProps extends TaskLevelProps {
 	data: TrackLevelDataEntry[];
 	validateSymbol?: (clickedIndex: number, state: TrackLevelState) => TaskMistake[] | true;
 	validateStage?: (state: TrackLevelState) => TaskMistake[] | true;
+	playValidationSounds?: boolean;
 	onSpace?: (state: TrackLevelState) => void;
 	trackComponent?: Snippet<[TrackComponent]>;
 	hintComponent?: Snippet<[ExtraComponent]>;

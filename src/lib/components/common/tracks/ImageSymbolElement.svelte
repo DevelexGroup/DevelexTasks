@@ -1,10 +1,15 @@
 ﻿<script lang="ts">
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
+	import { playSound, playSoundOrTTS } from '$lib/utils/sound';
+	import { getWordAudioSource } from '$lib/utils/trackLevelUtils';
 
 	interface Props {
 		symbol?: string;
 		index?: number;
+		basePath?: string;
+		extension?: string;
+		wordToRead?: string | null;
 		validateSymbolClick?: (symbol: string, index: number) => boolean;
 		interactable?: boolean;
 		letterSpacing?: number;
@@ -16,12 +21,19 @@
 	let {
 		symbol = '',
 		index = -1,
+		basePath = '/images',
+		extension = 'png',
+		wordToRead = null,
 		validateSymbolClick = () => true,
 		interactable = true,
 		letterSpacing = 0
 	}: Props = $props();
 
 	function onSymbolClick(): void {
+		if (wordToRead) {
+			playSoundOrTTS(getWordAudioSource(wordToRead), wordToRead, 'cs-CZ');
+		}
+
 		let validationResult = validateSymbolClick(symbol, index);
 
 		if (!isCorrect) {
@@ -46,7 +58,7 @@
 	>
 		<img
 			class="h-full w-full object-contain"
-			src={resolveAny(`/images/tasks/zrakovka/${symbol}.png`)}
+			src={resolveAny(`${basePath}/${symbol}.${extension}`)}
 			alt={symbol}
 		/>
 	</button>

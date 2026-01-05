@@ -1,7 +1,6 @@
 ﻿<script lang="ts">
 	import { getContext, onMount } from 'svelte';
 	import { resolveAny } from '$lib/utils/resolveAny';
-	import GazeArea from '$lib/components/common/GazeArea.svelte';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 
@@ -9,6 +8,7 @@
 		audioSrc: string;
 		playOnStart?: boolean;
 		playOnStartDelay?: number;
+		ttsFallback?: string | null;
 		width?: number;
 		height?: number;
 		reportToAnalytics?: boolean;
@@ -19,6 +19,7 @@
 		height = width * 0.9,
 		playOnStart = false,
 		playOnStartDelay = 0,
+		ttsFallback = null,
 		reportToAnalytics = true,
 		audioSrc,
 	}: Props = $props();
@@ -31,11 +32,19 @@
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
+	let useTTS = $state(false);
+
 	onMount(() => {
 		audioElement = new Audio(audioSrc);
 
 		audioElement.addEventListener('ended', () => {
 			isPlaying = false;
+		});
+
+		audioElement.addEventListener('error', () => {
+			if (ttsFallback) {
+				useTTS = true;
+			}
 		});
 
 		if (playOnStart) {
@@ -49,20 +58,38 @@
 				audioElement.pause();
 				audioElement = null;
 			}
+			if (isPlaying && useTTS) {
+				speechSynthesis.cancel();
+			}
 		};
 	});
 
 	function playAudio() {
-		if (!audioElement) return;
-
 		if (isPlaying) {
-			audioElement.pause();
-			audioElement.currentTime = 0;
+			if (useTTS) {
+				speechSynthesis.cancel();
+			} else if (audioElement) {
+				audioElement.pause();
+				audioElement.currentTime = 0;
+			}
 			isPlaying = false;
 		} else {
-			audioElement.currentTime = 0;
-			audioElement.play();
-			isPlaying = true;
+			if (useTTS && ttsFallback) {
+				const utterance = new SpeechSynthesisUtterance(ttsFallback);
+				utterance.lang = 'cs-CZ';
+				utterance.onend = () => {
+					isPlaying = false;
+				};
+				utterance.onerror = () => {
+					isPlaying = false;
+				};
+				speechSynthesis.speak(utterance);
+				isPlaying = true;
+			} else if (audioElement) {
+				audioElement.currentTime = 0;
+				audioElement.play();
+				isPlaying = true;
+			}
 		}
 	}
 

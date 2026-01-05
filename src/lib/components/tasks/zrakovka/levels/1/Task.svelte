@@ -6,8 +6,8 @@
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import { zrakovkaTestData } from '$lib/components/tasks/zrakovka/zrakovka.data';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
 	import { defaultValidateStage, defaultValidateSymbol } from '$lib/utils/trackLevelUtils';
+	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
 
 	const data = zrakovkaTestData.find((level => level.levelID === id))?.content;
 </script>
@@ -28,7 +28,7 @@
 		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 			<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16}>
 				{#snippet symbolSnippet({ symbol, index })}
-					<ImageSymbolElement {symbol} {index} {validateSymbolClick} />
+					<ImageSymbolElement {symbol} {index} {validateSymbolClick} basePath="/images/tasks/zrakovka" />
 				{/snippet}
 			</SymbolTrack>
 		{/snippet}

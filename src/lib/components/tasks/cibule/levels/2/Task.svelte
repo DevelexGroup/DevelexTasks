@@ -15,7 +15,7 @@
 <TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
 	{#snippet hintComponent({ state })}
 		{#if state.dataEntry.wordToRead}
-			<AudioHint audioSrc={getWordAudioSource(state.dataEntry.wordToRead)} playOnStart playOnStartDelay={750} />
+			<AudioHint audioSrc={getWordAudioSource(state.dataEntry.wordToRead)} playOnStart playOnStartDelay={750} ttsFallback={state.dataEntry.wordToRead} />
 		{/if}
 	{/snippet}
 	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}

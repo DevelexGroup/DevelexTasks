@@ -19,6 +19,7 @@
 		validateSymbol = () => true,
 		validateStage = () => true,
 		onSpace = () => {},
+		playValidationSounds = true,
 		trackComponent,
 		hintComponent,
 		extraComponent
@@ -89,11 +90,13 @@
 		const validationResult = validateSymbol(index, currentState())
 		if (validationResult === true) {
 			selectedIndices = [...selectedIndices, index];
-			playSound(SOUND_CORRECT, 0.33);
+			if (playValidationSounds)
+				playSound(SOUND_CORRECT, 0.33);
 			return true;
 		}
 		analyticsManager.logMistakeType(validationResult);
-		playSound(SOUND_MISTAKE, 0.33);
+		if (playValidationSounds)
+			playSound(SOUND_MISTAKE, 0.33);
 		return false;
 	}
 
