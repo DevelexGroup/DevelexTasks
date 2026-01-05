@@ -1,8 +1,13 @@
 @import "tailwindcss";
+@import '@fontsource/fira-mono';
 
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-task-background: #fffee8;
+}
 
 :root {
   --radius: 0.625rem;
