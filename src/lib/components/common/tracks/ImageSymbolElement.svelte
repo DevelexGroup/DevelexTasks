@@ -13,6 +13,8 @@
 		validateSymbolClick?: (symbol: string, index: number) => boolean;
 		interactable?: boolean;
 		letterSpacing?: number;
+		width?: number;
+		height?: number;
 	}
 
 	let isCorrect = $state<boolean>(false);
@@ -26,7 +28,9 @@
 		wordToRead = null,
 		validateSymbolClick = () => true,
 		interactable = true,
-		letterSpacing = 0
+		letterSpacing = 0,
+		width = 20,
+		height = width
 	}: Props = $props();
 
 	function onSymbolClick(): void {
@@ -48,8 +52,8 @@
 </script>
 
 <GazeArea id="symbol-element-{index}">
-	<button type="button" class="symbol symbol--image font-serif text-4xl text-gray-800 h-20 w-20"
-					style="letter-spacing: {letterSpacing}px;"
+	<button type="button" class="symbol symbol--image font-serif text-4xl text-gray-800 cursor-pointer"
+					style="letter-spacing: {letterSpacing}px; width: {width * 0.25}rem; height: {height * 0.25}rem;"
 					class:correct-symbol={isCorrect}
 					class:incorrect-symbol={!isCorrect}
 					class:non-interactable={!interactable}
