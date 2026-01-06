@@ -40,7 +40,7 @@
 				class:selected={isSelected}
 				onclick={onSymbolClick}
 >
-	<span>{symbol}</span>
+	<span>{symbol === ' ' ? '\u00A0' : symbol}</span>
 </button>
 
 <style>

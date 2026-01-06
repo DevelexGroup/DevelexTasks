@@ -46,7 +46,6 @@
 
 	const flatIndexFor = (rowIndex: number, colIndex: number) => rowOffsets[rowIndex] + colIndex;
 
-	console.log(correctSymbols);
 	const isCorrectSymbol = (symbol: string): boolean => correctSymbols ? correctSymbols.includes(symbol) : false;
 </script>
 
