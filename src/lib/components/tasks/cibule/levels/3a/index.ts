@@ -3,9 +3,11 @@ import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
 import { MistakeMisclick, MistakeSkipped, MistakeUnfinished } from '$lib/types/mistakes.types';
 import { getFlattenedSymbols, tryReadWordFromState } from '$lib/utils/trackLevelUtils';
+import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
+import { cibuleL3aRawData } from '$lib/components/tasks/cibule/cibule.data';
 
 export const id = 'level3a';
-
+export const rawData: CibuleRawDataEntry[] = cibuleL3aRawData;
 export const instructionVideo = resolveAny('/video/cibule-instrukce-03a.webm');
 
 export function validateStage(state: TrackLevelState) : TaskMistake[] | true {

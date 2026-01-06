@@ -63,8 +63,13 @@ export type TrackLevelDataEntry = {
 	wordToRead?: string;
 }
 
-export type TrackTaskData = TaskLevelData<TrackLevelDataEntry>;
+export type TrackLevelDataGenerator = {
+	getRandomOfType: string | string[];
+};
 
+export type TrackTaskData = TaskLevelData<TrackLevelDataEntry>;
+export type TrackTaskPreset = TaskLevelData<TrackLevelDataEntry | TrackLevelDataGenerator>; 
+	
 export interface ExtraComponent {
 	state: TrackLevelState;
 	isPractice?: boolean;
