@@ -32,9 +32,15 @@ export function splitSequence(sequence: string, targets: string[]): string[] {
 	return result;
 }
 
-function getRandomEntryOfType(rawData: CibuleRawDataEntry[],	type: string | string[]): TrackLevelDataEntry {
-	const filteredEntries = rawData.filter((entry) =>
-		Array.isArray(type) ? type.includes(entry.type) : entry.type === type
+function getRandomEntryOfType(
+	rawData: CibuleRawDataEntry[],
+	type: string | string[],
+	usedIds: Set<number>
+): { entry: TrackLevelDataEntry; id: number } {
+	const filteredEntries = rawData.filter(
+		(entry) =>
+			(Array.isArray(type) ? type.includes(entry.type) : entry.type === type) &&
+			!usedIds.has(entry.id)
 	);
 
 	if (filteredEntries.length === 0) {
@@ -43,7 +49,7 @@ function getRandomEntryOfType(rawData: CibuleRawDataEntry[],	type: string | stri
 	const randomIndex = Math.floor(Math.random() * filteredEntries.length);
 	const selectedEntry = filteredEntries[randomIndex];
 
-	return formatCibuleRawData(selectedEntry);
+	return { entry: formatCibuleRawData(selectedEntry), id: selectedEntry.id };
 }
 
 export function getCibuleLevelData(
@@ -51,10 +57,13 @@ export function getCibuleLevelData(
 	rawData: CibuleRawDataEntry[]
 ): TrackLevelDataEntry[] {
 	const content: TrackLevelDataEntry[] = [];
+	const usedIds = new Set<number>();
+
 	for (const item of preset) {
 		if ('getRandomOfType' in item) {
-			const randomEntry = getRandomEntryOfType(rawData, item.getRandomOfType);
-			content.push(randomEntry);
+			const { entry, id } = getRandomEntryOfType(rawData, item.getRandomOfType, usedIds);
+			usedIds.add(id);
+			content.push(entry);
 		} else {
 			content.push(item as TrackLevelDataEntry);
 		}
