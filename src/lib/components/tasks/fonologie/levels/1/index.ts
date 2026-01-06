@@ -1,5 +1,4 @@
-﻿import { resolveAny } from '$lib/utils/resolveAny';
-import type { TrackLevelDataEntry } from '$lib/types/task.types';
+﻿import type { TrackLevelDataEntry } from '$lib/types/task.types';
 
 export const id = 'level1';
 

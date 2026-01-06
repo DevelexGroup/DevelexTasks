@@ -134,7 +134,7 @@
 		<div class="flex flex-col items-center justify-center gap-16">
 			<div class="text-center">
 				{#if hintComponent}
-						<div class="flex items-start justify-center gap-32">
+						<div class="flex justify-center gap-32">
 							<GazeArea id="hint" bufferSize={50}>
 								<div in:fade|global={{ delay: 500 }} out:fade|global>
 									{@render hintComponent({

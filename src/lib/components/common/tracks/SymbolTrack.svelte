@@ -50,7 +50,7 @@
 </script>
 
 {#if flattenRows}
-	<div class="flex items-center justify-center" style="gap: {symbolSpacing}px;">
+	<div class="flex items-center self-center justify-center" style="gap: {symbolSpacing}px;">
 		{#each singleRowSymbols() as symbolGroup, index (index)}
 			<SymbolGroup
 				id={`group-${index}`}
