@@ -1,15 +1,30 @@
 ﻿<script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
-	import { TaskStage } from '$lib/types/task.types';
-	import { id, rawData, onSpace, validateSymbol, validateStage, isSyllableFrameVisible	} from '$lib/components/tasks/cibule/levels/3b/index';
+	import { TaskStage, type TrackLevelState } from '$lib/types/task.types';
+	import { id, rawData, validateSymbol, validateStage, isSyllableFrameVisible	} from '$lib/components/tasks/cibule/levels/3b/index';
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
 	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
+	import { getContext } from 'svelte';
+	import { AnalyticsManager } from '$lib/utils/analyticsManager';
+	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
+	import { tryReadWordFromState } from '$lib/utils/trackLevelUtils';
+	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 
 	const preset = cibuleLevelPreset.find((level => level.levelID === id))?.content;
 	const data = preset ? getCibuleLevelData(preset, rawData) : null;
+
+	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
+
+	function onSpace(state: TrackLevelState) {
+		if (validateStage(state) === true)
+			tryReadWordFromState(state, analyticsManager);
+		else {
+			playSound(SOUND_MISTAKE, 0.33);
+		}
+	}
 </script>
 
 {#if data}

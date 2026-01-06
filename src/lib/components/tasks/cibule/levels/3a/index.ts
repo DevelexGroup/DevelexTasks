@@ -1,8 +1,7 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
-import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
 import { MistakeMisclick, MistakeSkipped, MistakeUnfinished } from '$lib/types/mistakes.types';
-import { getFlattenedSymbols, tryReadWordFromState } from '$lib/utils/trackLevelUtils';
+import { getFlattenedSymbols } from '$lib/utils/trackLevelUtils';
 import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 import { cibuleL3aRawData } from '$lib/components/tasks/cibule/cibule.data';
 
@@ -46,12 +45,4 @@ export function validateSymbol(clickedIndex: number, state: TrackLevelState): Ta
 
 	// Otherwise we misclicked
 	return [MistakeMisclick];
-}
-
-export const onSpace = (state: TrackLevelState) => {
-	if (validateStage(state) === true)
-		tryReadWordFromState(state);
-	else {
-		playSound(SOUND_MISTAKE, 0.33);
-	}
 }

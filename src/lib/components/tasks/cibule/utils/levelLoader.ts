@@ -12,8 +12,7 @@ export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackLevelData
 	return {
 		sequence,
 		correct,
-		wordToRead:
-			correct?.length === 1 ? correct[0].toUpperCase() : rawData.target_letter?.toUpperCase()
+		wordToRead: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase()
 	};
 }
 

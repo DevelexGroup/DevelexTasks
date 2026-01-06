@@ -1,9 +1,7 @@
 ﻿import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
-import { playSound } from '$lib/utils/sound';
+import { playSoundOrTTS } from '$lib/utils/sound';
 import { resolveAny } from '$lib/utils/resolveAny';
-import { getContext } from 'svelte';
 import { AnalyticsManager } from '$lib/utils/analyticsManager';
-import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 import {
 	MistakeMisclick,
 	MistakeSkipped,
@@ -11,14 +9,13 @@ import {
 	MistakeWrongOrder
 } from '$lib/types/mistakes.types';
 
-export function tryReadWordFromState(state: TrackLevelState) {
+export function tryReadWordFromState(state: TrackLevelState, analyticsManager?: AnalyticsManager) {
 	const wordToRead = state.dataEntry?.wordToRead;
 	if (wordToRead) {
-		const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 		const audioSource = getWordAudioSource(wordToRead);
-		analyticsManager.setSoundActive(audioSource, true);
-		playSound(audioSource, 0.5).finally(() => {
-			analyticsManager.setSoundActive(audioSource, false);
+		analyticsManager?.setSoundActive(audioSource, true);
+		playSoundOrTTS(audioSource, wordToRead.toLowerCase(), 'cs-CZ', 0.5).finally(() => {
+			analyticsManager?.setSoundActive(audioSource, false);
 		});
 	}
 }
