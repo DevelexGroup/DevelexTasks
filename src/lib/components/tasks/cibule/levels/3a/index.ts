@@ -20,7 +20,18 @@ export function validateStage(state: TrackLevelState) : TaskMistake[] | true {
 
 export function validateSymbol(clickedIndex: number, state: TrackLevelState): TaskMistake[] | true {
 	const correctSyllables = state.dataEntry.correct ?? [];
-	const correctIndices = correctSyllables.map(syllable => getFlattenedSymbols(state).indexOf(syllable)).filter(i => i !== -1);
+	const flattenedSymbols = getFlattenedSymbols(state);
+
+	// Build correct indices while skipping already used indices
+	const correctIndices: number[] = [];
+	const usedIndices = new Set<number>();
+	for (const syllable of correctSyllables) {
+		const index = flattenedSymbols.findIndex((s, i) => s === syllable && !usedIndices.has(i));
+		if (index !== -1) {
+			correctIndices.push(index);
+			usedIndices.add(index);
+		}
+	}
 
 	const testIndices = [...state.selectedCorrectIndices, clickedIndex];
 

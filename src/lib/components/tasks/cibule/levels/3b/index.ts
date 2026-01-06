@@ -12,11 +12,14 @@ export const instructionVideo = resolveAny('/video/cibule-instrukce-03b.webm');
 
 export function validateStage(state: TrackLevelState) : TaskMistake[] | true {
 	const correctSyllables = state.dataEntry.correct ?? [];
-	const correctIndices = correctSyllables.map(syllable => getFlattenedSymbols(state).indexOf(syllable)).filter(i => i !== -1);
+	const flattenedSymbols = getFlattenedSymbols(state);
 
-	console.log(correctIndices, state.selectedCorrectIndices);
+	// Compare syllables at selected indices with correct syllables
+	const selectedSyllables = state.selectedCorrectIndices.map(i => flattenedSymbols[i]);
 
-	if (correctIndices.length !== state.selectedCorrectIndices.length || state.selectedCorrectIndices.some((value, i) => value !== correctIndices[i])){
+	console.log(correctSyllables, selectedSyllables);
+
+	if (correctSyllables.length !== selectedSyllables.length || selectedSyllables.some((value, i) => value !== correctSyllables[i])){
 		return [MistakeUnfinished];
 	}
 	return true;
@@ -24,16 +27,20 @@ export function validateStage(state: TrackLevelState) : TaskMistake[] | true {
 
 export function validateSymbol(clickedIndex: number, state: TrackLevelState): TaskMistake[] | true {
 	const correctSyllables = state.dataEntry.correct ?? [];
-	const correctIndices = correctSyllables.map(syllable => getFlattenedSymbols(state).indexOf(syllable)).filter(i => i !== -1);
+	const flattenedSymbols = getFlattenedSymbols(state);
+	const clickedSyllable = flattenedSymbols[clickedIndex];
 
-	const testIndices = [...state.selectedCorrectIndices, clickedIndex];
+	// Get the expected syllable at the current position
+	const currentPosition = state.selectedCorrectIndices.length;
+	const expectedSyllable = correctSyllables[currentPosition];
 
-	if (testIndices.every((value, i) => value === correctIndices[i])) {
+	// Check if clicked syllable matches the expected syllable
+	if (clickedSyllable === expectedSyllable) {
 		return true;
 	}
 
-	// Skipped check
-	if (correctIndices.includes(clickedIndex)){
+	// Skipped check - clicked a correct syllable but not in order
+	if (correctSyllables.includes(clickedSyllable)){
 		return [MistakeSkipped];
 	}
 
@@ -49,15 +56,12 @@ export const onSpace = (state: TrackLevelState) => {
 	}
 }
 
-export const getIndexOfSyllable = (state: TrackLevelState, syllable: string): number | null => {
-	if (!state.dataEntry.sequence) return null;
-	const index = getFlattenedSymbols(state).indexOf(syllable);
-	return index !== -1 ? index : null;
-};
-
-export const isSyllableFrameVisible = (state: TrackLevelState, syllable: string): boolean => {
-	const index = getIndexOfSyllable(state, syllable);
-	if (index === null)
+export const isSyllableFrameVisible = (state: TrackLevelState, syllable: string, positionIndex: number): boolean => {
+	if (positionIndex >= state.selectedCorrectIndices.length) {
 		return false;
-	return state.selectedCorrectIndices.includes(index);
+	}
+
+	const flattenedSymbols = getFlattenedSymbols(state);
+	const selectedIndex = state.selectedCorrectIndices[positionIndex];
+	return flattenedSymbols[selectedIndex] === syllable;
 };

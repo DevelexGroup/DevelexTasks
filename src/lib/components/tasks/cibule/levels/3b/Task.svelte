@@ -17,7 +17,7 @@
 	{#snippet extraComponent({ state })}
 		<div class="flex gap-4">
 			{#each state.dataEntry.correct as syllable, index (index)}
-				<CibuleSyllableFrame {syllable} visible={isSyllableFrameVisible(state, syllable)} />
+				<CibuleSyllableFrame {syllable} visible={isSyllableFrameVisible(state, syllable, index)} />
 			{/each}
 		</div>
 	{/snippet}
