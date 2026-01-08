@@ -124,7 +124,7 @@
 				id={`${id}_initial`}
 			  dwellTimeMs={300}
 			  bufferSize={50}
-			  width={150}
+			  width={125}
 			  onDwellComplete={() => {
 					currentStage = TrackLevelStage.Task;
 			  }}
@@ -180,7 +180,7 @@
 			  id={`${id}_end`}
 			  dwellTimeMs={1000}
 			  bufferSize={50}
-			  width={150}
+			  width={125}
 			  onDwellComplete={onAdvanceDwellComplete}
 			  disableOnComplete={false}
 			>
