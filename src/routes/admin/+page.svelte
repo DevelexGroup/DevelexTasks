@@ -2,8 +2,24 @@
 	import type { PageProps } from '../../../.svelte-kit/types/src/routes/admin/$types';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import { db } from '$lib/database/db';
 
 	let { data }: PageProps = $props();
+
+	let isDeleteDialogOpen = $state(false);
+	let isDeleting = $state(false);
+
+	async function deleteAllData() {
+		isDeleting = true;
+		try {
+			await db.gazeSamples.clear();
+			await db.fixationData.clear();
+			isDeleteDialogOpen = false;
+		} finally {
+			isDeleting = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -23,6 +39,15 @@
 		>
 			Databáze
 		</button>
+
+		<hr class="my-4 border-gray-300" />
+
+		<button
+			class="rounded-md bg-red-500 px-3 py-1.5 text-gray-50 hover:bg-red-600"
+			onclick={() => isDeleteDialogOpen = true}
+		>
+			Smazat všechna data
+		</button>
 	</div>
 
 	<div class="absolute bottom-4 left-4">
@@ -34,3 +59,30 @@
 		</button>
 	</div>
 </section>
+
+<Dialog.Root bind:open={isDeleteDialogOpen}>
+	<Dialog.Content>
+		<Dialog.Header>
+			<Dialog.Title>Smazat všechna data</Dialog.Title>
+			<Dialog.Description>
+				Opravdu chcete smazat všechna lokálně uložená data? Tato akce je nevratná.
+			</Dialog.Description>
+		</Dialog.Header>
+		<Dialog.Footer>
+			<button
+				class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800 hover:bg-gray-400"
+				onclick={() => isDeleteDialogOpen = false}
+				disabled={isDeleting}
+			>
+				Zrušit
+			</button>
+			<button
+				class="rounded-md bg-red-500 px-3 py-1.5 text-gray-50 hover:bg-red-600 disabled:bg-red-300"
+				onclick={deleteAllData}
+				disabled={isDeleting}
+			>
+				{isDeleting ? 'Mažu...' : 'Smazat'}
+			</button>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
