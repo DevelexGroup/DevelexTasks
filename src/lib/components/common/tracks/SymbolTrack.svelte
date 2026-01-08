@@ -55,6 +55,7 @@
 			<SymbolGroup
 				id={`group-${index}`}
 				index={index}
+				isCorrect={isCorrectSymbol(symbolGroup)}
 				symbols={splitFiller && !isCorrectSymbol(symbolGroup) ? symbolGroup.split('') : [symbolGroup]}
 				{letterSpacing}
 				{validateSymbolClick}
@@ -70,6 +71,7 @@
 				<SymbolGroup
 					id={`group-${flatIndexFor(rowIndex, colIndex)}`}
 					index={flatIndexFor(rowIndex, colIndex)}
+					isCorrect={isCorrectSymbol(symbolGroup)}
 					symbols={splitFiller && !isCorrectSymbol(symbolGroup) ? symbolGroup.split('') : [symbolGroup]}
 					{letterSpacing}
 					{validateSymbolClick}
