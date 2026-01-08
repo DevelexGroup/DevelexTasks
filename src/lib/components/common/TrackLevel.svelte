@@ -10,6 +10,7 @@
 	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
+	import { currentTask } from '$lib/stores/task';
 
 	let {
 		id,
@@ -62,6 +63,15 @@
 		} else {
 			cursorVisible.set(true);
 		}
+	});
+
+	$effect(() => {
+		currentTask.update((task) => {
+			if (task) {
+				return { ...task, stimulusId: currentData().id };
+			}
+			return task;
+		});
 	});
 
 	onDestroy(() => {

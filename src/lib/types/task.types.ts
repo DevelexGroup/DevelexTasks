@@ -58,6 +58,7 @@ export enum TrackLevelStage {
 }
 
 export type TrackLevelDataEntry = {
+	id: string;
 	sequence: string[] | string[][];
 	correct?: string[];
 	wordToRead?: string;

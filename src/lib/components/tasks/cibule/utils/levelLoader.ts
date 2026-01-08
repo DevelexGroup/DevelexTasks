@@ -10,6 +10,7 @@ export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackLevelData
 		: undefined;
 	const sequence = splitSequence(rawData.search_string, correct || []);
 	return {
+		id: rawData.id.toString(),
 		sequence,
 		correct,
 		wordToRead: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase()

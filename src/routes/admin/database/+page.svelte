@@ -157,9 +157,9 @@
 
 	function getTableHeaders(): (string | null)[] {
 		if (selectedTable === 'gazeSamples') {
-			return [null, null, null, null, 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Mistake Type', 'Result'];
+			return [null, null, null, null, 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Mistake Type', 'Result'];
 		} else if (selectedTable === 'fixationData') {
-			return [null, null, null, null, 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+			return [null, null, null, null, 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		}
 		return [];
 	}
@@ -173,9 +173,9 @@
 
 	function getExportHeadersForTable(table: 'gazeSamples' | 'fixationData'): string[] {
 		if (table === 'gazeSamples') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Mistake Type', 'Result'];
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Mistake Type', 'Result'];
 		} else {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		}
 	}
 
@@ -235,7 +235,7 @@
 		if (table === 'gazeSamples') {
 			const data = entry as GazeSampleDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.timestamp,
+				data.id, data.child_id, data.session_id, data.task_name, data.stimulus_id, data.timestamp,
 				data.eyetracker_x, data.eyetracker_y, data.aoi, data.mouse_x, data.mouse_y,
 				data.key_event, data.sound_name, data.mistake_type, data.task_result
 			];
@@ -243,7 +243,7 @@
 		} else {
 			const data = entry as FixationDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.timestamp,
+				data.id, data.child_id, data.session_id, data.task_name, data.stimulus_id, data.timestamp,
 				data.eyetracker_x, data.eyetracker_y, data.duration, data.aoi, data.fixation_index
 			];
 			return values[index];

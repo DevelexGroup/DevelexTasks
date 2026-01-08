@@ -6,7 +6,6 @@ import type { TaskMistake } from '$lib/types/task.types';
 import type {
 	FixationDataPoint,
 	GazeDataPoint,
-	GazeInteractionObjectFixationEvent,
 	GazeInteractionObjectIntersectEvent,
 	GazeManager
 } from 'develex-js-sdk';
@@ -45,6 +44,7 @@ export class AnalyticsManager {
 			child_id: childId.id,
 			session_id: task ? task.session : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
+			stimulus_id: task?.stimulusId ?? 'null',
 			timestamp: window.performance.timeOrigin + window.performance.now()
 		};
 	}

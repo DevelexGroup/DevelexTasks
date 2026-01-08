@@ -2,6 +2,7 @@
 	child_id: string;
 	session_id: string;
 	task_name: string;
+	stimulus_id: string;
 	timestamp: number;
 }
 
