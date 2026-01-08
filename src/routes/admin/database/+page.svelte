@@ -5,6 +5,7 @@
 	import type { GazeSampleDataEntry, FixationDataEntry } from '$lib/database/db.types';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { untrack } from 'svelte';
+	import JSZip from 'jszip';
 
 	let selectedTable = $state<'gazeSamples' | 'fixationData' | ''>('');
 	let childIds = $state<string[]>([]);
@@ -18,6 +19,7 @@
 	let isLoading = $state(false);
 	let hasMore = $state(true);
 	let scrollContainer: HTMLElement;
+	let isExportingAll = $state(false);
 
 	// Reset filters when table changes
 	$effect(() => {
@@ -151,12 +153,18 @@
 	}
 
 	function getTableExportHeaders(): string[] {
-		if (selectedTable === 'gazeSamples') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Mistake Type', 'Result'];
-		} else if (selectedTable === 'fixationData') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+		if (selectedTable) {
+			return getExportHeadersForTable(selectedTable);
 		}
 		return [];
+	}
+
+	function getExportHeadersForTable(table: 'gazeSamples' | 'fixationData'): string[] {
+		if (table === 'gazeSamples') {
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Key Event', 'Sound', 'Mistake Type', 'Result'];
+		} else {
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+		}
 	}
 
 	function formatTimestamp(unixTimestamp: number, format: 'full' | 'simple' | 'filename' = 'full'): string {
@@ -205,7 +213,14 @@
 	}
 
 	function getCellValue(entry: GazeSampleDataEntry | FixationDataEntry, index: number): unknown {
-		if (selectedTable === 'gazeSamples') {
+		if (selectedTable) {
+			return getCellValueForTable(entry, index, selectedTable);
+		}
+		return null;
+	}
+
+	function getCellValueForTable(entry: GazeSampleDataEntry | FixationDataEntry, index: number, table: 'gazeSamples' | 'fixationData'): unknown {
+		if (table === 'gazeSamples') {
 			const data = entry as GazeSampleDataEntry;
 			const values = [
 				data.id, data.child_id, data.session_id, data.task_name, data.timestamp,
@@ -213,7 +228,7 @@
 				data.key_event, data.sound_name, data.mistake_type, data.task_result
 			];
 			return values[index];
-		} else if (selectedTable === 'fixationData') {
+		} else {
 			const data = entry as FixationDataEntry;
 			const values = [
 				data.id, data.child_id, data.session_id, data.task_name, data.timestamp,
@@ -221,7 +236,6 @@
 			];
 			return values[index];
 		}
-		return null;
 	}
 
 	async function exportData() {
@@ -263,6 +277,68 @@
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
+	}
+
+	async function exportAll() {
+		isExportingAll = true;
+		try {
+			const zip = new JSZip();
+			const tables: ('gazeSamples' | 'fixationData')[] = ['gazeSamples', 'fixationData'];
+
+			for (const tableName of tables) {
+				const folder = zip.folder(tableName);
+				if (!folder) continue;
+
+				const table = db[tableName];
+				const allData = await table.toArray();
+
+				// Group data by child_id and session_id
+				const grouped = new SvelteMap<string, (GazeSampleDataEntry | FixationDataEntry)[]>();
+				allData.forEach(entry => {
+					const key = `${entry.child_id}_${entry.session_id}`;
+					if (!grouped.has(key)) {
+						grouped.set(key, []);
+					}
+					grouped.get(key)!.push(entry);
+				});
+
+				// Create CSV for each session
+				const headers = getExportHeadersForTable(tableName);
+
+				for (const [key, entries] of grouped) {
+					const sortedEntries = entries.sort((a, b) => a.timestamp - b.timestamp);
+					const firstEntry = sortedEntries[0];
+					const taskName = firstEntry.task_name;
+					const formattedSessionId = formatTimestamp(parseFloat(String(firstEntry.session_id)), 'filename');
+
+					const csvRows = [headers.join(',')];
+					sortedEntries.forEach(entry => {
+						const row = headers.map((column, index) => {
+							const value = getCellValueForTable(entry, index, tableName);
+							const formatted = formatExportedColumnValue(column, value);
+							return formatted.includes(',') ? `"${formatted.replace(/"/g, '""')}"` : formatted;
+						});
+						csvRows.push(row.join(','));
+					});
+
+					const csvContent = csvRows.join('\n');
+					const fileName = `${firstEntry.child_id}_${taskName}_${formattedSessionId}.csv`;
+					folder.file(fileName, csvContent);
+				}
+			}
+
+			const content = await zip.generateAsync({ type: 'blob' });
+			const link = document.createElement('a');
+			const url = URL.createObjectURL(content);
+			link.setAttribute('href', url);
+			link.setAttribute('download', `database_export_${formatTimestamp(Date.now(), 'filename')}.zip`);
+			link.style.visibility = 'hidden';
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		} finally {
+			isExportingAll = false;
+		}
 	}
 </script>
 
@@ -325,6 +401,14 @@
 		onclick={exportData}
 	>
 		Exportovat&hellip;
+	</button>
+
+	<button
+		class="px-3 py-1.5 bg-green-500 text-gray-50 rounded-md hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed mt-6"
+		disabled={isExportingAll}
+		onclick={exportAll}
+	>
+		{isExportingAll ? 'Exportuji…' : 'Exportovat vše…'}
 	</button>
 </section>
 
