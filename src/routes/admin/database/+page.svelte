@@ -20,6 +20,7 @@
 	let hasMore = $state(true);
 	let scrollContainer: HTMLElement;
 	let isExportingAll = $state(false);
+	let timestampOrder = $state<'asc' | 'desc'>('desc');
 
 	// Reset filters when table changes
 	$effect(() => {
@@ -103,11 +104,14 @@
 		isLoading = true;
 		try {
 			const table = db[selectedTable];
-			const filtered = await table
+			let filtered = await table
 				.where('child_id').equals(selectedChildId)
 				.and(entry => entry.session_id === selectedSessionId)
-				.reverse()
 				.sortBy('timestamp');
+
+			if (timestampOrder === 'desc') {
+				filtered = filtered.reverse();
+			}
 
 			const newData = filtered.slice(loadedCount, loadedCount + LOAD_SIZE);
 			tableData = [...tableData, ...newData];
@@ -121,6 +125,14 @@
 	async function loadMoreData() {
 		if (!hasMore || isLoading) return;
 		await loadTableData();
+	}
+
+	function toggleTimestampOrder() {
+		timestampOrder = timestampOrder === 'asc' ? 'desc' : 'asc';
+		tableData = [];
+		loadedCount = 0;
+		hasMore = true;
+		loadTableData();
 	}
 
 	function handleScroll(event: Event) {
@@ -440,9 +452,29 @@
 					<tr>
 						{#each getTableHeaders() as header, colIndex (colIndex)}
 							{#if header !== null}
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-									{header}
-								</th>
+								{#if header === 'Timestamp'}
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+										<button
+											class="flex items-center uppercase gap-2 hover:text-gray-700 cursor-pointer transition-colors"
+											onclick={toggleTimestampOrder}
+										>
+											{header}
+											<svg
+												class="w-4 h-4 transition-transform"
+												style="transform: rotate({timestampOrder === 'asc' ? '0deg' : '180deg'})"
+												fill="none"
+												stroke="currentColor"
+												viewBox="0 0 24 24"
+											>
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
+											</svg>
+										</button>
+									</th>
+								{:else}
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+										{header}
+									</th>
+								{/if}
 							{/if}
 						{/each}
 					</tr>
