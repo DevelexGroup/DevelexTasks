@@ -347,24 +347,20 @@
 	<meta name="description" content="Admin page for Develex Tasks" />
 </svelte:head>
 
-<section class="absolute flex h-16 top-4 left-4 items-center">
-	<button
-		class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
-		class:selected={selectedTable === 'gazeSamples'}
-		onclick={() => selectedTable = 'gazeSamples'}
-	>
-		gazeSamples
-	</button>
-	<button
-		class="ml-2 px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
-		class:selected={selectedTable === 'fixationData'}
-		onclick={() => selectedTable = 'fixationData'}
-	>
-		fixationData
-	</button>
-</section>
+<section class="absolute flex h-16 top-4 left-4 items-center gap-4">
+	<div class="flex flex-col">
+		<label for="table" class="text-sm font-medium text-gray-700 mb-1">Table:</label>
+		<select
+			id="table"
+			bind:value={selectedTable}
+			class="px-3 py-1.5 bg-white border border-gray-300 text-gray-800 rounded-md min-w-[150px]"
+		>
+			<option value="">Select table&hellip;</option>
+			<option value="gazeSamples">gazeSamples</option>
+			<option value="fixationData">fixationData</option>
+		</select>
+	</div>
 
-<section class="absolute top-4 right-4 flex gap-4 items-center">
 	<div class="flex flex-col">
 		<label for="childId" class="text-sm font-medium text-gray-700 mb-1">Child ID:</label>
 		<select
@@ -394,7 +390,9 @@
 			{/each}
 		</select>
 	</div>
+</section>
 
+<section class="absolute top-4 right-4 flex gap-4 items-center">
 	<button
 		class="px-3 py-1.5 bg-blue-500 text-gray-50 rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed mt-6"
 		disabled={!selectedTable || !selectedChildId || !selectedSessionId}
@@ -497,11 +495,6 @@
 <style>
 	.table-container{
 		height: calc(100vh - 10rem);
-	}
-
-	button.selected {
-		background-color: #3b82f6;
-		color: white;
 	}
 </style>
 
