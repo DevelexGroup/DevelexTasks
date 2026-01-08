@@ -144,7 +144,7 @@
 								</div>
 							</GazeArea>
 							{#if trackComponent}
-							<div class="flex items-center justify-center" in:fade|global={{ delay: 1500 }} out:fade|global>
+							<div class="flex items-center justify-center" in:fade|global={{ delay: 800 }} out:fade|global>
 								{@render trackComponent({
 									symbols: symbols(),
 									correctSymbols: currentData().correct,
