@@ -18,6 +18,8 @@
 		letterSpacing = 0
 	}: Props = $props();
 
+	let isWhitespace = symbol.trim() === '';
+
 	function onSymbolClick(): void {
 		let validationResult = validateSymbolClick(symbol, index);
 
@@ -36,11 +38,11 @@
 				style="letter-spacing: {letterSpacing}px;"
 				class:correct-symbol={isCorrect}
 				class:incorrect-symbol={!isCorrect}
-				class:non-interactable={!interactable}
+				class:non-interactable={isWhitespace || !interactable}
 				class:selected={isSelected}
 				onclick={onSymbolClick}
 >
-	<span>{symbol === ' ' ? '\u00A0' : symbol}</span>
+	<span>{isWhitespace ? '\u00A0' : symbol}</span>
 </button>
 
 <style>
