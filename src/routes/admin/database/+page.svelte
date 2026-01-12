@@ -76,27 +76,30 @@
 		if (!selectedTable) return;
 
 		const table = db[selectedTable];
-		const allData = await table.toArray();
-		childIds = [...new Set(allData.map(entry => entry.child_id))].sort();
+		childIds = await table.orderBy('child_id').uniqueKeys() as string[];
 	}
 
 	async function loadSessionIds() {
 		if (!selectedTable || !selectedChildId) return;
 
 		const table = db[selectedTable];
-		const filtered = await table.where('child_id').equals(selectedChildId).toArray();
-		const sessionMap = new SvelteMap<string, string>();
+		const filtered = await table
+			.where('child_id')
+			.equals(selectedChildId)
+			.toArray();
 
-		filtered.forEach(entry => {
+		const sessionMap = new Map<string, string>();
+		for (const entry of filtered) {
 			if (!sessionMap.has(entry.session_id)) {
 				sessionMap.set(entry.session_id, entry.task_name);
 			}
-		});
+		}
 
 		sessionIds = Array.from(sessionMap.entries())
 			.map(([sessionId, taskName]) => ({ sessionId, taskName }))
 			.sort((a, b) => -a.sessionId.localeCompare(b.sessionId));
 	}
+
 
 	async function loadTableData() {
 		if (!selectedTable || !selectedChildId || !selectedSessionId || isLoading) return;
@@ -104,23 +107,28 @@
 		isLoading = true;
 		try {
 			const table = db[selectedTable];
-			let filtered = await table
-				.where('child_id').equals(selectedChildId)
-				.and(entry => entry.session_id === selectedSessionId)
-				.sortBy('timestamp');
+
+			let collection = table
+				.where('[child_id+session_id]')
+				.equals([selectedChildId, selectedSessionId]);
 
 			if (timestampOrder === 'desc') {
-				filtered = filtered.reverse();
+				collection = collection.reverse();
 			}
 
-			const newData = filtered.slice(loadedCount, loadedCount + LOAD_SIZE);
+			const newData = await collection
+				.offset(loadedCount)
+				.limit(LOAD_SIZE)
+				.sortBy('timestamp');
+
 			tableData = [...tableData, ...newData];
 			loadedCount += newData.length;
-			hasMore = loadedCount < filtered.length;
+			hasMore = newData.length === LOAD_SIZE;
 		} finally {
 			isLoading = false;
 		}
 	}
+
 
 	async function loadMoreData() {
 		if (!hasMore || isLoading) return;
