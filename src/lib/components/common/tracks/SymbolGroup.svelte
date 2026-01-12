@@ -1,8 +1,10 @@
 ﻿<script lang="ts">
 import GazeArea from '$lib/components/common/GazeArea.svelte';
-import type { Snippet } from 'svelte';
+import { getContext, type Snippet } from 'svelte';
 import type { TrackSymbolComponent } from '$lib/types/task.types';
 import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
+import type { AnalyticsManager } from '$lib/utils/analyticsManager';
+import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 
 interface Props {
 	id: string;
@@ -14,6 +16,10 @@ interface Props {
 	symbolSnippet?: Snippet<[TrackSymbolComponent]>;
 }
 
+let analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
+
+let groupId = $derived(() => isCorrect ? `target-${id}` : id);
+
 let {
 	id,
 	index,
@@ -23,9 +29,14 @@ let {
 	letterSpacing = 0,
 	symbolSnippet = undefined
 }: Props = $props();
+
+const validateGroupClick = (symbol: string, index: number): boolean => {
+	analyticsManager.logEvent(`select_${groupId()}`);
+	return validateSymbolClick(symbol, index);
+};
 </script>
 
-<GazeArea id={isCorrect ? `target-${id}` : id} bufferSize={50}>
+<GazeArea id={groupId()} bufferSize={50}>
 	<div class="flex items-center justify-center">
 		{#each symbols as symbol, groupIndex (groupIndex)}
 			{#if symbolSnippet}
@@ -33,10 +44,10 @@ let {
 					symbol,
 					index,
 					letterSpacing,
-					validateSymbolClick
+					validateSymbolClick: validateGroupClick
 				})}
 			{:else}
-				<SymbolElement {symbol} {index} {letterSpacing} {validateSymbolClick} />
+				<SymbolElement {symbol} {index} {letterSpacing} validateSymbolClick={validateGroupClick} />
 			{/if}
 		{/each}
 	</div>
