@@ -102,6 +102,7 @@
 			selectedIndices = [...selectedIndices, index];
 			if (playValidationSounds)
 				playSound(SOUND_CORRECT, 0.33);
+			logWhenStageComplete();
 			return true;
 		}
 		analyticsManager.logMistakeType(validationResult);
@@ -123,6 +124,12 @@
 					shouldShakeArrow = false;
 				}, 500);
 			}
+		}
+	}
+
+	function logWhenStageComplete() {
+		if (validateStage(currentState()) === true) {
+			analyticsManager.logEvent(`complete_stage_${currentRepetition + 1}`);
 		}
 	}
 </script>
