@@ -182,7 +182,7 @@ export class AnalyticsManager {
 
 	private handleKeyDown = (event: KeyboardEvent) => {
 		if (event.repeat) return;
-		this.logEvent(`${this.KEYBOARD_EVENT_PREFIX}${event.key}`);
+		this.logEvent(`${this.KEYBOARD_EVENT_PREFIX}${event.code}`);
 	};
 
 	private handleInputData = (inputData: GazeDataPoint) => {
