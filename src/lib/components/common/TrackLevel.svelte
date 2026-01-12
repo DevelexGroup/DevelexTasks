@@ -19,6 +19,7 @@
 		onCompleted = () => {},
 		validateSymbol = () => true,
 		validateStage = () => true,
+		onStageAdvance = () => {},
 		onSpace = () => {},
 		playValidationSounds = true,
 		trackComponent,
@@ -82,15 +83,16 @@
 		if (currentStage === TrackLevelStage.InitialDwell) {
 			currentStage = TrackLevelStage.Task;
 		} else if (currentStage === TrackLevelStage.Task) {
-			advanceLevel();
+			advanceStage();
 		}
 	}
 
-	function advanceLevel() {
+	function advanceStage() {
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
 			currentStage = TrackLevelStage.InitialDwell;
 			selectedIndices = [];
+			onStageAdvance();
 		} else {
 			onCompleted();
 		}
@@ -114,7 +116,7 @@
 	function onAdvanceDwellComplete() {
 		const validationResult = validateStage(currentState());
 		if (validationResult === true) {
-			advanceLevel();
+			advanceStage();
 		} else {
 			analyticsManager.logMistakeType(validationResult)
 			if (dwellArrowElement) {
