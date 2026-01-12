@@ -21,7 +21,7 @@ export function tryReadWordFromState(state: TrackLevelState, analyticsManager?: 
 }
 
 export function getWordAudioSource(word: string): string {
-	return resolveAny(`/sound/words/${word}.ogg`);
+	return resolveAny(`/sound/syllables/${word.toLowerCase()}.ogg`);
 }
 
 export function getFlattenedSymbols(state: TrackLevelState): string[] {
