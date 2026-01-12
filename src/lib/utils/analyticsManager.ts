@@ -16,7 +16,8 @@ export class AnalyticsManager {
 	private POLLING_RATE_HZ = 120;
 	private POLLING_INTERVAL_MS = 1000 / this.POLLING_RATE_HZ;
 
-	private CLICK_EVENT = 'mouse_click';
+	private CLICK_EVENT_PREFIX = 'mouse_';
+	private KEYBOARD_EVENT_PREFIX = 'key_';
 
 	private pollingTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -26,7 +27,7 @@ export class AnalyticsManager {
 	private activeAOI: Set<string> = new Set<string>();
 
 	private eventBuffer = {
-		key_event: new Set<string>(),
+		events: new Set<string>(),
 		mistake_type: new Set<string>()
 	};
 
@@ -49,14 +50,14 @@ export class AnalyticsManager {
 		};
 	}
 
-	public logKeyEvent(key: string) {
-		this.eventBuffer.key_event.add(key);
+	public logEvent(key: string) {
+		this.eventBuffer.events.add(key);
 	}
 
 	public logMistakeType(mistakeType: TaskMistake | TaskMistake[]) {
 		console.log('Logging mistake type:', mistakeType);
 		if (Array.isArray(mistakeType)) {
-			mistakeType.forEach(mistake => this.eventBuffer.mistake_type.add(mistake.id));
+			mistakeType.forEach((mistake) => this.eventBuffer.mistake_type.add(mistake.id));
 		} else {
 			this.eventBuffer.mistake_type.add(mistakeType.id);
 		}
@@ -96,7 +97,7 @@ export class AnalyticsManager {
 				aoi: Array.from(this.activeAOI),
 				mouse_x: this.mousePosition.x,
 				mouse_y: this.mousePosition.y,
-				key_event: Array.from(this.eventBuffer.key_event),
+				events: Array.from(this.eventBuffer.events),
 				sound_name: Array.from(this.playedSounds),
 				mistake_type: Array.from(this.eventBuffer.mistake_type),
 				task_result: null
@@ -106,14 +107,13 @@ export class AnalyticsManager {
 				console.error('Error logging Gaze Sample:', error);
 			});
 
-			this.eventBuffer.key_event.clear();
+			this.eventBuffer.events.clear();
 			this.eventBuffer.mistake_type.clear();
 		}, this.POLLING_INTERVAL_MS);
 	}
 
 	public stopLogging(exitType: TaskResult) {
-		if (!this.pollingTimer)
-			return;
+		if (!this.pollingTimer) return;
 
 		clearInterval(this.pollingTimer);
 		this.pollingTimer = null;
@@ -126,28 +126,30 @@ export class AnalyticsManager {
 			aoi: Array.from(this.activeAOI),
 			mouse_x: this.mousePosition.x,
 			mouse_y: this.mousePosition.y,
-			key_event: Array.from(this.eventBuffer.key_event),
+			events: Array.from(this.eventBuffer.events),
 			sound_name: Array.from(this.playedSounds),
 			mistake_type: Array.from(this.eventBuffer.mistake_type),
 			task_result: exitType
 		};
 
-		db.gazeSamples.add(finalGazeSample).then((id) => {
-			console.log('Logged Final Gaze Sample with ID:', id, finalGazeSample);
-		}).catch((error) => {
-			console.error('Error logging Final Gaze Sample:', error);
-		});
+		db.gazeSamples
+			.add(finalGazeSample)
+			.then((id) => {
+				console.log('Logged Final Gaze Sample with ID:', id, finalGazeSample);
+			})
+			.catch((error) => {
+				console.error('Error logging Final Gaze Sample:', error);
+			});
 
 		this.unregisterListeners();
 
-		this.eventBuffer.key_event.clear();
+		this.eventBuffer.events.clear();
 		this.eventBuffer.mistake_type.clear();
 	}
 
 	// Event handlers
 	private registerListeners() {
-		if (!browser)
-			return;
+		if (!browser) return;
 
 		window.addEventListener('mousemove', this.handleMouseMove);
 		window.addEventListener('mouseup', this.handleMouseUp);
@@ -159,8 +161,7 @@ export class AnalyticsManager {
 	}
 
 	private unregisterListeners() {
-		if (!browser)
-			return;
+		if (!browser) return;
 
 		window.removeEventListener('mousemove', this.handleMouseMove);
 		window.removeEventListener('mouseup', this.handleMouseUp);
@@ -176,12 +177,12 @@ export class AnalyticsManager {
 	};
 
 	private handleMouseUp = () => {
-		this.logKeyEvent(this.CLICK_EVENT);
+		this.logEvent(`${this.CLICK_EVENT_PREFIX}click`);
 	};
 
 	private handleKeyDown = (event: KeyboardEvent) => {
 		if (event.repeat) return;
-		this.logKeyEvent(event.key);
+		this.logEvent(`${this.KEYBOARD_EVENT_PREFIX}${event.key}`);
 	};
 
 	private handleInputData = (inputData: GazeDataPoint) => {
@@ -191,7 +192,7 @@ export class AnalyticsManager {
 	};
 
 	private handleFixation = (fixationData: FixationDataPoint) => {
-		console.log("Fixation Data Received:", fixationData);
+		console.log('Fixation Data Received:', fixationData);
 		const dataEntry = this.getBaseDataEntry();
 		const fixationEntry = {
 			...dataEntry,
@@ -207,6 +208,6 @@ export class AnalyticsManager {
 	};
 
 	private handleIntersection = (intersectionData: GazeInteractionObjectIntersectEvent) => {
-		this.updateActiveAOI(intersectionData.target.map(target => target.id));
-	}
+		this.updateActiveAOI(intersectionData.target.map((target) => target.id));
+	};
 }

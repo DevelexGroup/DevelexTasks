@@ -1,10 +1,11 @@
 ﻿<script lang="ts">
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { type GazeInteractionObjectDwellEvent, GazeManager } from 'develex-js-sdk';
-	import { DwellState } from '$lib/types/general.types';
+	import { ANALYTICS_MANAGER_KEY, DwellState } from '$lib/types/general.types';
 	import DwellTargetEye from '$lib/components/common/dwellTarget/DwellTargetEye.svelte';
 	import type { Snippet } from 'svelte';
 	import { GAZE_MANAGER_KEY } from '$lib/types/general.types';
+	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
 
 	const CANCEL_TIMEOUT_MS = 300;
 	const DWELL_TOLERANCE_MS = 100;
@@ -45,6 +46,7 @@
 		get height() { return height; }
 	});
 
+	let analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 	let gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
 
 	let wrapperElement = $state<HTMLElement | null>(null);
@@ -79,6 +81,7 @@
 
 	function handleDwellProgress() {
 		if (dwellState === DwellState.Active) {
+			analyticsManager.logEvent(`dwell_start_${id}`);
 			dwellState = DwellState.ActiveDwelling;
 		}
 	}
@@ -89,6 +92,7 @@
 
 		clearTimers();
 		dwellState = DwellState.DwellCancelled;
+		analyticsManager.logEvent(`dwell_cancel_${id}`);
 		isCooldownActive = true;
 
 		unregisterDwellTarget();
@@ -109,6 +113,7 @@
 					dwellState = DwellState.Active;
 				}, onCompleteCooldown);
 			}
+			analyticsManager.logEvent(`dwell_finish_${id}`);
 			onDwellComplete();
 		}
 	}
