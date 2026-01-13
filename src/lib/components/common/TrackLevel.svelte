@@ -132,7 +132,7 @@
 
 	function logWhenStageComplete() {
 		if (validateStage(currentState()) === true) {
-			analyticsManager.logEvent(`complete_stage_${currentRepetition + 1}`);
+			analyticsManager.logEvent(`complete-slide-${currentRepetition + 1}`);
 		}
 	}
 </script>
@@ -141,7 +141,7 @@
 	{#if currentStage === TrackLevelStage.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget
-				id={`${id}_initial`}
+				id={`slide-${currentRepetition}_initial`}
 			  dwellTimeMs={300}
 			  bufferSize={50}
 			  width={125}
@@ -197,7 +197,7 @@
 		<div class="fixed bottom-16 right-16" class:shake={shouldShakeArrow} id={`${id}_end}`} transition:fade>
 			<DwellTarget
 				bind:this={dwellArrowElement}
-			  id={`${id}_end`}
+			  id={`slide-${currentRepetition}_end`}
 			  dwellTimeMs={1000}
 			  bufferSize={50}
 			  width={125}

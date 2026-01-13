@@ -81,7 +81,7 @@
 
 	function handleDwellProgress() {
 		if (dwellState === DwellState.Active) {
-			analyticsManager.logEvent(`dwell_start_${id}`);
+			analyticsManager.logEvent(`dwell-start_${id}`);
 			dwellState = DwellState.ActiveDwelling;
 		}
 	}
@@ -92,7 +92,7 @@
 
 		clearTimers();
 		dwellState = DwellState.DwellCancelled;
-		analyticsManager.logEvent(`dwell_cancel_${id}`);
+		analyticsManager.logEvent(`dwell-cancel_${id}`);
 		isCooldownActive = true;
 
 		unregisterDwellTarget();
@@ -113,7 +113,7 @@
 					dwellState = DwellState.Active;
 				}, onCompleteCooldown);
 			}
-			analyticsManager.logEvent(`dwell_finish_${id}`);
+			analyticsManager.logEvent(`dwell-finish_${id}`);
 			onDwellComplete();
 		}
 	}
