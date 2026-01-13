@@ -6,6 +6,7 @@
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import DebugWindow from '$lib/components/DebugWindow.svelte';
 
 	let { children } = $props();
 
@@ -42,6 +43,7 @@
 	<main>
 		{@render children()}
 	</main>
+	<DebugWindow />
 </div>
 
 <style>
