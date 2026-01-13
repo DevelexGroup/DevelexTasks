@@ -11,6 +11,7 @@
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { currentTask } from '$lib/stores/task';
+	import { AvaiableTracker, trackerConfig } from '$lib/stores/tracker';
 
 	let {
 		id,
@@ -59,7 +60,7 @@
 	})
 
 	$effect(() => {
-		if (currentStage === TrackLevelStage.InitialDwell) {
+		if (currentStage === TrackLevelStage.InitialDwell && $trackerConfig !== AvaiableTracker.MouseIdt) {
 			cursorVisible.set(false);
 		} else {
 			cursorVisible.set(true);
