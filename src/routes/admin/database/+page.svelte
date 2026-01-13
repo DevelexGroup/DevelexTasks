@@ -228,7 +228,7 @@
 			const timestampNum = typeof value === 'number' ? value : parseFloat(String(value));
 			return formatTimestamp(timestampNum, column == 'Timestamp' ? 'full' : 'simple');
 		}
-		if (Array.isArray(value)) return value.length > 0 ? value.join(';') : '';
+		if (Array.isArray(value)) return value.length > 0 ? value.join('|') : '';
 		return String(value);
 	}
 
