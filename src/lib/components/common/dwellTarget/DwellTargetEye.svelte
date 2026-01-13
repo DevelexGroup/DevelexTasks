@@ -8,7 +8,7 @@
 	import DwellEye from '$lib/components/common/dwellTarget/eye/DwellEye.svelte';
 
 	const colors: Record<DwellState, string> = {
-		[DwellState.Active]: '#50C878',
+		[DwellState.Active]: '#aaaaaa',
 		[DwellState.Disabled]: '#888888',
 		[DwellState.ActiveDwelling]: '#50C878',
 		[DwellState.DwellCancelled]: '#FF6666'
