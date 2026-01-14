@@ -233,48 +233,62 @@ export class AnalyticsManager {
 		Promise.all([gazeSamplesPromise, fixationDataPromise])
 			.then(([gazeSamples, fixationData]) => {
 				const timeWindows = this.getEffectiveTimeWindows(gazeSamples);
-				// Filter gaze samples and fixation data to only include those within effective time windows
-				gazeSamples = gazeSamples.filter((sample) =>
-					timeWindows.some(
-						(window) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
-					)
-				);
-				fixationData = fixationData.filter((fix) =>
-					timeWindows.some(
-						(window) => fix.timestamp >= window.startTime && fix.timestamp <= window.endTime
-					)
-				);
+				// // Filter gaze samples and fixation data to only include those within effective time windows
+				// gazeSamples = gazeSamples.filter((sample) =>
+				// 	timeWindows.some(
+				// 		(window) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
+				// 	)
+				// );
+				// fixationData = fixationData.filter((fix) =>
+				// 	timeWindows.some(
+				// 		(window) => fix.timestamp >= window.startTime && fix.timestamp <= window.endTime
+				// 	)
+				// );
+				
+				for (let i = 0; i < timeWindows.length; i++) {
+					const window = timeWindows[i];
+					const windowedGazeSamples = gazeSamples.filter(
+						(sample) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
+					);
+					const windowedFixationData = fixationData.filter(fix =>
+						fix.timestamp >= window.startTime && fix.timestamp <= window.endTime
+					);
+					
+					// Calculate metrics
+					const errorRate = this.calculateErrorRate(windowedGazeSamples);
+					const responseTime = this.calculateResponseTime(windowedGazeSamples);
+					const meanFixDur = this.calculateMeanFixationDuration(windowedFixationData);
+					const fixCount = windowedFixationData.length;
+					const aoiTargetFix = this.calculateAOITargetFixations(windowedFixationData);
+					const aoiFieldFix = this.calculateAOIFieldFixations(windowedFixationData);
+					const regressionCount = this.calculateRegressionCount(windowedFixationData);
+	
+					const baseData = this.getBaseDataEntry();
+					baseData.timestamp = window.endTime;
+					baseData.slide_index = i + 1;
 
-				// Calculate metrics
-				const errorRate = this.calculateErrorRate(gazeSamples);
-				const responseTime = this.calculateResponseTime(gazeSamples);
-				const meanFixDur = this.calculateMeanFixationDuration(fixationData);
-				const fixCount = fixationData.length;
-				const aoiTargetFix = this.calculateAOITargetFixations(fixationData);
-				const aoiFieldFix = this.calculateAOIFieldFixations(fixationData);
-				const regressionCount = this.calculateRegressionCount(fixationData);
-
-				const baseData = this.getBaseDataEntry();
-				db.sessionScores
-					.add({
-						...baseData,
-						error_rate: errorRate,
-						response_time: responseTime,
-						mean_fix_dur: meanFixDur,
-						fix_count: fixCount,
-						aoi_target_fix: aoiTargetFix,
-						aoi_field_fix: aoiFieldFix,
-						regression_count: regressionCount
-					})
-					.then((id) => {
-						console.log('Stored session score metrics with ID:', id);
-					})
-					.catch((error) => {
-						console.error('Error storing session score metrics:', error);
-					});
+					// Store session score metrics
+					db.sessionScores
+						.add({
+							...baseData,
+							error_rate: errorRate,
+							response_time: responseTime,
+							mean_fix_dur: meanFixDur,
+							fix_count: fixCount,
+							aoi_target_fix: aoiTargetFix,
+							aoi_field_fix: aoiFieldFix,
+							regression_count: regressionCount
+						})
+						.then((id) => {
+							console.log('Stored session score metrics with ID:', id);
+						})
+						.catch((error) => {
+							console.error('Error storing session score metrics:', error);
+						});
+				}
 			})
 			.catch((error) => {
-				console.error('Error calculating score metrics:', error);
+				console.error('Error retrieving data for score metrics calculation:', error);
 			});
 	}
 
