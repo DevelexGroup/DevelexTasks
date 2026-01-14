@@ -337,8 +337,10 @@ export class AnalyticsManager {
 	}
 
 	private calculateResponseTime(gazeSamples: GazeSampleDataEntry[]): number {
-		// Placeholder implementation
-		return 0;
+		if (gazeSamples.length === 0) return 0;
+		const startTime = gazeSamples[0].timestamp;
+		const endTime = gazeSamples[gazeSamples.length - 1].timestamp;
+		return endTime - startTime;
 	}
 
 	private calculateMeanFixationDuration(fixationData: FixationDataEntry[]): number {
@@ -348,13 +350,11 @@ export class AnalyticsManager {
 	}
 
 	private calculateAOITargetFixations(fixationData: FixationDataEntry[]): number {
-		// Placeholder implementation
-		return 0;
+		return fixationData.filter((fix) => fix.aoi.includes('hint')).length;
 	}
 
 	private calculateAOIFieldFixations(fixationData: FixationDataEntry[]): number {
-		// Placeholder implementation
-		return 0;
+		return fixationData.filter((fix) => fix.aoi.includes('track')).length;
 	}
 
 	private calculateRegressionCount(fixationData: FixationDataEntry[]): number {
