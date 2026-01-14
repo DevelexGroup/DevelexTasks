@@ -2,18 +2,18 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/database/db';
-	import type { GazeSampleDataEntry, FixationDataEntry } from '$lib/database/db.types';
+	import type { GazeSampleDataEntry, FixationDataEntry, SessionScoreDataEntry } from '$lib/database/db.types';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { untrack } from 'svelte';
 	import JSZip from 'jszip';
 
-	let selectedTable = $state<'gazeSamples' | 'fixationData' | ''>('');
+	let selectedTable = $state<'gazeSamples' | 'fixationData' | 'sessionScores' | ''>('');
 	let childIds = $state<string[]>([]);
 	let sessionIds = $state<{ sessionId: string; taskName: string }[]>([]);
 	let selectedChildId = $state<string>('');
 	let selectedSessionId = $state<string>('');
 
-	let tableData = $state<(GazeSampleDataEntry | FixationDataEntry)[]>([]);
+	let tableData = $state<(GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[]>([]);
 	let loadedCount = $state(0);
 	const LOAD_SIZE = 250;
 	let isLoading = $state(false);
@@ -50,19 +50,24 @@
 				tableData = [];
 				loadedCount = 0;
 				hasMore = true;
-				loadSessionIds();
+				if (table === 'sessionScores') {
+					// sessionScores doesn't need session selection, load data directly
+					loadTableData();
+				} else {
+					loadSessionIds();
+				}
 			});
 		}
 	});
 
-	// Load data when session is selected
+	// Load data when session is selected (for non-sessionScores tables)
 	$effect(() => {
 		// Only track the filter selections, not the data
 		const sessionId = selectedSessionId;
 		const table = selectedTable;
 		const childId = selectedChildId;
 
-		if (sessionId && table && childId) {
+		if (sessionId && table && childId && table !== 'sessionScores') {
 			untrack(() => {
 				tableData = [];
 				loadedCount = 0;
@@ -88,6 +93,7 @@
 			.equals(selectedChildId)
 			.toArray();
 
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const sessionMap = new Map<string, string>();
 		for (const entry of filtered) {
 			if (!sessionMap.has(entry.session_id)) {
@@ -102,15 +108,23 @@
 
 
 	async function loadTableData() {
-		if (!selectedTable || !selectedChildId || !selectedSessionId || isLoading) return;
+		if (!selectedTable || !selectedChildId || isLoading) return;
+		// For non-sessionScores tables, require sessionId
+		if (selectedTable !== 'sessionScores' && !selectedSessionId) return;
 
 		isLoading = true;
 		try {
 			const table = db[selectedTable];
 
-			let collection = table
-				.where('[child_id+session_id]')
-				.equals([selectedChildId, selectedSessionId]);
+			let collection;
+			if (selectedTable === 'sessionScores') {
+				// sessionScores only filters by child_id
+				collection = table.where('child_id').equals(selectedChildId);
+			} else {
+				collection = table
+					.where('[child_id+session_id]')
+					.equals([selectedChildId, selectedSessionId]);
+			}
 
 			if (timestampOrder === 'desc') {
 				collection = collection.reverse();
@@ -168,6 +182,8 @@
 			return [null, null, null, null, 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
 		} else if (selectedTable === 'fixationData') {
 			return [null, null, null, null, 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+		} else if (selectedTable === 'sessionScores') {
+			return [null, null, 'Session ID', 'Task', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
 		}
 		return [];
 	}
@@ -179,11 +195,13 @@
 		return [];
 	}
 
-	function getExportHeadersForTable(table: 'gazeSamples' | 'fixationData'): string[] {
+	function getExportHeadersForTable(table: 'gazeSamples' | 'fixationData' | 'sessionScores'): string[] {
 		if (table === 'gazeSamples') {
 			return ['ID', 'Child ID', 'Session ID', 'Task', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
-		} else {
+		} else if (table === 'fixationData') {
 			return ['ID', 'Child ID', 'Session ID', 'Task', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+		} else {
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
 		}
 	}
 
@@ -218,7 +236,9 @@
 			return formatTimestamp(timestampNum, column == 'Timestamp' ? 'full' : 'simple');
 		}
 		if (Array.isArray(value)) return value.length > 0 ? value.join(', ') : '-';
-		if (typeof value === 'number') return value.toFixed(2);
+		if (typeof value === 'number') {
+			return Number.isInteger(value) ? String(value) : value.toFixed(2);
+		}
 		return String(value);
 	}
 
@@ -232,14 +252,14 @@
 		return String(value);
 	}
 
-	function getCellValue(entry: GazeSampleDataEntry | FixationDataEntry, index: number): unknown {
+	function getCellValue(entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry, index: number): unknown {
 		if (selectedTable) {
 			return getCellValueForTable(entry, index, selectedTable);
 		}
 		return null;
 	}
 
-	function getCellValueForTable(entry: GazeSampleDataEntry | FixationDataEntry, index: number, table: 'gazeSamples' | 'fixationData'): unknown {
+	function getCellValueForTable(entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry, index: number, table: 'gazeSamples' | 'fixationData' | 'sessionScores'): unknown {
 		if (table === 'gazeSamples') {
 			const data = entry as GazeSampleDataEntry;
 			const values = [
@@ -248,30 +268,48 @@
 				data.events, data.sound_name, data.mistake_type, data.task_result
 			];
 			return values[index];
-		} else {
+		} else if (table === 'fixationData') {
 			const data = entry as FixationDataEntry;
 			const values = [
 				data.id, data.child_id, data.session_id, data.task_name, data.stimulus_id, data.timestamp,
 				data.eyetracker_x, data.eyetracker_y, data.duration, data.aoi, data.fixation_index
 			];
 			return values[index];
+		} else {
+			const data = entry as SessionScoreDataEntry;
+			const values = [
+				data.id, data.child_id, data.session_id, data.task_name,
+				data.error_rate, data.response_time, data.mean_fix_dur, data.fix_count,
+				data.aoi_target_fix, data.aoi_field_fix, data.regression_count
+			];
+			return values[index];
 		}
 	}
 
 	async function exportData() {
-		if (!selectedTable || !selectedChildId || !selectedSessionId) return;
+		if (!selectedTable || !selectedChildId) return;
+		// For non-sessionScores tables, require sessionId
+		if (selectedTable !== 'sessionScores' && !selectedSessionId) return;
 
 		const table = db[selectedTable];
-		const allData = await table
-			.where('child_id').equals(selectedChildId)
-			.and(entry => entry.session_id === selectedSessionId)
-			.sortBy('timestamp');
+		let allData;
+
+		if (selectedTable === 'sessionScores') {
+			allData = await table
+				.where('child_id').equals(selectedChildId)
+				.sortBy('timestamp');
+		} else {
+			allData = await table
+				.where('child_id').equals(selectedChildId)
+				.and(entry => entry.session_id === selectedSessionId)
+				.sortBy('timestamp');
+		}
 
 		// Get task name from the first entry
 		const taskName = allData.length > 0 ? allData[0].task_name : 'unknown';
 
-		// Format session ID as timestamp for filename
-		const formattedSessionId = formatTimestamp(parseFloat(selectedSessionId), 'filename');
+		// Format session ID as timestamp for filename (not used for sessionScores)
+		const formattedSessionId = selectedSessionId ? formatTimestamp(parseFloat(selectedSessionId), 'filename') : '';
 
 		// Convert to CSV
 		const headers = getTableExportHeaders();
@@ -291,8 +329,11 @@
 		const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 		const link = document.createElement('a');
 		const url = URL.createObjectURL(blob);
+		const filename = selectedTable === 'sessionScores'
+			? `${selectedTable}_${selectedChildId}.csv`
+			: `${selectedTable}_${selectedChildId}_${taskName}_${formattedSessionId}.csv`;
 		link.setAttribute('href', url);
-		link.setAttribute('download', `${selectedTable}_${selectedChildId}_${taskName}_${formattedSessionId}.csv`);
+		link.setAttribute('download', filename);
 		link.style.visibility = 'hidden';
 		document.body.appendChild(link);
 		link.click();
@@ -303,7 +344,7 @@
 		isExportingAll = true;
 		try {
 			const zip = new JSZip();
-			const tables: ('gazeSamples' | 'fixationData')[] = ['gazeSamples', 'fixationData'];
+			const tables: ('gazeSamples' | 'fixationData' | 'sessionScores')[] = ['gazeSamples', 'fixationData', 'sessionScores'];
 
 			for (const tableName of tables) {
 				const folder = zip.folder(tableName);
@@ -313,7 +354,7 @@
 				const allData = await table.toArray();
 
 				// Group data by child_id and session_id
-				const grouped = new SvelteMap<string, (GazeSampleDataEntry | FixationDataEntry)[]>();
+				const grouped = new SvelteMap<string, (GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[]>();
 				allData.forEach(entry => {
 					const key = `${entry.child_id}_${entry.session_id}`;
 					if (!grouped.has(key)) {
@@ -378,6 +419,7 @@
 			<option value="">Select table&hellip;</option>
 			<option value="gazeSamples">gazeSamples</option>
 			<option value="fixationData">fixationData</option>
+			<option value="sessionScores">sessionScores</option>
 		</select>
 	</div>
 
@@ -401,10 +443,10 @@
 		<select
 			id="sessionId"
 			bind:value={selectedSessionId}
-			disabled={!selectedChildId}
+			disabled={!selectedChildId || selectedTable === 'sessionScores'}
 			class="px-3 py-1.5 bg-white border border-gray-300 text-gray-800 rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed min-w-[200px]"
 		>
-			<option value="">Select session&hellip;</option>
+			<option value="">{selectedTable === 'sessionScores' ? 'N/A for this table' : 'Select session…'}</option>
 			{#each sessionIds as session (session.sessionId)}
 				<option value={session.sessionId}>[{session.taskName}] {formatTimestamp(parseFloat(String(session.sessionId)), 'simple')}</option>
 			{/each}
@@ -415,7 +457,7 @@
 <section class="absolute top-4 right-4 flex gap-4 items-center">
 	<button
 		class="px-3 py-1.5 bg-blue-500 text-gray-50 rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed mt-6"
-		disabled={!selectedTable || !selectedChildId || !selectedSessionId}
+		disabled={!selectedTable || !selectedChildId || (selectedTable !== 'sessionScores' && !selectedSessionId)}
 		onclick={exportData}
 	>
 		Exportovat&hellip;
@@ -441,7 +483,7 @@
 		<div class="flex items-center justify-center h-full">
 			<p class="text-gray-500 text-lg">Vyberte Child ID</p>
 		</div>
-	{:else if !selectedSessionId}
+	{:else if !selectedSessionId && selectedTable !== 'sessionScores'}
 		<div class="flex items-center justify-center h-full">
 			<p class="text-gray-500 text-lg">Vyberte Session ID</p>
 		</div>

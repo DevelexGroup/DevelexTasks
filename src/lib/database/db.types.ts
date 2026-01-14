@@ -34,3 +34,14 @@ export interface FixationDataEntry extends BaseDataEntry {
 	aoi: string[];
 	fixation_index: number;
 }
+
+export interface SessionScoreDataEntry extends BaseDataEntry {
+	id?: number;
+	error_rate: number;
+	response_time: number;
+	mean_fix_dur: number;
+	fix_count: number;
+	aoi_target_fix: number;
+	aoi_field_fix: number;
+	regression_count: number;
+}
