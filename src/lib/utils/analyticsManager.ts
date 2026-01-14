@@ -266,6 +266,7 @@ export class AnalyticsManager {
 					const baseData = this.getBaseDataEntry();
 					baseData.timestamp = window.endTime;
 					baseData.slide_index = i + 1;
+					baseData.stimulus_id = windowedGazeSamples.length > 0 ? windowedGazeSamples[0].stimulus_id : 'null';
 
 					// Store session score metrics
 					db.sessionScores

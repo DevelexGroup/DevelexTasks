@@ -183,7 +183,7 @@
 		} else if (selectedTable === 'fixationData') {
 			return [null, null, null, null, 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		} else if (selectedTable === 'sessionScores') {
-			return [null, null, 'Session ID', 'Task', 'Slide Index', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
+			return [null, null, 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
 		}
 		return [];
 	}
@@ -201,7 +201,7 @@
 		} else if (table === 'fixationData') {
 			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		} else {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Error Rate', 'Response Time', 'Mean Fixation Duration', 'Fixation Count', 'AOI Target Fixations', 'AOI Field Fixations', 'Regression Count'];
 		}
 	}
 
@@ -279,6 +279,7 @@
 			const data = entry as SessionScoreDataEntry;
 			const values = [
 				data.id, data.child_id, data.session_id, data.task_name, data.slide_index,
+				data.stimulus_id, data.timestamp,
 				data.error_rate, data.response_time, data.mean_fix_dur, data.fix_count,
 				data.aoi_target_fix, data.aoi_field_fix, data.regression_count
 			];
