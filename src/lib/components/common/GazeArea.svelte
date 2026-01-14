@@ -10,6 +10,7 @@
 		registerIntersect?: boolean;
 		bufferSize?: number;
 		children: Snippet;
+		hideFromDebug?: boolean;
 	}
 
 	let {
@@ -17,6 +18,7 @@
 		registerFixation = true,
 		registerIntersect = true,
 		bufferSize = 100,
+		hideFromDebug = false,
 		children
 	}: Props = $props();
 
@@ -26,7 +28,7 @@
 	let isHovered = $state(false);
 
 	function handleMouseMove(e: MouseEvent) {
-		if (!element || !($debugMode && $debugOptions.debugAOIAreaVisible)) return;
+		if (!element || hideFromDebug || !($debugMode && $debugOptions.debugAOIAreaVisible)) return;
 
 		const rect = element.getBoundingClientRect();
 		const expandedRect = {
@@ -78,7 +80,7 @@
 	});
 
 	$effect(() => {
-		if (!element || !$debugMode) return;
+		if (!element || hideFromDebug || !$debugMode) return;
 		bufferSize = $debugOptions.debugAOIBufferSize;
 	});
 
@@ -117,7 +119,7 @@
 	id={id}
 	bind:this={element}
 	class="gaze-area"
-	class:visible={$debugMode && $debugOptions.debugAOIAreaVisible}
+	class:visible={!hideFromDebug && $debugMode && $debugOptions.debugAOIAreaVisible}
 	class:hovered={isHovered}
 	style:--buffer-size="{bufferSize}px"
 	style:--debug-hue="{(id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 137) % 360}"

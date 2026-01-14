@@ -168,24 +168,28 @@
 								</div>
 							</GazeArea>
 							{#if trackComponent}
-							<div class="flex items-center justify-center" in:fade|global={{ delay: 800 }} out:fade|global>
+								<GazeArea id="track" bufferSize={50}>
+									<div class="flex items-center justify-center" in:fade|global={{ delay: 800 }} out:fade|global>
+										{@render trackComponent({
+											symbols: symbols(),
+											correctSymbols: currentData().correct,
+											validateSymbolClick
+										})}
+									</div>
+								</GazeArea>
+							{/if}
+						</div>
+				{:else}
+					{#if trackComponent}
+						<GazeArea id="track" bufferSize={50}>
+							<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
 								{@render trackComponent({
 									symbols: symbols(),
 									correctSymbols: currentData().correct,
 									validateSymbolClick
 								})}
 							</div>
-							{/if}
-						</div>
-				{:else}
-					{#if trackComponent}
-					<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
-						{@render trackComponent({
-							symbols: symbols(),
-							correctSymbols: currentData().correct,
-							validateSymbolClick
-						})}
-					</div>
+						</GazeArea>
 					{/if}
 				{/if}
 			</div>
