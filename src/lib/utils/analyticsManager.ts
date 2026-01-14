@@ -233,25 +233,15 @@ export class AnalyticsManager {
 		Promise.all([gazeSamplesPromise, fixationDataPromise])
 			.then(([gazeSamples, fixationData]) => {
 				const timeWindows = this.getEffectiveTimeWindows(gazeSamples);
-				// // Filter gaze samples and fixation data to only include those within effective time windows
-				// gazeSamples = gazeSamples.filter((sample) =>
-				// 	timeWindows.some(
-				// 		(window) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
-				// 	)
-				// );
-				// fixationData = fixationData.filter((fix) =>
-				// 	timeWindows.some(
-				// 		(window) => fix.timestamp >= window.startTime && fix.timestamp <= window.endTime
-				// 	)
-				// );
 				
 				for (let i = 0; i < timeWindows.length; i++) {
 					const window = timeWindows[i];
 					const windowedGazeSamples = gazeSamples.filter(
 						(sample) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
 					);
+					// Account for the fact that fixation timestamps are based on their end time
 					const windowedFixationData = fixationData.filter(fix =>
-						fix.timestamp >= window.startTime && fix.timestamp <= window.endTime
+						fix.timestamp - fix.duration >= window.startTime && fix.timestamp - fix.duration <= window.endTime
 					);
 					
 					// Calculate metrics
