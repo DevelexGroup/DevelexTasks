@@ -70,7 +70,11 @@
 	$effect(() => {
 		currentTask.update((task) => {
 			if (task) {
-				return { ...task, stimulusId: currentData().id };
+				return {
+					...task,
+					stimulusId: currentData().id ,
+					currentRepetition: currentRepetition + 1
+				};
 			}
 			return task;
 		});

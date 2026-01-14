@@ -4,6 +4,7 @@
 	task_name: string;
 	stimulus_id: string;
 	timestamp: number;
+	slide_index: number;
 }
 
 export enum TaskResult {

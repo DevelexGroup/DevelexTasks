@@ -6,5 +6,6 @@ export const currentTask = writable<{
 	level: string;
 	session: string;
 	stimulusId: string;
+	currentRepetition: number;
 } | null>(null);
 export const taskStage = writable<TaskStage>(TaskStage.Loading);

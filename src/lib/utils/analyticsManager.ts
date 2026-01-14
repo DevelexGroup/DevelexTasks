@@ -50,6 +50,7 @@ export class AnalyticsManager {
 			child_id: childId.id,
 			session_id: task ? task.session : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
+			slide_index: task?.currentRepetition ?? -1,
 			stimulus_id: task?.stimulusId ?? 'null',
 			timestamp: window.performance.timeOrigin + window.performance.now()
 		};

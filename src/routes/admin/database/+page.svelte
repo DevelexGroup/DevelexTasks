@@ -179,11 +179,11 @@
 
 	function getTableHeaders(): (string | null)[] {
 		if (selectedTable === 'gazeSamples') {
-			return [null, null, null, null, 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
+			return [null, null, null, null, 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
 		} else if (selectedTable === 'fixationData') {
-			return [null, null, null, null, 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+			return [null, null, null, null, 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		} else if (selectedTable === 'sessionScores') {
-			return [null, null, 'Session ID', 'Task', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
+			return [null, null, 'Session ID', 'Task', 'Slide Index', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
 		}
 		return [];
 	}
@@ -197,11 +197,11 @@
 
 	function getExportHeadersForTable(table: 'gazeSamples' | 'fixationData' | 'sessionScores'): string[] {
 		if (table === 'gazeSamples') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
 		} else if (table === 'fixationData') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		} else {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
 		}
 	}
 
@@ -263,7 +263,7 @@
 		if (table === 'gazeSamples') {
 			const data = entry as GazeSampleDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.stimulus_id, data.timestamp,
+				data.id, data.child_id, data.session_id, data.task_name, data.slide_index, data.stimulus_id, data.timestamp,
 				data.eyetracker_x, data.eyetracker_y, data.aoi, data.mouse_x, data.mouse_y,
 				data.events, data.sound_name, data.mistake_type, data.task_result
 			];
@@ -271,14 +271,14 @@
 		} else if (table === 'fixationData') {
 			const data = entry as FixationDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.stimulus_id, data.timestamp,
+				data.id, data.child_id, data.session_id, data.task_name, data.slide_index, data.stimulus_id, data.timestamp,
 				data.eyetracker_x, data.eyetracker_y, data.duration, data.aoi, data.fixation_index
 			];
 			return values[index];
 		} else {
 			const data = entry as SessionScoreDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name,
+				data.id, data.child_id, data.session_id, data.task_name, data.slide_index,
 				data.error_rate, data.response_time, data.mean_fix_dur, data.fix_count,
 				data.aoi_target_fix, data.aoi_field_fix, data.regression_count
 			];
