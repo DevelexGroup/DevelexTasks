@@ -1,11 +1,8 @@
 ﻿<script lang="ts">
-	import type { PageProps } from '../../../.svelte-kit/types/src/routes/admin/$types';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { db } from '$lib/database/db';
-
-	let { data }: PageProps = $props();
 
 	let isDeleteDialogOpen = $state(false);
 	let isDeleting = $state(false);
@@ -13,8 +10,8 @@
 	async function deleteAllData() {
 		isDeleting = true;
 		try {
-			await db.gazeSamples.clear();
-			await db.fixationData.clear();
+			await db.delete();
+			await db.open();
 			isDeleteDialogOpen = false;
 		} finally {
 			isDeleting = false;
