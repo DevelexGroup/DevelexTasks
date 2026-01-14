@@ -69,10 +69,11 @@ export class AnalyticsManager {
 	}
 
 	public setSoundActive(soundName: string, isActive: boolean) {
+		const strippedName = soundName.split('/').pop()?.split('.').shift() || soundName;
 		if (isActive) {
-			this.playedSounds.add(soundName);
+			this.playedSounds.add(strippedName);
 		} else {
-			this.playedSounds.delete(soundName);
+			this.playedSounds.delete(strippedName);
 		}
 	}
 
