@@ -5,11 +5,15 @@
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import TaskTrackerLoader from './TaskTrackerLoader.svelte';
 	import TaskEndScreen from '$lib/components/TaskEndScreen.svelte';
-	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY } from '$lib/types/general.types';
+	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { TaskResult } from '$lib/database/db.types';
+	import { closeDialog, dialog, showDialog } from '$lib/stores/dialog';
+	import DialogPopup from '$lib/components/DialogPopup.svelte';
+	import { KeyboardManager } from '$lib/utils/keyboardManager';
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
+	const keyboardManager = getContext<KeyboardManager>(KEYBOARD_MANAGER_KEY);
 
 	taskStage.set(TaskStage.Loading);
 
@@ -31,6 +35,24 @@
 	onDestroy(() => {
 		analyticsManager.stopLogging(TaskResult.Terminate);
 	});
+
+	function exitTask() {
+		analyticsManager.stopLogging(TaskResult.Escape);
+		taskStage.set(TaskStage.Instructions);
+	}
+
+	keyboardManager.onKeyDown('Escape', () => {
+		if ($taskStage === TaskStage.Task || $taskStage === TaskStage.Practice) {
+			showDialog({
+				title: 'Odejít z úlohy?',
+				description: 'Jste si jistí, že chcete odejít z úlohy?',
+				options: [
+					{ label: "Odejít", variant: 'destructive', callback: exitTask, closeOnClick: true },
+					{ label: "Zůstat", variant: 'secondary', callback: () => {}, closeOnClick: true }
+				]
+			});
+		}
+	});
 </script>
 
 {#if $taskStage === TaskStage.Loading}
@@ -44,3 +66,5 @@
 {:else if $taskStage === TaskStage.End}
 	<TaskEndScreen />
 {/if}
+
+<DialogPopup />
