@@ -12,6 +12,8 @@
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { currentTask } from '$lib/stores/task';
 	import { AvaiableTracker, trackerConfig } from '$lib/stores/tracker';
+	import { showDialog } from '$lib/stores/dialog';
+	import { TaskResult } from '$lib/database/db.types';
 
 	let {
 		id,
@@ -28,12 +30,17 @@
 		extraComponent
 	}: TrackTaskProps = $props();
 
+	const MAX_MISTAKES_BEFORE_DIALOG = 5;
+
 	let currentStage = $state<TrackLevelStage>(TrackLevelStage.InitialDwell);
 	let currentRepetition = $state<number>(0);
 
 	// let lastSymbolIndex = $state<number | null>(null);
 	let selectedIndices = $state<number[]>([]);
 	let shouldShakeArrow = $state<boolean>(false);
+
+	let mistakeCount = $state<number>(0);
+
 
 	const repetitions = data.length;
 	const currentData = $derived(() => data[currentRepetition % data.length]);
@@ -80,9 +87,27 @@
 		});
 	});
 
+	$effect(() => {
+		if (!isPractice && mistakeCount >= MAX_MISTAKES_BEFORE_DIALOG){
+			showDialog({
+				title: 'Chceš pokračovat?',
+				description: 'Zdá se, že máš potíže s touto částí úlohy. Chceš pokračovat nebo zkusit jinou úlohu?',
+				options: [
+					{ label: "Pokračovat", variant: 'secondary', callback: () => { mistakeCount = 0; }, closeOnClick: true },
+					{ label: "Změnit úlohu", variant: 'destructive', callback: () => { abortTask(); }, closeOnClick: true }
+				]
+			});
+		}
+	})
+
 	onDestroy(() => {
 		cursorVisible.set(true);
 	});
+
+	function abortTask() {
+		analyticsManager.stopLogging(TaskResult.Mistake);
+		onCompleted();
+	}
 
 	function skipStage() {
 		if (currentStage === TrackLevelStage.InitialDwell) {
@@ -115,6 +140,7 @@
 		analyticsManager.logMistakeType(validationResult);
 		if (playValidationSounds)
 			playSound(SOUND_MISTAKE, 0.33);
+		mistakeCount += 1;
 		return false;
 	}
 
