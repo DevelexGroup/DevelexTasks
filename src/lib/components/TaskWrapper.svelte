@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { taskStage } from '$lib/stores/task';
-	import { TaskStage } from '$lib/types/task.types';
+	import { currentTask, taskStage } from '$lib/stores/task';
+	import { TaskResult, TaskStage } from '$lib/types/task.types';
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import TaskTrackerLoader from './TaskTrackerLoader.svelte';
 	import TaskEndScreen from '$lib/components/TaskEndScreen.svelte';
 	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
-	import { TaskResult } from '$lib/database/db.types';
 	import { showDialog } from '$lib/stores/dialog';
 	import DialogPopup from '$lib/components/DialogPopup.svelte';
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
@@ -32,9 +31,6 @@
 		if ($taskStage === TaskStage.Task) {
 			analyticsManager.startLogging();
 		}
-		if ($taskStage === TaskStage.End) {
-			analyticsManager.stopLogging(TaskResult.Natural);
-		}
 	});
 
 	onDestroy(() => {
@@ -45,9 +41,16 @@
 		window.removeEventListener('keydown', resetTimeoutOnInteraction);
 	});
 
-	function exitTask(fromTimeout: boolean) {
-		analyticsManager.stopLogging(fromTimeout ? TaskResult.Timeout : TaskResult.Escape);
-		taskStage.set(TaskStage.Instructions);
+	function exitTask(taskResult: TaskResult) {
+		analyticsManager.stopLogging(taskResult);
+		currentTask.update(task => {
+			if (task) {
+				console.log('Setting task result to', taskResult);
+				task.result = taskResult;
+			}
+			return task;
+		});
+		taskStage.set(TaskStage.End);
 	}
 
 	function showPauseDialog(pauseFromTimeout: boolean) {
@@ -60,7 +63,7 @@
 				? 'Úloha byla pozastavena kvůli delší neaktivitě. Chcete v úloze pokračovat, nebo se vrátit do menu?'
 				: 'Úloha zapauzována. Jste si jistí, že chcete odejít z úlohy?',
 			options: [
-				{ label: "Odejít", variant: 'destructive', callback: () => exitTask(pauseFromTimeout), closeOnClick: true },
+				{ label: "Odejít", variant: 'destructive', callback: () => exitTask(pauseFromTimeout ? TaskResult.Timeout : TaskResult.Escape), closeOnClick: true },
 				{ label: "Zůstat", variant: 'secondary', callback: () => {startTimeout()}, closeOnClick: true }
 			]
 		}).then(() => {
@@ -118,7 +121,7 @@
 {:else if $taskStage === TaskStage.Task}
 	<slot name="Task" />
 {:else if $taskStage === TaskStage.End}
-	<TaskEndScreen />
+	<TaskEndScreen exitType={$currentTask?.result ?? TaskResult.Terminate} />
 {/if}
 
 <DialogPopup />

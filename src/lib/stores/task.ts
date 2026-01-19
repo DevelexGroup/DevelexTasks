@@ -1,4 +1,4 @@
-import { TaskStage } from '$lib/types/task.types';
+import { TaskResult, TaskStage } from '$lib/types/task.types';
 import { writable } from 'svelte/store';
 
 export const currentTask = writable<{
@@ -7,5 +7,6 @@ export const currentTask = writable<{
 	session: string;
 	stimulusId: string;
 	currentRepetition: number;
+	result: TaskResult | null;
 } | null>(null);
 export const taskStage = writable<TaskStage>(TaskStage.Loading);

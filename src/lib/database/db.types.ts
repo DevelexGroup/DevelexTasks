@@ -1,18 +1,12 @@
-﻿export interface BaseDataEntry {
+﻿import type { TaskResult } from '$lib/types/task.types';
+
+export interface BaseDataEntry {
 	child_id: string;
 	session_id: string;
 	task_name: string;
 	stimulus_id: string;
 	timestamp: number;
 	slide_index: number;
-}
-
-export enum TaskResult {
-	Natural = 'natural',
-	Escape = 'escape',
-	Mistake = 'mistake',
-	Terminate = 'terminate',
-	Timeout = 'timeout'
 }
 
 export interface GazeSampleDataEntry extends BaseDataEntry {

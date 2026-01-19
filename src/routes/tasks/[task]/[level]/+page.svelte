@@ -29,6 +29,7 @@
 			session: Date.now().toString(),
 			stimulusId: "null",
 			currentRepetition: -1,
+			result: null
 		}
 	});
 

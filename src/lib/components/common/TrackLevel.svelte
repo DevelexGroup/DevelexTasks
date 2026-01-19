@@ -6,14 +6,13 @@
 	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { playSound, SOUND_CORRECT, SOUND_MISTAKE } from '$lib/utils/sound';
-	import { TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';
+	import { TaskResult, TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';
 	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { currentTask } from '$lib/stores/task';
 	import { AvaiableTracker, trackerConfig } from '$lib/stores/tracker';
 	import { showDialog } from '$lib/stores/dialog';
-	import { TaskResult } from '$lib/database/db.types';
 
 	let {
 		id,
@@ -106,7 +105,16 @@
 
 	function abortTask() {
 		analyticsManager.stopLogging(TaskResult.Mistake);
-		onCompleted();
+		currentTask.update((task) => {
+			if (task) {
+				return {
+					...task,
+					result: TaskResult.Mistake
+				};
+			}
+			return task;
+		});
+		onCompleted(TaskResult.Mistake);
 	}
 
 	function skipStage() {
@@ -124,7 +132,16 @@
 			selectedIndices = [];
 			onStageAdvance();
 		} else {
-			onCompleted();
+			currentTask.update((task) => {
+				if (task) {
+					return {
+						...task,
+						result: TaskResult.Natural
+					};
+				}
+				return task;
+			});
+			onCompleted(TaskResult.Natural);
 		}
 	}
 

@@ -15,9 +15,17 @@ export enum TaskStage {
 	Error
 }
 
+export enum TaskResult {
+	Natural = 'natural',
+	Escape = 'escape',
+	Mistake = 'mistake',
+	Terminate = 'terminate',
+	Timeout = 'timeout'
+}
+
 export interface TaskLevelProps {
 	id: string;
-	onCompleted?: () => void;
+	onCompleted?: (result: TaskResult) => void;
 	isPractice?: boolean;
 }
 
