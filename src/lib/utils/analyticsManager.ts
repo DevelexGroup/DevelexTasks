@@ -1,13 +1,12 @@
 ﻿import {
 	type BaseDataEntry,
 	type FixationDataEntry,
-	type GazeSampleDataEntry,
-	TaskResult
+	type GazeSampleDataEntry
 } from '$lib/database/db.types';
 import { userStore } from '$lib/stores/user';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
-import type { TaskMistake } from '$lib/types/task.types';
+import { type TaskMistake, TaskResult } from '$lib/types/task.types';
 import type {
 	FixationDataPoint,
 	GazeDataPoint,
