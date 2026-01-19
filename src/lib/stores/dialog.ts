@@ -4,7 +4,7 @@ export type ButtonVariant = 'default' | 'destructive' | 'outline' | 'secondary' 
 
 export type DialogOption = {
 	label: string;
-	callback: () => void;
+	callback?: () => void;
 	variant?: ButtonVariant;
 	closeOnClick?: boolean;
 };
@@ -34,18 +34,27 @@ export type ShowDialogOptions = {
 	closeOnOutsideClick?: boolean;
 };
 
-export function showDialog(config: ShowDialogOptions) {
-	set({
-		open: true,
-		title: config.title,
-		description: config.description,
-		options: config.options,
-		closeOnOutsideClick: config.closeOnOutsideClick ?? true
+let resolveDialogPromise: (() => void) | null = null;
+
+export function showDialog(config: ShowDialogOptions): Promise<void> {
+	return new Promise((resolve) => {
+		resolveDialogPromise = resolve;
+		set({
+			open: true,
+			title: config.title,
+			description: config.description,
+			options: config.options,
+			closeOnOutsideClick: config.closeOnOutsideClick ?? true
+		});
 	});
 }
 
 export function closeDialog() {
 	update((state) => ({ ...state, open: false }));
+	if (resolveDialogPromise) {
+		resolveDialogPromise();
+		resolveDialogPromise = null;
+	}
 }
 
 export const dialog = { subscribe, set, update };

@@ -24,6 +24,9 @@ export class AnalyticsManager {
 	private CLICK_EVENT_PREFIX = 'mouse_';
 	private KEYBOARD_EVENT_PREFIX = 'key_';
 
+	private PAUSE_LOGGING_EVENT = 'pause_logging';
+	private RESUME_LOGGING_EVENT = 'resume_logging';
+
 	private pollingTimer: ReturnType<typeof setInterval> | null = null;
 
 	private eyetrackerPosition: { x: number; y: number } = { x: 0, y: 0 };
@@ -37,6 +40,9 @@ export class AnalyticsManager {
 	};
 
 	private gazeManager: GazeManager;
+
+	private loggingPaused = false;
+	private pauseRequest = false;
 
 	constructor(gazeManager: GazeManager) {
 		this.gazeManager = gazeManager;
@@ -94,7 +100,10 @@ export class AnalyticsManager {
 
 		this.registerListeners();
 
+		this.loggingPaused = false;
+
 		this.pollingTimer = setInterval(() => {
+			if (this.loggingPaused) return;
 			const baseData = this.getBaseDataEntry();
 			const gazeSample: GazeSampleDataEntry = {
 				...baseData,
@@ -115,6 +124,12 @@ export class AnalyticsManager {
 
 			this.eventBuffer.events.clear();
 			this.eventBuffer.mistake_type.clear();
+
+			// Pause after this sample if requested
+			if (this.pauseRequest) {
+				this.loggingPaused = true;
+				this.pauseRequest = false;
+			}
 		}, this.POLLING_INTERVAL_MS);
 	}
 
@@ -155,6 +170,24 @@ export class AnalyticsManager {
 		this.eventBuffer.mistake_type.clear();
 	}
 
+	public pauseLogging() {
+		this.pauseRequest = true;
+		this.logEvent(this.PAUSE_LOGGING_EVENT);
+	}
+
+	public resumeLogging() {
+		this.loggingPaused = false;
+		this.logEvent(this.RESUME_LOGGING_EVENT);
+	}
+
+	public isLoggingPaused() {
+		return this.loggingPaused;
+	}
+
+	public isLoggingActive() {
+		return this.pollingTimer !== null && !this.loggingPaused;
+	}
+
 	// Event handlers
 	private registerListeners() {
 		if (!browser) return;
@@ -185,10 +218,12 @@ export class AnalyticsManager {
 	};
 
 	private handleMouseUp = () => {
+		if (!this.isLoggingActive()) return;
 		this.logEvent(`${this.CLICK_EVENT_PREFIX}click`);
 	};
 
 	private handleKeyDown = (event: KeyboardEvent) => {
+		if (!this.isLoggingActive()) return;
 		if (event.repeat) return;
 		this.logEvent(`${this.KEYBOARD_EVENT_PREFIX}${event.code}`);
 	};
@@ -200,6 +235,7 @@ export class AnalyticsManager {
 	};
 
 	private handleFixation = (fixationData: FixationDataPoint) => {
+		if (!this.isLoggingActive()) return;
 		const dataEntry = this.getBaseDataEntry();
 		const fixationEntry = {
 			...dataEntry,
@@ -234,17 +270,19 @@ export class AnalyticsManager {
 		Promise.all([gazeSamplesPromise, fixationDataPromise])
 			.then(([gazeSamples, fixationData]) => {
 				const timeWindows = this.getEffectiveTimeWindows(gazeSamples);
-				
+
 				for (let i = 0; i < timeWindows.length; i++) {
 					const window = timeWindows[i];
 					const windowedGazeSamples = gazeSamples.filter(
 						(sample) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
 					);
 					// Account for the fact that fixation timestamps are based on their end time
-					const windowedFixationData = fixationData.filter(fix =>
-						fix.timestamp - fix.duration >= window.startTime && fix.timestamp - fix.duration <= window.endTime
+					const windowedFixationData = fixationData.filter(
+						(fix) =>
+							fix.timestamp - fix.duration >= window.startTime &&
+							fix.timestamp - fix.duration <= window.endTime
 					);
-					
+
 					// Calculate metrics
 					const errorRate = this.calculateErrorRate(windowedGazeSamples);
 					const responseTime = this.calculateResponseTime(windowedGazeSamples);
@@ -253,11 +291,12 @@ export class AnalyticsManager {
 					const aoiTargetFix = this.calculateAOITargetFixations(windowedFixationData);
 					const aoiFieldFix = this.calculateAOIFieldFixations(windowedFixationData);
 					const regressionCount = this.calculateRegressionCount(windowedFixationData);
-	
+
 					const baseData = this.getBaseDataEntry();
 					baseData.timestamp = window.endTime;
 					baseData.slide_index = i + 1;
-					baseData.stimulus_id = windowedGazeSamples.length > 0 ? windowedGazeSamples[0].stimulus_id : 'null';
+					baseData.stimulus_id =
+						windowedGazeSamples.length > 0 ? windowedGazeSamples[0].stimulus_id : 'null';
 
 					// Store session score metrics
 					db.sessionScores

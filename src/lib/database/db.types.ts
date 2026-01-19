@@ -11,7 +11,8 @@ export enum TaskResult {
 	Natural = 'natural',
 	Escape = 'escape',
 	Mistake = 'mistake',
-	Terminate = 'terminate'
+	Terminate = 'terminate',
+	Timeout = 'timeout'
 }
 
 export interface GazeSampleDataEntry extends BaseDataEntry {

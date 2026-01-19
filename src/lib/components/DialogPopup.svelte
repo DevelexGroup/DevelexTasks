@@ -38,7 +38,7 @@
 					class="rounded-md px-3 py-1.5 text-sm font-medium transition-colors {variantClasses[
 						option.variant ?? 'default'
 					]}"
-					onclick={() => handleButtonClick(option.callback, option.closeOnClick)}
+					onclick={() => handleButtonClick(option.callback ?? (() => {}), option.closeOnClick)}
 				>
 					{option.label}
 				</button>
