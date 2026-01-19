@@ -12,7 +12,7 @@
 	import DialogPopup from '$lib/components/DialogPopup.svelte';
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 
-	const DEFAULT_TIMEOUT_INTERVAL = 5000; // 80 seconds
+	const DEFAULT_TIMEOUT_INTERVAL = 80000; // 80 seconds
 	const TIMEOUT_EVENT_LOG = 'inactivity_timeout';
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
