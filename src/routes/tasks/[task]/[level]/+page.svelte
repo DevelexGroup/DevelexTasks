@@ -10,8 +10,6 @@
 
 	let { data }: PageProps = $props();
 
-	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
-
 	const modules = import.meta.glob<{ default: Component }>(
 		`$lib/components/tasks/**/{Task,Practice,Instructions}.svelte`
 	)
@@ -28,7 +26,9 @@
 		$currentTask = {
 			slug: data.task,
 			level: data.level,
-			session: Date.now().toString()
+			session: Date.now().toString(),
+			stimulusId: "null",
+			currentRepetition: -1,
 		}
 	});
 
