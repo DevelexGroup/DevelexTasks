@@ -407,7 +407,7 @@ export class AnalyticsManager {
 
 			const angle = (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
 
-			if (angle > 180 - this.REGRESSION_MIN_DEGREE || angle < -180 + this.REGRESSION_MIN_DEGREE) {
+			if (angle > this.REGRESSION_MIN_DEGREE || angle < -this.REGRESSION_MIN_DEGREE) {
 				regressionCount++;
 			}
 		}
