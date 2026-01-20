@@ -20,6 +20,9 @@ export class AnalyticsManager {
 	private POLLING_RATE_HZ = 120;
 	private POLLING_INTERVAL_MS = 1000 / this.POLLING_RATE_HZ;
 
+	private REGRESSION_MIN_DIST = 50; // pixels
+	private REGRESSION_MIN_DEGREE = 40; // degrees
+
 	private CLICK_EVENT_PREFIX = 'mouse_';
 	private KEYBOARD_EVENT_PREFIX = 'key_';
 
@@ -388,7 +391,26 @@ export class AnalyticsManager {
 	}
 
 	private calculateRegressionCount(fixationData: FixationDataEntry[]): number {
-		// Placeholder implementation
-		return 0;
+		// Count two consecutive fixations as a regression if:
+		// 1) The distance between them is greater than REGRESSION_MIN_DIST
+		// 2) The angle between them is greater than +- REGRESSION_MIN_DEGREE (0 degrees is rightwards)
+		let regressionCount = 0;
+		for (let i = 1; i < fixationData.length; i++) {
+			const prevFix = fixationData[i - 1];
+			const currFix = fixationData[i];
+
+			const deltaX = currFix.eyetracker_x! - prevFix.eyetracker_x!;
+			const deltaY = currFix.eyetracker_y! - prevFix.eyetracker_y!;
+			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+			if (distance < this.REGRESSION_MIN_DIST) continue;
+
+			const angle = (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
+
+			if (angle > 180 - this.REGRESSION_MIN_DEGREE || angle < -180 + this.REGRESSION_MIN_DEGREE) {
+				regressionCount++;
+			}
+		}
+		return regressionCount;
 	}
 }
