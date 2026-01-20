@@ -3,9 +3,8 @@
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/database/db';
 	import type { GazeSampleDataEntry, FixationDataEntry, SessionScoreDataEntry } from '$lib/database/db.types';
-	import { SvelteMap } from 'svelte/reactivity';
 	import { untrack } from 'svelte';
-	import JSZip from 'jszip';
+	import ExportWindow from './components/ExportWindow.svelte';
 
 	let selectedTable = $state<'gazeSamples' | 'fixationData' | 'sessionScores' | ''>('');
 	let childIds = $state<string[]>([]);
@@ -19,7 +18,7 @@
 	let isLoading = $state(false);
 	let hasMore = $state(true);
 	let scrollContainer: HTMLElement;
-	let isExportingAll = $state(false);
+	let exportWindowOpen = $state(false);
 	let timestampOrder = $state<'asc' | 'desc'>('desc');
 
 	// Reset filters when table changes
@@ -188,23 +187,6 @@
 		return [];
 	}
 
-	function getTableExportHeaders(): string[] {
-		if (selectedTable) {
-			return getExportHeadersForTable(selectedTable);
-		}
-		return [];
-	}
-
-	function getExportHeadersForTable(table: 'gazeSamples' | 'fixationData' | 'sessionScores'): string[] {
-		if (table === 'gazeSamples') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
-		} else if (table === 'fixationData') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
-		} else {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Error Rate', 'Response Time', 'Mean Fixation Duration', 'Fixation Count', 'AOI Target Fixations', 'AOI Field Fixations', 'Regression Count'];
-		}
-	}
-
 	function formatTimestamp(unixTimestamp: number, format: 'full' | 'simple' | 'filename' = 'full'): string {
 		const date = new Date(Math.floor(unixTimestamp));
 		const year = date.getFullYear();
@@ -242,16 +224,6 @@
 		return String(value);
 	}
 
-	function formatExportedColumnValue(column: string, value: unknown): string {
-		if (value === null || value === undefined) return '';
-		if (column == 'Timestamp' || column == 'Session ID') {
-			const timestampNum = typeof value === 'number' ? value : parseFloat(String(value));
-			return formatTimestamp(timestampNum, column == 'Timestamp' ? 'full' : 'simple');
-		}
-		if (Array.isArray(value)) return value.length > 0 ? value.join('|') : '';
-		return String(value);
-	}
-
 	function getCellValue(entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry, index: number): unknown {
 		if (selectedTable) {
 			return getCellValueForTable(entry, index, selectedTable);
@@ -284,122 +256,6 @@
 				data.aoi_target_fix, data.aoi_field_fix, data.regression_count
 			];
 			return values[index];
-		}
-	}
-
-	async function exportData() {
-		if (!selectedTable || !selectedChildId) return;
-		// For non-sessionScores tables, require sessionId
-		if (selectedTable !== 'sessionScores' && !selectedSessionId) return;
-
-		const table = db[selectedTable];
-		let allData;
-
-		if (selectedTable === 'sessionScores') {
-			allData = await table
-				.where('child_id').equals(selectedChildId)
-				.sortBy('timestamp');
-		} else {
-			allData = await table
-				.where('child_id').equals(selectedChildId)
-				.and(entry => entry.session_id === selectedSessionId)
-				.sortBy('timestamp');
-		}
-
-		// Get task name from the first entry
-		const taskName = allData.length > 0 ? allData[0].task_name : 'unknown';
-
-		// Format session ID as timestamp for filename (not used for sessionScores)
-		const formattedSessionId = selectedSessionId ? formatTimestamp(parseFloat(selectedSessionId), 'filename') : '';
-
-		// Convert to CSV
-		const headers = getTableExportHeaders();
-		const csvRows = [headers.join(',')];
-
-		allData.forEach(entry => {
-			const row = headers.map((column, index) => {
-				const value = getCellValue(entry, index);
-				const formatted = formatExportedColumnValue(column, value);
-				// Escape quotes and wrap in quotes if contains comma
-				return formatted.includes(',') ? `"${formatted.replace(/"/g, '""')}"` : formatted;
-			});
-			csvRows.push(row.join(','));
-		});
-
-		const csvContent = csvRows.join('\n');
-		const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-		const link = document.createElement('a');
-		const url = URL.createObjectURL(blob);
-		const filename = selectedTable === 'sessionScores'
-			? `${selectedTable}_${selectedChildId}.csv`
-			: `${selectedTable}_${selectedChildId}_${taskName}_${formattedSessionId}.csv`;
-		link.setAttribute('href', url);
-		link.setAttribute('download', filename);
-		link.style.visibility = 'hidden';
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
-	}
-
-	async function exportAll() {
-		isExportingAll = true;
-		try {
-			const zip = new JSZip();
-			const tables: ('gazeSamples' | 'fixationData' | 'sessionScores')[] = ['gazeSamples', 'fixationData', 'sessionScores'];
-
-			for (const tableName of tables) {
-				const folder = zip.folder(tableName);
-				if (!folder) continue;
-
-				const table = db[tableName];
-				const allData = await table.toArray();
-
-				// Group data by child_id and session_id
-				const grouped = new SvelteMap<string, (GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[]>();
-				allData.forEach(entry => {
-					const key = `${entry.child_id}_${entry.session_id}`;
-					if (!grouped.has(key)) {
-						grouped.set(key, []);
-					}
-					grouped.get(key)!.push(entry);
-				});
-
-				// Create CSV for each session
-				const headers = getExportHeadersForTable(tableName);
-
-				for (const [key, entries] of grouped) {
-					const sortedEntries = entries.sort((a, b) => a.timestamp - b.timestamp);
-					const firstEntry = sortedEntries[0];
-					const taskName = firstEntry.task_name;
-					const formattedSessionId = formatTimestamp(parseFloat(String(firstEntry.session_id)), 'filename');
-
-					const csvRows = [headers.join(',')];
-					sortedEntries.forEach(entry => {
-						const row = headers.map((column, index) => {
-							const value = getCellValueForTable(entry, index, tableName);
-							const formatted = formatExportedColumnValue(column, value);
-							return formatted.includes(',') ? `"${formatted.replace(/"/g, '""')}"` : formatted;
-						});
-						csvRows.push(row.join(','));
-					});
-
-					const csvContent = csvRows.join('\n');
-					const fileName = `${firstEntry.child_id}_${taskName}_${formattedSessionId}.csv`;
-					folder.file(fileName, csvContent);
-				}
-			}
-
-			const content = await zip.generateAsync({ type: 'blob' });
-			const link = document.createElement('a');
-			const url = URL.createObjectURL(content);
-			link.setAttribute('href', url);
-			link.setAttribute('download', `database_export_${formatTimestamp(Date.now(), 'filename')}.zip`);
-			link.style.visibility = 'hidden';
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		} finally {
-			isExportingAll = false;
 		}
 	}
 </script>
@@ -457,19 +313,10 @@
 
 <section class="absolute top-4 right-4 flex gap-4 items-center">
 	<button
-		class="px-3 py-1.5 bg-blue-500 text-gray-50 rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed mt-6"
-		disabled={!selectedTable || !selectedChildId || (selectedTable !== 'sessionScores' && !selectedSessionId)}
-		onclick={exportData}
+		class="px-3 py-1.5 bg-blue-500 text-gray-50 rounded-md hover:bg-blue-600 mt-6"
+		onclick={() => exportWindowOpen = true}
 	>
 		Exportovat&hellip;
-	</button>
-
-	<button
-		class="px-3 py-1.5 bg-green-500 text-gray-50 rounded-md hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed mt-6"
-		disabled={isExportingAll}
-		onclick={exportAll}
-	>
-		{isExportingAll ? 'Exportuji…' : 'Exportovat vše…'}
 	</button>
 </section>
 
@@ -574,6 +421,8 @@
 		<span class="text-gray-700">Zobrazeno záznamů: {tableData.length} (z celkem {#await getTotalCount() then totalCount}{totalCount}{/await})</span>
 	{/if}
 </div>
+
+<ExportWindow bind:open={exportWindowOpen} />
 
 <style>
 	.table-container{
