@@ -6,6 +6,7 @@ export const fonologieTestData: TrackTaskData = [
 		label: 'Úroveň 1',
 		practiceContent: [
 			{
+				id: 'practice1',
 				sequence: ['delfín', 'kočka', 'dům', 'duch'],
 				correct: ['delfín', 'dům', 'duch'],
 				wordToRead: 'D'
@@ -13,6 +14,7 @@ export const fonologieTestData: TrackTaskData = [
 		],
 		content: [
 			{
+				id: 'content1',
 				sequence: [],
 				correct: ['apple']
 			}
