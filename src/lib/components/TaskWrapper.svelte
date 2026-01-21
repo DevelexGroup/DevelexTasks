@@ -112,16 +112,18 @@
 	});
 </script>
 
-{#if $taskStage === TaskStage.Loading}
-	<TaskTrackerLoader onCompleted={() => taskStage.set(TaskStage.Instructions)} />
-{:else if $taskStage === TaskStage.Instructions}
-	<slot name="Instructions" />
-{:else if $taskStage === TaskStage.Practice}
-	<slot name="Practice" />
-{:else if $taskStage === TaskStage.Task}
-	<slot name="Task" />
-{:else if $taskStage === TaskStage.End}
-	<TaskEndScreen exitType={$currentTask?.result ?? TaskResult.Terminate} />
-{/if}
+<div class="overflow-hidden w-screen h-screen">
+	{#if $taskStage === TaskStage.Loading}
+		<TaskTrackerLoader onCompleted={() => taskStage.set(TaskStage.Instructions)} />
+	{:else if $taskStage === TaskStage.Instructions}
+		<slot name="Instructions" />
+	{:else if $taskStage === TaskStage.Practice}
+		<slot name="Practice" />
+	{:else if $taskStage === TaskStage.Task}
+		<slot name="Task" />
+	{:else if $taskStage === TaskStage.End}
+		<TaskEndScreen exitType={$currentTask?.result ?? TaskResult.Terminate} />
+	{/if}
+</div>
 
 <DialogPopup />
