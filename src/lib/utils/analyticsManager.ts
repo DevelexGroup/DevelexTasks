@@ -16,12 +16,31 @@ import type {
 import { browser } from '$app/environment';
 import { db } from '$lib/database/db';
 
+interface SlideTimeWindow {
+	slideIndex: number;
+	startTime: number;
+	endTime: number;
+}
+
 export class AnalyticsManager {
 	private POLLING_RATE_HZ = 120;
 	private POLLING_INTERVAL_MS = 1000 / this.POLLING_RATE_HZ;
 
 	private REGRESSION_MIN_DIST = 50; // pixels
 	private REGRESSION_MIN_DEGREE = 40; // degrees
+
+	private FLUENCY_MAX_SCORE = 100; // points
+
+	private FLUENCY_TIME_MIN = 2000; // ms
+	private FLUENCY_TIME_MAX = 5000; // ms
+	private FLUENCY_TARGET_REFIXATION_COUNT_PAR = 1; // fixations
+	private FLUENCY_FIXATION_COUNT_PAR = 5; // fixations
+
+	private FLUENCY_SCORE_TIME_MALUS = 45; // points
+	private FLUENCY_SCORE_MISTAKE_MALUS = 20; // points per mistake
+	private FLUENCY_SCORE_TARGET_REFIXATION_MALUS = 5; // points per refixation
+	private FLUENCY_SCORE_REGRESSION_MALUS = 2; // points per regression
+	private FLUENCY_SCORE_EXTRA_FIXATION_MALUS = 2; // points per extra fixation over par
 
 	private CLICK_EVENT_PREFIX = 'mouse_';
 	private KEYBOARD_EVENT_PREFIX = 'key_';
@@ -46,6 +65,8 @@ export class AnalyticsManager {
 	private loggingPaused = false;
 	private pauseRequest = false;
 
+	private calculateScoreRequest = false;
+
 	constructor(gazeManager: GazeManager) {
 		this.gazeManager = gazeManager;
 	}
@@ -66,6 +87,11 @@ export class AnalyticsManager {
 
 	public logEvent(key: string) {
 		this.eventBuffer.events.add(key);
+	}
+
+	public logCompleteSlide(slideIndex: number) {
+		this.eventBuffer.events.add(`complete-slide-${slideIndex}`);
+		this.calculateScoreRequest = true;
 	}
 
 	public logMistakeType(mistakeType: TaskMistake | TaskMistake[]) {
@@ -104,35 +130,45 @@ export class AnalyticsManager {
 
 		this.loggingPaused = false;
 
-		this.pollingTimer = setInterval(() => {
-			if (this.loggingPaused) return;
-			const baseData = this.getBaseDataEntry();
-			const gazeSample: GazeSampleDataEntry = {
-				...baseData,
-				eyetracker_x: this.eyetrackerPosition.x,
-				eyetracker_y: this.eyetrackerPosition.y,
-				aoi: Array.from(this.activeAOI),
-				mouse_x: this.mousePosition.x,
-				mouse_y: this.mousePosition.y,
-				events: Array.from(this.eventBuffer.events),
-				sound_name: Array.from(this.playedSounds),
-				mistake_type: Array.from(this.eventBuffer.mistake_type),
-				task_result: null
-			};
+		this.pollingTimer = setInterval(this.tickLogging.bind(this), this.POLLING_INTERVAL_MS);
+	}
 
-			db.gazeSamples.add(gazeSample).catch((error) => {
+	private tickLogging() {
+		if (this.loggingPaused) return;
+		const baseData = this.getBaseDataEntry();
+		const gazeSample: GazeSampleDataEntry = {
+			...baseData,
+			eyetracker_x: this.eyetrackerPosition.x,
+			eyetracker_y: this.eyetrackerPosition.y,
+			aoi: Array.from(this.activeAOI),
+			mouse_x: this.mousePosition.x,
+			mouse_y: this.mousePosition.y,
+			events: Array.from(this.eventBuffer.events),
+			sound_name: Array.from(this.playedSounds),
+			mistake_type: Array.from(this.eventBuffer.mistake_type),
+			task_result: null
+		};
+
+		db.gazeSamples
+			.add(gazeSample)
+			.then(() => {
+				if (this.calculateScoreRequest) {
+					this.calculateScoreMetrics(baseData.child_id, baseData.session_id, baseData.slide_index);
+					this.calculateScoreRequest = false;
+				}
+			})
+			.catch((error) => {
 				console.error('Error logging Gaze Sample:', error);
 			});
 
-			this.eventBuffer.events.clear();
-			this.eventBuffer.mistake_type.clear();
+		this.eventBuffer.events.clear();
+		this.eventBuffer.mistake_type.clear();
 
-			// Pause after this sample if requested
-			if (this.pauseRequest) {
-				this.loggingPaused = true;
-				this.pauseRequest = false;
-			}
-		}, this.POLLING_INTERVAL_MS);
+		// Pause after this sample if requested
+		if (this.pauseRequest) {
+			this.loggingPaused = true;
+			this.pauseRequest = false;
+		}
 	}
 
 	public stopLogging(exitType: TaskResult) {
@@ -163,8 +199,6 @@ export class AnalyticsManager {
 			.catch((error) => {
 				console.error('Error logging Final Gaze Sample:', error);
 			});
-
-		this.calculateScoreMetrics(baseData.child_id, baseData.session_id);
 
 		this.unregisterListeners();
 
@@ -257,7 +291,7 @@ export class AnalyticsManager {
 	};
 
 	/* Metric calculations */
-	private calculateScoreMetrics(childId: string, sessionId: string) {
+	private calculateScoreMetrics(childId: string, sessionId: string, slideIndex: number = -1) {
 		// Get all gaze samples and fixation data for the session
 		const gazeSamplesPromise = db.gazeSamples
 			.where('[child_id+session_id]')
@@ -271,7 +305,11 @@ export class AnalyticsManager {
 
 		Promise.all([gazeSamplesPromise, fixationDataPromise])
 			.then(([gazeSamples, fixationData]) => {
-				const timeWindows = this.getEffectiveTimeWindows(gazeSamples);
+				const timeWindows = slideIndex === -1 ? this.getEffectiveTimeWindows(gazeSamples) : [
+					this.getEffectiveTimeWindow(gazeSamples, slideIndex)
+				].filter((window): window is SlideTimeWindow => window !== null);
+
+				console.log('Calculating score metrics for time windows:', timeWindows);
 
 				for (let i = 0; i < timeWindows.length; i++) {
 					const window = timeWindows[i];
@@ -294,9 +332,11 @@ export class AnalyticsManager {
 					const aoiFieldFix = this.calculateAOIFieldFixations(windowedFixationData);
 					const regressionCount = this.calculateRegressionCount(windowedFixationData);
 
+					const fluencyScore = this.calculateFluencyScore(errorRate, responseTime, meanFixDur, fixCount, aoiTargetFix, aoiFieldFix, regressionCount);
+
 					const baseData = this.getBaseDataEntry();
 					baseData.timestamp = window.endTime;
-					baseData.slide_index = i + 1;
+					baseData.slide_index = slideIndex === -1 ? (i + 1) : slideIndex;
 					baseData.stimulus_id =
 						windowedGazeSamples.length > 0 ? windowedGazeSamples[0].stimulus_id : 'null';
 
@@ -304,6 +344,7 @@ export class AnalyticsManager {
 					db.sessionScores
 						.add({
 							...baseData,
+							fluency_score: fluencyScore,
 							error_rate: errorRate,
 							response_time: responseTime,
 							mean_fix_dur: meanFixDur,
@@ -325,10 +366,36 @@ export class AnalyticsManager {
 			});
 	}
 
-	private getEffectiveTimeWindows(
-		gazeSamples: GazeSampleDataEntry[]
-	): { startTime: number; endTime: number }[] {
-		const timeWindows: { startTime: number; endTime: number }[] = [];
+	private getEffectiveTimeWindow(
+		gazeSamples: GazeSampleDataEntry[],
+		slideIndex: number
+	): SlideTimeWindow | null {
+		let startTime: number | null = null;
+		let endTime: number | null = null;
+
+		for (const sample of gazeSamples) {
+			if (!sample.events) continue;
+
+			for (const event of sample.events) {
+				// Check for slide start event (dwell-finish_slide-{index}_initial)
+				if (startTime === null && event === `dwell-finish_slide-${slideIndex}_initial`) {
+					startTime = sample.timestamp;
+					continue;
+				}
+
+				// Check for slide complete event (complete-slide-{index})
+				if (startTime !== null && event === `complete-slide-${slideIndex}`) {
+					endTime = sample.timestamp;
+					return { slideIndex, startTime, endTime };
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private getEffectiveTimeWindows(gazeSamples: GazeSampleDataEntry[]): SlideTimeWindow[] {
+		const timeWindows: SlideTimeWindow[] = [];
 		let pendingStartTime: number | null = null;
 
 		for (const sample of gazeSamples) {
@@ -347,7 +414,7 @@ export class AnalyticsManager {
 
 				// Check for slide complete event (complete-slide-{index})
 				if (pendingStartTime !== null && event.startsWith('complete-slide-')) {
-					timeWindows.push({ startTime: pendingStartTime, endTime: sample.timestamp });
+					timeWindows.push({ slideIndex: timeWindows.length, startTime: pendingStartTime, endTime: sample.timestamp });
 					pendingStartTime = null;
 				}
 			}
@@ -412,5 +479,26 @@ export class AnalyticsManager {
 			}
 		}
 		return regressionCount;
+	}
+
+	private calculateFluencyScore(
+		errorRate: number,
+		responseTime: number,
+		meanFixDur: number,
+		fixCount: number,
+		aoiTargetFix: number,
+		aoiFieldFix: number,
+		regressionCount: number
+	): number {
+
+		const timeMalus = -Math.max(0, Math.min((responseTime - this.FLUENCY_TIME_MIN) * (this.FLUENCY_SCORE_TIME_MALUS / (this.FLUENCY_TIME_MAX - this.FLUENCY_TIME_MIN)), this.FLUENCY_SCORE_TIME_MALUS));
+		const mistakeMalus = -(errorRate * this.FLUENCY_SCORE_MISTAKE_MALUS);
+		const targetFixMalus = -Math.max(0, (aoiTargetFix - this.FLUENCY_TARGET_REFIXATION_COUNT_PAR) * this.FLUENCY_SCORE_TARGET_REFIXATION_MALUS);
+		const regressionMalus = -(regressionCount * this.FLUENCY_SCORE_REGRESSION_MALUS);
+		const fixationCountMalus = -Math.max(0, (fixCount - this.FLUENCY_FIXATION_COUNT_PAR) * this.FLUENCY_SCORE_EXTRA_FIXATION_MALUS);
+
+		const score = timeMalus + mistakeMalus + targetFixMalus + regressionMalus + fixationCountMalus + this.FLUENCY_MAX_SCORE;
+
+		return Math.max(0, Math.min(score, this.FLUENCY_MAX_SCORE)); // Clamp score between 0 and 100
 	}
 }

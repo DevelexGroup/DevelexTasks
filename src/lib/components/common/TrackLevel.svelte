@@ -179,7 +179,7 @@
 
 	function logWhenStageComplete() {
 		if (validateStage(currentState()) === true) {
-			analyticsManager.logEvent(`complete-slide-${currentRepetition + 1}`);
+			analyticsManager.logCompleteSlide(currentRepetition + 1);
 		}
 	}
 </script>

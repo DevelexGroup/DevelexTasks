@@ -33,6 +33,7 @@ export interface FixationDataEntry extends BaseDataEntry {
 
 export interface SessionScoreDataEntry extends BaseDataEntry {
 	id?: number;
+	fluency_score: number;
 	error_rate: number;
 	response_time: number;
 	mean_fix_dur: number;

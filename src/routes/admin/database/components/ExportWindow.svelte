@@ -102,7 +102,7 @@
 		} else if (table === 'fixationData') {
 			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
 		} else {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Error Rate', 'Response Time', 'Mean Fixation Duration', 'Fixation Count', 'AOI Target Fixations', 'AOI Field Fixations', 'Regression Count'];
+			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Fluency Score', 'Error Rate', 'Response Time', 'Mean Fixation Duration', 'Fixation Count', 'AOI Target Fixations', 'AOI Field Fixations', 'Regression Count'];
 		}
 	}
 
@@ -136,7 +136,7 @@
 			const data = entry as SessionScoreDataEntry;
 			const values = [
 				data.id, data.child_id, data.session_id, data.task_name, data.slide_index,
-				data.stimulus_id, data.timestamp,
+				data.stimulus_id, data.timestamp, data.fluency_score,
 				data.error_rate, data.response_time, data.mean_fix_dur, data.fix_count,
 				data.aoi_target_fix, data.aoi_field_fix, data.regression_count
 			];
