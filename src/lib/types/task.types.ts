@@ -1,4 +1,5 @@
 import type { Snippet } from 'svelte';
+import type { SessionScoreMetrics } from '$lib/database/db.types';
 
 export interface TaskMetadata {
 	label: string;
@@ -48,6 +49,7 @@ export interface TrackTaskProps extends TaskLevelProps {
 	data: TrackLevelDataEntry[];
 	validateSymbol?: (clickedIndex: number, state: TrackLevelState) => TaskMistake[] | true;
 	validateStage?: (state: TrackLevelState) => TaskMistake[] | true;
+	calculateFluencyScore?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackLevelState) => number;
 	playValidationSounds?: boolean;
 	onStageAdvance?: () => void;
 	onSpace?: (state: TrackLevelState) => void;
@@ -71,6 +73,7 @@ export type TrackLevelDataEntry = {
 	sequence: string[] | string[][];
 	correct?: string[];
 	wordToRead?: string;
+	correctCount?: number;
 }
 
 export type TrackLevelDataGenerator = {

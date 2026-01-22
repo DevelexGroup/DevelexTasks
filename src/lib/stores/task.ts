@@ -1,4 +1,4 @@
-import { TaskResult, TaskStage } from '$lib/types/task.types';
+import { TaskResult, TaskStage, type TrackLevelState } from '$lib/types/task.types';
 import { writable } from 'svelte/store';
 
 export const currentTask = writable<{
@@ -9,4 +9,5 @@ export const currentTask = writable<{
 	currentRepetition: number;
 	result: TaskResult | null;
 } | null>(null);
+
 export const taskStage = writable<TaskStage>(TaskStage.Loading);

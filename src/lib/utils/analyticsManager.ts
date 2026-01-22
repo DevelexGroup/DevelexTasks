@@ -1,12 +1,12 @@
 ﻿import {
 	type BaseDataEntry,
 	type FixationDataEntry,
-	type GazeSampleDataEntry
+	type GazeSampleDataEntry, type SessionScoreMetrics
 } from '$lib/database/db.types';
 import { userStore } from '$lib/stores/user';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
-import { type TaskMistake, TaskResult } from '$lib/types/task.types';
+import { type TaskMistake, TaskResult, type TrackLevelState } from '$lib/types/task.types';
 import type {
 	FixationDataPoint,
 	GazeDataPoint,
@@ -28,19 +28,6 @@ export class AnalyticsManager {
 
 	private REGRESSION_MIN_DIST = 50; // pixels
 	private REGRESSION_MIN_DEGREE = 40; // degrees
-
-	private FLUENCY_MAX_SCORE = 100; // points
-
-	private FLUENCY_TIME_MIN = 2000; // ms
-	private FLUENCY_TIME_MAX = 5000; // ms
-	private FLUENCY_TARGET_REFIXATION_COUNT_PAR = 1; // fixations
-	private FLUENCY_FIXATION_COUNT_PAR = 5; // fixations
-
-	private FLUENCY_SCORE_TIME_MALUS = 45; // points
-	private FLUENCY_SCORE_MISTAKE_MALUS = 20; // points per mistake
-	private FLUENCY_SCORE_TARGET_REFIXATION_MALUS = 5; // points per refixation
-	private FLUENCY_SCORE_REGRESSION_MALUS = 2; // points per regression
-	private FLUENCY_SCORE_EXTRA_FIXATION_MALUS = 2; // points per extra fixation over par
 
 	private CLICK_EVENT_PREFIX = 'mouse_';
 	private KEYBOARD_EVENT_PREFIX = 'key_';
@@ -67,6 +54,9 @@ export class AnalyticsManager {
 
 	private calculateScoreRequest = false;
 
+	private currentTaskState: TrackLevelState | null = null;
+	private currentMetricEvaluation: ((scoreMetrics: Partial<SessionScoreMetrics>, state: TrackLevelState) => number) | null = null;
+
 	constructor(gazeManager: GazeManager) {
 		this.gazeManager = gazeManager;
 	}
@@ -89,9 +79,12 @@ export class AnalyticsManager {
 		this.eventBuffer.events.add(key);
 	}
 
-	public logCompleteSlide(slideIndex: number) {
+	public logCompleteSlide(slideIndex: number, taskState?: TrackLevelState, metricEvaluation?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackLevelState) => number) {
 		this.eventBuffer.events.add(`complete-slide-${slideIndex}`);
 		this.calculateScoreRequest = true;
+
+		if (taskState) this.currentTaskState = taskState;
+		if (metricEvaluation) this.currentMetricEvaluation = metricEvaluation;
 	}
 
 	public logMistakeType(mistakeType: TaskMistake | TaskMistake[]) {
@@ -324,15 +317,23 @@ export class AnalyticsManager {
 					);
 
 					// Calculate metrics
-					const errorRate = this.calculateErrorRate(windowedGazeSamples);
-					const responseTime = this.calculateResponseTime(windowedGazeSamples);
-					const meanFixDur = this.calculateMeanFixationDuration(windowedFixationData);
-					const fixCount = windowedFixationData.length;
-					const aoiTargetFix = this.calculateAOITargetFixations(windowedFixationData);
-					const aoiFieldFix = this.calculateAOIFieldFixations(windowedFixationData);
-					const regressionCount = this.calculateRegressionCount(windowedFixationData);
+					const metrics: SessionScoreMetrics = {
+						error_rate: this.calculateErrorRate(windowedGazeSamples),
+						response_time: this.calculateResponseTime(windowedGazeSamples),
+						mean_fix_dur: this.calculateMeanFixationDuration(windowedFixationData),
+						fix_count: windowedFixationData.length,
+						aoi_target_fix: this.calculateAOITargetFixations(windowedFixationData),
+						aoi_field_fix: this.calculateAOIFieldFixations(windowedFixationData),
+						regression_count: this.calculateRegressionCount(windowedFixationData)
+					};
 
-					const fluencyScore = this.calculateFluencyScore(errorRate, responseTime, meanFixDur, fixCount, aoiTargetFix, aoiFieldFix, regressionCount);
+					let fluencyScore = 0;
+					if (this.currentTaskState && this.currentMetricEvaluation) {
+						fluencyScore = this.currentMetricEvaluation(metrics, this.currentTaskState);
+					}
+
+					this.currentTaskState = null;
+					this.currentMetricEvaluation = null;
 
 					const baseData = this.getBaseDataEntry();
 					baseData.timestamp = window.endTime;
@@ -344,14 +345,8 @@ export class AnalyticsManager {
 					db.sessionScores
 						.add({
 							...baseData,
+							...metrics,
 							fluency_score: fluencyScore,
-							error_rate: errorRate,
-							response_time: responseTime,
-							mean_fix_dur: meanFixDur,
-							fix_count: fixCount,
-							aoi_target_fix: aoiTargetFix,
-							aoi_field_fix: aoiFieldFix,
-							regression_count: regressionCount
 						})
 						.then((id) => {
 							console.log('Stored session score metrics with ID:', id);
@@ -479,26 +474,5 @@ export class AnalyticsManager {
 			}
 		}
 		return regressionCount;
-	}
-
-	private calculateFluencyScore(
-		errorRate: number,
-		responseTime: number,
-		meanFixDur: number,
-		fixCount: number,
-		aoiTargetFix: number,
-		aoiFieldFix: number,
-		regressionCount: number
-	): number {
-
-		const timeMalus = -Math.max(0, Math.min((responseTime - this.FLUENCY_TIME_MIN) * (this.FLUENCY_SCORE_TIME_MALUS / (this.FLUENCY_TIME_MAX - this.FLUENCY_TIME_MIN)), this.FLUENCY_SCORE_TIME_MALUS));
-		const mistakeMalus = -(errorRate * this.FLUENCY_SCORE_MISTAKE_MALUS);
-		const targetFixMalus = -Math.max(0, (aoiTargetFix - this.FLUENCY_TARGET_REFIXATION_COUNT_PAR) * this.FLUENCY_SCORE_TARGET_REFIXATION_MALUS);
-		const regressionMalus = -(regressionCount * this.FLUENCY_SCORE_REGRESSION_MALUS);
-		const fixationCountMalus = -Math.max(0, (fixCount - this.FLUENCY_FIXATION_COUNT_PAR) * this.FLUENCY_SCORE_EXTRA_FIXATION_MALUS);
-
-		const score = timeMalus + mistakeMalus + targetFixMalus + regressionMalus + fixationCountMalus + this.FLUENCY_MAX_SCORE;
-
-		return Math.max(0, Math.min(score, this.FLUENCY_MAX_SCORE)); // Clamp score between 0 and 100
 	}
 }

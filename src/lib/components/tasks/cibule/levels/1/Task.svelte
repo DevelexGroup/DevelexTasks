@@ -6,7 +6,7 @@
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { defaultValidateStage, defaultValidateSymbol } from '$lib/utils/trackLevelUtils';
-	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
+	import { calculateFluencyScore, cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
 
 	const preset = cibuleLevelPreset.find((level => level.levelID === id))?.content;
@@ -14,7 +14,7 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
+<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} calculateFluencyScore={calculateFluencyScore} onCompleted={() => {taskStage.set(TaskStage.End)}}>
 	{#snippet hintComponent({ state })}
 		<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
 	{/snippet}

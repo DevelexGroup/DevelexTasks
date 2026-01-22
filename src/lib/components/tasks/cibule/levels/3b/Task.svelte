@@ -6,7 +6,7 @@
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
-	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
+	import { calculateFluencyScore, cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import { getContext } from 'svelte';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
@@ -44,7 +44,7 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} validateStage={validateStageWithSpace} onCompleted={() => {taskStage.set(TaskStage.End)}} onSpace={onSpace} onStageAdvance={resetSpacePressed}>
+<TrackLevel {id} data={data} {validateSymbol} validateStage={validateStageWithSpace} calculateFluencyScore={calculateFluencyScore} onCompleted={() => {taskStage.set(TaskStage.End)}} onSpace={onSpace} onStageAdvance={resetSpacePressed}>
 	{#snippet extraComponent({ state })}
 		<div class="flex gap-4">
 			{#each state.dataEntry.correct as syllable, index (index)}

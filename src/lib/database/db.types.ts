@@ -31,9 +31,7 @@ export interface FixationDataEntry extends BaseDataEntry {
 	fixation_index: number;
 }
 
-export interface SessionScoreDataEntry extends BaseDataEntry {
-	id?: number;
-	fluency_score: number;
+export interface SessionScoreMetrics {
 	error_rate: number;
 	response_time: number;
 	mean_fix_dur: number;
@@ -41,4 +39,9 @@ export interface SessionScoreDataEntry extends BaseDataEntry {
 	aoi_target_fix: number;
 	aoi_field_fix: number;
 	regression_count: number;
+}
+
+export interface SessionScoreDataEntry extends BaseDataEntry, SessionScoreMetrics {
+	id?: number;
+	fluency_score: number;
 }

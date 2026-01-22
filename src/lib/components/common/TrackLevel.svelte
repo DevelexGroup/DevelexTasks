@@ -21,6 +21,7 @@
 		onCompleted = () => {},
 		validateSymbol = () => true,
 		validateStage = () => true,
+		calculateFluencyScore = () => 0,
 		onStageAdvance = () => {},
 		onSpace = () => {},
 		playValidationSounds = true,
@@ -179,7 +180,7 @@
 
 	function logWhenStageComplete() {
 		if (validateStage(currentState()) === true) {
-			analyticsManager.logCompleteSlide(currentRepetition + 1);
+			analyticsManager.logCompleteSlide(currentRepetition + 1, currentState(), calculateFluencyScore);
 		}
 	}
 </script>

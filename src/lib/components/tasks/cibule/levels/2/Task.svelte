@@ -7,14 +7,14 @@
 	import { defaultValidateStage, defaultValidateSymbol, getWordAudioSource } from '$lib/utils/trackLevelUtils';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
-	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
+	import { calculateFluencyScore, cibuleLevelPreset } from '$lib/components/tasks/cibule';
 
 	const preset = cibuleLevelPreset.find((level => level.levelID === id))?.content;
 	const data = preset ? getCibuleLevelData(preset, rawData) : null;
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
+<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} calculateFluencyScore={calculateFluencyScore} onCompleted={() => {taskStage.set(TaskStage.End)}}>
 	{#snippet hintComponent({ state })}
 		{#if state.dataEntry.wordToRead}
 			<AudioHint audioSrc={getWordAudioSource(state.dataEntry.wordToRead)} playOnStart playOnStartDelay={750} ttsFallback={state.dataEntry.wordToRead} />

@@ -9,11 +9,13 @@ export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackLevelData
 		? rawData.target_letter.split('-').map((item) => item.trim())
 		: undefined;
 	const sequence = splitSequence(rawData.search_string, correct || []);
+	const correctCount = sequence.filter((item) => correct?.includes(item)).length;
 	return {
 		id: rawData.id.toString(),
 		sequence,
 		correct,
-		wordToRead: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase()
+		wordToRead: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase(),
+		correctCount
 	};
 }
 
@@ -65,7 +67,10 @@ export function getCibuleLevelData(
 			usedIds.add(id);
 			content.push(entry);
 		} else {
-			content.push(item as TrackLevelDataEntry);
+			const data = item as TrackLevelDataEntry;
+			const sequenceFlat = Array.isArray(data.sequence[0]) ? (data.sequence as string[][]).flat() : (data.sequence as string[]);
+			data.correctCount = sequenceFlat.filter((i) => data.correct?.includes(i)).length;
+			content.push(data);
 		}
 	}
 	return content;
