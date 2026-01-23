@@ -8,11 +8,13 @@
 	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
 	import { getContext } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 	import { tryReadWordFromState } from '$lib/utils/trackLevelUtils';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
+	import MicrophoneHint from '$lib/components/common/MicrophoneHint.svelte';
 
 	const preset = cibuleLevelPreset.find((level => level.levelID === id))?.practiceContent;
 	const data = preset ? getCibuleLevelData(preset, rawData) : null;
@@ -51,6 +53,11 @@
 				<CibuleSyllableFrame {syllable} visible={isSyllableFrameVisible(state, syllable, index)} />
 			{/each}
 		</div>
+		{#if validateStage(state) === true && !spacePressed}
+			<div class="absolute pointer-events-none bottom-16 left-1/2 -translate-x-1/2" in:fade|global={{ delay: 1000 }} out:fade|global>
+				<MicrophoneHint />
+			</div>
+		{/if}
 	{/snippet}
 	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} splitFiller={true} />

@@ -9,9 +9,11 @@
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 	import { getContext } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { tryReadWordFromState } from '$lib/utils/trackLevelUtils';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
+	import MicrophoneHint from '$lib/components/common/MicrophoneHint.svelte';
 
 	const preset = cibuleLevelPreset.find((level => level.levelID === id))?.practiceContent;
 	const data = preset ? getCibuleLevelData(preset, rawData) : null;
@@ -46,6 +48,13 @@
 <TrackLevel {id} data={data} {validateSymbol} validateStage={validateStageWithSpace} isPractice={true} onCompleted={() => {taskStage.set(TaskStage.Instructions)}} onSpace={onSpace} onStageAdvance={resetSpacePressed}>
 	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} splitFiller={true} />
+	{/snippet}
+	{#snippet extraComponent({ state, isPractice })}
+		{#if validateStage(state) === true && !spacePressed}
+			<div class="absolute pointer-events-none bottom-16 left-1/2 -translate-x-1/2" in:fade|global={{ delay: 1000 }} out:fade|global>
+				<MicrophoneHint />
+			</div>
+		{/if}
 	{/snippet}
 </TrackLevel>
 {/if}
