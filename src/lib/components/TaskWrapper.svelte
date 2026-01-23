@@ -5,15 +5,17 @@
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import TaskTrackerLoader from './TaskTrackerLoader.svelte';
 	import TaskEndScreen from '$lib/components/TaskEndScreen.svelte';
-	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { showDialog } from '$lib/stores/dialog';
 	import DialogPopup from '$lib/components/DialogPopup.svelte';
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
+	import { GazeManager } from 'develex-js-sdk';
 
 	const DEFAULT_TIMEOUT_INTERVAL = 80000; // 80 seconds
 	const TIMEOUT_EVENT_LOG = 'inactivity_timeout';
 
+	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 	const keyboardManager = getContext<KeyboardManager>(KEYBOARD_MANAGER_KEY);
 
@@ -39,6 +41,12 @@
 		window.removeEventListener('mousemove', resetTimeoutOnInteraction);
 		window.removeEventListener('mouseup', resetTimeoutOnInteraction);
 		window.removeEventListener('keydown', resetTimeoutOnInteraction);
+
+		if (gazeManager.input) {
+			gazeManager.stop();
+			gazeManager.disconnect();
+			gazeManager.close();
+		}
 	});
 
 	function exitTask(taskResult: TaskResult) {
