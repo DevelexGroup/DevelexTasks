@@ -27,7 +27,7 @@
 	let trackerState = $state(LoadState.Loading);
 	let emittingState = $state(LoadState.Loading);
 
-	const handleViewportCalibration = async () => {
+	const handleViewportCalibration = async (): Promise<boolean> => {
 		try {
 			if (!gazeManager.input) {
 				gazeManager.createInput(GAZE_INPUT_CONFIGS[get(trackerConfig)]);
@@ -40,36 +40,42 @@
 					viewportCalibrationState = LoadState.Loaded;
 				}
 			}
+			return true;
 		} catch (error) {
 			errorMessage = extractError(error, 'nepodařilo se nakalibrovat okno prohlížeče');
 			viewportCalibrationState = LoadState.Error;
+			return false;
 		}
 	};
 
-	const handleBridgeInitialization = async () => {
+	const handleBridgeInitialization = async (): Promise<boolean> => {
 		try {
 			await waitForTimeout(400);
 			await gazeManager.open();
 
 			bridgeState = LoadState.Loaded;
+			return true;
 		} catch (error) {
 			errorMessage = extractError(error, 'nepodařilo se inicializovat spojení s bridgem');
 			bridgeState = LoadState.Error;
+			return false;
 		}
 	};
 
-	const handleTrackerConnection = async () => {
+	const handleTrackerConnection = async (): Promise<boolean> => {
 		try {
 			await gazeManager.connect();
 
 			trackerState = LoadState.Loaded;
+			return true;
 		} catch (error) {
 			errorMessage = extractError(error, 'nepodařilo se připojit ke trackeru');
 			trackerState = LoadState.Error;
+			return false;
 		}
 	};
 
-	const handleEmittingStart = async () => {
+	const handleEmittingStart = async (): Promise<boolean> => {
 		try {
 			const status = await gazeManager.status();
 
@@ -78,17 +84,42 @@
 			}
 
 			emittingState = LoadState.Loaded;
+			return true;
 		} catch (error) {
 			errorMessage = extractError(error, 'nepodařilo se spustit odesílání dat z trackeru');
 			emittingState = LoadState.Error;
+			return false;
+		}
+	};
+
+	const markRemainingAsSkipped = (fromStep: number) => {
+		const states = [
+			(v: LoadState) => (viewportCalibrationState = v),
+			(v: LoadState) => (bridgeState = v),
+			(v: LoadState) => (trackerState = v),
+			(v: LoadState) => (emittingState = v)
+		];
+		for (let i = fromStep; i < states.length; i++) {
+			states[i](LoadState.Skipped);
 		}
 	};
 
 	onMount(async () => {
-		await handleViewportCalibration();
-		await handleBridgeInitialization();
-		await handleTrackerConnection();
-		await handleEmittingStart();
+		if (!(await handleViewportCalibration())) {
+			markRemainingAsSkipped(1);
+			return;
+		}
+		if (!(await handleBridgeInitialization())) {
+			markRemainingAsSkipped(2);
+			return;
+		}
+		if (!(await handleTrackerConnection())) {
+			markRemainingAsSkipped(3);
+			return;
+		}
+		if (!(await handleEmittingStart())) {
+			return;
+		}
 		await waitForTimeout(500);
 
 		onCompleted();
@@ -114,6 +145,12 @@
 				class="inline-flex h-12 w-12 items-center justify-center rounded-md border border-red-600/10 bg-red-50"
 			>
 				<Icon icon="heroicons:x-mark" class="h-7 w-7 text-red-600" />
+			</div>
+		{:else if state == LoadState.Skipped}
+			<div
+				class="inline-flex h-12 w-12 items-center justify-center rounded-md border border-gray-400/10 bg-gray-100"
+			>
+				<Icon icon="heroicons:minus" class="h-7 w-7 text-gray-400" />
 			</div>
 		{/if}
 
@@ -141,21 +178,30 @@
 				{@render loadItem(trackerState, 'Nastavení trackeru')}
 				{@render loadItem(emittingState, 'Vysílám pohyby očí')}
 
-				<div class="mt-6 h-24 w-full max-w-sm text-red-500">
+				<div class="mt-6 w-full max-w-sm text-red-500">
 					{#if viewportCalibrationState === LoadState.Error || bridgeState === LoadState.Error || trackerState === LoadState.Error || emittingState === LoadState.Error}
 						<div in:fade class="rounded-md border border-red-700/10 bg-red-50 p-2">
 							{errorMessage}
 						</div>
 
-						<button
-							class="mt-4 rounded-md bg-neutral-200 px-4 py-2 text-left text-neutral-600 hover:bg-neutral-300"
-							in:fly={{ duration: 600, y: 200, delay: 50 }}
-							onclick={() => {
-								goto('/');
-							}}
-						>
-							Přejít na hlavní stranu
-						</button>
+						<div class="mt-4 flex gap-2" in:fly={{ duration: 600, y: 200, delay: 50 }}>
+							<button
+								class="rounded-md bg-neutral-200 px-4 py-2 text-center text-neutral-600 hover:bg-neutral-300"
+								onclick={() => {
+									goto('/');
+								}}
+							>
+								Přejít na hlavní stranu
+							</button>
+							<button
+								class="rounded-md bg-amber-100 px-4 py-2 text-center text-amber-700 hover:bg-amber-200 flex-grow-1"
+								onclick={() => {
+									onCompleted();
+								}}
+							>
+								Pokračovat<br><small>(může být nefunkční)</small>
+							</button>
+						</div>
 					{/if}
 				</div>
 			</div>

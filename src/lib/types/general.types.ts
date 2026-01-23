@@ -1,7 +1,8 @@
 export enum LoadState {
 	Loading,
 	Loaded,
-	Error
+	Error,
+	Skipped
 }
 
 export enum DwellState {
