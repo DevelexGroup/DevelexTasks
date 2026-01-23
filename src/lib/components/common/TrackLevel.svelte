@@ -142,6 +142,7 @@
 				}
 				return task;
 			});
+			analyticsManager.stopLogging(TaskResult.Natural);
 			onCompleted(TaskResult.Natural);
 		}
 	}
