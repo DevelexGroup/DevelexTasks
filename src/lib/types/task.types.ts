@@ -1,5 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { SessionScoreMetrics } from '$lib/database/db.types';
+import type { PartialArrayable } from '$lib/types/util.types';
 
 export interface TaskMetadata {
 	label: string;
@@ -24,17 +25,11 @@ export enum TaskResult {
 	Timeout = 'timeout'
 }
 
-export interface TaskLevelProps {
-	id: string;
-	onCompleted?: (result: TaskResult) => void;
-	isPractice?: boolean;
-}
-
-export type TaskLevelData<TaskContent> = {
+export type TaskData<TContent> = {
 	levelID: string;
 	label: string;
-	practiceContent: TaskContent[];
-	content: TaskContent[];
+	practiceContent: TContent[];
+	content: TContent[];
 }[];
 
 export type TaskMistake = {
@@ -43,32 +38,37 @@ export type TaskMistake = {
 	audio?: string;
 };
 
-// Track task types
+export interface BaseTaskProps {
+	id: string;
+	onCompleted?: (result: TaskResult) => void;
+	isPractice?: boolean;
+}
 
-export interface TrackTaskProps extends TaskLevelProps {
-	data: TrackLevelDataEntry[];
-	validateSymbol?: (clickedIndex: number, state: TrackLevelState) => TaskMistake[] | true;
-	validateStage?: (state: TrackLevelState) => TaskMistake[] | true;
-	calculateFluencyScore?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackLevelState) => number;
+// Track task types
+export interface TrackTaskProps extends BaseTaskProps {
+	data: TrackTaskDataEntry[];
+	validateSymbol?: (clickedIndex: number, state: TrackTaskState) => TaskMistake[] | true;
+	validateStage?: (state: TrackTaskState) => TaskMistake[] | true;
+	calculateFluencyScore?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number;
 	playValidationSounds?: boolean;
 	onStageAdvance?: () => void;
-	onSpace?: (state: TrackLevelState) => void;
+	onSpace?: (state: TrackTaskState) => void;
 	trackComponent?: Snippet<[TrackComponent]>;
 	hintComponent?: Snippet<[ExtraComponent]>;
 	extraComponent?: Snippet<[ExtraComponent]>;
 }
 
-export type TrackLevelState = {
+export type TrackTaskState = {
 	selectedCorrectIndices: number[],
-	dataEntry: TrackLevelDataEntry
+	dataEntry: TrackTaskDataEntry
 }
 
-export enum TrackLevelStage {
+export enum TrackSlideStage {
 	InitialDwell,
 	Task
 }
 
-export type TrackLevelDataEntry = {
+export interface TrackTaskDataEntry {
 	id: string;
 	sequence: string[] | string[][];
 	correct?: string[];
@@ -76,15 +76,22 @@ export type TrackLevelDataEntry = {
 	correctCount?: number;
 }
 
-export type TrackLevelDataGenerator = {
-	getRandomOfType: string | string[];
-};
+export type TrackTaskData = TaskData<TrackTaskDataEntry>;
 
-export type TrackTaskData = TaskLevelData<TrackLevelDataEntry>;
-export type TrackTaskPreset = TaskLevelData<TrackLevelDataEntry | TrackLevelDataGenerator>; 
-	
+export interface TrackTaskPresetEntryDefinition extends TrackTaskDataEntry {
+	generate?: null;
+}
+export interface TrackTaskPresetEntryGenerator<TDataEntry> {
+	generate: PartialArrayable<TDataEntry> & { type?: string | string[] };
+}
+
+export type TrackTaskPreset<TDataEntry> = TaskData<TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<TDataEntry>>;
+
+
+// Components
+
 export interface ExtraComponent {
-	state: TrackLevelState;
+	state: TrackTaskState;
 	isPractice?: boolean;
 }
 

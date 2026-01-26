@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
-	import { type TaskMistake, TaskStage, type TrackLevelState } from '$lib/types/task.types';
+	import { type TaskMistake, TaskStage, type TrackTaskState } from '$lib/types/task.types';
 	import { id, rawData, validateSymbol, validateStage, isSyllableFrameVisible	} from '$lib/components/tasks/cibule/levels/3b/index';
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
@@ -23,7 +23,7 @@
 
 	let spacePressed = false;
 
-	function onSpace(state: TrackLevelState) {
+	function onSpace(state: TrackTaskState) {
 		if (validateStage(state) === true) {
 			tryReadWordFromState(state, analyticsManager);
 			spacePressed = true;
@@ -33,7 +33,7 @@
 		}
 	}
 
-	function validateStageWithSpace(state: TrackLevelState): true | TaskMistake[] {
+	function validateStageWithSpace(state: TrackTaskState): true | TaskMistake[] {
 		if (spacePressed) {
 			return validateStage(state);
 		}

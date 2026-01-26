@@ -1,36 +1,42 @@
-import type { TaskMetadata, TrackLevelState, TrackTaskPreset } from '$lib/types/task.types';
-import { CibuleDataType } from '$lib/components/tasks/cibule/cibule.types';
+import type { TaskMetadata, TrackTaskState, TrackTaskPreset } from '$lib/types/task.types';
+import { CibuleDataType, type CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 import type { SessionScoreDataEntry, SessionScoreMetrics } from '$lib/database/db.types';
 
 export const addToList = true;
 export const label = 'Cibule';
 export const description = 'Example description';
 
-export const cibuleLevelPreset: TrackTaskPreset = [
+export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 	{
 		levelID: 'level1',
 		label: 'Úroveň 1',
 		practiceContent: [
 			{
-				getRandomOfType: CibuleDataType.Pismena1
+				generate: {
+					type: CibuleDataType.Pismena1
+				}
 			}
 		],
 		content: [
 			{
-				getRandomOfType: [CibuleDataType.Pismena1, CibuleDataType.Pismena2]
+				generate: {
+					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Pismena1, CibuleDataType.Pismena2]
+				generate: {
+					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2]
+				}
 			},
 			{
-				getRandomOfType: [
-					CibuleDataType.Slabiky21A,
-					CibuleDataType.Slabiky21B,
-					CibuleDataType.Slabiky21C
-				]
+				generate: {
+					type: [CibuleDataType.Slabiky21A, CibuleDataType.Slabiky21B, CibuleDataType.Slabiky21C]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Slabiky21D, CibuleDataType.Slabiky22]
+				generate: {
+					type: [CibuleDataType.Slabiky21D, CibuleDataType.Slabiky22]
+				}
 			}
 		]
 	},
@@ -39,25 +45,31 @@ export const cibuleLevelPreset: TrackTaskPreset = [
 		label: 'Úroveň 2',
 		practiceContent: [
 			{
-				getRandomOfType: CibuleDataType.Pismena1
+				generate: {
+					type: CibuleDataType.Pismena1
+				}
 			}
 		],
 		content: [
 			{
-				getRandomOfType: [CibuleDataType.Pismena1, CibuleDataType.Pismena2]
+				generate: {
+					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Pismena1, CibuleDataType.Pismena2]
+				generate: {
+					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2]
+				}
 			},
 			{
-				getRandomOfType: [
-					CibuleDataType.Slabiky21A,
-					CibuleDataType.Slabiky21B,
-					CibuleDataType.Slabiky21C
-				]
+				generate: {
+					type: [CibuleDataType.Slabiky21A, CibuleDataType.Slabiky21B, CibuleDataType.Slabiky21C]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Slabiky21D, CibuleDataType.Slabiky22]
+				generate: {
+					type: [CibuleDataType.Slabiky21D, CibuleDataType.Slabiky22]
+				}
 			}
 		]
 	},
@@ -66,21 +78,31 @@ export const cibuleLevelPreset: TrackTaskPreset = [
 		label: 'Úroveň 3A',
 		practiceContent: [
 			{
-				getRandomOfType: [CibuleDataType.Slova3Sl]
+				generate: {
+					type: [CibuleDataType.Slova3Sl]
+				}
 			}
 		],
 		content: [
 			{
-				getRandomOfType: [CibuleDataType.Slova3Sl]
+				generate: {
+					type: [CibuleDataType.Slova3Sl]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Slova3Sl]
+				generate: {
+					type: [CibuleDataType.Slova3Sl]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Slova4Sl]
+				generate: {
+					type: [CibuleDataType.Slova4Sl]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Slova4Sl]
+				generate: {
+					type: [CibuleDataType.Slova4Sl]
+				}
 			}
 		]
 	},
@@ -89,21 +111,31 @@ export const cibuleLevelPreset: TrackTaskPreset = [
 		label: 'Úroveň 3B',
 		practiceContent: [
 			{
-				getRandomOfType: [CibuleDataType.Slova3Sl]
+				generate: {
+					type: [CibuleDataType.Slova3Sl]
+				}
 			}
 		],
 		content: [
 			{
-				getRandomOfType: [CibuleDataType.Slova3Sl]
+				generate: {
+					type: [CibuleDataType.Slova3Sl]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Slova3Sl]
+				generate: {
+					type: [CibuleDataType.Slova3Sl]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Slova4Sl]
+				generate: {
+					type: [CibuleDataType.Slova4Sl]
+				}
 			},
 			{
-				getRandomOfType: [CibuleDataType.Slova4Sl]
+				generate: {
+					type: [CibuleDataType.Slova4Sl]
+				}
 			}
 		]
 	}
@@ -122,7 +154,7 @@ const FLUENCY_SCORE_TARGET_REFIXATION_MALUS = 5; // points per refixation
 const FLUENCY_SCORE_REGRESSION_MALUS = 2; // points per regression
 const FLUENCY_SCORE_EXTRA_FIXATION_MALUS = 2; // points per extra fixation over par
 
-export function calculateFluencyScore(scoreMetrics: Partial<SessionScoreMetrics>, state: TrackLevelState): number {
+export function calculateFluencyScore(scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState): number {
 	console.log('Calculating fluency score with metrics:', scoreMetrics);
 	if (scoreMetrics.response_time === undefined ||
 		scoreMetrics.error_rate === undefined ||

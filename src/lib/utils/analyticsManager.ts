@@ -6,7 +6,7 @@
 import { userStore } from '$lib/stores/user';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
-import { type TaskMistake, TaskResult, type TrackLevelState } from '$lib/types/task.types';
+import { type TaskMistake, TaskResult, type TrackTaskState } from '$lib/types/task.types';
 import type {
 	FixationDataPoint,
 	GazeDataPoint,
@@ -55,8 +55,8 @@ export class AnalyticsManager {
 
 	private calculateScoreRequest = false;
 
-	private currentTaskState: TrackLevelState | null = null;
-	private currentMetricEvaluation: ((scoreMetrics: Partial<SessionScoreMetrics>, state: TrackLevelState) => number) | null = null;
+	private currentTaskState: TrackTaskState | null = null;
+	private currentMetricEvaluation: ((scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number) | null = null;
 
 	constructor(gazeManager: GazeManager) {
 		this.gazeManager = gazeManager;
@@ -80,7 +80,7 @@ export class AnalyticsManager {
 		this.eventBuffer.events.add(key);
 	}
 
-	public logCompleteSlide(slideIndex: number, taskState?: TrackLevelState, metricEvaluation?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackLevelState) => number) {
+	public logCompleteSlide(slideIndex: number, taskState?: TrackTaskState, metricEvaluation?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number) {
 		this.eventBuffer.events.add(`complete-slide-${slideIndex}`);
 		this.calculateScoreRequest = true;
 

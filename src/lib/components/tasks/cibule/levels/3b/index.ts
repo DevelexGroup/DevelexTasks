@@ -1,5 +1,5 @@
 ﻿import { resolveAny } from '$lib/utils/resolveAny';
-import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
+import type { TaskMistake, TrackTaskState } from '$lib/types/task.types';
 import { MistakeMisclick, MistakeSkipped, MistakeUnfinished } from '$lib/types/mistakes.types';
 import { getFlattenedSymbols } from '$lib/utils/trackLevelUtils';
 import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
@@ -9,7 +9,7 @@ export const id = 'level3b';
 export const rawData: CibuleRawDataEntry[] = cibuleL3bRawData;
 export const instructionVideo = resolveAny('/video/cibule-instrukce-03b.webm');
 
-export function validateStage(state: TrackLevelState) : TaskMistake[] | true {
+export function validateStage(state: TrackTaskState) : TaskMistake[] | true {
 	const correctSyllables = state.dataEntry.correct ?? [];
 	const flattenedSymbols = getFlattenedSymbols(state);
 
@@ -24,7 +24,7 @@ export function validateStage(state: TrackLevelState) : TaskMistake[] | true {
 	return true;
 }
 
-export function validateSymbol(clickedIndex: number, state: TrackLevelState): TaskMistake[] | true {
+export function validateSymbol(clickedIndex: number, state: TrackTaskState): TaskMistake[] | true {
 	const correctSyllables = state.dataEntry.correct ?? [];
 	const flattenedSymbols = getFlattenedSymbols(state);
 	const clickedSyllable = flattenedSymbols[clickedIndex];
@@ -47,7 +47,7 @@ export function validateSymbol(clickedIndex: number, state: TrackLevelState): Ta
 	return [MistakeMisclick];
 }
 
-export const isSyllableFrameVisible = (state: TrackLevelState, syllable: string, positionIndex: number): boolean => {
+export const isSyllableFrameVisible = (state: TrackTaskState, syllable: string, positionIndex: number): boolean => {
 	if (positionIndex >= state.selectedCorrectIndices.length) {
 		return false;
 	}

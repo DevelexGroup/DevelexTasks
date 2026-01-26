@@ -1,10 +1,10 @@
 ﻿import type {
-	TrackLevelDataEntry,
-	TrackLevelDataGenerator
+	TrackTaskDataEntry, TrackTaskPresetEntryDefinition,
+	TrackTaskPresetEntryGenerator
 } from '$lib/types/task.types';
 import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 
-export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackLevelDataEntry {
+export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackTaskDataEntry {
 	const correct = rawData.target_letter
 		? rawData.target_letter.split('-').map((item) => item.trim())
 		: undefined;
@@ -34,41 +34,54 @@ export function splitSequence(sequence: string, targets: string[]): string[] {
 	return result;
 }
 
-function getRandomEntryOfType(
-	rawData: CibuleRawDataEntry[],
-	type: string | string[],
-	usedIds: Set<number>
-): { entry: TrackLevelDataEntry; id: number } {
-	const filteredEntries = rawData.filter(
-		(entry) =>
-			(Array.isArray(type) ? type.includes(entry.type) : entry.type === type) &&
-			!usedIds.has(entry.id)
-	);
+// function getRandomEntryOfType(
+// 	rawData: CibuleRawDataEntry[],
+// 	type: string | string[],
+// 	usedIds: Set<number>
+// ): { entry: TrackTaskDataEntry; id: number } {
+// 	const filteredEntries = rawData.filter(
+// 		(entry) =>
+// 			(Array.isArray(type) ? type.includes(entry.type) : entry.type === type) &&
+// 			!usedIds.has(entry.id)
+// 	);
+//
+// 	if (filteredEntries.length === 0) {
+// 		throw new Error(`No entries found for type: ${type}`);
+// 	}
+// 	const randomIndex = Math.floor(Math.random() * filteredEntries.length);
+// 	const selectedEntry = filteredEntries[randomIndex];
+//
+// 	return { entry: formatCibuleRawData(selectedEntry), id: selectedEntry.id };
+// }
 
-	if (filteredEntries.length === 0) {
-		throw new Error(`No entries found for type: ${type}`);
-	}
-	const randomIndex = Math.floor(Math.random() * filteredEntries.length);
-	const selectedEntry = filteredEntries[randomIndex];
-
-	return { entry: formatCibuleRawData(selectedEntry), id: selectedEntry.id };
+function generateCibuleDataEntry(
+	generatorPreset: TrackTaskPresetEntryGenerator<CibuleRawDataEntry>
+): TrackTaskDataEntry {
+	// Placeholder implementation
+	return {
+		id: 'generated-' + Math.random().toString(36).substr(2, 9),
+		sequence: [],
+		correct: []
+	};
 }
 
 export function getCibuleLevelData(
-	preset: (TrackLevelDataEntry | TrackLevelDataGenerator)[],
+	preset: (TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<CibuleRawDataEntry>)[],
 	rawData: CibuleRawDataEntry[]
-): TrackLevelDataEntry[] {
-	const content: TrackLevelDataEntry[] = [];
+): TrackTaskDataEntry[] {
+	const content: TrackTaskDataEntry[] = [];
 	const usedIds = new Set<number>();
 
 	for (const item of preset) {
-		if ('getRandomOfType' in item) {
-			const { entry, id } = getRandomEntryOfType(rawData, item.getRandomOfType, usedIds);
-			usedIds.add(id);
-			content.push(entry);
-		} else {
-			const data = item as TrackLevelDataEntry;
-			const sequenceFlat = Array.isArray(data.sequence[0]) ? (data.sequence as string[][]).flat() : (data.sequence as string[]);
+		if (item.generate !== null) { // Generator
+			const generator = item as TrackTaskPresetEntryGenerator<CibuleRawDataEntry>;
+			const generatedEntry = generateCibuleDataEntry(generator);
+			content.push(generatedEntry);
+		} else { // Definition
+			const data = item as TrackTaskDataEntry;
+			const sequenceFlat = Array.isArray(data.sequence[0])
+				? (data.sequence as string[][]).flat()
+				: (data.sequence as string[]);
 			data.correctCount = sequenceFlat.filter((i) => data.correct?.includes(i)).length;
 			content.push(data);
 		}

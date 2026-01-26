@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
-	import { type TaskMistake, TaskStage, type TrackLevelState } from '$lib/types/task.types';
+	import { type TaskMistake, TaskStage, type TrackTaskState } from '$lib/types/task.types';
 	import { fonologieTestData } from '$lib/components/tasks/fonologie/fonologie.data';
 	import { getShowcaseData, id } from '$lib/components/tasks/fonologie/levels/1/index';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
@@ -17,7 +17,7 @@
 
 	let symbolsShowcase = true;
 
-	function allSymbolsClicked(state: TrackLevelState) : TaskMistake[] | true {
+	function allSymbolsClicked(state: TrackTaskState) : TaskMistake[] | true {
 		const selectedCount = state.selectedCorrectIndices.length;
 		const totalCount = state.dataEntry.sequence.length;
 		if (selectedCount < totalCount) {

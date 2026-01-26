@@ -1,10 +1,10 @@
-﻿import type { TrackLevelDataEntry } from '$lib/types/task.types';
+﻿import type { TrackTaskDataEntry } from '$lib/types/task.types';
 
 export const id = 'level1';
 
 export const instructionVideo = null;
 
-export function getShowcaseData(data: TrackLevelDataEntry[]): TrackLevelDataEntry[] {
+export function getShowcaseData(data: TrackTaskDataEntry[]): TrackTaskDataEntry[] {
 	const allSymbols = data
 		? data.flatMap((entry) =>
 				Array.isArray(entry.sequence[0])

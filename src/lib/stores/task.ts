@@ -1,4 +1,4 @@
-import { TaskResult, TaskStage, type TrackLevelState } from '$lib/types/task.types';
+import { TaskResult, TaskStage, type TrackTaskState } from '$lib/types/task.types';
 import { writable } from 'svelte/store';
 
 export const currentTask = writable<{

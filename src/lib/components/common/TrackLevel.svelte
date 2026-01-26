@@ -6,7 +6,7 @@
 	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { playSound, SOUND_CORRECT, SOUND_MISTAKE } from '$lib/utils/sound';
-	import { TaskResult, TrackLevelStage, type TrackTaskProps } from '$lib/types/task.types';
+	import { TaskResult, TrackSlideStage, type TrackTaskProps } from '$lib/types/task.types';
 	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
@@ -32,7 +32,7 @@
 
 	const MAX_MISTAKES_BEFORE_DIALOG = 5;
 
-	let currentStage = $state<TrackLevelStage>(TrackLevelStage.InitialDwell);
+	let currentStage = $state<TrackSlideStage>(TrackSlideStage.InitialDwell);
 	let currentRepetition = $state<number>(0);
 
 	// let lastSymbolIndex = $state<number | null>(null);
@@ -67,7 +67,7 @@
 	})
 
 	$effect(() => {
-		if (currentStage === TrackLevelStage.InitialDwell && $trackerConfig !== AvaiableTracker.MouseIdt) {
+		if (currentStage === TrackSlideStage.InitialDwell && $trackerConfig !== AvaiableTracker.MouseIdt) {
 			cursorVisible.set(false);
 		} else {
 			cursorVisible.set(true);
@@ -119,9 +119,9 @@
 	}
 
 	function skipStage() {
-		if (currentStage === TrackLevelStage.InitialDwell) {
-			currentStage = TrackLevelStage.Task;
-		} else if (currentStage === TrackLevelStage.Task) {
+		if (currentStage === TrackSlideStage.InitialDwell) {
+			currentStage = TrackSlideStage.Task;
+		} else if (currentStage === TrackSlideStage.Task) {
 			advanceStage();
 		}
 	}
@@ -129,7 +129,7 @@
 	function advanceStage() {
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
-			currentStage = TrackLevelStage.InitialDwell;
+			currentStage = TrackSlideStage.InitialDwell;
 			selectedIndices = [];
 			onStageAdvance();
 		} else {
@@ -187,7 +187,7 @@
 </script>
 
 <div class="flex h-screen w-full items-center justify-center bg-task-background">
-	{#if currentStage === TrackLevelStage.InitialDwell}
+	{#if currentStage === TrackSlideStage.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget
 				id={`slide-${currentRepetition + 1}_initial`}
@@ -195,11 +195,11 @@
 			  bufferSize={50}
 			  width={125}
 			  onDwellComplete={() => {
-					currentStage = TrackLevelStage.Task;
+					currentStage = TrackSlideStage.Task;
 			  }}
 			/>
 		</div>
-	{:else if currentStage === TrackLevelStage.Task}
+	{:else if currentStage === TrackSlideStage.Task}
 		<div class="flex flex-col items-center justify-center gap-16">
 			<div class="text-center">
 				{#if hintComponent}

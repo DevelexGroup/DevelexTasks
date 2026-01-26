@@ -1,4 +1,4 @@
-﻿import type { TaskMistake, TrackLevelState } from '$lib/types/task.types';
+﻿import type { TaskMistake, TrackTaskState } from '$lib/types/task.types';
 import { playSoundOrTTS } from '$lib/utils/sound';
 import { resolveAny } from '$lib/utils/resolveAny';
 import { AnalyticsManager } from '$lib/utils/analyticsManager';
@@ -9,7 +9,7 @@ import {
 	MistakeWrongOrder
 } from '$lib/types/mistakes.types';
 
-export function tryReadWordFromState(state: TrackLevelState, analyticsManager?: AnalyticsManager) {
+export function tryReadWordFromState(state: TrackTaskState, analyticsManager?: AnalyticsManager) {
 	const wordToRead = state.dataEntry?.wordToRead;
 	if (wordToRead) {
 		const audioSource = getWordAudioSource(wordToRead);
@@ -24,12 +24,12 @@ export function getWordAudioSource(word: string): string {
 	return resolveAny(`/sound/syllables/${word.toLowerCase()}.ogg`);
 }
 
-export function getFlattenedSymbols(state: TrackLevelState): string[] {
+export function getFlattenedSymbols(state: TrackTaskState): string[] {
 	if (!state.dataEntry.sequence) return [];
 	return Array.isArray(state.dataEntry.sequence[0]) ? (state.dataEntry.sequence as string[][]).flat() : (state.dataEntry.sequence as string[]);
 }
 
-export function defaultValidateStage(state: TrackLevelState) : TaskMistake[] | true {
+export function defaultValidateStage(state: TrackTaskState) : TaskMistake[] | true {
 	const lastSyllable = getFlattenedSymbols(state).findLastIndex((syllable => syllable === state.dataEntry.correct?.[0]));
 	if (!state.selectedCorrectIndices || state.selectedCorrectIndices.length === 0 || state.selectedCorrectIndices[state.selectedCorrectIndices.length - 1] !== lastSyllable) {
 		return [MistakeUnfinished];
@@ -37,7 +37,7 @@ export function defaultValidateStage(state: TrackLevelState) : TaskMistake[] | t
 	return true;
 }
 
-export function defaultValidateSymbol(clickedIndex: number, state: TrackLevelState): TaskMistake[] | true {
+export function defaultValidateSymbol(clickedIndex: number, state: TrackTaskState): TaskMistake[] | true {
 	// Wrong order check
 	if (state.selectedCorrectIndices.length > 0) {
 		const lastSelectedIndex = state.selectedCorrectIndices[state.selectedCorrectIndices.length - 1];
