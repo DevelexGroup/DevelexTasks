@@ -14,6 +14,7 @@ import type {
 	GazeManager
 } from 'develex-js-sdk';
 import { browser } from '$app/environment';
+import Dexie from 'dexie';
 import { db } from '$lib/database/db';
 
 interface SlideTimeWindow {
@@ -128,6 +129,7 @@ export class AnalyticsManager {
 
 	private tickLogging() {
 		if (this.loggingPaused) return;
+
 		const baseData = this.getBaseDataEntry();
 		const gazeSample: GazeSampleDataEntry = {
 			...baseData,
@@ -142,27 +144,34 @@ export class AnalyticsManager {
 			task_result: null
 		};
 
-		db.gazeSamples
-			.add(gazeSample)
-			.then(() => {
-				if (this.calculateScoreRequest) {
-					this.calculateScoreMetrics(baseData.child_id, baseData.session_id, baseData.slide_index);
-					this.calculateScoreRequest = false;
-				}
-			})
-			.catch((error) => {
-				console.error('Error logging Gaze Sample:', error);
-			});
+		// Capture current state before clearing
+		const shouldCalculateScore = this.calculateScoreRequest;
+		const childId = baseData.child_id;
+		const sessionId = baseData.session_id;
+		const slideIndex = baseData.slide_index;
 
+		// Clear buffers immediately (data already captured in gazeSample)
 		this.eventBuffer.events.clear();
 		this.eventBuffer.mistake_type.clear();
+		this.calculateScoreRequest = false;
 
-		// Pause after this sample if requested
+		// Fire-and-forget but properly chained
+		db.transaction('rw', db.gazeSamples, db.fixationData, db.sessionScores, async () => {
+			await db.gazeSamples.add(gazeSample);
+
+			if (shouldCalculateScore) {
+				await this.calculateScoreMetrics(childId, sessionId, slideIndex);
+			}
+		}).catch((error) => {
+			console.error('Transaction failed:', error);
+		});
+
 		if (this.pauseRequest) {
 			this.loggingPaused = true;
 			this.pauseRequest = false;
 		}
 	}
+
 
 	public stopLogging(exitType: TaskResult) {
 		if (!this.pollingTimer) return;
@@ -186,9 +195,6 @@ export class AnalyticsManager {
 
 		db.gazeSamples
 			.add(finalGazeSample)
-			.then((id) => {
-				console.log('Logged Final Gaze Sample with ID:', id, finalGazeSample);
-			})
 			.catch((error) => {
 				console.error('Error logging Final Gaze Sample:', error);
 			});
@@ -284,81 +290,76 @@ export class AnalyticsManager {
 	};
 
 	/* Metric calculations */
-	private calculateScoreMetrics(childId: string, sessionId: string, slideIndex: number = -1) {
+	private async calculateScoreMetrics(childId: string, sessionId: string, slideIndex: number = -1) {
 		// Get all gaze samples and fixation data for the session
-		const gazeSamplesPromise = db.gazeSamples
-			.where('[child_id+session_id]')
-			.equals([childId, sessionId])
-			.toArray();
+		const gazeSamples = await Dexie.waitFor(
+			db.gazeSamples
+				.where('[child_id+session_id]')
+				.equals([childId, sessionId])
+				.toArray()
+		);
 
-		const fixationDataPromise = db.fixationData
-			.where('[child_id+session_id]')
-			.equals([childId, sessionId])
-			.toArray();
+		const fixationData = await Dexie.waitFor(
+			db.fixationData
+				.where('[child_id+session_id]')
+				.equals([childId, sessionId])
+				.toArray()
+		);
 
-		Promise.all([gazeSamplesPromise, fixationDataPromise])
-			.then(([gazeSamples, fixationData]) => {
-				const timeWindows = slideIndex === -1 ? this.getEffectiveTimeWindows(gazeSamples) : [
-					this.getEffectiveTimeWindow(gazeSamples, slideIndex)
-				].filter((window): window is SlideTimeWindow => window !== null);
+		const timeWindows = slideIndex === -1 ? this.getEffectiveTimeWindows(gazeSamples) : [
+			this.getEffectiveTimeWindow(gazeSamples, slideIndex)
+		].filter((window): window is SlideTimeWindow => window !== null);
 
-				console.log('Calculating score metrics for time windows:', timeWindows);
+		for (let i = 0; i < timeWindows.length; i++) {
+			const window = timeWindows[i];
+			const windowedGazeSamples = gazeSamples.filter(
+				(sample) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
+			);
+			// Account for the fact that fixation timestamps are based on their end time
+			const windowedFixationData = fixationData.filter(
+				(fix) =>
+					fix.timestamp - fix.duration >= window.startTime &&
+					fix.timestamp - fix.duration <= window.endTime
+			);
 
-				for (let i = 0; i < timeWindows.length; i++) {
-					const window = timeWindows[i];
-					const windowedGazeSamples = gazeSamples.filter(
-						(sample) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
-					);
-					// Account for the fact that fixation timestamps are based on their end time
-					const windowedFixationData = fixationData.filter(
-						(fix) =>
-							fix.timestamp - fix.duration >= window.startTime &&
-							fix.timestamp - fix.duration <= window.endTime
-					);
+			// Calculate metrics
+			const metrics: SessionScoreMetrics = {
+				error_rate: this.calculateErrorRate(windowedGazeSamples),
+				response_time: this.calculateResponseTime(windowedGazeSamples),
+				mean_fix_dur: this.calculateMeanFixationDuration(windowedFixationData),
+				fix_count: windowedFixationData.length,
+				aoi_target_fix: this.calculateAOITargetFixations(windowedFixationData),
+				aoi_field_fix: this.calculateAOIFieldFixations(windowedFixationData),
+				regression_count: this.calculateRegressionCount(windowedFixationData)
+			};
 
-					// Calculate metrics
-					const metrics: SessionScoreMetrics = {
-						error_rate: this.calculateErrorRate(windowedGazeSamples),
-						response_time: this.calculateResponseTime(windowedGazeSamples),
-						mean_fix_dur: this.calculateMeanFixationDuration(windowedFixationData),
-						fix_count: windowedFixationData.length,
-						aoi_target_fix: this.calculateAOITargetFixations(windowedFixationData),
-						aoi_field_fix: this.calculateAOIFieldFixations(windowedFixationData),
-						regression_count: this.calculateRegressionCount(windowedFixationData)
-					};
+			let fluencyScore = 0;
+			if (this.currentTaskState && this.currentMetricEvaluation) {
+				fluencyScore = this.currentMetricEvaluation(metrics, this.currentTaskState);
+			}
 
-					let fluencyScore = 0;
-					if (this.currentTaskState && this.currentMetricEvaluation) {
-						fluencyScore = this.currentMetricEvaluation(metrics, this.currentTaskState);
-					}
+			this.currentTaskState = null;
+			this.currentMetricEvaluation = null;
 
-					this.currentTaskState = null;
-					this.currentMetricEvaluation = null;
+			const baseData = this.getBaseDataEntry();
+			baseData.timestamp = window.endTime;
+			baseData.slide_index = slideIndex === -1 ? (i + 1) : slideIndex;
+			baseData.stimulus_id =
+				windowedGazeSamples.length > 0 ? windowedGazeSamples[0].stimulus_id : 'null';
 
-					const baseData = this.getBaseDataEntry();
-					baseData.timestamp = window.endTime;
-					baseData.slide_index = slideIndex === -1 ? (i + 1) : slideIndex;
-					baseData.stimulus_id =
-						windowedGazeSamples.length > 0 ? windowedGazeSamples[0].stimulus_id : 'null';
-
-					// Store session score metrics
-					db.sessionScores
-						.add({
-							...baseData,
-							...metrics,
-							fluency_score: fluencyScore,
-						})
-						.then((id) => {
-							console.log('Stored session score metrics with ID:', id);
-						})
-						.catch((error) => {
-							console.error('Error storing session score metrics:', error);
-						});
-				}
-			})
-			.catch((error) => {
-				console.error('Error retrieving data for score metrics calculation:', error);
-			});
+			// Store session score metrics
+			try {
+				const id = await Dexie.waitFor(
+					db.sessionScores.add({
+						...baseData,
+						...metrics,
+						fluency_score: fluencyScore,
+					})
+				);
+			} catch (error) {
+				console.error('Error storing session score metrics:', error);
+			}
+		}
 	}
 
 	private getEffectiveTimeWindow(
@@ -386,6 +387,7 @@ export class AnalyticsManager {
 			}
 		}
 
+		console.error(`No complete event found for slide index ${slideIndex} (startTime: ${startTime}, endTime: ${endTime})`);
 		return null;
 	}
 
