@@ -37,6 +37,13 @@
 			Databáze
 		</button>
 
+		<button
+			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
+			onclick={() => goto(resolve(`/admin/heatmap`))}
+		>
+			Heatmap
+		</button>
+
 		<hr class="my-4 border-gray-300" />
 
 		<button
