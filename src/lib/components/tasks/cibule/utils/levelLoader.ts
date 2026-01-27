@@ -34,35 +34,35 @@ export function splitSequence(sequence: string, targets: string[]): string[] {
 	return result;
 }
 
-// function getRandomEntryOfType(
-// 	rawData: CibuleRawDataEntry[],
-// 	type: string | string[],
-// 	usedIds: Set<number>
-// ): { entry: TrackTaskDataEntry; id: number } {
-// 	const filteredEntries = rawData.filter(
-// 		(entry) =>
-// 			(Array.isArray(type) ? type.includes(entry.type) : entry.type === type) &&
-// 			!usedIds.has(entry.id)
-// 	);
-//
-// 	if (filteredEntries.length === 0) {
-// 		throw new Error(`No entries found for type: ${type}`);
-// 	}
-// 	const randomIndex = Math.floor(Math.random() * filteredEntries.length);
-// 	const selectedEntry = filteredEntries[randomIndex];
-//
-// 	return { entry: formatCibuleRawData(selectedEntry), id: selectedEntry.id };
-// }
-
 function generateCibuleDataEntry(
-	generatorPreset: TrackTaskPresetEntryGenerator<CibuleRawDataEntry>
+	presetEntry: TrackTaskPresetEntryGenerator<CibuleRawDataEntry>,
+	rawData: CibuleRawDataEntry[],
+	excludeIds?: Set<number>
 ): TrackTaskDataEntry {
-	// Placeholder implementation
-	return {
-		id: 'generated-' + Math.random().toString(36).substr(2, 9),
-		sequence: [],
-		correct: []
-	};
+	// For each key in the presetEntry filter out the raw data entries that match the elements in the preset
+	let filteredData = rawData;
+	const generate = presetEntry.generate;
+
+	if (generate) {
+		for (const [key, value] of Object.entries(generate)) {
+			const valuesArray = Array.isArray(value) ? value : [value];
+			filteredData = filteredData.filter((entry) => valuesArray.includes((entry as never)[key]));
+		}
+	}
+
+	// Exclude already used IDs
+	if (excludeIds) {
+		filteredData = filteredData.filter((entry) => !excludeIds.has(entry.id));
+	}
+
+	// Randomly select one entry from the filtered data
+	if (filteredData.length === 0) {
+		throw new Error('No matching raw data entries found for the given preset generator.');
+	}
+
+	const randomIndex = Math.floor(Math.random() * filteredData.length);
+	const selectedEntry = filteredData[randomIndex];
+	return formatCibuleRawData(selectedEntry);
 }
 
 export function getCibuleLevelData(
@@ -75,7 +75,8 @@ export function getCibuleLevelData(
 	for (const item of preset) {
 		if (item.generate !== null) { // Generator
 			const generator = item as TrackTaskPresetEntryGenerator<CibuleRawDataEntry>;
-			const generatedEntry = generateCibuleDataEntry(generator);
+			const generatedEntry = generateCibuleDataEntry(generator, rawData, usedIds);
+			usedIds.add(parseInt(generatedEntry.id));
 			content.push(generatedEntry);
 		} else { // Definition
 			const data = item as TrackTaskDataEntry;
