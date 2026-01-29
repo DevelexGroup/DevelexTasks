@@ -1,0 +1,135 @@
+﻿
+export enum UserRole {
+	Garant = 'GARANT',
+	Lector = 'LECTOR',
+	Student = 'STUDENT'
+}
+
+export enum TestSessionStatus {
+	InProgress = 'IN_PROGRESS',
+	Completed = 'COMPLETED',
+	Abandoned = 'ABANDONED',
+	Error = 'ERROR'
+}
+
+export interface TestSessionDTO {
+	id: string;
+	userId: string;
+	username: string;
+	userFullName: string;
+	testType: string;
+	status: TestSessionStatus;
+	sessionStartTime: Date;
+	sessionEndTime: Date;
+	partCount: number;
+	fileCount: number;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+export interface RegisterRequest {
+	username: string;
+	password: string;
+	email: string;
+	firstName: string;
+	lastName: string;
+}
+
+export interface UserDTO {
+	id: string;
+	username: string;
+	email: string;
+	firstName: string;
+	lastName: string;
+	role: UserRole;
+	createdAt: Date;
+}
+
+export interface LoginRequest {
+	username: string;
+	password: string;
+}
+
+export interface LoginResponse {
+	token: string;
+	expiresIn: Date;
+	userId: string;
+	username: string;
+	firstName: string;
+	lastName: string;
+	role: UserRole;
+}
+
+export interface PageTestSessionDTO {
+	content: TestSessionDTO;
+	totalElements: number;
+	totalPages: number;
+	numberOfElements: number;
+	size: number;
+	number: number;
+	first: boolean;
+	last: boolean;
+	empty: boolean;
+	pageable: PageableObject;
+	sort: SortObject;
+}
+
+export interface PageableObject {
+	pageNumber: number;
+	pageSize: number;
+	offset: number;
+	paged: boolean;
+	unpaged: boolean;
+	sort: SortObject;
+}
+
+export interface SortObject {
+	property: string;
+	direction: string;
+	ascending: boolean;
+	ignoreCase: boolean;
+	nullHandling: string;
+}
+
+export enum StorageMode {
+	Plain = 'PLAIN',
+	CompressedOnly = 'COMPRESSED_ONLY',
+	EncryptedOnly = 'ENCRYPTED_ONLY',
+	CompressedEncrypted = 'COMPRESSED_ENCRYPTED'
+}
+
+export interface FileMetadata {
+	path: string;
+	size: number;
+	storageMode: StorageMode;
+	created: string;
+	modified: string;
+}
+
+export interface TestFileDTO {
+	id: string;
+	fileName: string;
+	fileType: string;
+	description: string;
+	fileSize: number;
+	originalSize: number;
+	storageMode: StorageMode;
+	compressed: boolean;
+	encrypted: boolean;
+	createdAt: Date;
+}
+
+export interface TestSessionDetailDTO extends TestSessionDTO {
+	files: TestFileDTO[];
+	parts: TestSessionPartDTO[];
+}
+
+export interface TestSessionPartDTO {
+	id: string;
+	partNumber: number;
+	totalParts: number;
+	notes: string;
+	startTime: Date;
+	endTime: Date;
+	createdAt: Date;
+}
