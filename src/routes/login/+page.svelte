@@ -6,6 +6,8 @@
 	import { Label } from '$lib/components/ui/label';
 	import * as Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
+	import { login, register } from '$lib/api/auth';
+	import { ApiError } from '$lib/api/client';
 
 	// Login form state
 	let loginUsername = $state('');
@@ -23,6 +25,10 @@
 	let registerError = $state('');
 	let registerLoading = $state(false);
 
+	// Success message state
+	let registerSuccess = $state(false);
+	let activeTab = $state('login');
+
 	async function handleLogin() {
 		loginError = '';
 
@@ -33,13 +39,15 @@
 
 		loginLoading = true;
 		try {
-			// TODO: Implement actual login logic
-			console.log('Login attempt:', { username: loginUsername });
-			// Simulate login - replace with actual API call
-			await new Promise((resolve) => setTimeout(resolve, 1000));
+			await login({ username: loginUsername, password: loginPassword });
 			goto(resolve('/'));
-		} catch {
-			loginError = 'Neplatné uživatelské jméno nebo heslo.';
+		} catch (err) {
+			if (err instanceof ApiError && err.status === 401) {
+				loginError = 'Neplatné uživatelské jméno nebo heslo.';
+			} else {
+				loginError = 'Chyba serveru. Zkuste to prosím znovu.';
+			}
+			console.error('Login error:', err);
 		} finally {
 			loginLoading = false;
 		}
@@ -70,18 +78,33 @@
 
 		registerLoading = true;
 		try {
-			// TODO: Implement actual registration logic
-			console.log('Register attempt:', {
+			await register({
 				username: registerUsername,
+				password: registerPassword,
+				email: registerEmail || '',
 				firstName: registerFirstName,
-				lastName: registerLastName,
-				email: registerEmail || undefined
+				lastName: registerLastName
 			});
-			// Simulate registration - replace with actual API call
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-			goto(resolve('/'));
-		} catch {
-			registerError = 'Registrace se nezdařila. Zkuste to prosím znovu.';
+			registerSuccess = true;
+			activeTab = 'login';
+			// Clear form
+			registerUsername = '';
+			registerPassword = '';
+			registerConfirmPassword = '';
+			registerFirstName = '';
+			registerLastName = '';
+			registerEmail = '';
+			// Clear success message after a delay
+			setTimeout(() => {
+				registerSuccess = false;
+			}, 5000);
+		} catch (err) {
+			if (err instanceof ApiError) {
+				registerError = 'Registrace se nezdařila. Zkuste to prosím znovu.';
+			} else {
+				registerError = 'Chyba serveru. Zkuste to prosím znovu.';
+			}
+			console.error('Registration error:', err);
 		} finally {
 			registerLoading = false;
 		}
@@ -97,7 +120,7 @@
 	<h1 class="text-5xl font-bold text-red-400">Develex Tasks</h1>
 
 	<div class="mt-12 w-full max-w-md">
-		<Tabs.Root value="login" class="w-full">
+		<Tabs.Root bind:value={activeTab} class="w-full">
 			<Tabs.List class="grid w-full grid-cols-2">
 				<Tabs.Trigger value="login">Přihlásit se</Tabs.Trigger>
 				<Tabs.Trigger value="register">Zaregistrovat se</Tabs.Trigger>
@@ -109,7 +132,13 @@
 						<Card.Title>Přihlásit se</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<form onsubmit={(e) => { e.preventDefault(); handleLogin(); }} class="flex flex-col gap-4">
+						{#if registerSuccess}
+							<p class="mb-4 text-sm text-green-600">Registrace byla úspěšná! Nyní se můžete přihlásit.</p>
+						{/if}
+						<form
+							onsubmit={(e) => { e.preventDefault(); handleLogin(); }}
+							class="flex flex-col gap-4"
+						>
 							<div class="flex flex-col gap-2">
 								<Label for="login-username">Uživatelské jméno</Label>
 								<Input
@@ -147,7 +176,10 @@
 						<Card.Title>Zaregistrovat se</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<form onsubmit={(e) => { e.preventDefault(); handleRegister(); }} class="flex flex-col gap-4">
+						<form
+							onsubmit={(e) => { e.preventDefault(); handleRegister(); }}
+							class="flex flex-col gap-4"
+						>
 							<div class="grid grid-cols-2 gap-4">
 								<div class="flex flex-col gap-2">
 									<Label for="register-firstName">Křestní jméno <span class="text-red-500">*</span></Label>
@@ -209,12 +241,12 @@
 									autocomplete="new-password"
 								/>
 							</div>
-						{#if registerError}
-							<p class="text-sm text-red-500">{registerError}</p>
-						{/if}
-						<Button type="submit" class="w-full bg-blue-600 hover:bg-blue-700" disabled={registerLoading}>
-							{registerLoading ? 'Registruji...' : 'Zaregistrovat se'}
-						</Button>
+							{#if registerError}
+								<p class="text-sm text-red-500">{registerError}</p>
+							{/if}
+							<Button type="submit" class="w-full bg-blue-600 hover:bg-blue-700" disabled={registerLoading}>
+								{registerLoading ? 'Registruji...' : 'Zaregistrovat se'}
+							</Button>
 						</form>
 					</Card.Content>
 				</Card.Root>
