@@ -2,6 +2,8 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { db } from '$lib/database/db';
 	import type { GazeSampleDataEntry, FixationDataEntry, SessionScoreDataEntry } from '$lib/database/db.types';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	export interface TaskSelectionResult {
 		childId: string;
@@ -127,10 +129,22 @@
 	function canConfirm(): boolean {
 		return !!selectedChildId && !!selectedSessionId;
 	}
+
+	function handleEscapeKeydown() {
+		goto(resolve('/admin'));
+		open = false;
+	}
+
+	function handleOpenChange(newOpen: boolean) {
+		if (!newOpen) {
+			goto(resolve('/admin'));
+		}
+		open = newOpen;
+	}
 </script>
 
-<Dialog.Root bind:open>
-	<Dialog.Content class="sm:max-w-md">
+<Dialog.Root bind:open onOpenChange={handleOpenChange}>
+	<Dialog.Content class="sm:max-w-md" showCloseButton={false} onEscapeKeydown={handleEscapeKeydown}>
 		<Dialog.Header>
 			<Dialog.Title>Výběr heatmapy</Dialog.Title>
 			<Dialog.Description>
@@ -174,14 +188,13 @@
 		</div>
 
 		<Dialog.Footer>
-			<Dialog.Close>
-				<button
-					type="button"
-					class="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
-				>
-					Zavřít
-				</button>
-			</Dialog.Close>
+			<button
+				type="button"
+				class="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+				onclick={() => goto(resolve(`/admin`))}
+			>
+				Zpět
+			</button>
 			<button
 				type="button"
 				class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
