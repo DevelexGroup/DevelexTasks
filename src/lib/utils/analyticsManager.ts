@@ -3,7 +3,6 @@
 	type FixationDataEntry,
 	type GazeSampleDataEntry, type SessionScoreMetrics
 } from '$lib/database/db.types';
-import { userStore } from '$lib/stores/user';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
 import { type TaskMistake, TaskResult, type TrackTaskState } from '$lib/types/task.types';
@@ -16,6 +15,7 @@ import type {
 import { browser } from '$app/environment';
 import Dexie from 'dexie';
 import { db } from '$lib/database/db';
+import { authUser } from '$lib/stores/auth';
 
 interface SlideTimeWindow {
 	slideIndex: number;
@@ -68,11 +68,11 @@ export class AnalyticsManager {
 	}
 
 	private getBaseDataEntry(): BaseDataEntry {
-		const childId = get(userStore);
+		const user = get(authUser);
 		const task = get(currentTask);
 
 		return {
-			child_id: childId.id,
+			child_id: user?.username ?? 'host',
 			session_id: task ? task.session : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
 			slide_index: task?.currentRepetition ?? -1,

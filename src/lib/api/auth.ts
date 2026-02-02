@@ -28,7 +28,7 @@ export async function login(credentials: LoginRequest): Promise<LoginResponse> {
 
 export async function logout(): Promise<void> {
 	await fetch('/api/auth/logout', { method: 'POST' });
-	authUser.clear();
+	authUser.set(null);
 
 	if (typeof document !== 'undefined') {
 		document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=strict';
