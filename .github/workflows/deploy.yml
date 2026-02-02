@@ -30,9 +30,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          cat <<EOF > .env
-          API_ENDPOINT=${{ secrets.API_ENDPOINT }}
-          EOF
+          echo "VITE_API_ENDPOINT=${{ secrets.VITE_API_ENDPOINT }}" > .env
 
       - name: Build
         run: npm run build
