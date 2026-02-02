@@ -1,5 +1,5 @@
 import type { GazeInputConfigWithFixations } from 'develex-js-sdk';
-import { writable } from 'svelte/store';
+import { session } from '../utils/persistedStore';
 
 export enum AvaiableTracker {
 	GazePointBase = 'gazepoint_base',
@@ -34,4 +34,4 @@ export const GAZE_INPUT_CONFIGS: Record<AvaiableTracker, GazeInputConfigWithFixa
 	}
 };
 
-export const trackerConfig = writable<AvaiableTracker>(AvaiableTracker.MouseIdt);
+export const trackerConfig = session<AvaiableTracker>('tracker_config', AvaiableTracker.MouseIdt);
