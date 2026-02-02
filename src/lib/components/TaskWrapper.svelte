@@ -21,6 +21,8 @@
 
 	taskStage.set(TaskStage.Loading);
 
+	let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
+
 	onMount(() => {
 		if (!browser) return;
 
@@ -46,6 +48,11 @@
 			gazeManager.stop();
 			gazeManager.disconnect();
 			gazeManager.close();
+		}
+
+		// Clear timeout if exists
+		if (timeoutHandle) {
+			clearTimeout(timeoutHandle);
 		}
 	});
 
@@ -85,7 +92,6 @@
 		}
 	});
 
-	let timeoutHandle: ReturnType<typeof setTimeout>;
 	const startTimeout = () => {
 		if (timeoutHandle) {
 			clearTimeout(timeoutHandle);
