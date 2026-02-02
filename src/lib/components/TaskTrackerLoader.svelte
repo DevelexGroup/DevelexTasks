@@ -29,16 +29,14 @@
 
 	const handleViewportCalibration = async (): Promise<boolean> => {
 		try {
-			if (!gazeManager.input) {
-				gazeManager.createInput(GAZE_INPUT_CONFIGS[get(trackerConfig)]);
+			gazeManager.createInput(GAZE_INPUT_CONFIGS[get(trackerConfig)]);
 
-				if (!gazeManager.windowCalibration) {
-					showCalibration.set(true);
+			if (!gazeManager.windowCalibration) {
+				showCalibration.set(true);
 
-					await waitForStoreCondition(showCalibration, (v) => v === false);
+				await waitForStoreCondition(showCalibration, (v) => v === false);
 
-					viewportCalibrationState = LoadState.Loaded;
-				}
+				viewportCalibrationState = LoadState.Loaded;
 			}
 			return true;
 		} catch (error) {
