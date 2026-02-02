@@ -53,7 +53,8 @@ export class AnalyticsManager {
 	private loggingPaused = false;
 	private pauseRequest = false;
 
-	private calculateScoreRequest = false;
+	// private calculateScoreRequest = false;
+	private calculateScoreSlideRequest: number[] = [];
 
 	private currentTaskState: TrackTaskState | null = null;
 	private currentMetricEvaluation: ((scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number) | null = null;
@@ -80,9 +81,13 @@ export class AnalyticsManager {
 		this.eventBuffer.events.add(key);
 	}
 
-	public logCompleteSlide(slideIndex: number, taskState?: TrackTaskState, metricEvaluation?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number) {
+	public logCompleteSlide(
+		slideIndex: number,
+		taskState?: TrackTaskState,
+		metricEvaluation?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number
+	) {
 		this.eventBuffer.events.add(`complete-slide-${slideIndex}`);
-		this.calculateScoreRequest = true;
+		this.calculateScoreSlideRequest.push(slideIndex);
 
 		if (taskState) this.currentTaskState = taskState;
 		if (metricEvaluation) this.currentMetricEvaluation = metricEvaluation;
@@ -145,7 +150,7 @@ export class AnalyticsManager {
 		};
 
 		// Capture current state before clearing
-		const shouldCalculateScore = this.calculateScoreRequest;
+		const shouldCalculateScore = this.calculateScoreSlideRequest.includes(baseData.slide_index);
 		const childId = baseData.child_id;
 		const sessionId = baseData.session_id;
 		const slideIndex = baseData.slide_index;
@@ -153,14 +158,24 @@ export class AnalyticsManager {
 		// Clear buffers immediately (data already captured in gazeSample)
 		this.eventBuffer.events.clear();
 		this.eventBuffer.mistake_type.clear();
-		this.calculateScoreRequest = false;
+		if (shouldCalculateScore) {
+		}
+		this.calculateScoreSlideRequest = this.calculateScoreSlideRequest.filter(
+			(index) => index !== baseData.slide_index
+		);
 
 		// Fire-and-forget but properly chained
 		db.transaction('rw', db.gazeSamples, db.fixationData, db.sessionScores, async () => {
 			await db.gazeSamples.add(gazeSample);
 
 			if (shouldCalculateScore) {
-				await this.calculateScoreMetrics(childId, sessionId, slideIndex);
+				if (!this.currentTaskState || !this.currentMetricEvaluation) {
+					console.warn(
+						`Cannot calculate score for slide index ${slideIndex}: missing task state or metric evaluation function.`
+					);
+					return;
+				}
+				await this.calculateScoreMetrics(this.currentTaskState, this.currentMetricEvaluation, childId, sessionId, slideIndex);
 			}
 		}).catch((error) => {
 			console.error('Transaction failed:', error);
@@ -171,7 +186,6 @@ export class AnalyticsManager {
 			this.pauseRequest = false;
 		}
 	}
-
 
 	public stopLogging(exitType: TaskResult) {
 		if (!this.pollingTimer) return;
@@ -193,11 +207,9 @@ export class AnalyticsManager {
 			task_result: exitType
 		};
 
-		db.gazeSamples
-			.add(finalGazeSample)
-			.catch((error) => {
-				console.error('Error logging Final Gaze Sample:', error);
-			});
+		db.gazeSamples.add(finalGazeSample).catch((error) => {
+			console.error('Error logging Final Gaze Sample:', error);
+		});
 
 		this.unregisterListeners();
 
@@ -290,25 +302,28 @@ export class AnalyticsManager {
 	};
 
 	/* Metric calculations */
-	private async calculateScoreMetrics(childId: string, sessionId: string, slideIndex: number = -1) {
+	private async calculateScoreMetrics(
+		taskState: TrackTaskState,
+		metricEvaluation: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number,
+		childId: string,
+		sessionId: string,
+		slideIndex: number = -1
+	) {
 		// Get all gaze samples and fixation data for the session
 		const gazeSamples = await Dexie.waitFor(
-			db.gazeSamples
-				.where('[child_id+session_id]')
-				.equals([childId, sessionId])
-				.toArray()
+			db.gazeSamples.where('[child_id+session_id]').equals([childId, sessionId]).toArray()
 		);
 
 		const fixationData = await Dexie.waitFor(
-			db.fixationData
-				.where('[child_id+session_id]')
-				.equals([childId, sessionId])
-				.toArray()
+			db.fixationData.where('[child_id+session_id]').equals([childId, sessionId]).toArray()
 		);
 
-		const timeWindows = slideIndex === -1 ? this.getEffectiveTimeWindows(gazeSamples) : [
-			this.getEffectiveTimeWindow(gazeSamples, slideIndex)
-		].filter((window): window is SlideTimeWindow => window !== null);
+		const timeWindows =
+			slideIndex === -1
+				? this.getEffectiveTimeWindows(gazeSamples)
+				: [this.getEffectiveTimeWindow(gazeSamples, slideIndex)].filter(
+						(window): window is SlideTimeWindow => window !== null
+					);
 
 		for (let i = 0; i < timeWindows.length; i++) {
 			const window = timeWindows[i];
@@ -334,16 +349,13 @@ export class AnalyticsManager {
 			};
 
 			let fluencyScore = 0;
-			if (this.currentTaskState && this.currentMetricEvaluation) {
-				fluencyScore = this.currentMetricEvaluation(metrics, this.currentTaskState);
+			if (metricEvaluation) {
+				fluencyScore = metricEvaluation(metrics, taskState);
 			}
-
-			this.currentTaskState = null;
-			this.currentMetricEvaluation = null;
 
 			const baseData = this.getBaseDataEntry();
 			baseData.timestamp = window.endTime;
-			baseData.slide_index = slideIndex === -1 ? (i + 1) : slideIndex;
+			baseData.slide_index = slideIndex === -1 ? i + 1 : slideIndex;
 			baseData.stimulus_id =
 				windowedGazeSamples.length > 0 ? windowedGazeSamples[0].stimulus_id : 'null';
 
@@ -353,7 +365,7 @@ export class AnalyticsManager {
 					db.sessionScores.add({
 						...baseData,
 						...metrics,
-						fluency_score: fluencyScore,
+						fluency_score: fluencyScore
 					})
 				);
 			} catch (error) {
@@ -387,7 +399,9 @@ export class AnalyticsManager {
 			}
 		}
 
-		console.error(`No complete event found for slide index ${slideIndex} (startTime: ${startTime}, endTime: ${endTime})`);
+		console.error(
+			`No complete event found for slide index ${slideIndex} (startTime: ${startTime}, endTime: ${endTime})`
+		);
 		return null;
 	}
 
@@ -411,7 +425,11 @@ export class AnalyticsManager {
 
 				// Check for slide complete event (complete-slide-{index})
 				if (pendingStartTime !== null && event.startsWith('complete-slide-')) {
-					timeWindows.push({ slideIndex: timeWindows.length, startTime: pendingStartTime, endTime: sample.timestamp });
+					timeWindows.push({
+						slideIndex: timeWindows.length,
+						startTime: pendingStartTime,
+						endTime: sample.timestamp
+					});
 					pendingStartTime = null;
 				}
 			}
