@@ -43,6 +43,8 @@ export class AnalyticsManager {
 	private playedSounds: Set<string> = new Set<string>();
 	private activeAOI: Set<string> = new Set<string>();
 
+	private activeFixations: FixationDataEntry[] = [];
+
 	private eventBuffer = {
 		events: new Set<string>(),
 		mistake_type: new Set<string>()
@@ -57,7 +59,9 @@ export class AnalyticsManager {
 	private calculateScoreSlideRequest: number[] = [];
 
 	private currentTaskState: TrackTaskState | null = null;
-	private currentMetricEvaluation: ((scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number) | null = null;
+	private currentMetricEvaluation:
+		| ((scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number)
+		| null = null;
 
 	constructor(gazeManager: GazeManager) {
 		this.gazeManager = gazeManager;
@@ -158,8 +162,7 @@ export class AnalyticsManager {
 		// Clear buffers immediately (data already captured in gazeSample)
 		this.eventBuffer.events.clear();
 		this.eventBuffer.mistake_type.clear();
-		if (shouldCalculateScore) {
-		}
+
 		this.calculateScoreSlideRequest = this.calculateScoreSlideRequest.filter(
 			(index) => index !== baseData.slide_index
 		);
@@ -175,7 +178,13 @@ export class AnalyticsManager {
 					);
 					return;
 				}
-				await this.calculateScoreMetrics(this.currentTaskState, this.currentMetricEvaluation, childId, sessionId, slideIndex);
+				await this.calculateScoreMetrics(
+					this.currentTaskState,
+					this.currentMetricEvaluation,
+					childId,
+					sessionId,
+					slideIndex
+				);
 			}
 		}).catch((error) => {
 			console.error('Transaction failed:', error);
@@ -244,7 +253,8 @@ export class AnalyticsManager {
 		window.addEventListener('keydown', this.handleKeyDown);
 
 		this.gazeManager.on('inputData', this.handleInputData);
-		this.gazeManager.on('inputFixationEnd', this.handleFixation);
+		this.gazeManager.on('inputFixationStart', this.handleFixationStart);
+		this.gazeManager.on('inputFixationEnd', this.handleFixationEnd);
 		this.gazeManager.on('intersect', this.handleIntersection);
 	}
 
@@ -256,7 +266,8 @@ export class AnalyticsManager {
 		window.removeEventListener('keydown', this.handleKeyDown);
 
 		this.gazeManager.off('inputData', this.handleInputData);
-		this.gazeManager.off('inputFixationEnd', this.handleFixation);
+		this.gazeManager.off('inputFixationStart', this.handleFixationStart);
+		this.gazeManager.off('inputFixationEnd', this.handleFixationEnd);
 		this.gazeManager.off('intersect', this.handleIntersection);
 	}
 
@@ -281,10 +292,10 @@ export class AnalyticsManager {
 		}
 	};
 
-	private handleFixation = (fixationData: FixationDataPoint) => {
+	private handleFixationStart = (fixationData: FixationDataPoint) => {
 		if (!this.isLoggingActive()) return;
 		const dataEntry = this.getBaseDataEntry();
-		const fixationEntry = {
+		const fixationEntry: FixationDataEntry = {
 			...dataEntry,
 			eyetracker_x: fixationData.x,
 			eyetracker_y: fixationData.y,
@@ -292,6 +303,26 @@ export class AnalyticsManager {
 			aoi: Array.from(this.activeAOI),
 			fixation_index: fixationData.fixationId
 		};
+		this.activeFixations.push(fixationEntry);
+	};
+
+	private handleFixationEnd = (fixationData: FixationDataPoint) => {
+		const fixationIndex = this.activeFixations.findIndex(
+			(fix) => fix.fixation_index === fixationData.fixationId
+		 );
+		if (fixationIndex === -1) {
+			console.warn(
+				`Received fixation end for unknown fixation index ${fixationData.fixationId}`
+			);
+			return;
+		}
+		const fixationEntry = this.activeFixations[fixationIndex];
+		this.activeFixations.splice(fixationIndex, 1);
+
+		// Update duration
+		fixationEntry.duration = fixationData.duration;
+
+		// Store fixation data
 		db.fixationData.add(fixationEntry).catch((error) => {
 			console.error('Error logging Fixation Data:', error);
 		});
