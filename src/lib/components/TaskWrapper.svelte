@@ -76,6 +76,14 @@
 		}
 	});
 
+	// Track slide/repetition changes
+	$effect(() => {
+		const repetition = $currentTask?.currentRepetition;
+		if (repetition !== undefined && repetition >= 0 && $taskStage === TaskStage.Task) {
+			console.log(`Current slide: ${repetition}`);
+		}
+	});
+
 	onDestroy(() => {
 		analyticsManager.stopLogging(TaskResult.Terminate);
 		if ($remoteTestSessionId) {

@@ -54,6 +54,16 @@
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
+	// Sync currentRepetition with the task store for centralized tracking
+	$effect(() => {
+		currentTask.update((task) => {
+			if (task) {
+				return { ...task, currentRepetition };
+			}
+			return task;
+		});
+	});
+
 	onMount(() => {
 		let keyboardManager = getContext<KeyboardManager>(KEYBOARD_MANAGER_KEY);
 
