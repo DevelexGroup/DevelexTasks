@@ -11,7 +11,7 @@
 	import DialogPopup from '$lib/components/DialogPopup.svelte';
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { GazeManager } from 'develex-js-sdk';
-	import { abortTestSession, createTestSession, getTestSessions } from '$lib/api/test-sessions';
+	import { abortTestSession, completeTestSession, createTestSession, getTestSessions } from '$lib/api/test-sessions';
 
 	const DEFAULT_TIMEOUT_INTERVAL = 80000; // 80 seconds
 	const TIMEOUT_EVENT_LOG = 'inactivity_timeout';
@@ -49,6 +49,33 @@
 		}
 	});
 
+	$effect(() => {
+		if ($taskStage === TaskStage.End) {
+			const result = untrack(() => $currentTask?.result);
+			if (result) {
+				analyticsManager.stopLogging(result);
+
+				if ($remoteTestSessionId) {
+					if (result === TaskResult.Natural) {
+						completeTestSession($remoteTestSessionId).then(() => {
+							console.log('Test session completed successfully on task end.');
+							$remoteTestSessionId = null;
+						}).catch(err => {
+							console.error('Failed to complete test session on task end:', err);
+						});
+					} else {
+						abortTestSession($remoteTestSessionId).then(() => {
+							console.log('Test session aborted on task end.');
+							$remoteTestSessionId = null;
+						}).catch(err => {
+							console.error('Failed to abort test session on task end:', err);
+						});
+					}
+				}
+			}
+		}
+	});
+
 	onDestroy(() => {
 		analyticsManager.stopLogging(TaskResult.Terminate);
 		if ($remoteTestSessionId) {
@@ -77,7 +104,6 @@
 	});
 
 	function exitTask(taskResult: TaskResult) {
-		analyticsManager.stopLogging(taskResult);
 		currentTask.update(task => {
 			if (task) {
 				console.log('Setting task result to', taskResult);
@@ -85,14 +111,6 @@
 			}
 			return task;
 		});
-		if ($remoteTestSessionId) {
-			abortTestSession($remoteTestSessionId).then(() => {
-				console.log('Test session aborted successfully on task exit.');
-				$remoteTestSessionId = null;
-			}).catch(err => {
-				console.error('Failed to abort test session on task exit:', err);
-			});
-		}
 		taskStage.set(TaskStage.End);
 	}
 
