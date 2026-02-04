@@ -11,16 +11,45 @@ export class ApiError extends Error {
 	}
 }
 
+function getAuthToken(): string | null {
+	if (typeof document === 'undefined') return null;
+	const match = document.cookie.match(/(?:^|; )auth_token=([^;]*)/);
+	return match ? decodeURIComponent(match[1]) : null;
+}
+
+interface ApiClientOptions extends RequestInit {
+	params?: Record<string, string | number | boolean>;
+}
+
 export async function apiClient<T>(
 	endpoint: string,
-	options?: RequestInit
+	options?: ApiClientOptions
 ): Promise<T> {
-	const response = await fetch(`${BASE_URL}${endpoint}`, {
-		headers: {
-			'Content-Type': 'application/json',
-			...options?.headers
-		},
-		...options
+	const headers: HeadersInit = {
+		'Content-Type': 'application/json',
+		...options?.headers
+	};
+
+	const token = getAuthToken();
+	if (token) {
+		(headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+	}
+
+	// Build URL with query parameters
+	let url = `${BASE_URL}${endpoint}`;
+	if (options?.params) {
+		const searchParams = new URLSearchParams();
+		Object.entries(options.params).forEach(([key, value]) => {
+			searchParams.append(key, String(value));
+		});
+		url += `?${searchParams.toString()}`;
+	}
+
+	const { params, ...fetchOptions } = options || {};
+
+	const response = await fetch(url, {
+		headers,
+		...fetchOptions
 	});
 
 	if (!response.ok) {

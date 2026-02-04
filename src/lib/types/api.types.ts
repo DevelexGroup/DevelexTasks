@@ -12,6 +12,25 @@ export enum TestSessionStatus {
 	Error = 'ERROR'
 }
 
+export enum StorageMode {
+	Plain = 'PLAIN',
+	CompressedOnly = 'COMPRESSED_ONLY',
+	EncryptedOnly = 'ENCRYPTED_ONLY',
+	CompressedEncrypted = 'COMPRESSED_ENCRYPTED'
+}
+
+export enum SortDirection {
+	Asc = 'ASC',
+	Desc = 'DESC'
+}
+
+export enum SortBy {
+	SessionStartTime = 'sessionStartTime',
+	SessionEndTime = 'sessionEndTime',
+	CreatedAt = 'createdAt',
+	UpdatedAt = 'updatedAt'
+}
+
 export interface TestSessionDTO {
 	id: string;
 	userId: string;
@@ -60,20 +79,6 @@ export interface LoginResponse {
 	role: UserRole;
 }
 
-export interface PageTestSessionDTO {
-	content: TestSessionDTO;
-	totalElements: number;
-	totalPages: number;
-	numberOfElements: number;
-	size: number;
-	number: number;
-	first: boolean;
-	last: boolean;
-	empty: boolean;
-	pageable: PageableObject;
-	sort: SortObject;
-}
-
 export interface PageableObject {
 	pageNumber: number;
 	pageSize: number;
@@ -89,13 +94,6 @@ export interface SortObject {
 	ascending: boolean;
 	ignoreCase: boolean;
 	nullHandling: string;
-}
-
-export enum StorageMode {
-	Plain = 'PLAIN',
-	CompressedOnly = 'COMPRESSED_ONLY',
-	EncryptedOnly = 'ENCRYPTED_ONLY',
-	CompressedEncrypted = 'COMPRESSED_ENCRYPTED'
 }
 
 export interface FileMetadata {
@@ -119,17 +117,26 @@ export interface TestFileDTO {
 	createdAt: Date;
 }
 
-export interface TestSessionDetailDTO extends TestSessionDTO {
-	files: TestFileDTO[];
-	parts: TestSessionPartDTO[];
-}
-
 export interface TestSessionPartDTO {
 	id: string;
 	partNumber: number;
-	totalParts: number;
 	notes: string;
 	startTime: Date;
 	endTime: Date;
 	createdAt: Date;
+}
+
+// org.springframework.data.domain Page<TContent>
+export interface Page<TContent> {
+	content: TContent[];
+	totalElements: number;
+	totalPages: number;
+	numberOfElements: number;
+	size: number;
+	number: number;
+	first: boolean;
+	last: boolean;
+	empty: boolean;
+	pageable: PageableObject;
+	sort: SortObject;
 }

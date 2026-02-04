@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { currentTask, taskStage } from '$lib/stores/task';
+	import { currentTask, remoteTestSessionId, taskStage } from '$lib/stores/task';
 	import { TaskResult, TaskStage } from '$lib/types/task.types';
-	import { getContext, onDestroy, onMount } from 'svelte';
+	import { getContext, onDestroy, onMount, untrack } from 'svelte';
 	import TaskTrackerLoader from './TaskTrackerLoader.svelte';
 	import TaskEndScreen from '$lib/components/TaskEndScreen.svelte';
 	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
@@ -11,6 +11,7 @@
 	import DialogPopup from '$lib/components/DialogPopup.svelte';
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { GazeManager } from 'develex-js-sdk';
+	import { abortTestSession, createTestSession, getTestSessions } from '$lib/api/test-sessions';
 
 	const DEFAULT_TIMEOUT_INTERVAL = 80000; // 80 seconds
 	const TIMEOUT_EVENT_LOG = 'inactivity_timeout';
@@ -34,11 +35,30 @@
 	$effect(() => {
 		if ($taskStage === TaskStage.Task) {
 			analyticsManager.startLogging();
+			const task = untrack(() => $currentTask);
+			if (!task) {
+				console.error('No current task found when trying to create test session.');
+				return;
+			}
+			createTestSession(`${task.slug}-${task.level}`).then(session => {
+				console.log('Test session created:', session);
+				$remoteTestSessionId = session.id;
+			}).catch(err => {
+				console.error('Failed to create test session:', err);
+			});
 		}
 	});
 
 	onDestroy(() => {
 		analyticsManager.stopLogging(TaskResult.Terminate);
+		if ($remoteTestSessionId) {
+			abortTestSession($remoteTestSessionId).then(() => {
+				console.log('Test session aborted successfully.');
+				$remoteTestSessionId = null;
+			}).catch(err => {
+				console.error('Failed to abort test session:', err);
+			});
+		}
 
 		window.removeEventListener('mousemove', resetTimeoutOnInteraction);
 		window.removeEventListener('mouseup', resetTimeoutOnInteraction);
@@ -65,6 +85,14 @@
 			}
 			return task;
 		});
+		if ($remoteTestSessionId) {
+			abortTestSession($remoteTestSessionId).then(() => {
+				console.log('Test session aborted successfully on task exit.');
+				$remoteTestSessionId = null;
+			}).catch(err => {
+				console.error('Failed to abort test session on task exit:', err);
+			});
+		}
 		taskStage.set(TaskStage.End);
 	}
 

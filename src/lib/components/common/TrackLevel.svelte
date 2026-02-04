@@ -10,9 +10,10 @@
 	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
-	import { currentTask } from '$lib/stores/task';
+	import { currentTask, remoteTestSessionId } from '$lib/stores/task';
 	import { AvaiableTracker, trackerConfig } from '$lib/stores/tracker';
 	import { showDialog } from '$lib/stores/dialog';
+	import { completeTestSession } from '$lib/api/test-sessions';
 
 	let {
 		id,
@@ -143,6 +144,14 @@
 				return task;
 			});
 			analyticsManager.stopLogging(TaskResult.Natural);
+			if ($remoteTestSessionId) {
+				completeTestSession($remoteTestSessionId).then(() => {
+					console.log('Test session completed successfully on task end.');
+					$remoteTestSessionId = null;
+				}).catch(err => {
+					console.error('Failed to complete test session on task end:', err);
+				});
+			}
 			onCompleted(TaskResult.Natural);
 		}
 	}
