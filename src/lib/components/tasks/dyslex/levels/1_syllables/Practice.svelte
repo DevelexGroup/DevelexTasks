@@ -3,10 +3,12 @@
 	import { TaskStage } from '$lib/types/task.types';
 	import DyslexTrackLevel from '../../components/DyslexTrackLevel.svelte';
 	import { syllablesData } from '../../dyslex.data';
-	import { id } from '$lib/components/tasks/dyslex/levels/syllables/index';
+	import { id } from '$lib/components/tasks/dyslex/levels/1_syllables/index';
 	import SyllableGrid from '../../components/SyllableGrid.svelte';
 
-	const data = syllablesData['content'];
+	const data = syllablesData['practice'];
+	const rows = data.length;
+	const cols = data[0]?.length || 0;
 </script>
 
 {#if data}
@@ -15,11 +17,11 @@
 		{data}
 		repetitions={1}
 		validateStage={() => true}
-		isPractice={false}
+		isPractice={true}
 		onCompleted={() => {
-			taskStage.set(TaskStage.End);
+			taskStage.set(TaskStage.Instructions);
 		}}
 	>
-		<SyllableGrid {data} gridSpacing={{ x: 65, y: 35 }} elementBufferSize={20} />
+		<SyllableGrid {data} gridSpacing={{ x: 120, y: 120 }} />
 	</DyslexTrackLevel>
 {/if}
