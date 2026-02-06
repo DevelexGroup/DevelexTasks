@@ -9,6 +9,7 @@
 	import { KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import { currentTask } from '$lib/stores/task';
 	import { AvaiableTracker, trackerConfig } from '$lib/stores/tracker';
+	import DyslexFixCross from './DyslexFixCross.svelte';
 
 	interface Props {
 		id: string;
@@ -144,16 +145,17 @@
 			</div>
 		</div>
 
-		<div class="fixed right-16 bottom-16" id={`${id}_end}`} transition:fade>
+		<div class="fixed right-[254px] bottom-[149px]" id={`${id}_end}`} transition:fade>
 			<DwellTarget
 				id={`slide-${currentRepetition + 1}_end`}
 				dwellTimeMs={1000}
 				bufferSize={50}
-				width={125}
+				width={32}
+				height={32}
 				onDwellComplete={onAdvanceDwellComplete}
 				disableOnComplete={false}
 			>
-				<DwellTargetArrow />
+				<DyslexFixCross />
 			</DwellTarget>
 		</div>
 	{/if}
