@@ -5,13 +5,22 @@
 	import { getContext, onDestroy, onMount, untrack } from 'svelte';
 	import TaskTrackerLoader from './TaskTrackerLoader.svelte';
 	import TaskEndScreen from '$lib/components/TaskEndScreen.svelte';
-	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import {
+		ANALYTICS_MANAGER_KEY,
+		GAZE_MANAGER_KEY,
+		KEYBOARD_MANAGER_KEY
+	} from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { showDialog } from '$lib/stores/dialog';
 	import DialogPopup from '$lib/components/DialogPopup.svelte';
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { GazeManager } from 'develex-js-sdk';
-	import { abortTestSession, completeTestSession, createTestSession, getTestSessions } from '$lib/api/test-sessions';
+	import {
+		abortTestSession,
+		completeTestSession,
+		createTestSession,
+		getTestSessions
+	} from '$lib/api/test-sessions';
 
 	const DEFAULT_TIMEOUT_INTERVAL = 80000; // 80 seconds
 	const TIMEOUT_EVENT_LOG = 'inactivity_timeout';
@@ -40,12 +49,14 @@
 				console.error('No current task found when trying to create test session.');
 				return;
 			}
-			createTestSession(`${task.slug}-${task.level}`).then(session => {
-				console.log('Test session created:', session);
-				$remoteTestSessionId = session.id;
-			}).catch(err => {
-				console.error('Failed to create test session:', err);
-			});
+			createTestSession(`${task.slug}-${task.level}`)
+				.then((session) => {
+					console.log('Test session created:', session);
+					$remoteTestSessionId = session.id;
+				})
+				.catch((err) => {
+					console.error('Failed to create test session:', err);
+				});
 		}
 	});
 
@@ -57,19 +68,23 @@
 
 				if ($remoteTestSessionId) {
 					if (result === TaskResult.Natural) {
-						completeTestSession($remoteTestSessionId).then(() => {
-							console.log('Test session completed successfully on task end.');
-							$remoteTestSessionId = null;
-						}).catch(err => {
-							console.error('Failed to complete test session on task end:', err);
-						});
+						completeTestSession($remoteTestSessionId)
+							.then(() => {
+								console.log('Test session completed successfully on task end.');
+								$remoteTestSessionId = null;
+							})
+							.catch((err) => {
+								console.error('Failed to complete test session on task end:', err);
+							});
 					} else {
-						abortTestSession($remoteTestSessionId).then(() => {
-							console.log('Test session aborted on task end.');
-							$remoteTestSessionId = null;
-						}).catch(err => {
-							console.error('Failed to abort test session on task end:', err);
-						});
+						abortTestSession($remoteTestSessionId)
+							.then(() => {
+								console.log('Test session aborted on task end.');
+								$remoteTestSessionId = null;
+							})
+							.catch((err) => {
+								console.error('Failed to abort test session on task end:', err);
+							});
 					}
 				}
 			}
@@ -87,12 +102,14 @@
 	onDestroy(() => {
 		analyticsManager.stopLogging(TaskResult.Terminate);
 		if ($remoteTestSessionId) {
-			abortTestSession($remoteTestSessionId).then(() => {
-				console.log('Test session aborted successfully.');
-				$remoteTestSessionId = null;
-			}).catch(err => {
-				console.error('Failed to abort test session:', err);
-			});
+			abortTestSession($remoteTestSessionId)
+				.then(() => {
+					console.log('Test session aborted successfully.');
+					$remoteTestSessionId = null;
+				})
+				.catch((err) => {
+					console.error('Failed to abort test session:', err);
+				});
 		}
 
 		window.removeEventListener('mousemove', resetTimeoutOnInteraction);
@@ -112,7 +129,7 @@
 	});
 
 	function exitTask(taskResult: TaskResult) {
-		currentTask.update(task => {
+		currentTask.update((task) => {
 			if (task) {
 				console.log('Setting task result to', taskResult);
 				task.result = taskResult;
@@ -125,15 +142,25 @@
 	function showPauseDialog(pauseFromTimeout: boolean) {
 		analyticsManager.pauseLogging();
 		showDialog({
-			title: pauseFromTimeout
-				? 'Úloha pozastavena'
-				: 'Odejít z úlohy?',
+			title: pauseFromTimeout ? 'Úloha pozastavena' : 'Odejít z úlohy?',
 			description: pauseFromTimeout
 				? 'Úloha byla pozastavena kvůli delší neaktivitě. Chcete v úloze pokračovat, nebo se vrátit do menu?'
 				: 'Úloha zapauzována. Jste si jistí, že chcete odejít z úlohy?',
 			options: [
-				{ label: "Odejít", variant: 'destructive', callback: () => exitTask(pauseFromTimeout ? TaskResult.Timeout : TaskResult.Escape), closeOnClick: true },
-				{ label: "Zůstat", variant: 'secondary', callback: () => {startTimeout()}, closeOnClick: true }
+				{
+					label: 'Odejít',
+					variant: 'destructive',
+					callback: () => exitTask(pauseFromTimeout ? TaskResult.Timeout : TaskResult.Escape),
+					closeOnClick: true
+				},
+				{
+					label: 'Zůstat',
+					variant: 'secondary',
+					callback: () => {
+						startTimeout();
+					},
+					closeOnClick: true
+				}
 			]
 		}).then(() => {
 			analyticsManager.resumeLogging();
@@ -156,18 +183,18 @@
 				showPauseDialog(true);
 			}
 		}, DEFAULT_TIMEOUT_INTERVAL);
-	}
+	};
 
 	let throttleHandle: ReturnType<typeof setTimeout> | null = null;
 	const resetTimeoutOnInteraction = () => {
-		if ($taskStage !== TaskStage.Practice && $taskStage !== TaskStage.Task)	return;
+		if ($taskStage !== TaskStage.Practice && $taskStage !== TaskStage.Task) return;
 		if (throttleHandle) return;
 
 		throttleHandle = setTimeout(() => {
 			throttleHandle = null;
 		}, 1000);
 		startTimeout();
-	}
+	};
 
 	$effect(() => {
 		if ($taskStage === TaskStage.Practice || $taskStage === TaskStage.Task) {
@@ -180,7 +207,7 @@
 	});
 </script>
 
-<div class="overflow-hidden w-screen h-screen">
+<div class="h-screen w-screen overflow-hidden">
 	{#if $taskStage === TaskStage.Loading}
 		<TaskTrackerLoader onCompleted={() => taskStage.set(TaskStage.Instructions)} />
 	{:else if $taskStage === TaskStage.Instructions}

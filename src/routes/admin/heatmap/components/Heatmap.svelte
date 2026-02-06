@@ -32,7 +32,7 @@
 	} = $props();
 
 	let containerElement: HTMLDivElement;
-	let heatmapInstance = $state<Heatmap<"value", "x", "y"> | null>(null);
+	let heatmapInstance = $state<Heatmap<'value', 'x', 'y'> | null>(null);
 
 	const computedWidth = $derived(typeof width === 'number' ? `${width}px` : width);
 	const computedHeight = $derived(typeof height === 'number' ? `${height}px` : height);

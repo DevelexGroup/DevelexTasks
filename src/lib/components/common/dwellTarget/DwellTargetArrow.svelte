@@ -38,12 +38,15 @@
 	}: Props = $props();
 
 	// Get context from parent DwellTarget
-	const parentContext = getContext<{
-		dwellState: DwellState;
-		dwellTimeMs: number;
-		width: number;
-		height: number;
-	} | undefined>('dwellTargetProps');
+	const parentContext = getContext<
+		| {
+				dwellState: DwellState;
+				dwellTimeMs: number;
+				width: number;
+				height: number;
+		  }
+		| undefined
+	>('dwellTargetProps');
 
 	// Use prop if provided, otherwise use context, otherwise use default
 	const width = $derived(widthProp ?? parentContext?.width ?? 250);
@@ -58,8 +61,7 @@
 	$effect(() => {
 		wrapperElement?.style.setProperty('--dwell-time-ms', `${dwellTimeMs}ms`);
 
-		if (dwellState === previousState)
-			return;
+		if (dwellState === previousState) return;
 
 		previousState = dwellState;
 	});
@@ -73,8 +75,16 @@
 	class:cancelled={dwellState === DwellState.DwellCancelled}
 	style={`width: ${width}px; height: ${height}px;`}
 >
-	<img class="arrow--background" src={resolveAny('/images/common/dwell-arrow-inactive.svg')} alt="&#8594;" />
-	<img class="arrow--fill fill--bar" src={resolveAny('/images/common/dwell-arrow-active.svg')} alt="" />
+	<img
+		class="arrow--background"
+		src={resolveAny('/images/common/dwell-arrow-inactive.svg')}
+		alt="&#8594;"
+	/>
+	<img
+		class="arrow--fill fill--bar"
+		src={resolveAny('/images/common/dwell-arrow-active.svg')}
+		alt=""
+	/>
 </div>
 
 <style>
@@ -96,7 +106,7 @@
 		opacity: 0.9;
 	}
 
-  .dwell-target img {
+	.dwell-target img {
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -107,25 +117,25 @@
 		z-index: 1;
 	}
 
-  .arrow--fill {
+	.arrow--fill {
 		z-index: 2;
-    pointer-events: none;
+		pointer-events: none;
 	}
 
 	.arrow--fill.fill--bar {
-    clip-path: inset(0 100% 0 0 round 999px);
+		clip-path: inset(0 100% 0 0 round 999px);
 	}
 
 	.dwelling .arrow--fill.fill--bar {
-    animation: dwell-bar-fill var(--dwell-time-ms) ease-out forwards;
+		animation: dwell-bar-fill var(--dwell-time-ms) ease-out forwards;
 	}
 
-  @keyframes dwell-bar-fill {
-    0% {
-      clip-path: inset(0 100% 0 0 round 999px);
-    }
-    100% {
-      clip-path: inset(0 20px 0 0 round 999px);
-    }
-  }
+	@keyframes dwell-bar-fill {
+		0% {
+			clip-path: inset(0 100% 0 0 round 999px);
+		}
+		100% {
+			clip-path: inset(0 20px 0 0 round 999px);
+		}
+	}
 </style>

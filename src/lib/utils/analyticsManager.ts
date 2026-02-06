@@ -1,7 +1,8 @@
 ﻿import {
 	type BaseDataEntry,
 	type FixationDataEntry,
-	type GazeSampleDataEntry, type SessionScoreMetrics
+	type GazeSampleDataEntry,
+	type SessionScoreMetrics
 } from '$lib/database/db.types';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
@@ -309,11 +310,9 @@ export class AnalyticsManager {
 	private handleFixationEnd = (fixationData: FixationDataPoint) => {
 		const fixationIndex = this.activeFixations.findIndex(
 			(fix) => fix.fixation_index === fixationData.fixationId
-		 );
+		);
 		if (fixationIndex === -1) {
-			console.warn(
-				`Received fixation end for unknown fixation index ${fixationData.fixationId}`
-			);
+			console.warn(`Received fixation end for unknown fixation index ${fixationData.fixationId}`);
 			return;
 		}
 		const fixationEntry = this.activeFixations[fixationIndex];

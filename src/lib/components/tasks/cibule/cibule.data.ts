@@ -1,4 +1,4 @@
-﻿import  { type CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
+﻿import { type CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 
 export const cibuleL1RawData: CibuleRawDataEntry[] = [
 	{
@@ -11200,7 +11200,7 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		n_background: 3,
 		search_string: 'l sl s ssuj ssuj lsuj s ssuj l suj s sl s l ',
 		target_positions: [5, 13, 22, 18, 9]
-	},
+	}
 ];
 
 export const cibuleL3aRawData: CibuleRawDataEntry[] = [

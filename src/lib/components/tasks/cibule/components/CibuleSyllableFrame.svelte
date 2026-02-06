@@ -10,7 +10,9 @@
 	let { syllable, visible = true }: Props = $props();
 </script>
 
-<div class="flex w-24 h-24 items-center justify-center rounded-xl border-3 border-gray-400 bg-transparent">
+<div
+	class="flex h-24 w-24 items-center justify-center rounded-xl border-3 border-gray-400 bg-transparent"
+>
 	{#if visible}
 		<div transition:fade>
 			<SymbolElement symbol={syllable} interactable={false} />

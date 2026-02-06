@@ -21,10 +21,7 @@ interface ApiClientOptions extends RequestInit {
 	params?: Record<string, string | number | boolean>;
 }
 
-export async function apiClient<T>(
-	endpoint: string,
-	options?: ApiClientOptions
-): Promise<T> {
+export async function apiClient<T>(endpoint: string, options?: ApiClientOptions): Promise<T> {
 	const headers: HeadersInit = {
 		'Content-Type': 'application/json',
 		...options?.headers

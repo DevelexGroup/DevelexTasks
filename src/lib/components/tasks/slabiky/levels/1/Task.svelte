@@ -8,16 +8,24 @@
 	import { slabikyTestData } from '$lib/components/tasks/slabiky/slabiky.data';
 	import { defaultValidateStage, defaultValidateSymbol } from '$lib/utils/trackLevelUtils';
 
-	const data = slabikyTestData.find((level => level.levelID === id))?.content;
+	const data = slabikyTestData.find((level) => level.levelID === id)?.content;
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
-	{#snippet hintComponent({ state })}
-		<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
-	{/snippet}
-	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
-		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16} />
-	{/snippet}
-</TrackLevel>
+	<TrackLevel
+		{id}
+		{data}
+		validateSymbol={defaultValidateSymbol}
+		validateStage={defaultValidateStage}
+		onCompleted={() => {
+			taskStage.set(TaskStage.End);
+		}}
+	>
+		{#snippet hintComponent({ state })}
+			<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
+		{/snippet}
+		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+			<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16} />
+		{/snippet}
+	</TrackLevel>
 {/if}

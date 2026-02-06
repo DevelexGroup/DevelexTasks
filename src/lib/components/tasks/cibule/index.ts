@@ -36,13 +36,25 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slabiky21A, CibuleDataType.Slabiky21B, CibuleDataType.Slabiky21C, CibuleDataType.Slabiky21D, CibuleDataType.Slabiky22],
+					type: [
+						CibuleDataType.Slabiky21A,
+						CibuleDataType.Slabiky21B,
+						CibuleDataType.Slabiky21C,
+						CibuleDataType.Slabiky21D,
+						CibuleDataType.Slabiky22
+					],
 					n_background: 1
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slabiky21A, CibuleDataType.Slabiky21B, CibuleDataType.Slabiky21C, CibuleDataType.Slabiky21D, CibuleDataType.Slabiky22],
+					type: [
+						CibuleDataType.Slabiky21A,
+						CibuleDataType.Slabiky21B,
+						CibuleDataType.Slabiky21C,
+						CibuleDataType.Slabiky21D,
+						CibuleDataType.Slabiky22
+					],
 					n_background: [3, 4]
 				}
 			}
@@ -77,13 +89,25 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slabiky21A, CibuleDataType.Slabiky21B, CibuleDataType.Slabiky21C, CibuleDataType.Slabiky21D, CibuleDataType.Slabiky22],
+					type: [
+						CibuleDataType.Slabiky21A,
+						CibuleDataType.Slabiky21B,
+						CibuleDataType.Slabiky21C,
+						CibuleDataType.Slabiky21D,
+						CibuleDataType.Slabiky22
+					],
 					n_background: 1
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slabiky21A, CibuleDataType.Slabiky21B, CibuleDataType.Slabiky21C, CibuleDataType.Slabiky21D, CibuleDataType.Slabiky22],
+					type: [
+						CibuleDataType.Slabiky21A,
+						CibuleDataType.Slabiky21B,
+						CibuleDataType.Slabiky21C,
+						CibuleDataType.Slabiky21D,
+						CibuleDataType.Slabiky22
+					],
 					n_background: [3, 4]
 				}
 			}
@@ -170,23 +194,50 @@ const FLUENCY_SCORE_TARGET_REFIXATION_MALUS = 5; // points per refixation
 const FLUENCY_SCORE_REGRESSION_MALUS = 2; // points per regression
 const FLUENCY_SCORE_EXTRA_FIXATION_MALUS = 2; // points per extra fixation over par
 
-export function calculateFluencyScore(scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState): number {
+export function calculateFluencyScore(
+	scoreMetrics: Partial<SessionScoreMetrics>,
+	state: TrackTaskState
+): number {
 	console.log('Calculating fluency score with metrics:', scoreMetrics);
-	if (scoreMetrics.response_time === undefined ||
+	if (
+		scoreMetrics.response_time === undefined ||
 		scoreMetrics.error_rate === undefined ||
 		scoreMetrics.aoi_target_fix === undefined ||
 		scoreMetrics.regression_count === undefined ||
-		scoreMetrics.fix_count === undefined) {
+		scoreMetrics.fix_count === undefined
+	) {
 		return 0;
 	}
 
-	const timeMalus = -Math.max(0, Math.min((scoreMetrics.response_time - FLUENCY_TIME_MIN) * (FLUENCY_SCORE_TIME_MALUS / (FLUENCY_TIME_MAX - FLUENCY_TIME_MIN)), FLUENCY_SCORE_TIME_MALUS));
+	const timeMalus = -Math.max(
+		0,
+		Math.min(
+			(scoreMetrics.response_time - FLUENCY_TIME_MIN) *
+				(FLUENCY_SCORE_TIME_MALUS / (FLUENCY_TIME_MAX - FLUENCY_TIME_MIN)),
+			FLUENCY_SCORE_TIME_MALUS
+		)
+	);
 	const mistakeMalus = -(scoreMetrics.error_rate * FLUENCY_SCORE_MISTAKE_MALUS);
-	const targetFixMalus = -Math.max(0, (scoreMetrics.aoi_target_fix - FLUENCY_TARGET_REFIXATION_COUNT_PAR) * FLUENCY_SCORE_TARGET_REFIXATION_MALUS);
+	const targetFixMalus = -Math.max(
+		0,
+		(scoreMetrics.aoi_target_fix - FLUENCY_TARGET_REFIXATION_COUNT_PAR) *
+			FLUENCY_SCORE_TARGET_REFIXATION_MALUS
+	);
 	const regressionMalus = -(scoreMetrics.regression_count * FLUENCY_SCORE_REGRESSION_MALUS);
-	const fixationCountMalus = -Math.max(0, (scoreMetrics.fix_count - (FLUENCY_FIXATION_COUNT_PAR_BASE + (state.dataEntry.correctCount ?? 1))) * FLUENCY_SCORE_EXTRA_FIXATION_MALUS);
+	const fixationCountMalus = -Math.max(
+		0,
+		(scoreMetrics.fix_count -
+			(FLUENCY_FIXATION_COUNT_PAR_BASE + (state.dataEntry.correctCount ?? 1))) *
+			FLUENCY_SCORE_EXTRA_FIXATION_MALUS
+	);
 
-	const score = timeMalus +	mistakeMalus +targetFixMalus + regressionMalus + fixationCountMalus + FLUENCY_MAX_SCORE;
+	const score =
+		timeMalus +
+		mistakeMalus +
+		targetFixMalus +
+		regressionMalus +
+		fixationCountMalus +
+		FLUENCY_MAX_SCORE;
 
 	return Math.max(0, Math.min(score, FLUENCY_MAX_SCORE)); // Clamp score between 0 and 100
 }

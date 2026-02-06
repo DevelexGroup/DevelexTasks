@@ -1,7 +1,11 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { db } from '$lib/database/db';
-	import type { GazeSampleDataEntry, FixationDataEntry, SessionScoreDataEntry } from '$lib/database/db.types';
+	import type {
+		GazeSampleDataEntry,
+		FixationDataEntry,
+		SessionScoreDataEntry
+	} from '$lib/database/db.types';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 
@@ -58,10 +62,7 @@
 	async function loadSessionIds() {
 		if (!selectedChildId) return;
 
-		const filtered = await db.gazeSamples
-			.where('child_id')
-			.equals(selectedChildId)
-			.toArray();
+		const filtered = await db.gazeSamples.where('child_id').equals(selectedChildId).toArray();
 
 		const sessionMap: Record<string, string> = {};
 		for (const entry of filtered) {
@@ -106,9 +107,10 @@
 					.toArray()
 			]);
 
-			const taskName = sessionIds.find(s => s.sessionId === selectedSessionId)?.taskName || '';
+			const taskName = sessionIds.find((s) => s.sessionId === selectedSessionId)?.taskName || '';
 
-			const maxSlides = gazeSamples.length > 0 ? Math.max(...gazeSamples.map(s => s.slide_index)) : 0;
+			const maxSlides =
+				gazeSamples.length > 0 ? Math.max(...gazeSamples.map((s) => s.slide_index)) : 0;
 
 			onConfirm?.({
 				childId: selectedChildId,
@@ -147,9 +149,7 @@
 	<Dialog.Content class="sm:max-w-md" showCloseButton={false} onEscapeKeydown={handleEscapeKeydown}>
 		<Dialog.Header>
 			<Dialog.Title>Výběr heatmapy</Dialog.Title>
-			<Dialog.Description>
-				Vyberte dítě a session pro zobrazení heatmapy.
-			</Dialog.Description>
+			<Dialog.Description>Vyberte dítě a session pro zobrazení heatmapy.</Dialog.Description>
 		</Dialog.Header>
 
 		<div class="space-y-4 py-4">
@@ -159,7 +159,7 @@
 				<select
 					id="childId"
 					bind:value={selectedChildId}
-					class="w-full px-3 py-2 bg-white border border-gray-300 text-gray-800 rounded-md"
+					class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800"
 				>
 					<option value="">Vyberte dítě…</option>
 					{#each childIds as childId (childId)}
@@ -175,7 +175,7 @@
 					id="sessionId"
 					bind:value={selectedSessionId}
 					disabled={!selectedChildId}
-					class="w-full px-3 py-2 bg-white border border-gray-300 text-gray-800 rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed"
+					class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800 disabled:cursor-not-allowed disabled:bg-gray-100"
 				>
 					<option value="">Vyberte session…</option>
 					{#each sessionIds as session (session.sessionId)}
@@ -190,14 +190,14 @@
 		<Dialog.Footer>
 			<button
 				type="button"
-				class="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+				class="rounded-md bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200"
 				onclick={() => goto(resolve(`/admin`))}
 			>
 				Zpět
 			</button>
 			<button
 				type="button"
-				class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+				class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
 				disabled={!canConfirm() || isLoading}
 				onclick={handleConfirm}
 			>

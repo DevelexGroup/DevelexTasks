@@ -40,11 +40,21 @@
 
 	// Set context so child components can access these props
 	setContext('dwellTargetProps', {
-		get dwellState() { return dwellState; },
-		set dwellState(value: DwellState) { dwellState = value; },
-		get dwellTimeMs() { return dwellTimeMs; },
-		get width() { return width; },
-		get height() { return height; }
+		get dwellState() {
+			return dwellState;
+		},
+		set dwellState(value: DwellState) {
+			dwellState = value;
+		},
+		get dwellTimeMs() {
+			return dwellTimeMs;
+		},
+		get width() {
+			return width;
+		},
+		get height() {
+			return height;
+		}
 	});
 
 	let analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
@@ -67,14 +77,17 @@
 		};
 
 		const wasHovered = isHovered;
-		isHovered = e.clientX >= expandedRect.left &&
-					e.clientX <= expandedRect.right &&
-					e.clientY >= expandedRect.top &&
-					e.clientY <= expandedRect.bottom;
+		isHovered =
+			e.clientX >= expandedRect.left &&
+			e.clientX <= expandedRect.right &&
+			e.clientY >= expandedRect.top &&
+			e.clientY <= expandedRect.bottom;
 
 		// Update body class for global dimming
 		if (isHovered && !wasHovered) {
-			document.body.dataset.gazeHoverCount = String((parseInt(document.body.dataset.gazeHoverCount || '0') + 1));
+			document.body.dataset.gazeHoverCount = String(
+				parseInt(document.body.dataset.gazeHoverCount || '0') + 1
+			);
 		} else if (!isHovered && wasHovered) {
 			const count = parseInt(document.body.dataset.gazeHoverCount || '1') - 1;
 			if (count <= 0) {
@@ -86,16 +99,14 @@
 	}
 
 	onMount(() => {
-		if (!wrapperElement || !gazeManager)
-			return;
+		if (!wrapperElement || !gazeManager) return;
 		gazeManager.on('dwell', handleDwellEvent);
 		registerDwellTarget();
 		document.addEventListener('mousemove', handleMouseMove);
 	});
 
 	onDestroy(() => {
-		if (!wrapperElement || !gazeManager)
-			return;
+		if (!wrapperElement || !gazeManager) return;
 		clearTimers();
 		unregisterDwellTarget();
 		gazeManager.off('dwell', handleDwellEvent);
@@ -113,13 +124,18 @@
 	});
 
 	function handleDwellEvent(e: GazeInteractionObjectDwellEvent) {
-		if (!e.target.some((t) => t.id === id) || isCooldownActive)
-			return;
+		if (!e.target.some((t) => t.id === id) || isCooldownActive) return;
 
 		switch (e.type) {
-			case 'dwellProgress': handleDwellProgress(); break;
-			case 'dwellCancel': handleDwellCancel(); break;
-			case 'dwellFinish': handleDwellFinish(); break;
+			case 'dwellProgress':
+				handleDwellProgress();
+				break;
+			case 'dwellCancel':
+				handleDwellCancel();
+				break;
+			case 'dwellFinish':
+				handleDwellFinish();
+				break;
 		}
 	}
 
@@ -131,8 +147,7 @@
 	}
 
 	function handleDwellCancel() {
-		if (dwellState !== DwellState.ActiveDwelling)
-			return;
+		if (dwellState !== DwellState.ActiveDwelling) return;
 
 		clearTimers();
 		dwellState = DwellState.DwellCancelled;
@@ -170,8 +185,7 @@
 	}
 
 	function registerDwellTarget() {
-		if (!wrapperElement || !gazeManager)
-			return;
+		if (!wrapperElement || !gazeManager) return;
 
 		gazeManager.register({
 			interaction: 'dwell',
@@ -201,8 +215,7 @@
 	}
 
 	function unregisterDwellTarget() {
-		if (!wrapperElement || !gazeManager)
-			return;
+		if (!wrapperElement || !gazeManager) return;
 
 		gazeManager.unregister({
 			interaction: 'dwell',
@@ -230,7 +243,7 @@
 	style:width="{width}px"
 	style:height="{height}px"
 	style:--buffer-size="{bufferSize}px"
-	style:--debug-hue="{(id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 137) % 360}"
+	style:--debug-hue={(id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 137) % 360}
 >
 	{#if children}
 		{@render children()}

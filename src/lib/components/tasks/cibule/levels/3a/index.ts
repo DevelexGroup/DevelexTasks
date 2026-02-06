@@ -9,9 +9,15 @@ export const id = 'level3a';
 export const rawData: CibuleRawDataEntry[] = cibuleL3aRawData;
 export const instructionVideo = resolveAny('/video/cibule-instrukce-03a.webm');
 
-export function validateStage(state: TrackTaskState) : TaskMistake[] | true {
-	const lastSyllable = getFlattenedSymbols(state).findLastIndex((syllable => syllable === state.dataEntry.correct?.[state.dataEntry.correct.length - 1]));
-	if (!state.selectedCorrectIndices || state.selectedCorrectIndices.length === 0 || state.selectedCorrectIndices[state.selectedCorrectIndices.length - 1] !== lastSyllable) {
+export function validateStage(state: TrackTaskState): TaskMistake[] | true {
+	const lastSyllable = getFlattenedSymbols(state).findLastIndex(
+		(syllable) => syllable === state.dataEntry.correct?.[state.dataEntry.correct.length - 1]
+	);
+	if (
+		!state.selectedCorrectIndices ||
+		state.selectedCorrectIndices.length === 0 ||
+		state.selectedCorrectIndices[state.selectedCorrectIndices.length - 1] !== lastSyllable
+	) {
 		return [MistakeUnfinished];
 	}
 	return true;
@@ -39,7 +45,7 @@ export function validateSymbol(clickedIndex: number, state: TrackTaskState): Tas
 	}
 
 	// Skipped check
-	if (correctIndices.includes(clickedIndex)){
+	if (correctIndices.includes(clickedIndex)) {
 		return [MistakeSkipped];
 	}
 

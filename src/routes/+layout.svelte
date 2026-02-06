@@ -2,10 +2,14 @@
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import '../app.css';
 	import { GazeManager } from 'develex-js-sdk';
-	import { cursorVisible } from '$lib/stores/cursor'
+	import { cursorVisible } from '$lib/stores/cursor';
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
-	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import {
+		ANALYTICS_MANAGER_KEY,
+		GAZE_MANAGER_KEY,
+		KEYBOARD_MANAGER_KEY
+	} from '$lib/types/general.types';
 	import DebugWindow from '$lib/components/DebugWindow.svelte';
 
 	let { children } = $props();
@@ -47,7 +51,7 @@
 </div>
 
 <style>
-	.cursor-hidden{
-			cursor: none;
+	.cursor-hidden {
+		cursor: none;
 	}
 </style>

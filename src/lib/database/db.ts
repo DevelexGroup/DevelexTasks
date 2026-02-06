@@ -1,10 +1,14 @@
 ﻿import Dexie, { type EntityTable } from 'dexie';
-import type { FixationDataEntry, GazeSampleDataEntry, SessionScoreDataEntry } from '$lib/database/db.types';
+import type {
+	FixationDataEntry,
+	GazeSampleDataEntry,
+	SessionScoreDataEntry
+} from '$lib/database/db.types';
 
-const db = new Dexie("DevelexDatabase") as Dexie & {
-	gazeSamples: EntityTable<GazeSampleDataEntry, "id">
-	fixationData: EntityTable<FixationDataEntry, "id">
-	sessionScores: EntityTable<SessionScoreDataEntry, "id">
+const db = new Dexie('DevelexDatabase') as Dexie & {
+	gazeSamples: EntityTable<GazeSampleDataEntry, 'id'>;
+	fixationData: EntityTable<FixationDataEntry, 'id'>;
+	sessionScores: EntityTable<SessionScoreDataEntry, 'id'>;
 };
 
 db.version(1).stores({

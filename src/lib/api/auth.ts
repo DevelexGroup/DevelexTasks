@@ -31,7 +31,8 @@ export async function logout(): Promise<void> {
 	authUser.set(null);
 
 	if (typeof document !== 'undefined') {
-		document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=strict';
+		document.cookie =
+			'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=strict';
 	}
 
 	console.log('User logged out, authUser cleared:', authUser);

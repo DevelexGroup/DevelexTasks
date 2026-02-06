@@ -4,24 +4,49 @@
 	import { TaskStage } from '$lib/types/task.types';
 	import { id, rawData } from '$lib/components/tasks/cibule/levels/2/index';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
-	import { defaultValidateStage, defaultValidateSymbol, getWordAudioSource } from '$lib/utils/trackLevelUtils';
+	import {
+		defaultValidateStage,
+		defaultValidateSymbol,
+		getWordAudioSource
+	} from '$lib/utils/trackLevelUtils';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
 
-	const preset = cibuleLevelPreset.find((level => level.levelID === id))?.practiceContent;
+	const preset = cibuleLevelPreset.find((level) => level.levelID === id)?.practiceContent;
 	const data = preset ? getCibuleLevelData(preset, rawData) : null;
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} isPractice={true} onCompleted={() => {taskStage.set(TaskStage.Instructions)}}>
-	{#snippet hintComponent({ state })}
-		{#if state.dataEntry.wordToRead}
-			<AudioHint audioSrc={getWordAudioSource(state.dataEntry.wordToRead)} playOnStart playOnStartDelay={750} ttsFallback={state.dataEntry.wordToRead} />
-		{/if}
-	{/snippet}
-	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
-		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} splitFiller={true} />
-	{/snippet}
-</TrackLevel>
+	<TrackLevel
+		{id}
+		{data}
+		validateSymbol={defaultValidateSymbol}
+		validateStage={defaultValidateStage}
+		isPractice={true}
+		onCompleted={() => {
+			taskStage.set(TaskStage.Instructions);
+		}}
+	>
+		{#snippet hintComponent({ state })}
+			{#if state.dataEntry.wordToRead}
+				<AudioHint
+					audioSrc={getWordAudioSource(state.dataEntry.wordToRead)}
+					playOnStart
+					playOnStartDelay={750}
+					ttsFallback={state.dataEntry.wordToRead}
+				/>
+			{/if}
+		{/snippet}
+		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+			<SymbolTrack
+				{symbols}
+				{correctSymbols}
+				{validateSymbolClick}
+				letterSpacing={4}
+				flattenRows={true}
+				splitFiller={true}
+			/>
+		{/snippet}
+	</TrackLevel>
 {/if}

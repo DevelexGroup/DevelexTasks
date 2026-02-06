@@ -1,5 +1,10 @@
 ﻿<script lang="ts">
-	import { debugMode, debugOptions, debugWindowOpenKey, debugWindowVisible } from '$lib/stores/debug';
+	import {
+		debugMode,
+		debugOptions,
+		debugWindowOpenKey,
+		debugWindowVisible
+	} from '$lib/stores/debug';
 	import { onMount } from 'svelte';
 
 	function handleKeydown(e: KeyboardEvent) {
@@ -17,8 +22,10 @@
 </script>
 
 {#if $debugWindowVisible}
-	<div class="fixed top-4 right-4 z-50 bg-white border border-gray-300 rounded-lg shadow-lg p-4 min-w-64">
-		<div class="flex items-center justify-between mb-3">
+	<div
+		class="fixed top-4 right-4 z-50 min-w-64 rounded-lg border border-gray-300 bg-white p-4 shadow-lg"
+	>
+		<div class="mb-3 flex items-center justify-between">
 			<h3 class="text-lg font-semibold text-gray-800">Debug Window</h3>
 			<button
 				class="text-gray-500 hover:text-gray-700"
@@ -28,13 +35,13 @@
 			</button>
 		</div>
 
-		<div class="border-b border-gray-200 pb-3 mb-3">
-			<label class="flex items-center gap-2 cursor-pointer">
+		<div class="mb-3 border-b border-gray-200 pb-3">
+			<label class="flex cursor-pointer items-center gap-2">
 				<input
 					type="checkbox"
 					checked={$debugMode}
 					onchange={(e) => debugMode.set(e.currentTarget.checked)}
-					class="w-4 h-4 accent-blue-600"
+					class="h-4 w-4 accent-blue-600"
 				/>
 				<span class="font-medium text-gray-700">Enable Debug Mode</span>
 			</label>
@@ -44,7 +51,7 @@
 			<div class="space-y-3">
 				<h4 class="text-sm font-medium text-gray-600">Debug Options</h4>
 
-				<label class="flex items-center gap-2 cursor-pointer">
+				<label class="flex cursor-pointer items-center gap-2">
 					<input
 						type="checkbox"
 						checked={$debugOptions.debugAOIAreaVisible}
@@ -53,7 +60,7 @@
 								...opts,
 								debugAOIAreaVisible: e.currentTarget.checked
 							}))}
-						class="w-4 h-4 accent-blue-600"
+						class="h-4 w-4 accent-blue-600"
 					/>
 					<span class="text-sm text-gray-700">Show AOI Areas</span>
 				</label>
@@ -79,9 +86,8 @@
 			</div>
 		{/if}
 
-		<div class="mt-4 pt-3 border-t border-gray-200 text-xs text-gray-500">
+		<div class="mt-4 border-t border-gray-200 pt-3 text-xs text-gray-500">
 			Press {debugWindowOpenKey} to toggle
 		</div>
 	</div>
 {/if}
-

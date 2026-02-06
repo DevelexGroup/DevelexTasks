@@ -21,7 +21,7 @@
 		playOnStartDelay = 0,
 		ttsFallback = null,
 		reportToAnalytics = true,
-		audioSrc,
+		audioSrc
 	}: Props = $props();
 
 	let isPlaying = $state(false);

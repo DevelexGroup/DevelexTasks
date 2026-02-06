@@ -9,16 +9,24 @@
 	import { defaultValidateStage, defaultValidateSymbol } from '$lib/utils/trackLevelUtils';
 	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
 
-	const data = zrakovkaTestData.find((level => level.levelID === id))?.practiceContent;
+	const data = zrakovkaTestData.find((level) => level.levelID === id)?.practiceContent;
 </script>
 
 {#if data}
-	<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} onCompleted={() => {taskStage.set(TaskStage.End)}}>
+	<TrackLevel
+		{id}
+		{data}
+		validateSymbol={defaultValidateSymbol}
+		validateStage={defaultValidateStage}
+		onCompleted={() => {
+			taskStage.set(TaskStage.End);
+		}}
+	>
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
 				<div class="h-20 w-20">
 					<img
-						class="h-full w-full object-contain h-20 w-20"
+						class="h-20 h-full w-20 w-full object-contain"
 						src={resolveAny(`/images/tasks/zrakovka/${state.dataEntry.correct[0]}.png`)}
 						alt={state.dataEntry.correct[0]}
 					/>
@@ -28,7 +36,12 @@
 		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 			<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16}>
 				{#snippet symbolSnippet({ symbol, index })}
-					<ImageSymbolElement {symbol} {index} {validateSymbolClick} basePath="/images/tasks/zrakovka" />
+					<ImageSymbolElement
+						{symbol}
+						{index}
+						{validateSymbolClick}
+						basePath="/images/tasks/zrakovka"
+					/>
 				{/snippet}
 			</SymbolTrack>
 		{/snippet}

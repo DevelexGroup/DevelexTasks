@@ -192,12 +192,12 @@
 								Přejít na hlavní stranu
 							</button>
 							<button
-								class="rounded-md bg-amber-100 px-4 py-2 text-center text-amber-700 hover:bg-amber-200 flex-grow-1"
+								class="flex-grow-1 rounded-md bg-amber-100 px-4 py-2 text-center text-amber-700 hover:bg-amber-200"
 								onclick={() => {
 									onCompleted();
 								}}
 							>
-								Pokračovat<br><small>(může být nefunkční)</small>
+								Pokračovat<br /><small>(může být nefunkční)</small>
 							</button>
 						</div>
 					{/if}

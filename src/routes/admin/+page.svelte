@@ -48,7 +48,7 @@
 
 		<button
 			class="rounded-md bg-red-500 px-3 py-1.5 text-gray-50 hover:bg-red-600"
-			onclick={() => isDeleteDialogOpen = true}
+			onclick={() => (isDeleteDialogOpen = true)}
 		>
 			Smazat všechna data
 		</button>
@@ -56,7 +56,7 @@
 
 	<div class="absolute bottom-4 left-4">
 		<button
-			class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
+			class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
 			onclick={() => goto(resolve(`/`))}
 		>
 			Zpět
@@ -75,7 +75,7 @@
 		<Dialog.Footer>
 			<button
 				class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800 hover:bg-gray-400"
-				onclick={() => isDeleteDialogOpen = false}
+				onclick={() => (isDeleteDialogOpen = false)}
 				disabled={isDeleting}
 			>
 				Zrušit
