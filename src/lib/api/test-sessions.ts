@@ -2,7 +2,8 @@
 	type Page,
 	SortBy,
 	SortDirection,
-	type TestSessionDTO, type TestSessionPartDTO,
+	type TestSessionDTO,
+	type TestSessionPartDTO,
 	TestSessionStatus
 } from '$lib/types/api.types';
 import { apiClient } from '$lib/api/client';
@@ -63,7 +64,10 @@ export async function abortTestSession(sessionId: string): Promise<TestSessionDT
 	});
 }
 
-export async function addTestSessionPart(sessionId: string, partNumber: number): Promise<TestSessionPartDTO> {
+export async function addTestSessionPart(
+	sessionId: string,
+	partNumber: number
+): Promise<TestSessionPartDTO> {
 	return apiClient<TestSessionPartDTO>(`/test-sessions/${sessionId}/parts`, {
 		method: 'POST',
 		params: { partNumber }
@@ -96,10 +100,7 @@ export async function addFileToTestSessionPart(
 	});
 }
 
-export async function streamTestSessionPartFile(
-	sessionId: string,
-	fileId: string
-): Promise<Blob> {
+export async function streamTestSessionPartFile(sessionId: string, fileId: string): Promise<Blob> {
 	return apiClient<Blob>(`/test-sessions/${sessionId}/files/${fileId}`, {
 		method: 'GET'
 	});

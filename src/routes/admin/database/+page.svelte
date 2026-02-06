@@ -2,7 +2,11 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { db } from '$lib/database/db';
-	import type { GazeSampleDataEntry, FixationDataEntry, SessionScoreDataEntry } from '$lib/database/db.types';
+	import type {
+		GazeSampleDataEntry,
+		FixationDataEntry,
+		SessionScoreDataEntry
+	} from '$lib/database/db.types';
 	import { untrack } from 'svelte';
 	import ExportWindow from './components/ExportWindow.svelte';
 
@@ -80,17 +84,14 @@
 		if (!selectedTable) return;
 
 		const table = db[selectedTable];
-		childIds = await table.orderBy('child_id').uniqueKeys() as string[];
+		childIds = (await table.orderBy('child_id').uniqueKeys()) as string[];
 	}
 
 	async function loadSessionIds() {
 		if (!selectedTable || !selectedChildId) return;
 
 		const table = db[selectedTable];
-		const filtered = await table
-			.where('child_id')
-			.equals(selectedChildId)
-			.toArray();
+		const filtered = await table.where('child_id').equals(selectedChildId).toArray();
 
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const sessionMap = new Map<string, string>();
@@ -104,7 +105,6 @@
 			.map(([sessionId, taskName]) => ({ sessionId, taskName }))
 			.sort((a, b) => -a.sessionId.localeCompare(b.sessionId));
 	}
-
 
 	async function loadTableData() {
 		if (!selectedTable || !selectedChildId || isLoading) return;
@@ -129,10 +129,7 @@
 				collection = collection.reverse();
 			}
 
-			const newData = await collection
-				.offset(loadedCount)
-				.limit(LOAD_SIZE)
-				.sortBy('timestamp');
+			const newData = await collection.offset(loadedCount).limit(LOAD_SIZE).sortBy('timestamp');
 
 			tableData = [...tableData, ...newData];
 			loadedCount += newData.length;
@@ -141,7 +138,6 @@
 			isLoading = false;
 		}
 	}
-
 
 	async function loadMoreData() {
 		if (!hasMore || isLoading) return;
@@ -170,24 +166,74 @@
 
 		const table = db[selectedTable];
 		const count = await table
-			.where('child_id').equals(selectedChildId)
-			.and(entry => entry.session_id === selectedSessionId)
+			.where('child_id')
+			.equals(selectedChildId)
+			.and((entry) => entry.session_id === selectedSessionId)
 			.count();
 		return count;
 	}
 
 	function getTableHeaders(): (string | null)[] {
 		if (selectedTable === 'gazeSamples') {
-			return [null, null, null, null, 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
+			return [
+				null,
+				null,
+				null,
+				null,
+				'Slide Index',
+				'Stimulus ID',
+				'Timestamp',
+				'Eye X',
+				'Eye Y',
+				'AOI',
+				'Mouse X',
+				'Mouse Y',
+				'Event',
+				'Sound',
+				'Mistake Type',
+				'Result'
+			];
 		} else if (selectedTable === 'fixationData') {
-			return [null, null, null, null, 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+			return [
+				null,
+				null,
+				null,
+				null,
+				'Slide Index',
+				'Stimulus ID',
+				'Timestamp',
+				'Eye X',
+				'Eye Y',
+				'Duration',
+				'AOI',
+				'Fixation Index'
+			];
 		} else if (selectedTable === 'sessionScores') {
-			return [null, null, 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Fluency Score', 'Error Rate', 'Response Time', 'Mean Fix Dur', 'Fix Count', 'AOI Target Fix', 'AOI Field Fix', 'Regression Count'];
+			return [
+				null,
+				null,
+				'Session ID',
+				'Task',
+				'Slide Index',
+				'Stimulus ID',
+				'Timestamp',
+				'Fluency Score',
+				'Error Rate',
+				'Response Time',
+				'Mean Fix Dur',
+				'Fix Count',
+				'AOI Target Fix',
+				'AOI Field Fix',
+				'Regression Count'
+			];
 		}
 		return [];
 	}
 
-	function formatTimestamp(unixTimestamp: number, format: 'full' | 'simple' | 'filename' = 'full'): string {
+	function formatTimestamp(
+		unixTimestamp: number,
+		format: 'full' | 'simple' | 'filename' = 'full'
+	): string {
 		const date = new Date(Math.floor(unixTimestamp));
 		const year = date.getFullYear();
 		const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -210,7 +256,6 @@
 		return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}.${milliseconds}${microseconds}`;
 	}
 
-
 	function formatColumnValue(column: string, value: unknown): string {
 		if (value === null || value === undefined) return '-';
 		if (column == 'Timestamp' || column == 'Session ID') {
@@ -224,36 +269,77 @@
 		return String(value);
 	}
 
-	function getCellValue(entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry, index: number): unknown {
+	function getCellValue(
+		entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry,
+		index: number
+	): unknown {
 		if (selectedTable) {
 			return getCellValueForTable(entry, index, selectedTable);
 		}
 		return null;
 	}
 
-	function getCellValueForTable(entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry, index: number, table: 'gazeSamples' | 'fixationData' | 'sessionScores'): unknown {
+	function getCellValueForTable(
+		entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry,
+		index: number,
+		table: 'gazeSamples' | 'fixationData' | 'sessionScores'
+	): unknown {
 		if (table === 'gazeSamples') {
 			const data = entry as GazeSampleDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.slide_index, data.stimulus_id, data.timestamp,
-				data.eyetracker_x, data.eyetracker_y, data.aoi, data.mouse_x, data.mouse_y,
-				data.events, data.sound_name, data.mistake_type, data.task_result
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.slide_index,
+				data.stimulus_id,
+				data.timestamp,
+				data.eyetracker_x,
+				data.eyetracker_y,
+				data.aoi,
+				data.mouse_x,
+				data.mouse_y,
+				data.events,
+				data.sound_name,
+				data.mistake_type,
+				data.task_result
 			];
 			return values[index];
 		} else if (table === 'fixationData') {
 			const data = entry as FixationDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.slide_index, data.stimulus_id, data.timestamp,
-				data.eyetracker_x, data.eyetracker_y, data.duration, data.aoi, data.fixation_index
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.slide_index,
+				data.stimulus_id,
+				data.timestamp,
+				data.eyetracker_x,
+				data.eyetracker_y,
+				data.duration,
+				data.aoi,
+				data.fixation_index
 			];
 			return values[index];
 		} else {
 			const data = entry as SessionScoreDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.slide_index,
-				data.stimulus_id, data.timestamp, data.fluency_score,
-				data.error_rate, data.response_time, data.mean_fix_dur, data.fix_count,
-				data.aoi_target_fix, data.aoi_field_fix, data.regression_count
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.slide_index,
+				data.stimulus_id,
+				data.timestamp,
+				data.fluency_score,
+				data.error_rate,
+				data.response_time,
+				data.mean_fix_dur,
+				data.fix_count,
+				data.aoi_target_fix,
+				data.aoi_field_fix,
+				data.regression_count
 			];
 			return values[index];
 		}
@@ -265,13 +351,13 @@
 	<meta name="description" content="Database admin page for Develex Tasks" />
 </svelte:head>
 
-<section class="absolute flex h-16 top-4 left-4 items-center gap-4">
+<section class="absolute top-4 left-4 flex h-16 items-center gap-4">
 	<div class="flex flex-col">
-		<label for="table" class="text-sm font-medium text-gray-700 mb-1">Table:</label>
+		<label for="table" class="mb-1 text-sm font-medium text-gray-700">Table:</label>
 		<select
 			id="table"
 			bind:value={selectedTable}
-			class="px-3 py-1.5 bg-white border border-gray-300 text-gray-800 rounded-md min-w-[150px]"
+			class="min-w-[150px] rounded-md border border-gray-300 bg-white px-3 py-1.5 text-gray-800"
 		>
 			<option value="">Select table&hellip;</option>
 			<option value="gazeSamples">gazeSamples</option>
@@ -281,12 +367,12 @@
 	</div>
 
 	<div class="flex flex-col">
-		<label for="childId" class="text-sm font-medium text-gray-700 mb-1">Child ID:</label>
+		<label for="childId" class="mb-1 text-sm font-medium text-gray-700">Child ID:</label>
 		<select
 			id="childId"
 			bind:value={selectedChildId}
 			disabled={!selectedTable}
-			class="px-3 py-1.5 bg-white border border-gray-300 text-gray-800 rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed min-w-[150px]"
+			class="min-w-[150px] rounded-md border border-gray-300 bg-white px-3 py-1.5 text-gray-800 disabled:cursor-not-allowed disabled:bg-gray-100"
 		>
 			<option value="">Select child&hellip;</option>
 			{#each childIds as childId (childId)}
@@ -296,80 +382,94 @@
 	</div>
 
 	<div class="flex flex-col">
-		<label for="sessionId" class="text-sm font-medium text-gray-700 mb-1">Session ID:</label>
+		<label for="sessionId" class="mb-1 text-sm font-medium text-gray-700">Session ID:</label>
 		<select
 			id="sessionId"
 			bind:value={selectedSessionId}
 			disabled={!selectedChildId || selectedTable === 'sessionScores'}
-			class="px-3 py-1.5 bg-white border border-gray-300 text-gray-800 rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed min-w-[200px]"
+			class="min-w-[200px] rounded-md border border-gray-300 bg-white px-3 py-1.5 text-gray-800 disabled:cursor-not-allowed disabled:bg-gray-100"
 		>
-			<option value="">{selectedTable === 'sessionScores' ? 'N/A for this table' : 'Select session…'}</option>
+			<option value=""
+				>{selectedTable === 'sessionScores' ? 'N/A for this table' : 'Select session…'}</option
+			>
 			{#each sessionIds as session (session.sessionId)}
-				<option value={session.sessionId}>[{session.taskName}] {formatTimestamp(parseFloat(String(session.sessionId)), 'simple')}</option>
+				<option value={session.sessionId}
+					>[{session.taskName}] {formatTimestamp(
+						parseFloat(String(session.sessionId)),
+						'simple'
+					)}</option
+				>
 			{/each}
 		</select>
 	</div>
 </section>
 
-<section class="absolute top-4 right-4 flex gap-4 items-center">
+<section class="absolute top-4 right-4 flex items-center gap-4">
 	<button
-		class="px-3 py-1.5 bg-blue-500 text-gray-50 rounded-md hover:bg-blue-600 mt-6"
-		onclick={() => exportWindowOpen = true}
+		class="mt-6 rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
+		onclick={() => (exportWindowOpen = true)}
 	>
 		Exportovat&hellip;
 	</button>
 </section>
 
-<section
-	class="table-container w-full flex flex-col overflow-auto mt-24 mb-16 bg-gray-100 px-4"
->
+<section class="table-container mt-24 mb-16 flex w-full flex-col overflow-auto bg-gray-100 px-4">
 	{#if !selectedTable}
-		<div class="flex items-center justify-center h-full">
-			<p class="text-gray-500 text-lg">Vyberte tabulku pro zobrazení dat</p>
+		<div class="flex h-full items-center justify-center">
+			<p class="text-lg text-gray-500">Vyberte tabulku pro zobrazení dat</p>
 		</div>
 	{:else if !selectedChildId}
-		<div class="flex items-center justify-center h-full">
-			<p class="text-gray-500 text-lg">Vyberte Child ID</p>
+		<div class="flex h-full items-center justify-center">
+			<p class="text-lg text-gray-500">Vyberte Child ID</p>
 		</div>
 	{:else if !selectedSessionId && selectedTable !== 'sessionScores'}
-		<div class="flex items-center justify-center h-full">
-			<p class="text-gray-500 text-lg">Vyberte Session ID</p>
+		<div class="flex h-full items-center justify-center">
+			<p class="text-lg text-gray-500">Vyberte Session ID</p>
 		</div>
 	{:else if tableData.length === 0 && !isLoading}
-		<div class="flex items-center justify-center h-full">
-			<p class="text-gray-500 text-lg">Žádná data k zobrazení</p>
+		<div class="flex h-full items-center justify-center">
+			<p class="text-lg text-gray-500">Žádná data k zobrazení</p>
 		</div>
 	{:else}
 		<div
-			class="overflow-x-auto bg-white rounded-lg shadow"
+			class="overflow-x-auto rounded-lg bg-white shadow"
 			bind:this={scrollContainer}
 			onscroll={handleScroll}
 		>
 			<table class="min-w-full divide-y divide-gray-200">
-				<thead class="bg-gray-50 sticky top-0">
+				<thead class="sticky top-0 bg-gray-50">
 					<tr>
 						{#each getTableHeaders() as header, colIndex (colIndex)}
 							{#if header !== null}
 								{#if header === 'Timestamp'}
-									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+									<th
+										class="px-6 py-3 text-left text-xs font-medium tracking-wider whitespace-nowrap text-gray-500 uppercase"
+									>
 										<button
-											class="flex items-center uppercase gap-2 hover:text-gray-700 cursor-pointer transition-colors"
+											class="flex cursor-pointer items-center gap-2 uppercase transition-colors hover:text-gray-700"
 											onclick={toggleTimestampOrder}
 										>
 											{header}
 											<svg
-												class="w-4 h-4 transition-transform"
+												class="h-4 w-4 transition-transform"
 												style="transform: rotate({timestampOrder === 'asc' ? '0deg' : '180deg'})"
 												fill="none"
 												stroke="currentColor"
 												viewBox="0 0 24 24"
 											>
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													stroke-width="2.5"
+													d="M5 15l7-7 7 7"
+												/>
 											</svg>
 										</button>
 									</th>
 								{:else}
-									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+									<th
+										class="px-6 py-3 text-left text-xs font-medium tracking-wider whitespace-nowrap text-gray-500 uppercase"
+									>
 										{header}
 									</th>
 								{/if}
@@ -377,12 +477,12 @@
 						{/each}
 					</tr>
 				</thead>
-				<tbody class="bg-white divide-y divide-gray-200">
+				<tbody class="divide-y divide-gray-200 bg-white">
 					{#each tableData as entry, rowIndex (entry.id)}
 						<tr class={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
 							{#each getTableHeaders() as header, colIndex (colIndex)}
 								{#if header !== null}
-									<td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">
+									<td class="px-6 py-3 text-sm whitespace-nowrap text-gray-900">
 										{formatColumnValue(header, getCellValue(entry, colIndex))}
 									</td>
 								{/if}
@@ -400,33 +500,34 @@
 
 			{#if !hasMore && tableData.length > 0}
 				<div class="flex items-center justify-center py-4">
-					<p class="text-gray-500 text-sm">Načteny všechny záznamy ({tableData.length})</p>
+					<p class="text-sm text-gray-500">Načteny všechny záznamy ({tableData.length})</p>
 				</div>
 			{/if}
 		</div>
 	{/if}
 </section>
 
-<div class="fixed flex gap-1 bottom-4 left-4">
+<div class="fixed bottom-4 left-4 flex gap-1">
 	<button
-		class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
+		class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
 		onclick={() => goto(resolve(`/`))}
 	>
 		Zpět
 	</button>
 </div>
 
-<div class="fixed flex gap-1 bottom-4 right-4">
+<div class="fixed right-4 bottom-4 flex gap-1">
 	{#if selectedTable && selectedChildId && selectedSessionId}
-		<span class="text-gray-700">Zobrazeno záznamů: {tableData.length} (z celkem {#await getTotalCount() then totalCount}{totalCount}{/await})</span>
+		<span class="text-gray-700"
+			>Zobrazeno záznamů: {tableData.length} (z celkem {#await getTotalCount() then totalCount}{totalCount}{/await})</span
+		>
 	{/if}
 </div>
 
 <ExportWindow bind:open={exportWindowOpen} />
 
 <style>
-	.table-container{
+	.table-container {
 		height: calc(100vh - 10rem);
 	}
 </style>
-

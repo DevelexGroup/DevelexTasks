@@ -24,7 +24,7 @@
 
 	<div class="absolute bottom-4 left-4">
 		<button
-			class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
+			class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
 			onclick={() => goto(resolve(`/`))}
 		>
 			Zpět

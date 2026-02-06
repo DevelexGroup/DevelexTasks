@@ -1,6 +1,6 @@
 ﻿<script lang="ts">
 	import { GAZE_MANAGER_KEY } from '$lib/types/general.types';
-	import type { GazeManager	} from 'develex-js-sdk';
+	import type { GazeManager } from 'develex-js-sdk';
 	import { getContext, onDestroy, onMount, type Snippet } from 'svelte';
 	import { debugMode, debugOptions } from '$lib/stores/debug';
 
@@ -39,14 +39,17 @@
 		};
 
 		const wasHovered = isHovered;
-		isHovered = e.clientX >= expandedRect.left &&
-					e.clientX <= expandedRect.right &&
-					e.clientY >= expandedRect.top &&
-					e.clientY <= expandedRect.bottom;
+		isHovered =
+			e.clientX >= expandedRect.left &&
+			e.clientX <= expandedRect.right &&
+			e.clientY >= expandedRect.top &&
+			e.clientY <= expandedRect.bottom;
 
 		// Update body class for global dimming
 		if (isHovered && !wasHovered) {
-			document.body.dataset.gazeHoverCount = String((parseInt(document.body.dataset.gazeHoverCount || '0') + 1));
+			document.body.dataset.gazeHoverCount = String(
+				parseInt(document.body.dataset.gazeHoverCount || '0') + 1
+			);
 		} else if (!isHovered && wasHovered) {
 			const count = parseInt(document.body.dataset.gazeHoverCount || '1') - 1;
 			if (count <= 0) {
@@ -58,8 +61,7 @@
 	}
 
 	onMount(() => {
-		if (!element)
-			return;
+		if (!element) return;
 
 		if (registerFixation) {
 			gazeManager.register({
@@ -85,8 +87,7 @@
 	});
 
 	onDestroy(() => {
-		if (!element)
-			return;
+		if (!element) return;
 
 		if (registerFixation) {
 			gazeManager.unregister({
@@ -116,13 +117,13 @@
 </script>
 
 <div
-	id={id}
+	{id}
 	bind:this={element}
 	class="gaze-area"
 	class:visible={!hideFromDebug && $debugMode && $debugOptions.debugAOIAreaVisible}
 	class:hovered={isHovered}
 	style:--buffer-size="{bufferSize}px"
-	style:--debug-hue="{(id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 137) % 360}"
+	style:--debug-hue={(id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 137) % 360}
 	role="group"
 >
 	{@render children()}

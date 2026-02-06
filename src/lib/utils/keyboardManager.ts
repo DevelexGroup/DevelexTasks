@@ -1,8 +1,6 @@
 ﻿export type KeyboardEventType = 'keydown' | 'keyup';
 
-export type KeyIdentifier =
-	| { code: string }
-	| { key: string };
+export type KeyIdentifier = { code: string } | { key: string };
 
 export type KeyboardEventOptions = {
 	ctrl?: boolean;
@@ -26,27 +24,35 @@ type KeyboardListener = {
 	callback: KeyboardEventCallback;
 	options: KeyboardEventOptions;
 	dispose: () => void;
-}
+};
 
 export class KeyboardManager {
 	private listeners = new Map<KeyboardEventType, Set<KeyboardListener>>();
 
-	public onKeyDown(code: string, callback: KeyboardEventCallback, options?: KeyboardEventOptions): KeyboardHandler;
+	public onKeyDown(
+		code: string,
+		callback: KeyboardEventCallback,
+		options?: KeyboardEventOptions
+	): KeyboardHandler;
 	public onKeyDown(callback: KeyboardEventCallback, options: KeyOptions): KeyboardHandler;
 	public onKeyDown(
-		first: string | (KeyboardEventCallback),
-		second?: (KeyboardEventCallback) | KeyOptions,
+		first: string | KeyboardEventCallback,
+		second?: KeyboardEventCallback | KeyOptions,
 		third?: KeyboardEventOptions
 	): KeyboardHandler {
 		const args = this.normalizeArgs(first, second, third);
 		return this.addListener('keydown', args.identifier, args.callback, args.options);
 	}
 
-	public onKeyUp(code: string, callback: KeyboardEventCallback, options?: KeyboardEventOptions): KeyboardHandler;
+	public onKeyUp(
+		code: string,
+		callback: KeyboardEventCallback,
+		options?: KeyboardEventOptions
+	): KeyboardHandler;
 	public onKeyUp(callback: KeyboardEventCallback, options: KeyOptions): KeyboardHandler;
 	public onKeyUp(
-		first: string | (KeyboardEventCallback),
-		second?: (KeyboardEventCallback) | KeyOptions,
+		first: string | KeyboardEventCallback,
+		second?: KeyboardEventCallback | KeyOptions,
 		third?: KeyboardEventOptions
 	): KeyboardHandler {
 		const args = this.normalizeArgs(first, second, third);
@@ -62,11 +68,11 @@ export class KeyboardManager {
 
 	public readonly dispatchOnKeyDown = (e: KeyboardEvent): void => {
 		this.dispatchEvent('keydown', e);
-	}
+	};
 
 	public readonly dispatchOnKeyUp = (e: KeyboardEvent): void => {
 		this.dispatchEvent('keyup', e);
-	}
+	};
 
 	private shouldIgnoreEvent(e: KeyboardEvent): boolean {
 		const target = e.target as HTMLElement;
@@ -103,7 +109,12 @@ export class KeyboardManager {
 		}
 	}
 
-	private addListener(type: KeyboardEventType, identifier: KeyIdentifier, callback: KeyboardEventCallback, options: KeyboardEventOptions): KeyboardHandler {
+	private addListener(
+		type: KeyboardEventType,
+		identifier: KeyIdentifier,
+		callback: KeyboardEventCallback,
+		options: KeyboardEventOptions
+	): KeyboardHandler {
 		const defaultDispose = (type: KeyboardEventType, listener: KeyboardListener): void => {
 			const listenersOfType = this.listeners.get(type);
 			if (listenersOfType) {
@@ -112,9 +123,14 @@ export class KeyboardManager {
 					this.listeners.delete(type);
 				}
 			}
-		}
+		};
 
-		const listener: KeyboardListener = { identifier, callback, options, dispose: () => defaultDispose(type, listener) };
+		const listener: KeyboardListener = {
+			identifier,
+			callback,
+			options,
+			dispose: () => defaultDispose(type, listener)
+		};
 
 		if (!this.listeners.has(type)) {
 			this.listeners.set(type, new Set());
@@ -126,8 +142,8 @@ export class KeyboardManager {
 	}
 
 	private normalizeArgs(
-		first: string | (KeyboardEventCallback),
-		second?: (KeyboardEventCallback) | KeyOptions,
+		first: string | KeyboardEventCallback,
+		second?: KeyboardEventCallback | KeyOptions,
 		third?: KeyboardEventOptions
 	): { identifier: KeyIdentifier; callback: KeyboardEventCallback; options: KeyboardEventOptions } {
 		if (typeof first === 'string') {
@@ -137,7 +153,7 @@ export class KeyboardManager {
 			return {
 				identifier: { code: first },
 				callback: second,
-				options: third ?? {},
+				options: third ?? {}
 			};
 		}
 

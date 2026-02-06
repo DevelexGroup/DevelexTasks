@@ -9,29 +9,39 @@ export function playSound(soundPath: string, volume = 0.5): Promise<void> {
 	return audio.play();
 }
 
-export function playSoundOrTTS(soundPath: string, word: string, ttsLang: string, volume = 0.5): Promise<void> {
-  const playTTS = () => {
-    return new Promise<void>((resolve, reject) => {
-      const utterance = new SpeechSynthesisUtterance(word);
-      utterance.lang = ttsLang;
-      utterance.volume = volume;
-      utterance.onend = () => resolve();
-      utterance.onerror = (event) => reject(event.error);
-      window.speechSynthesis.speak(utterance);
-    });
-  };
+export function playSoundOrTTS(
+	soundPath: string,
+	word: string,
+	ttsLang: string,
+	volume = 0.5
+): Promise<void> {
+	const playTTS = () => {
+		return new Promise<void>((resolve, reject) => {
+			const utterance = new SpeechSynthesisUtterance(word);
+			utterance.lang = ttsLang;
+			utterance.volume = volume;
+			utterance.onend = () => resolve();
+			utterance.onerror = (event) => reject(event.error);
+			window.speechSynthesis.speak(utterance);
+		});
+	};
 
-  return new Promise((resolve) => {
-    const resolvedPath = resolveAny(soundPath);
-    const audio = new Audio(resolvedPath);
-    audio.volume = volume;
+	return new Promise((resolve) => {
+		const resolvedPath = resolveAny(soundPath);
+		const audio = new Audio(resolvedPath);
+		audio.volume = volume;
 
-    audio.onerror = () => {
-      playTTS().then(resolve).catch(() => resolve());
-    };
+		audio.onerror = () => {
+			playTTS()
+				.then(resolve)
+				.catch(() => resolve());
+		};
 
-    audio.oncanplaythrough = () => {
-      audio.play().then(resolve).catch(() => playTTS().then(resolve));
-    };
-  });
+		audio.oncanplaythrough = () => {
+			audio
+				.play()
+				.then(resolve)
+				.catch(() => playTTS().then(resolve));
+		};
+	});
 }

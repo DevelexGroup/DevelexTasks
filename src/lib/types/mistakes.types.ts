@@ -13,14 +13,15 @@ export const MistakeMisclick: TaskMistake = {
 export const MistakeSkipped: TaskMistake = {
 	id: 'skipped',
 	details: 'Zde jsi nějaké písmeno nebo slabiku vynechal. Zkus se vrátit zpátky.'
-}
+};
 
 export const MistakeWrongOrder: TaskMistake = {
 	id: 'wrong-order',
-	details: 'V této úloze musíš vzorová písmena/slabiky zakliknout ve správném pořadí, tedy zleva doprava.'
-}
+	details:
+		'V této úloze musíš vzorová písmena/slabiky zakliknout ve správném pořadí, tedy zleva doprava.'
+};
 
 export const MistakeWrongFocus: TaskMistake = {
 	id: 'wrong-focus',
 	details: 'V této úloze se musíš podívat na vzorové písmeno/slabiku a najít ho postupně v řadě'
-}
+};

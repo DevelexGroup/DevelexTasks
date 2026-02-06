@@ -9,16 +9,19 @@ export const id = 'level3b';
 export const rawData: CibuleRawDataEntry[] = cibuleL3bRawData;
 export const instructionVideo = resolveAny('/video/cibule-instrukce-03b.webm');
 
-export function validateStage(state: TrackTaskState) : TaskMistake[] | true {
+export function validateStage(state: TrackTaskState): TaskMistake[] | true {
 	const correctSyllables = state.dataEntry.correct ?? [];
 	const flattenedSymbols = getFlattenedSymbols(state);
 
 	// Compare syllables at selected indices with correct syllables
-	const selectedSyllables = state.selectedCorrectIndices.map(i => flattenedSymbols[i]);
+	const selectedSyllables = state.selectedCorrectIndices.map((i) => flattenedSymbols[i]);
 
 	console.log(correctSyllables, selectedSyllables);
 
-	if (correctSyllables.length !== selectedSyllables.length || selectedSyllables.some((value, i) => value !== correctSyllables[i])){
+	if (
+		correctSyllables.length !== selectedSyllables.length ||
+		selectedSyllables.some((value, i) => value !== correctSyllables[i])
+	) {
 		return [MistakeUnfinished];
 	}
 	return true;
@@ -39,7 +42,7 @@ export function validateSymbol(clickedIndex: number, state: TrackTaskState): Tas
 	}
 
 	// Skipped check - clicked a correct syllable but not in order
-	if (correctSyllables.includes(clickedSyllable)){
+	if (correctSyllables.includes(clickedSyllable)) {
 		return [MistakeSkipped];
 	}
 
@@ -47,7 +50,11 @@ export function validateSymbol(clickedIndex: number, state: TrackTaskState): Tas
 	return [MistakeMisclick];
 }
 
-export const isSyllableFrameVisible = (state: TrackTaskState, syllable: string, positionIndex: number): boolean => {
+export const isSyllableFrameVisible = (
+	state: TrackTaskState,
+	syllable: string,
+	positionIndex: number
+): boolean => {
 	if (positionIndex >= state.selectedCorrectIndices.length) {
 		return false;
 	}

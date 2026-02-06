@@ -52,13 +52,15 @@
 </script>
 
 <GazeArea id="symbol-element-{index}">
-	<button type="button" class="symbol symbol--image font-serif text-4xl text-gray-800 cursor-pointer"
-					style="letter-spacing: {letterSpacing}px; width: {width * 0.25}rem; height: {height * 0.25}rem;"
-					class:correct-symbol={isCorrect}
-					class:incorrect-symbol={!isCorrect}
-					class:non-interactable={!interactable}
-					class:selected={isSelected}
-					onclick={onSymbolClick}
+	<button
+		type="button"
+		class="symbol symbol--image cursor-pointer font-serif text-4xl text-gray-800"
+		style="letter-spacing: {letterSpacing}px; width: {width * 0.25}rem; height: {height * 0.25}rem;"
+		class:correct-symbol={isCorrect}
+		class:incorrect-symbol={!isCorrect}
+		class:non-interactable={!interactable}
+		class:selected={isSelected}
+		onclick={onSymbolClick}
 	>
 		<img
 			class="h-full w-full object-contain"

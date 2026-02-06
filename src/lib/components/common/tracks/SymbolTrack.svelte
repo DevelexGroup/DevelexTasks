@@ -30,7 +30,9 @@
 		Array.isArray(symbols[0]) ? (symbols as string[][]) : ([symbols] as string[][])
 	);
 
-	const singleRowSymbols = $derived(() => Array.isArray(symbols[0]) ? (symbols as string[][]).flat() : (symbols as string[]));
+	const singleRowSymbols = $derived(() =>
+		Array.isArray(symbols[0]) ? (symbols as string[][]).flat() : (symbols as string[])
+	);
 
 	const rowLengths = $derived(symbolRows.map((row) => row.length));
 	const rowOffsets = $derived(
@@ -46,17 +48,20 @@
 
 	const flatIndexFor = (rowIndex: number, colIndex: number) => rowOffsets[rowIndex] + colIndex;
 
-	const isCorrectSymbol = (symbol: string): boolean => correctSymbols ? correctSymbols.includes(symbol) : false;
+	const isCorrectSymbol = (symbol: string): boolean =>
+		correctSymbols ? correctSymbols.includes(symbol) : false;
 </script>
 
 {#if flattenRows}
-	<div class="flex items-center self-center justify-center" style="gap: {symbolSpacing}px;">
+	<div class="flex items-center justify-center self-center" style="gap: {symbolSpacing}px;">
 		{#each singleRowSymbols() as symbolGroup, index (index)}
 			<SymbolGroup
 				id={`group-${index}`}
-				index={index}
+				{index}
 				isCorrect={isCorrectSymbol(symbolGroup)}
-				symbols={splitFiller && !isCorrectSymbol(symbolGroup) ? symbolGroup.split('') : [symbolGroup]}
+				symbols={splitFiller && !isCorrectSymbol(symbolGroup)
+					? symbolGroup.split('')
+					: [symbolGroup]}
 				{letterSpacing}
 				{validateSymbolClick}
 				{symbolSnippet}
@@ -67,17 +72,19 @@
 	<div class="flex flex-col items-start justify-center" style="gap: {symbolSpacing}px;">
 		{#each symbolRows as symbolRow, rowIndex (rowIndex)}
 			<div class="flex items-center justify-center" style="gap: {symbolSpacing}px;">
-			{#each symbolRow as symbolGroup, colIndex (`${rowIndex}-${colIndex}`)}
-				<SymbolGroup
-					id={`group-${flatIndexFor(rowIndex, colIndex)}`}
-					index={flatIndexFor(rowIndex, colIndex)}
-					isCorrect={isCorrectSymbol(symbolGroup)}
-					symbols={splitFiller && !isCorrectSymbol(symbolGroup) ? symbolGroup.split('') : [symbolGroup]}
-					{letterSpacing}
-					{validateSymbolClick}
-					{symbolSnippet}
-				/>
-			{/each}
+				{#each symbolRow as symbolGroup, colIndex (`${rowIndex}-${colIndex}`)}
+					<SymbolGroup
+						id={`group-${flatIndexFor(rowIndex, colIndex)}`}
+						index={flatIndexFor(rowIndex, colIndex)}
+						isCorrect={isCorrectSymbol(symbolGroup)}
+						symbols={splitFiller && !isCorrectSymbol(symbolGroup)
+							? symbolGroup.split('')
+							: [symbolGroup]}
+						{letterSpacing}
+						{validateSymbolClick}
+						{symbolSnippet}
+					/>
+				{/each}
 			</div>
 		{/each}
 	</div>

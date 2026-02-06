@@ -37,12 +37,15 @@
 	}: Props = $props();
 
 	// Get context from parent DwellTarget
-	const parentContext = getContext<{
-		dwellState: DwellState;
-		dwellTimeMs: number;
-		width: number;
-		height: number;
-	} | undefined>('dwellTargetProps');
+	const parentContext = getContext<
+		| {
+				dwellState: DwellState;
+				dwellTimeMs: number;
+				width: number;
+				height: number;
+		  }
+		| undefined
+	>('dwellTargetProps');
 
 	// Use prop if provided, otherwise use context, otherwise use default
 	const width = $derived(widthProp ?? parentContext?.width ?? 250);
@@ -77,8 +80,7 @@
 	});
 
 	$effect(() => {
-		if (dwellState === previousState)
-			return;
+		if (dwellState === previousState) return;
 
 		resetAnimation();
 
@@ -91,7 +93,11 @@
 	});
 
 	async function startDwellAnimation(signal?: AbortSignal) {
-		const setProportion = (proportion: number, duration: number, easing: EasingFunction): Promise<void> => {
+		const setProportion = (
+			proportion: number,
+			duration: number,
+			easing: EasingFunction
+		): Promise<void> => {
 			return untilAbort(pupilProportion.set(proportion, { duration, easing }), signal);
 		};
 
@@ -102,7 +108,10 @@
 			await setProportion(defaultPupilProportion, FINAL_TRANSITION_MS, linear);
 		} catch (e) {
 			if (e instanceof DOMException && e.name === 'AbortError') {
-				pupilProportion.set(defaultPupilProportion, { duration: RESET_TRANSITION_MS, easing: linear });
+				pupilProportion.set(defaultPupilProportion, {
+					duration: RESET_TRANSITION_MS,
+					easing: linear
+				});
 				return;
 			}
 			throw e;

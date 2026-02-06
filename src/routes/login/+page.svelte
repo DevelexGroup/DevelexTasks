@@ -133,10 +133,15 @@
 					</Card.Header>
 					<Card.Content>
 						{#if registerSuccess}
-							<p class="mb-4 text-sm text-green-600">Registrace byla úspěšná! Nyní se můžete přihlásit.</p>
+							<p class="mb-4 text-sm text-green-600">
+								Registrace byla úspěšná! Nyní se můžete přihlásit.
+							</p>
 						{/if}
 						<form
-							onsubmit={(e) => { e.preventDefault(); handleLogin(); }}
+							onsubmit={(e) => {
+								e.preventDefault();
+								handleLogin();
+							}}
 							class="flex flex-col gap-4"
 						>
 							<div class="flex flex-col gap-2">
@@ -162,7 +167,11 @@
 							{#if loginError}
 								<p class="text-sm text-red-500">{loginError}</p>
 							{/if}
-							<Button type="submit" class="w-full bg-blue-600 hover:bg-blue-700" disabled={loginLoading}>
+							<Button
+								type="submit"
+								class="w-full bg-blue-600 hover:bg-blue-700"
+								disabled={loginLoading}
+							>
 								{loginLoading ? 'Přihlašuji...' : 'Přihlásit se'}
 							</Button>
 						</form>
@@ -177,12 +186,17 @@
 					</Card.Header>
 					<Card.Content>
 						<form
-							onsubmit={(e) => { e.preventDefault(); handleRegister(); }}
+							onsubmit={(e) => {
+								e.preventDefault();
+								handleRegister();
+							}}
 							class="flex flex-col gap-4"
 						>
 							<div class="grid grid-cols-2 gap-4">
 								<div class="flex flex-col gap-2">
-									<Label for="register-firstName">Křestní jméno <span class="text-red-500">*</span></Label>
+									<Label for="register-firstName"
+										>Křestní jméno <span class="text-red-500">*</span></Label
+									>
 									<Input
 										id="register-firstName"
 										type="text"
@@ -192,7 +206,8 @@
 									/>
 								</div>
 								<div class="flex flex-col gap-2">
-									<Label for="register-lastName">Příjmení <span class="text-red-500">*</span></Label>
+									<Label for="register-lastName">Příjmení <span class="text-red-500">*</span></Label
+									>
 									<Input
 										id="register-lastName"
 										type="text"
@@ -212,7 +227,9 @@
 								/>
 							</div>
 							<div class="flex flex-col gap-2">
-								<Label for="register-username">Uživatelské jméno <span class="text-red-500">*</span></Label>
+								<Label for="register-username"
+									>Uživatelské jméno <span class="text-red-500">*</span></Label
+								>
 								<Input
 									id="register-username"
 									type="text"
@@ -232,7 +249,9 @@
 								/>
 							</div>
 							<div class="flex flex-col gap-2">
-								<Label for="register-confirmPassword">Potvrďte heslo <span class="text-red-500">*</span></Label>
+								<Label for="register-confirmPassword"
+									>Potvrďte heslo <span class="text-red-500">*</span></Label
+								>
 								<Input
 									id="register-confirmPassword"
 									type="password"
@@ -244,7 +263,11 @@
 							{#if registerError}
 								<p class="text-sm text-red-500">{registerError}</p>
 							{/if}
-							<Button type="submit" class="w-full bg-blue-600 hover:bg-blue-700" disabled={registerLoading}>
+							<Button
+								type="submit"
+								class="w-full bg-blue-600 hover:bg-blue-700"
+								disabled={registerLoading}
+							>
 								{registerLoading ? 'Registruji...' : 'Zaregistrovat se'}
 							</Button>
 						</form>
@@ -256,7 +279,7 @@
 
 	<div class="absolute bottom-4 left-4">
 		<button
-			class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
+			class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
 			onclick={() => goto(resolve(`/`))}
 		>
 			Zpět

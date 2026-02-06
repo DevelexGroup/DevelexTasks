@@ -1,7 +1,11 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { db } from '$lib/database/db';
-	import type { GazeSampleDataEntry, FixationDataEntry, SessionScoreDataEntry } from '$lib/database/db.types';
+	import type {
+		GazeSampleDataEntry,
+		FixationDataEntry,
+		SessionScoreDataEntry
+	} from '$lib/database/db.types';
 	import JSZip from 'jszip';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
@@ -57,10 +61,7 @@
 		if (!selectedChildId) return;
 
 		// Get sessions from gazeSamples (most likely to have all sessions)
-		const filtered = await db.gazeSamples
-			.where('child_id')
-			.equals(selectedChildId)
-			.toArray();
+		const filtered = await db.gazeSamples.where('child_id').equals(selectedChildId).toArray();
 
 		const sessionMap = new Map<string, string>();
 		for (const entry of filtered) {
@@ -74,7 +75,10 @@
 			.sort((a, b) => -a.sessionId.localeCompare(b.sessionId));
 	}
 
-	function formatTimestamp(unixTimestamp: number, format: 'full' | 'simple' | 'filename' = 'full'): string {
+	function formatTimestamp(
+		unixTimestamp: number,
+		format: 'full' | 'simple' | 'filename' = 'full'
+	): string {
 		const date = new Date(Math.floor(unixTimestamp));
 		const year = date.getFullYear();
 		const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -98,11 +102,57 @@
 
 	function getExportHeadersForTable(table: TableName): string[] {
 		if (table === 'gazeSamples') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'AOI', 'Mouse X', 'Mouse Y', 'Event', 'Sound', 'Mistake Type', 'Result'];
+			return [
+				'ID',
+				'Child ID',
+				'Session ID',
+				'Task',
+				'Slide Index',
+				'Stimulus ID',
+				'Timestamp',
+				'Eye X',
+				'Eye Y',
+				'AOI',
+				'Mouse X',
+				'Mouse Y',
+				'Event',
+				'Sound',
+				'Mistake Type',
+				'Result'
+			];
 		} else if (table === 'fixationData') {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Eye X', 'Eye Y', 'Duration', 'AOI', 'Fixation Index'];
+			return [
+				'ID',
+				'Child ID',
+				'Session ID',
+				'Task',
+				'Slide Index',
+				'Stimulus ID',
+				'Timestamp',
+				'Eye X',
+				'Eye Y',
+				'Duration',
+				'AOI',
+				'Fixation Index'
+			];
 		} else {
-			return ['ID', 'Child ID', 'Session ID', 'Task', 'Slide Index', 'Stimulus ID', 'Timestamp', 'Fluency Score', 'Error Rate', 'Response Time', 'Mean Fixation Duration', 'Fixation Count', 'AOI Target Fixations', 'AOI Field Fixations', 'Regression Count'];
+			return [
+				'ID',
+				'Child ID',
+				'Session ID',
+				'Task',
+				'Slide Index',
+				'Stimulus ID',
+				'Timestamp',
+				'Fluency Score',
+				'Error Rate',
+				'Response Time',
+				'Mean Fixation Duration',
+				'Fixation Count',
+				'AOI Target Fixations',
+				'AOI Field Fixations',
+				'Regression Count'
+			];
 		}
 	}
 
@@ -116,40 +166,81 @@
 		return String(value);
 	}
 
-	function getCellValueForTable(entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry, index: number, table: TableName): unknown {
+	function getCellValueForTable(
+		entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry,
+		index: number,
+		table: TableName
+	): unknown {
 		if (table === 'gazeSamples') {
 			const data = entry as GazeSampleDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.slide_index, data.stimulus_id, data.timestamp,
-				data.eyetracker_x, data.eyetracker_y, data.aoi, data.mouse_x, data.mouse_y,
-				data.events, data.sound_name, data.mistake_type, data.task_result
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.slide_index,
+				data.stimulus_id,
+				data.timestamp,
+				data.eyetracker_x,
+				data.eyetracker_y,
+				data.aoi,
+				data.mouse_x,
+				data.mouse_y,
+				data.events,
+				data.sound_name,
+				data.mistake_type,
+				data.task_result
 			];
 			return values[index];
 		} else if (table === 'fixationData') {
 			const data = entry as FixationDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.slide_index, data.stimulus_id, data.timestamp,
-				data.eyetracker_x, data.eyetracker_y, data.duration, data.aoi, data.fixation_index
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.slide_index,
+				data.stimulus_id,
+				data.timestamp,
+				data.eyetracker_x,
+				data.eyetracker_y,
+				data.duration,
+				data.aoi,
+				data.fixation_index
 			];
 			return values[index];
 		} else {
 			const data = entry as SessionScoreDataEntry;
 			const values = [
-				data.id, data.child_id, data.session_id, data.task_name, data.slide_index,
-				data.stimulus_id, data.timestamp, data.fluency_score,
-				data.error_rate, data.response_time, data.mean_fix_dur, data.fix_count,
-				data.aoi_target_fix, data.aoi_field_fix, data.regression_count
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.slide_index,
+				data.stimulus_id,
+				data.timestamp,
+				data.fluency_score,
+				data.error_rate,
+				data.response_time,
+				data.mean_fix_dur,
+				data.fix_count,
+				data.aoi_target_fix,
+				data.aoi_field_fix,
+				data.regression_count
 			];
 			return values[index];
 		}
 	}
 
-	function createCsvContent(entries: (GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[], tableName: TableName): string {
+	function createCsvContent(
+		entries: (GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[],
+		tableName: TableName
+	): string {
 		const headers = getExportHeadersForTable(tableName);
 		const csvRows = [headers.join(',')];
 
 		const sortedEntries = entries.sort((a, b) => a.timestamp - b.timestamp);
-		sortedEntries.forEach(entry => {
+		sortedEntries.forEach((entry) => {
 			const row = headers.map((column, index) => {
 				const value = getCellValueForTable(entry, index, tableName);
 				const formatted = formatExportedColumnValue(column, value);
@@ -173,9 +264,12 @@
 					const allData = await db[tableName].toArray();
 
 					// Group by child_id, then by session_id
-					const byChild = new Map<string, Map<string, (GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[]>>();
+					const byChild = new Map<
+						string,
+						Map<string, (GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[]>
+					>();
 
-					allData.forEach(entry => {
+					allData.forEach((entry) => {
 						if (!byChild.has(entry.child_id)) {
 							byChild.set(entry.child_id, new Map());
 						}
@@ -199,15 +293,15 @@
 			} else if (exportMode === 'child') {
 				// Export child: root -> sessions -> tables.csv
 				for (const tableName of tables) {
-					const allData = await db[tableName]
-						.where('child_id')
-						.equals(selectedChildId)
-						.toArray();
+					const allData = await db[tableName].where('child_id').equals(selectedChildId).toArray();
 
 					// Group by session_id
-					const bySession = new Map<string, (GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[]>();
+					const bySession = new Map<
+						string,
+						(GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[]
+					>();
 
-					allData.forEach(entry => {
+					allData.forEach((entry) => {
 						if (!bySession.has(entry.session_id)) {
 							bySession.set(entry.session_id, []);
 						}
@@ -245,7 +339,7 @@
 			} else if (exportMode === 'child') {
 				filename = `export_${selectedChildId}_${timestamp}.zip`;
 			} else {
-				const sessionInfo = sessionIds.find(s => s.sessionId === selectedSessionId);
+				const sessionInfo = sessionIds.find((s) => s.sessionId === selectedSessionId);
 				const taskName = sessionInfo?.taskName || 'unknown';
 				const formattedSessionId = formatTimestamp(parseFloat(selectedSessionId), 'filename');
 				filename = `export_${selectedChildId}_${taskName}_${formattedSessionId}.zip`;
@@ -288,13 +382,13 @@
 		<div class="space-y-4 py-4">
 			<!-- Export mode selection -->
 			<div class="space-y-3">
-				<label class="flex items-center gap-3 cursor-pointer">
+				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="radio"
 						name="exportMode"
 						value="all"
 						bind:group={exportMode}
-						class="w-4 h-4 text-blue-600"
+						class="h-4 w-4 text-blue-600"
 					/>
 					<div>
 						<span class="font-medium">Exportovat vše</span>
@@ -302,13 +396,13 @@
 					</div>
 				</label>
 
-				<label class="flex items-center gap-3 cursor-pointer">
+				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="radio"
 						name="exportMode"
 						value="child"
 						bind:group={exportMode}
-						class="w-4 h-4 text-blue-600"
+						class="h-4 w-4 text-blue-600"
 					/>
 					<div>
 						<span class="font-medium">Exportovat dítě</span>
@@ -316,13 +410,13 @@
 					</div>
 				</label>
 
-				<label class="flex items-center gap-3 cursor-pointer">
+				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="radio"
 						name="exportMode"
 						value="session"
 						bind:group={exportMode}
-						class="w-4 h-4 text-blue-600"
+						class="h-4 w-4 text-blue-600"
 					/>
 					<div>
 						<span class="font-medium">Exportovat konkrétní sezení</span>
@@ -338,7 +432,7 @@
 					<select
 						id="exportChildId"
 						bind:value={selectedChildId}
-						class="w-full px-3 py-2 bg-white border border-gray-300 text-gray-800 rounded-md"
+						class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800"
 					>
 						<option value="">Vyberte dítě…</option>
 						{#each childIds as childId (childId)}
@@ -356,7 +450,7 @@
 						id="exportSessionId"
 						bind:value={selectedSessionId}
 						disabled={!selectedChildId}
-						class="w-full px-3 py-2 bg-white border border-gray-300 text-gray-800 rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed"
+						class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800 disabled:cursor-not-allowed disabled:bg-gray-100"
 					>
 						<option value="">Vyberte sezení…</option>
 						{#each sessionIds as session (session.sessionId)}
@@ -373,14 +467,14 @@
 			<Dialog.Close>
 				<button
 					type="button"
-					class="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+					class="rounded-md bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200"
 				>
 					Zrušit
 				</button>
 			</Dialog.Close>
 			<button
 				type="button"
-				class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+				class="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
 				disabled={!canExport() || isExporting}
 				onclick={exportData}
 			>
@@ -389,4 +483,3 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
-

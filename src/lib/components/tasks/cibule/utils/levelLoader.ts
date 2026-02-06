@@ -1,5 +1,6 @@
 ﻿import type {
-	TrackTaskDataEntry, TrackTaskPresetEntryDefinition,
+	TrackTaskDataEntry,
+	TrackTaskPresetEntryDefinition,
 	TrackTaskPresetEntryGenerator
 } from '$lib/types/task.types';
 import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
@@ -14,7 +15,8 @@ export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackTaskDataE
 		id: rawData.id.toString(),
 		sequence,
 		correct,
-		wordToRead: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase(),
+		wordToRead:
+			correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase(),
 		correctCount
 	};
 }
@@ -73,12 +75,14 @@ export function getCibuleLevelData(
 	const usedIds = new Set<number>();
 
 	for (const item of preset) {
-		if (item.generate !== null) { // Generator
+		if (item.generate !== null) {
+			// Generator
 			const generator = item as TrackTaskPresetEntryGenerator<CibuleRawDataEntry>;
 			const generatedEntry = generateCibuleDataEntry(generator, rawData, usedIds);
 			usedIds.add(parseInt(generatedEntry.id));
 			content.push(generatedEntry);
-		} else { // Definition
+		} else {
+			// Definition
 			const data = item as TrackTaskDataEntry;
 			const sequenceFlat = Array.isArray(data.sequence[0])
 				? (data.sequence as string[][]).flat()

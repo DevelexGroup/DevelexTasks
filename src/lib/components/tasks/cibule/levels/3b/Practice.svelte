@@ -2,7 +2,13 @@
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
 	import { type TaskMistake, TaskStage, type TrackTaskState } from '$lib/types/task.types';
-	import { id, rawData, validateSymbol, validateStage, isSyllableFrameVisible } from '$lib/components/tasks/cibule/levels/3b/index';
+	import {
+		id,
+		rawData,
+		validateSymbol,
+		validateStage,
+		isSyllableFrameVisible
+	} from '$lib/components/tasks/cibule/levels/3b/index';
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
@@ -16,7 +22,7 @@
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
 	import MicrophoneHint from '$lib/components/common/MicrophoneHint.svelte';
 
-	const preset = cibuleLevelPreset.find((level => level.levelID === id))?.practiceContent;
+	const preset = cibuleLevelPreset.find((level) => level.levelID === id)?.practiceContent;
 	const data = preset ? getCibuleLevelData(preset, rawData) : null;
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
@@ -27,8 +33,7 @@
 		if (validateStage(state) === true) {
 			tryReadWordFromState(state, analyticsManager);
 			spacePressed = true;
-		}
-		else {
+		} else {
 			playSound(SOUND_MISTAKE, 0.33);
 		}
 	}
@@ -37,7 +42,7 @@
 		if (spacePressed) {
 			return validateStage(state);
 		}
-		return [MistakeUnfinished]
+		return [MistakeUnfinished];
 	}
 
 	function resetSpacePressed() {
@@ -46,21 +51,46 @@
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} {validateSymbol} validateStage={validateStageWithSpace} isPractice={true} onCompleted={() => {taskStage.set(TaskStage.Instructions)}} onSpace={onSpace} onStageAdvance={resetSpacePressed}>
-	{#snippet extraComponent({ state })}
-		<div class="flex gap-4">
-			{#each state.dataEntry.correct as syllable, index (index)}
-				<CibuleSyllableFrame {syllable} visible={isSyllableFrameVisible(state, syllable, index)} />
-			{/each}
-		</div>
-		{#if validateStage(state) === true && !spacePressed}
-			<div class="absolute pointer-events-none bottom-16 left-1/2 -translate-x-1/2" in:fade|global={{ delay: 1000 }} out:fade|global>
-				<MicrophoneHint />
+	<TrackLevel
+		{id}
+		{data}
+		{validateSymbol}
+		validateStage={validateStageWithSpace}
+		isPractice={true}
+		onCompleted={() => {
+			taskStage.set(TaskStage.Instructions);
+		}}
+		{onSpace}
+		onStageAdvance={resetSpacePressed}
+	>
+		{#snippet extraComponent({ state })}
+			<div class="flex gap-4">
+				{#each state.dataEntry.correct as syllable, index (index)}
+					<CibuleSyllableFrame
+						{syllable}
+						visible={isSyllableFrameVisible(state, syllable, index)}
+					/>
+				{/each}
 			</div>
-		{/if}
-	{/snippet}
-	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
-		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} splitFiller={true} />
-	{/snippet}
-</TrackLevel>
+			{#if validateStage(state) === true && !spacePressed}
+				<div
+					class="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2"
+					in:fade|global={{ delay: 1000 }}
+					out:fade|global
+				>
+					<MicrophoneHint />
+				</div>
+			{/if}
+		{/snippet}
+		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+			<SymbolTrack
+				{symbols}
+				{correctSymbols}
+				{validateSymbolClick}
+				letterSpacing={4}
+				flattenRows={true}
+				splitFiller={true}
+			/>
+		{/snippet}
+	</TrackLevel>
 {/if}

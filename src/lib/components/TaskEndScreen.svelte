@@ -10,9 +10,7 @@
 		exitType: TaskResult;
 	}
 
-	let {
-		exitType
-	}: Props = $props();
+	let { exitType }: Props = $props();
 
 	$effect(() => {
 		console.log('Task ended with exit type:', exitType);
@@ -64,5 +62,4 @@
 			</button>
 		{/if}
 	</div>
-
 </div>

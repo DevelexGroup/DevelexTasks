@@ -9,27 +9,75 @@ export const slabikyTestData: TrackTaskData = [
 				id: 'practice1',
 				sequence: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be'],
 				correct: ['do'],
-				wordToRead: 'DO',
+				wordToRead: 'DO'
 			}
 		],
 		content: [
 			{
 				id: 'content1',
-				sequence: ['sa', 'su', 'sa', 'as', 'so', 'za', 'sa', 'si', 'su', 'ca', 'sa', 'so', 'ze', 'se', 'sa'],
+				sequence: [
+					'sa',
+					'su',
+					'sa',
+					'as',
+					'so',
+					'za',
+					'sa',
+					'si',
+					'su',
+					'ca',
+					'sa',
+					'so',
+					'ze',
+					'se',
+					'sa'
+				],
 				correct: ['se'],
-				wordToRead: 'SE',
+				wordToRead: 'SE'
 			},
 			{
 				id: 'content2',
-				sequence: ['bo', 'op', 'po', 'pe', 'do', 'pa', 'po', 'bo', 'pu', 'po', 'do', 'po', 'po', 'pi', 'po'],
+				sequence: [
+					'bo',
+					'op',
+					'po',
+					'pe',
+					'do',
+					'pa',
+					'po',
+					'bo',
+					'pu',
+					'po',
+					'do',
+					'po',
+					'po',
+					'pi',
+					'po'
+				],
 				correct: ['po'],
-				wordToRead: 'PO',
+				wordToRead: 'PO'
 			},
 			{
 				id: 'content3',
-				sequence: ['je', 'je', 'ja', 'ju', 'ja', 'ja', 'je', 'ja', 'jo', 'ja', 'ju', 'ja', 'ja', 'ja', 'ja'],
+				sequence: [
+					'je',
+					'je',
+					'ja',
+					'ju',
+					'ja',
+					'ja',
+					'je',
+					'ja',
+					'jo',
+					'ja',
+					'ju',
+					'ja',
+					'ja',
+					'ja',
+					'ja'
+				],
 				correct: ['ja'],
-				wordToRead: 'JA',
+				wordToRead: 'JA'
 			},
 			{
 				id: 'content4',
@@ -40,7 +88,7 @@ export const slabikyTestData: TrackTaskData = [
 					['cu', 'ci', 'ic', 'ci', 'ca', 'ce', 'ci']
 				],
 				correct: ['ci'],
-				wordToRead: 'CI',
+				wordToRead: 'CI'
 			},
 			{
 				id: 'content5',
@@ -55,19 +103,64 @@ export const slabikyTestData: TrackTaskData = [
 			},
 			{
 				id: 'content6',
-				sequence: ['hůl', 'kůl', 'hlů', 'hůl', 'nůl', 'húl', 'tůl', 'lůh', 'hůl', 'hul', 'luh', 'hól'],
+				sequence: [
+					'hůl',
+					'kůl',
+					'hlů',
+					'hůl',
+					'nůl',
+					'húl',
+					'tůl',
+					'lůh',
+					'hůl',
+					'hul',
+					'luh',
+					'hól'
+				],
 				correct: ['hůl'],
 				wordToRead: 'HŮL'
 			},
 			{
 				id: 'content7',
-				sequence: ['koš', 'kus', 'kos', 'kso', 'kos', 'sok', 'kos', 'kas', 'kos', 'kos', 'hos', 'koš', 'kos', 'sok', 'šok'],
+				sequence: [
+					'koš',
+					'kus',
+					'kos',
+					'kso',
+					'kos',
+					'sok',
+					'kos',
+					'kas',
+					'kos',
+					'kos',
+					'hos',
+					'koš',
+					'kos',
+					'sok',
+					'šok'
+				],
 				correct: ['kos'],
 				wordToRead: 'KOS'
 			},
 			{
 				id: 'content8',
-				sequence: ['nám', 'nám', 'mán', 'nám', 'nam', 'ném', 'nem', 'nán', 'mná', 'ném', 'nám', 'máu', 'ním', 'míň', 'nám'],
+				sequence: [
+					'nám',
+					'nám',
+					'mán',
+					'nám',
+					'nam',
+					'ném',
+					'nem',
+					'nán',
+					'mná',
+					'ném',
+					'nám',
+					'máu',
+					'ním',
+					'míň',
+					'nám'
+				],
 				correct: ['nám'],
 				wordToRead: 'NÁM'
 			},
@@ -103,7 +196,7 @@ export const slabikyTestData: TrackTaskData = [
 				id: 'practice2',
 				sequence: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be'],
 				correct: ['do'],
-				wordToRead: 'DO',
+				wordToRead: 'DO'
 			}
 		],
 		content: [
@@ -111,19 +204,51 @@ export const slabikyTestData: TrackTaskData = [
 				id: 'content11',
 				sequence: ['nr', 'vr', 'vř', 'rv', 'vr', 'br', 'ir', 'vr', 'vl', 'ru', 'pr', 'vr'],
 				correct: ['vr'],
-				wordToRead: 'VR',
+				wordToRead: 'VR'
 			},
 			{
 				id: 'content12',
-				sequence: ['tl', 'tr', 'lr', 'tř', 'kr', 'tř', 'tr', 'jr', 'tl', 'hr', 'tr', 'lr', 'kr', 'tr', 'tř'],
+				sequence: [
+					'tl',
+					'tr',
+					'lr',
+					'tř',
+					'kr',
+					'tř',
+					'tr',
+					'jr',
+					'tl',
+					'hr',
+					'tr',
+					'lr',
+					'kr',
+					'tr',
+					'tř'
+				],
 				correct: ['tr'],
-				wordToRead: 'TR',
+				wordToRead: 'TR'
 			},
 			{
 				id: 'content13',
-				sequence: ['nr', 'ml', 'mr', 'mv', 'mi', 'rm', 'mr', 'ur', 'nr', 'rn', 'jm', 'mr', 'nr', 'mv', 'rm'],
+				sequence: [
+					'nr',
+					'ml',
+					'mr',
+					'mv',
+					'mi',
+					'rm',
+					'mr',
+					'ur',
+					'nr',
+					'rn',
+					'jm',
+					'mr',
+					'nr',
+					'mv',
+					'rm'
+				],
 				correct: ['mr'],
-				wordToRead: 'MR',
+				wordToRead: 'MR'
 			},
 			{
 				id: 'content14',
@@ -134,7 +259,7 @@ export const slabikyTestData: TrackTaskData = [
 					['ht', 'rl', 'fr', 'hr', 'hr', 'tr', 'rh']
 				],
 				correct: ['hr'],
-				wordToRead: 'HR',
+				wordToRead: 'HR'
 			},
 			{
 				id: 'content15',
@@ -145,30 +270,75 @@ export const slabikyTestData: TrackTaskData = [
 					['rb', 'br', 'pr', 'br', 'dr', 'br', 'rb', 'br']
 				],
 				correct: ['br'],
-				wordToRead: 'BR',
+				wordToRead: 'BR'
 			},
 			{
 				id: 'content16',
-				sequence: ['srod', 'zrod', 'zrob', 'zdor', 'zrod', 'zdro', 'zrop', 'zrad', 'zrod', 'srod', 'zrop', 'zrob'],
+				sequence: [
+					'srod',
+					'zrod',
+					'zrob',
+					'zdor',
+					'zrod',
+					'zdro',
+					'zrop',
+					'zrad',
+					'zrod',
+					'srod',
+					'zrop',
+					'zrob'
+				],
 				correct: ['zrod'],
 				wordToRead: 'ZROD'
 			},
 			{
 				id: 'content17',
-				sequence: ['plys', 'plyš', 'slyš', 'blyš', 'plyš', 'pylš', 'šlyp', 'dlyž', 'plys', 'blyž', 'plyš', 'blyš', 'plyš', 'plys', 'slyš'],
+				sequence: [
+					'plys',
+					'plyš',
+					'slyš',
+					'blyš',
+					'plyš',
+					'pylš',
+					'šlyp',
+					'dlyž',
+					'plys',
+					'blyž',
+					'plyš',
+					'blyš',
+					'plyš',
+					'plys',
+					'slyš'
+				],
 				correct: ['plyš'],
 				wordToRead: 'PLYŠ'
 			},
 			{
 				id: 'content18',
-				sequence: ['drám', 'hrám', 'krám', 'trám', 'krám', 'krán', 'hrán', 'krém', 'hrém', 'krán', 'hrán', 'krám', 'krám', 'trám', 'vrám'],
+				sequence: [
+					'drám',
+					'hrám',
+					'krám',
+					'trám',
+					'krám',
+					'krán',
+					'hrán',
+					'krém',
+					'hrém',
+					'krán',
+					'hrán',
+					'krám',
+					'krám',
+					'trám',
+					'vrám'
+				],
 				correct: ['krám'],
 				wordToRead: 'KRÁM'
 			},
 			{
 				id: 'content19',
 				sequence: [
-					['aram','gram', 'gran', 'fram', 'grem', 'grem', 'gram'],
+					['aram', 'gram', 'gran', 'fram', 'grem', 'grem', 'gram'],
 					['garm', 'gram', 'garm', 'gern', 'fram', 'gran', 'gram'],
 					['tran', 'gram', 'gram', 'grem', 'fram', 'garm', 'eram'],
 					['gram', 'gern', 'fram', 'tran', 'garm', 'gram', 'gran']

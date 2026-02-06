@@ -9,17 +9,33 @@
 	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
 
-	const preset = cibuleLevelPreset.find((level => level.levelID === id))?.practiceContent;
+	const preset = cibuleLevelPreset.find((level) => level.levelID === id)?.practiceContent;
 	const data = preset ? getCibuleLevelData(preset, rawData) : null;
 </script>
 
 {#if data}
-<TrackLevel {id} data={data} validateSymbol={defaultValidateSymbol} validateStage={defaultValidateStage} isPractice={true} onCompleted={() => {taskStage.set(TaskStage.Instructions)}}>
-	{#snippet hintComponent({ state })}
-		<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
-	{/snippet}
-	{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
-		<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} letterSpacing={4} flattenRows={true} splitFiller={true} />
-	{/snippet}
-</TrackLevel>
+	<TrackLevel
+		{id}
+		{data}
+		validateSymbol={defaultValidateSymbol}
+		validateStage={defaultValidateStage}
+		isPractice={true}
+		onCompleted={() => {
+			taskStage.set(TaskStage.Instructions);
+		}}
+	>
+		{#snippet hintComponent({ state })}
+			<SymbolElement symbol={state.dataEntry.correct?.[0]} interactable={false} />
+		{/snippet}
+		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+			<SymbolTrack
+				{symbols}
+				{correctSymbols}
+				{validateSymbolClick}
+				letterSpacing={4}
+				flattenRows={true}
+				splitFiller={true}
+			/>
+		{/snippet}
+	</TrackLevel>
 {/if}

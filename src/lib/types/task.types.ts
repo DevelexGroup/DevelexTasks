@@ -49,7 +49,10 @@ export interface TrackTaskProps extends BaseTaskProps {
 	data: TrackTaskDataEntry[];
 	validateSymbol?: (clickedIndex: number, state: TrackTaskState) => TaskMistake[] | true;
 	validateStage?: (state: TrackTaskState) => TaskMistake[] | true;
-	calculateFluencyScore?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number;
+	calculateFluencyScore?: (
+		scoreMetrics: Partial<SessionScoreMetrics>,
+		state: TrackTaskState
+	) => number;
 	playValidationSounds?: boolean;
 	onStageAdvance?: () => void;
 	onSpace?: (state: TrackTaskState) => void;
@@ -59,9 +62,9 @@ export interface TrackTaskProps extends BaseTaskProps {
 }
 
 export type TrackTaskState = {
-	selectedCorrectIndices: number[],
-	dataEntry: TrackTaskDataEntry
-}
+	selectedCorrectIndices: number[];
+	dataEntry: TrackTaskDataEntry;
+};
 
 export enum TrackSlideStage {
 	InitialDwell,
@@ -85,8 +88,9 @@ export interface TrackTaskPresetEntryGenerator<TDataEntry> {
 	generate: PartialArrayable<TDataEntry> & { type?: string | string[] };
 }
 
-export type TrackTaskPreset<TDataEntry> = TaskData<TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<TDataEntry>>;
-
+export type TrackTaskPreset<TDataEntry> = TaskData<
+	TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<TDataEntry>
+>;
 
 // Components
 

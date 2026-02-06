@@ -34,13 +34,15 @@
 	}
 </script>
 
-<button type="button" class="symbol font-serif text-4xl text-gray-800"
-				style="letter-spacing: {letterSpacing}px;"
-				class:correct-symbol={isCorrect}
-				class:incorrect-symbol={!isCorrect}
-				class:non-interactable={isWhitespace || !interactable}
-				class:selected={isSelected}
-				onclick={onSymbolClick}
+<button
+	type="button"
+	class="symbol font-serif text-4xl text-gray-800"
+	style="letter-spacing: {letterSpacing}px;"
+	class:correct-symbol={isCorrect}
+	class:incorrect-symbol={!isCorrect}
+	class:non-interactable={isWhitespace || !interactable}
+	class:selected={isSelected}
+	onclick={onSymbolClick}
 >
 	<span>{isWhitespace ? '\u00A0' : symbol}</span>
 </button>
@@ -51,19 +53,19 @@
 		position: relative;
 		user-select: none;
 
-		&.non-interactable{
-				pointer-events: none;
+		&.non-interactable {
+			pointer-events: none;
 		}
 
-		&.selected{
+		&.selected {
 			&.correct-symbol {
-				color: #15803D;
+				color: #15803d;
 				&::before {
 					animation: correct-flash-bg 1000ms ease-in-out;
 				}
 			}
 
-			&.incorrect-symbol{
+			&.incorrect-symbol {
 				--animation-time: 300ms;
 				animation: incorrect-flash-text var(--animation-time) ease-in-out 2;
 				&::before {
@@ -72,15 +74,15 @@
 			}
 		}
 
-		&::before{
-			content: "";
+		&::before {
+			content: '';
 			position: absolute;
 			inset: -0.375rem;
 			border-radius: 0.5rem;
 			background-color: rgba(0, 0, 0, 0);
 			transition: all 200ms ease-in;
 			pointer-events: none;
-      z-index: -2;
+			z-index: -2;
 		}
 
 		span {
@@ -90,17 +92,19 @@
 	}
 
 	@keyframes incorrect-flash-text {
-		0%, 100% {
+		0%,
+		100% {
 			color: inherit;
 		}
 
 		50% {
-			color: #DC2626;
+			color: #dc2626;
 		}
 	}
 
 	@keyframes incorrect-flash-bg {
-		0%, 100% {
+		0%,
+		100% {
 			background-color: rgba(0, 0, 0, 0);
 			z-index: auto;
 		}
@@ -111,12 +115,14 @@
 	}
 
 	@keyframes correct-flash-bg {
-		0%, 100% {
+		0%,
+		100% {
 			background-color: rgba(0, 0, 0, 0);
 			z-index: auto;
 		}
 
-		33%, 66% {
+		33%,
+		66% {
 			background-color: #bfe5cc;
 		}
 	}

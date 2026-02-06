@@ -3,8 +3,9 @@
 
 	let microphoneImg = resolveAny('/images/common/microphone.svg');
 </script>
+
 <div>
-	<img src={microphoneImg} alt="Microphone" class="inline mr-2" />
+	<img src={microphoneImg} alt="Microphone" class="mr-2 inline" />
 </div>
 
 <style>
@@ -15,7 +16,8 @@
 	}
 
 	@keyframes pulse {
-		0%, 100% {
+		0%,
+		100% {
 			transform: scale(1);
 			opacity: 0.5;
 		}

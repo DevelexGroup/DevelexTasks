@@ -41,7 +41,6 @@
 
 	let mistakeCount = $state<number>(0);
 
-
 	const repetitions = data.length;
 	const currentData = $derived(() => data[currentRepetition % data.length]);
 	const symbols = $derived(() => currentData().sequence);
@@ -67,17 +66,27 @@
 	onMount(() => {
 		let keyboardManager = getContext<KeyboardManager>(KEYBOARD_MANAGER_KEY);
 
-		const skipEvt = keyboardManager.onKeyDown('Enter', skipStage, { preventDefault: true, ignoreRepeat: true });
-		const spaceEvt = keyboardManager.onKeyDown('Space', () => onSpace(currentState()), { preventDefault: true, stopPropagation: true, ignoreRepeat: true });
+		const skipEvt = keyboardManager.onKeyDown('Enter', skipStage, {
+			preventDefault: true,
+			ignoreRepeat: true
+		});
+		const spaceEvt = keyboardManager.onKeyDown('Space', () => onSpace(currentState()), {
+			preventDefault: true,
+			stopPropagation: true,
+			ignoreRepeat: true
+		});
 
 		return () => {
 			skipEvt.dispose();
 			spaceEvt.dispose();
 		};
-	})
+	});
 
 	$effect(() => {
-		if (currentStage === TrackSlideStage.InitialDwell && $trackerConfig !== AvaiableTracker.MouseIdt) {
+		if (
+			currentStage === TrackSlideStage.InitialDwell &&
+			$trackerConfig !== AvaiableTracker.MouseIdt
+		) {
 			cursorVisible.set(false);
 		} else {
 			cursorVisible.set(true);
@@ -89,7 +98,7 @@
 			if (task) {
 				return {
 					...task,
-					stimulusId: currentData().id ,
+					stimulusId: currentData().id,
 					currentRepetition: currentRepetition + 1
 				};
 			}
@@ -98,17 +107,32 @@
 	});
 
 	$effect(() => {
-		if (!isPractice && mistakeCount >= MAX_MISTAKES_BEFORE_DIALOG){
+		if (!isPractice && mistakeCount >= MAX_MISTAKES_BEFORE_DIALOG) {
 			showDialog({
 				title: 'Chceš pokračovat?',
-				description: 'Zdá se, že máš potíže s touto částí úlohy. Chceš pokračovat nebo zkusit jinou úlohu?',
+				description:
+					'Zdá se, že máš potíže s touto částí úlohy. Chceš pokračovat nebo zkusit jinou úlohu?',
 				options: [
-					{ label: "Pokračovat", variant: 'secondary', callback: () => { mistakeCount = 0; }, closeOnClick: true },
-					{ label: "Změnit úlohu", variant: 'destructive', callback: () => { abortTask(); }, closeOnClick: true }
+					{
+						label: 'Pokračovat',
+						variant: 'secondary',
+						callback: () => {
+							mistakeCount = 0;
+						},
+						closeOnClick: true
+					},
+					{
+						label: 'Změnit úlohu',
+						variant: 'destructive',
+						callback: () => {
+							abortTask();
+						},
+						closeOnClick: true
+					}
 				]
 			});
 		}
-	})
+	});
 
 	onDestroy(() => {
 		cursorVisible.set(true);
@@ -156,17 +180,15 @@
 	}
 
 	function validateSymbolClick(symbol: string, index: number): boolean {
-		const validationResult = validateSymbol(index, currentState())
+		const validationResult = validateSymbol(index, currentState());
 		if (validationResult === true) {
 			selectedIndices = [...selectedIndices, index];
-			if (playValidationSounds)
-				playSound(SOUND_CORRECT, 0.33);
+			if (playValidationSounds) playSound(SOUND_CORRECT, 0.33);
 			logWhenStageComplete();
 			return true;
 		}
 		analyticsManager.logMistakeType(validationResult);
-		if (playValidationSounds)
-			playSound(SOUND_MISTAKE, 0.33);
+		if (playValidationSounds) playSound(SOUND_MISTAKE, 0.33);
 		mistakeCount += 1;
 		return false;
 	}
@@ -176,7 +198,7 @@
 		if (validationResult === true) {
 			advanceStage();
 		} else {
-			analyticsManager.logMistakeType(validationResult)
+			analyticsManager.logMistakeType(validationResult);
 			if (dwellArrowElement) {
 				shouldShakeArrow = true;
 				playSound(SOUND_MISTAKE, 0.33);
@@ -189,7 +211,11 @@
 
 	function logWhenStageComplete() {
 		if (validateStage(currentState()) === true) {
-			analyticsManager.logCompleteSlide(currentRepetition + 1, currentState(), calculateFluencyScore);
+			analyticsManager.logCompleteSlide(
+				currentRepetition + 1,
+				currentState(),
+				calculateFluencyScore
+			);
 		}
 	}
 </script>
@@ -199,51 +225,57 @@
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget
 				id={`slide-${currentRepetition + 1}_initial`}
-			  dwellTimeMs={300}
-			  bufferSize={50}
-			  width={125}
-			  onDwellComplete={() => {
+				dwellTimeMs={300}
+				bufferSize={50}
+				width={125}
+				onDwellComplete={() => {
 					currentStage = TrackSlideStage.Task;
-			  }}
+				}}
 			/>
 		</div>
 	{:else if currentStage === TrackSlideStage.Task}
 		<div class="flex flex-col items-center justify-center gap-16">
 			<div class="text-center">
 				{#if hintComponent}
-						<div class="flex justify-center gap-32">
-							<GazeArea id="hint" bufferSize={50}>
-								<div in:fade|global={{ delay: 500 }} out:fade|global>
-									{@render hintComponent({
-										state: currentState(),
-										isPractice
-									})}
-								</div>
-							</GazeArea>
-							{#if trackComponent}
-								<GazeArea id="track" bufferSize={50}>
-									<div class="flex items-center justify-center" in:fade|global={{ delay: 800 }} out:fade|global>
-										{@render trackComponent({
-											symbols: symbols(),
-											correctSymbols: currentData().correct,
-											validateSymbolClick
-										})}
-									</div>
-								</GazeArea>
-							{/if}
-						</div>
-				{:else}
-					{#if trackComponent}
-						<GazeArea id="track" bufferSize={50}>
-							<div class="flex items-center justify-center" in:fade|global={{ delay: 500 }} out:fade|global>
-								{@render trackComponent({
-									symbols: symbols(),
-									correctSymbols: currentData().correct,
-									validateSymbolClick
+					<div class="flex justify-center gap-32">
+						<GazeArea id="hint" bufferSize={50}>
+							<div in:fade|global={{ delay: 500 }} out:fade|global>
+								{@render hintComponent({
+									state: currentState(),
+									isPractice
 								})}
 							</div>
 						</GazeArea>
-					{/if}
+						{#if trackComponent}
+							<GazeArea id="track" bufferSize={50}>
+								<div
+									class="flex items-center justify-center"
+									in:fade|global={{ delay: 800 }}
+									out:fade|global
+								>
+									{@render trackComponent({
+										symbols: symbols(),
+										correctSymbols: currentData().correct,
+										validateSymbolClick
+									})}
+								</div>
+							</GazeArea>
+						{/if}
+					</div>
+				{:else if trackComponent}
+					<GazeArea id="track" bufferSize={50}>
+						<div
+							class="flex items-center justify-center"
+							in:fade|global={{ delay: 500 }}
+							out:fade|global
+						>
+							{@render trackComponent({
+								symbols: symbols(),
+								correctSymbols: currentData().correct,
+								validateSymbolClick
+							})}
+						</div>
+					</GazeArea>
 				{/if}
 			</div>
 			{#if extraComponent}
@@ -255,15 +287,20 @@
 				</div>
 			{/if}
 		</div>
-		<div class="fixed bottom-16 right-16" class:shake={shouldShakeArrow} id={`${id}_end}`} transition:fade>
+		<div
+			class="fixed right-16 bottom-16"
+			class:shake={shouldShakeArrow}
+			id={`${id}_end}`}
+			transition:fade
+		>
 			<DwellTarget
 				bind:this={dwellArrowElement}
-			  id={`slide-${currentRepetition + 1}_end`}
-			  dwellTimeMs={1000}
-			  bufferSize={50}
-			  width={125}
-			  onDwellComplete={onAdvanceDwellComplete}
-			  disableOnComplete={false}
+				id={`slide-${currentRepetition + 1}_end`}
+				dwellTimeMs={1000}
+				bufferSize={50}
+				width={125}
+				onDwellComplete={onAdvanceDwellComplete}
+				disableOnComplete={false}
 			>
 				<DwellTargetArrow />
 			</DwellTarget>
@@ -277,7 +314,8 @@
 	}
 
 	@keyframes shake {
-		0%, 100% {
+		0%,
+		100% {
 			transform: translateX(0);
 		}
 		20% {
@@ -287,11 +325,10 @@
 			transform: translateX(10px);
 		}
 		60% {
-      transform: translateX(-10px);
-    }
+			transform: translateX(-10px);
+		}
 		80% {
 			transform: translateX(3px);
 		}
 	}
 </style>
-

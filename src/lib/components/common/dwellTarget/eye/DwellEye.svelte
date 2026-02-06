@@ -7,7 +7,7 @@
 		eyeWidth?: number;
 		eyeHeight?: number;
 		pupilColor?: string;
-		gemStyle?: 'diamond' | 'emerald',
+		gemStyle?: 'diamond' | 'emerald';
 		colorTransitionDuration?: number;
 		pupilProportion?: number;
 		reflectionOpacity?: number;

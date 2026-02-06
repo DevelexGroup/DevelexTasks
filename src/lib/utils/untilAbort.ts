@@ -7,11 +7,11 @@
 		signal.addEventListener('abort', onAbort, { once: true });
 
 		p.then(
-			v => {
+			(v) => {
 				signal.removeEventListener('abort', onAbort);
 				resolve(v);
 			},
-			e => {
+			(e) => {
 				signal.removeEventListener('abort', onAbort);
 				reject(e);
 			}

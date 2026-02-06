@@ -12,25 +12,28 @@
 
 	const modules = import.meta.glob<{ default: Component }>(
 		`$lib/components/tasks/**/{Task,Practice,Instructions}.svelte`
-	)
+	);
 
 	function getComponentPath(filename: string) {
 		return `/src/lib/components/tasks/${data.task}/levels/${data.level}/${filename}.svelte`;
 	}
 
-	const taskComponentPromise = modules[getComponentPath("Task")]?.()?.then(mod => mod.default) || null;
-	const practiceComponentPromise = modules[getComponentPath("Practice")]?.()?.then(mod => mod.default) || null;
-	const instructionsComponentPromise = modules[getComponentPath("Instructions")]?.()?.then(mod => mod.default) || null;
+	const taskComponentPromise =
+		modules[getComponentPath('Task')]?.()?.then((mod) => mod.default) || null;
+	const practiceComponentPromise =
+		modules[getComponentPath('Practice')]?.()?.then((mod) => mod.default) || null;
+	const instructionsComponentPromise =
+		modules[getComponentPath('Instructions')]?.()?.then((mod) => mod.default) || null;
 
 	onMount(() => {
 		$currentTask = {
 			slug: data.task,
 			level: data.level,
 			session: Date.now().toString(),
-			stimulusId: "null",
+			stimulusId: 'null',
 			currentRepetition: -1,
 			result: null
-		}
+		};
 	});
 
 	onDestroy(() => {
@@ -40,13 +43,13 @@
 
 <TaskWrapper>
 	<svelte:fragment slot="Task">
-	{#if taskComponentPromise}
-		{#await taskComponentPromise then TaskComponent}
-			<TaskComponent />
-		{:catch error}
-			<p>Error loading Task component: {error.message}</p>
-		{/await}
-	{/if}
+		{#if taskComponentPromise}
+			{#await taskComponentPromise then TaskComponent}
+				<TaskComponent />
+			{:catch error}
+				<p>Error loading Task component: {error.message}</p>
+			{/await}
+		{/if}
 	</svelte:fragment>
 
 	<svelte:fragment slot="Practice">
@@ -68,7 +71,7 @@
 			{/await}
 			<div class="absolute bottom-4 left-4">
 				<button
-					class="px-3 py-1.5 bg-gray-300 text-gray-800 rounded-md"
+					class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
 					onclick={() => goto(resolve(`/tasks/${data.task}`))}
 				>
 					Zpět

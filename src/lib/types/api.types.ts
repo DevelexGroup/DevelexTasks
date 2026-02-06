@@ -1,5 +1,4 @@
-﻿
-export enum UserRole {
+﻿export enum UserRole {
 	Garant = 'GARANT',
 	Lector = 'LECTOR',
 	Student = 'STUDENT'
