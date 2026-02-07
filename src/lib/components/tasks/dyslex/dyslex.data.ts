@@ -1,0 +1,271 @@
+export const syllablesData = {
+	practice: [
+		['ze', 'me', 'va', 'la', 'do'],
+		['pro', 'hlo', 'kra', 'zle', 'vru'],
+		['hluk', 'mlok', 'hlen', 'blok', 'shon']
+	],
+	content: [
+		['ma', 'si', 'mu', 'zu', 'da', 'jo', 'ke', 'py', 'za'],
+		['vo', 'lu', 're', 'vi', 'zo', 'be', 'ru', 'pe', 'te'],
+		['suk', 'mák', 'nos', 'sen', 'výr', 'mech', 'len', 'gól', 'cíp'],
+		['nov', 'lar', 'for', 'zul', 'bed', 'lum', 'nev', 'zek', 'vod'],
+		['vl', 'bz', 'hr', 'dr', 'sl', 'kr', 'ol', 'ml', 'fr'],
+		['tra', 'mle', 'tve', 'kro', 'dlu', 'sku', 'bru', 'pla', 'klu'],
+		['vle', 'tra', 'mru', 'čle', 'chlu', 'pro', 'zlu', 'sla', 'fro'],
+		['pluh', 'hrom', 'mlýn', 'dnes', 'plot', 'zvuk', 'vnuk', 'lhář', 'kmen'],
+		['vpád', 'stop', 'hned', 'vkus', 'chlup', 'zrak', 'plat', 'vrak', 'zvon'],
+		['tvrz', 'skrz', 'smrt', 'brnk', 'smrk', 'blesk', 'štěrk', 'kvést', 'bronz']
+	]
+};
+
+export const meantextData = {
+	practice: [
+		['Malý', 'osmiletý', 'chlapec', 'Adam', 'stál', 'u', 'okna', 'a', 'upřeně', 'sledoval'],
+		['silnici', 'vedoucí', 'k', 'jejich', 'domu.', 'Za', 'chvíli', 'by', 'se', 'mělo', 'objevit'],
+		['tatínkovo', 'auto', 's', 'přívěsem', 'na', 'koně.']
+	],
+	content: [
+		[
+			'Malý',
+			'Pepík',
+			'raději',
+			'četl',
+			'doma',
+			'knížky',
+			'plné',
+			'dobrodružství,',
+			'než',
+			'aby',
+			'skotačil',
+			's',
+			'dětmi',
+			'venku.'
+		],
+		[
+			'Možná',
+			'k',
+			'tomu',
+			'přispěla',
+			'i',
+			'nemocná',
+			'noha,',
+			'která',
+			'mu',
+			'mnohé',
+			'neplechy',
+			'znemožňovala.',
+			'Raději',
+			'se'
+		],
+		[
+			'proto',
+			'ponořil',
+			'do',
+			'příběhů',
+			'plných',
+			'plížících',
+			'se',
+			'indiánů,',
+			'odvážných',
+			'zálesáků',
+			'nebo',
+			'zlotřilých'
+		],
+		[
+			'pirátů.',
+			'Občas',
+			'smutně',
+			'vyhlédl',
+			'z',
+			'okna',
+			'na',
+			'hrající',
+			'si',
+			'kamarády',
+			'a',
+			'sledoval',
+			'zpovzdálí',
+			'jejich'
+		],
+		[
+			'rozpustilou',
+			'hru.',
+			'Jednoho',
+			'dne,',
+			'když',
+			'se',
+			'jako',
+			'obvykle',
+			'díval',
+			'částečně',
+			'ukrytý',
+			'za',
+			'záclonou,',
+			'si'
+		],
+		[
+			'uvědomil,',
+			'že',
+			'nějaký',
+			'stín',
+			'se',
+			'jako',
+			'blesk',
+			'pohybuje',
+			'po',
+			'stromě',
+			'nahoru',
+			'a',
+			'dolů.',
+			'Malá',
+			'hnědá',
+			'a',
+			'velice'
+		],
+		[
+			'hbitá',
+			'veverka',
+			'šmejdila',
+			'po',
+			'stromě',
+			'a',
+			'hledala',
+			'oříšky,',
+			'které',
+			'by',
+			'si',
+			'uschovala',
+			'do',
+			'tajné',
+			'skrýše.'
+		]
+	]
+};
+
+export const pseudotextData = {
+	practice: [
+		['Vazno', 'kasouné', 'mipoco', 'čomoply', 'tyžemo', 'řizolá', 'přetesta.'],
+		['Pokolako', 'gane', 'snůle', 'ho', 'pustipro.', 'Nidaj', 'sa,', 'nikadá.', 'Hajde', 'badyka'],
+		['čímlou', 'žetymo.']
+	],
+	content: [
+		[
+			[
+				'Vůrnice',
+				'lobu',
+				'saná',
+				'ladiv.',
+				'Šini',
+				'se',
+				'zonaj',
+				'olítače',
+				'a',
+				'jipřá',
+				'tibý',
+				'sa',
+				'takode',
+				'koumi',
+				'toudíc.',
+				'Vazpíla'
+			],
+			[
+				'mupotá,',
+				'sidóla',
+				'lib',
+				'mozdá,',
+				'rompulo',
+				'sa',
+				'řazvíty.',
+				'Hoče',
+				'se',
+				'hašlá',
+				'řilozá',
+				'stým',
+				'a',
+				'ravízda.',
+				'Douje'
+			],
+			[
+				'bocha',
+				'šakve',
+				'lámě.',
+				'Tašelá',
+				'sně',
+				'pronité',
+				'šere.',
+				'Každépo',
+				'rytách',
+				'pronity',
+				'harto',
+				'e',
+				'šere',
+				'chlera',
+				'dlypo.'
+			],
+			[
+				'Desedé',
+				'a',
+				'haralice',
+				'o',
+				'kačeza',
+				'te',
+				'krozdoníka.',
+				'Krozdoník',
+				'subaj',
+				'šelpři',
+				'kýmlech',
+				'remhol',
+				's'
+			],
+			[
+				'hanymítory',
+				'šeremi',
+				'pakaty',
+				'um',
+				'zysly',
+				'iz',
+				'trpní',
+				'sných',
+				'krá',
+				'tůkva.',
+				'Humo',
+				'tebi',
+				'mecipo?',
+				'Požeš',
+				'meny,'
+			],
+			[
+				'kada',
+				'tasnepře',
+				'bličovasa',
+				'muto',
+				'dinéje,',
+				'roč',
+				'mitulore.',
+				'Subaj',
+				'limal',
+				'vůrnice',
+				'ka',
+				'libe.',
+				'Šelpři',
+				'tadýt',
+				'a'
+			],
+			[
+				'ručvin',
+				'le.',
+				'Myja',
+				'lépa',
+				'dodim',
+				'aki',
+				'toukané',
+				'ili',
+				'lédé.',
+				'Matako',
+				'tudom',
+				'lehou',
+				'řepine.'
+			]
+		]
+	]
+};

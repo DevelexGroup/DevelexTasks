@@ -100,6 +100,8 @@
 	});
 
 	onDestroy(() => {
+		if (!browser) return;
+
 		analyticsManager.stopLogging(TaskResult.Terminate);
 		if ($remoteTestSessionId) {
 			abortTestSession($remoteTestSessionId)

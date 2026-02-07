@@ -67,7 +67,12 @@
 
 				<div class="flex flex-col gap-1">
 					<label class="text-sm text-gray-700" for="bufferSize">
-						AOI Buffer Size <small>(Only visual)</small>: {$debugOptions.debugAOIBufferSize}
+						AOI Buffer Size <small>(Only visual)</small>:
+						<input
+							class="rounded-md border border-gray-300 px-2 py-1"
+							type="number"
+							bind:value={$debugOptions.debugAOIBufferSize}
+						/>
 					</label>
 					<input
 						id="bufferSize"
