@@ -18,15 +18,16 @@
 {#if data}
 	<DyslexTrackLevel
 		{id}
-		repetitions={1}
+		repetitions={2}
 		validateStage={() => true}
 		isPractice={false}
-		onCompleted={() => {
+		onNextStage={() => {
 			if (slide < data.length - 1) {
 				slide++;
-			} else {
-				taskStage.set(TaskStage.End);
 			}
+		}}
+		onCompleted={() => {
+			taskStage.set(TaskStage.End);
 		}}
 		offset={{ x: 0, y: 0 }}
 	>

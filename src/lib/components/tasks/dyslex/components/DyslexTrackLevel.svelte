@@ -20,6 +20,7 @@
 			y?: number;
 		};
 		onCompleted?: (result: TaskResult) => void;
+		onNextStage?: () => void;
 		validateStage?: () => boolean;
 		onSpace?: () => void;
 	}
@@ -31,6 +32,7 @@
 		onCompleted = () => {},
 		validateStage = () => true,
 		onSpace = () => {},
+		onNextStage = () => {},
 		children,
 		offset = { x: 0, y: 0 }
 	}: Props = $props();
@@ -106,6 +108,7 @@
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
 			currentStage = TrackSlideStage.InitialDwell;
+			onNextStage();
 		} else {
 			currentTask.update((task) => {
 				if (task) {
