@@ -19,8 +19,6 @@
 	<DyslexTrackLevel
 		{id}
 		repetitions={2}
-		validateStage={() => true}
-		isPractice={false}
 		onNextStage={() => {
 			if (slide < data.length - 1) {
 				slide++;

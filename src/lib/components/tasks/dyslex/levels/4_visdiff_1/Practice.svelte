@@ -18,8 +18,6 @@
 	<DyslexTrackLevel
 		{id}
 		repetitions={1}
-		validateStage={() => true}
-		isPractice={true}
 		onCompleted={() => {
 			taskStage.set(TaskStage.Instructions);
 		}}

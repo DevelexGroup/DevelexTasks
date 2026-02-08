@@ -14,23 +14,19 @@
 		id: string;
 		children?: Snippet;
 		repetitions: number;
-		isPractice?: boolean;
 		offset?: {
 			x?: number;
 			y?: number;
 		};
 		onCompleted?: (result: TaskResult) => void;
 		onNextStage?: () => void;
-		validateStage?: () => boolean;
 		onSpace?: () => void;
 	}
 
 	let {
 		id,
 		repetitions,
-		isPractice = false,
 		onCompleted = () => {},
-		validateStage = () => true,
 		onSpace = () => {},
 		onNextStage = () => {},
 		children,
