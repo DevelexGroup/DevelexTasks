@@ -20,6 +20,6 @@
 		}}
 		offset={{ x: 0, y: -195 }}
 	>
-		<ParagraphGrid {data} lineGap={28} elementBufferSize={35} />
+		<ParagraphGrid {data} aoiName="meantext-practice" lineGap={28} elementBufferSize={35} />
 	</DyslexTrackLevel>
 {/if}

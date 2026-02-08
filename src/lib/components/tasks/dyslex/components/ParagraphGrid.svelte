@@ -6,9 +6,10 @@
 		data: MeantextItem[] | PseudotextItem[];
 		lineGap: number;
 		elementBufferSize?: number;
+		aoiName: string;
 	}
 
-	let { data, lineGap, elementBufferSize = 15 }: Props = $props();
+	let { data, lineGap, elementBufferSize = 15, aoiName }: Props = $props();
 </script>
 
 <div class="flex h-full flex-col items-start justify-center" style={`row-gap: ${lineGap}px;`}>
@@ -18,7 +19,7 @@
 			style={`width: ${line.width}px;`}
 		>
 			{#each line.data as item, j}
-				<GazeArea id={`syllable-${i}-${j}-${item}`} bufferSize={elementBufferSize}>
+				<GazeArea id={`${aoiName}-${i}-${j}-${item}`} bufferSize={elementBufferSize}>
 					{item}
 				</GazeArea>
 			{/each}

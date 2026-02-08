@@ -20,6 +20,6 @@
 		}}
 		offset={{ x: 0, y: -102 }}
 	>
-		<ParagraphGrid {data} lineGap={47} elementBufferSize={35} />
+		<ParagraphGrid {data} aoiName="pseudotext-content" lineGap={47} elementBufferSize={35} />
 	</DyslexTrackLevel>
 {/if}
