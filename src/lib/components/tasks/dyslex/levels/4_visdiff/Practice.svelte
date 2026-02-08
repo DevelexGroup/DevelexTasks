@@ -1,5 +1,5 @@
 ﻿<script lang="ts">
-	import { id } from '$lib/components/tasks/dyslex/levels/4_visdiff_1/index';
+	import { id } from '$lib/components/tasks/dyslex/levels/4_visdiff/index';
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
 	import { playSound } from '$lib/utils/sound';
