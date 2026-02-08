@@ -128,7 +128,7 @@
 	class="flex h-screen w-full items-center justify-center bg-dyslex-task-background font-[Times_New_Roman] text-black"
 >
 	{#if currentStage === TrackSlideStage.InitialDwell}
-		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
+		<div class="fixed top-[130px] left-[207px]" id={`${id}_initial}`} transition:fade>
 			<DwellTarget
 				id={`slide-${currentRepetition + 1}_initial`}
 				dwellTimeMs={300}
