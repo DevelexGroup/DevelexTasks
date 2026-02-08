@@ -352,3 +352,25 @@ export const pseudotextData = {
 		}
 	]
 };
+
+export const visdiffData = {
+	practice: [
+		{
+			cols: 2,
+			start: 1,
+			end: 6
+		}
+	],
+	content: [
+		{
+			cols: 5,
+			start: 2,
+			end: 56
+		},
+		{
+			cols: 5,
+			start: 2,
+			end: 56
+		}
+	]
+};

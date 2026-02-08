@@ -18,3 +18,11 @@ export interface PseudotextItem {
 }
 
 export type PseudotextData = DyslexDataset<PseudotextItem[]>;
+
+export interface VisDiffItem {
+	cols: number;
+	start: number;
+	end: number;
+}
+
+export type VisDiffData = DyslexDataset<VisDiffItem[]>;
