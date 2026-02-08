@@ -8,9 +8,10 @@
 			y: number;
 		};
 		elementBufferSize?: number;
+		align?: 'start' | 'center';
 	}
 
-	let { data, gridSpacing, elementBufferSize = 30 }: Props = $props();
+	let { data, gridSpacing, elementBufferSize = 30, align = 'center' }: Props = $props();
 
 	const rows = data.length;
 	const cols = data[0]?.length || 0;
@@ -23,7 +24,11 @@
 	{#each data as row, i}
 		{#each row as syllable, j}
 			<GazeArea id={`syllable-${i}-${j}-${syllable}`} bufferSize={elementBufferSize}>
-				<span class="text-[23px]">
+				<span
+					class="text-[30px]"
+					class:mr-auto={align === 'start'}
+					class:w-full={align === 'start'}
+				>
 					{syllable}
 				</span>
 			</GazeArea>

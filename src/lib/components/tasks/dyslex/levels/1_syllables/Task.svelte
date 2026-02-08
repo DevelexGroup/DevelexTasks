@@ -12,14 +12,14 @@
 {#if data}
 	<DyslexTrackLevel
 		{id}
-		{data}
 		repetitions={1}
 		validateStage={() => true}
 		isPractice={false}
 		onCompleted={() => {
 			taskStage.set(TaskStage.End);
 		}}
+		offset={{ x: 0, y: -60 }}
 	>
-		<SyllableGrid {data} gridSpacing={{ x: 65, y: 35 }} elementBufferSize={20} />
+		<SyllableGrid {data} gridSpacing={{ x: 58, y: 31 }} elementBufferSize={20} />
 	</DyslexTrackLevel>
 {/if}

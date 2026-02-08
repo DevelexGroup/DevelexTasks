@@ -7,21 +7,19 @@
 	import SyllableGrid from '../../components/SyllableGrid.svelte';
 
 	const data = syllablesData['practice'];
-	const rows = data.length;
-	const cols = data[0]?.length || 0;
 </script>
 
 {#if data}
 	<DyslexTrackLevel
 		{id}
-		{data}
 		repetitions={1}
 		validateStage={() => true}
 		isPractice={true}
 		onCompleted={() => {
 			taskStage.set(TaskStage.Instructions);
 		}}
+		offset={{ x: -65, y: -60 }}
 	>
-		<SyllableGrid {data} gridSpacing={{ x: 120, y: 120 }} />
+		<SyllableGrid align="start" {data} gridSpacing={{ x: 135, y: 85 }} />
 	</DyslexTrackLevel>
 {/if}

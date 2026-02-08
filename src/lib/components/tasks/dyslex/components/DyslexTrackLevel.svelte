@@ -3,7 +3,6 @@
 	import { getContext, onDestroy, onMount, type Snippet } from 'svelte';
 	import { cursorVisible } from '$lib/stores/cursor';
 	import { fade } from 'svelte/transition';
-	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { TaskResult, TrackSlideStage } from '$lib/types/task.types';
 	import { KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
@@ -13,10 +12,13 @@
 
 	interface Props {
 		id: string;
-		data: string[][];
 		children?: Snippet;
 		repetitions: number;
 		isPractice?: boolean;
+		offset?: {
+			x?: number;
+			y?: number;
+		};
 		onCompleted?: (result: TaskResult) => void;
 		validateStage?: () => boolean;
 		onSpace?: () => void;
@@ -24,13 +26,13 @@
 
 	let {
 		id,
-		data,
 		repetitions,
 		isPractice = false,
 		onCompleted = () => {},
 		validateStage = () => true,
 		onSpace = () => {},
-		children
+		children,
+		offset = { x: 0, y: 0 }
 	}: Props = $props();
 
 	let currentStage = $state<TrackSlideStage>(TrackSlideStage.InitialDwell);
@@ -139,7 +141,10 @@
 			/>
 		</div>
 	{:else if currentStage === TrackSlideStage.Task}
-		<div class="flex flex-col items-center justify-center gap-16">
+		<div
+			class="flex flex-col items-center justify-center"
+			style={`margin-top: ${offset.y}px; margin-left: ${offset.x}px;`}
+		>
 			<div in:fade|global={{ delay: 500 }} out:fade|global>
 				{@render children?.()}
 			</div>
