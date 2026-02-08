@@ -188,13 +188,34 @@ export const meantextData: MeantextData = {
 
 export const pseudotextData = {
 	practice: [
-		['Vazno', 'kasouné', 'mipoco', 'čomoply', 'tyžemo', 'řizolá', 'přetesta.'],
-		['Pokolako', 'gane', 'snůle', 'ho', 'pustipro.', 'Nidaj', 'sa,', 'nikadá.', 'Hajde', 'badyka'],
-		['čímlou', 'žetymo.']
+		{
+			width: 800,
+			data: ['Vazno', 'kasouné', 'mipoco', 'čomoply', 'tyžemo', 'řizolá', 'přetesta.']
+		},
+		{
+			width: 800,
+			data: [
+				'Pokolako',
+				'gane',
+				'snůle',
+				'ho',
+				'pustipro.',
+				'Nidaj',
+				'sa,',
+				'nikadá.',
+				'Hajde',
+				'badyka'
+			]
+		},
+		{
+			width: 187,
+			data: ['čímlou', 'žetymo.']
+		}
 	],
 	content: [
-		[
-			[
+		{
+			width: 1160,
+			data: [
 				'Vůrnice',
 				'lobu',
 				'saná',
@@ -211,8 +232,11 @@ export const pseudotextData = {
 				'koumi',
 				'toudíc.',
 				'Vazpíla'
-			],
-			[
+			]
+		},
+		{
+			width: 1160,
+			data: [
 				'mupotá,',
 				'sidóla',
 				'lib',
@@ -228,8 +252,11 @@ export const pseudotextData = {
 				'a',
 				'ravízda.',
 				'Douje'
-			],
-			[
+			]
+		},
+		{
+			width: 1160,
+			data: [
 				'bocha',
 				'šakve',
 				'lámě.',
@@ -245,8 +272,11 @@ export const pseudotextData = {
 				'šere',
 				'chlera',
 				'dlypo.'
-			],
-			[
+			]
+		},
+		{
+			width: 1160,
+			data: [
 				'Desedé',
 				'a',
 				'haralice',
@@ -260,8 +290,11 @@ export const pseudotextData = {
 				'kýmlech',
 				'remhol',
 				's'
-			],
-			[
+			]
+		},
+		{
+			width: 1160,
+			data: [
 				'hanymítory',
 				'šeremi',
 				'pakaty',
@@ -277,8 +310,11 @@ export const pseudotextData = {
 				'mecipo?',
 				'Požeš',
 				'meny,'
-			],
-			[
+			]
+		},
+		{
+			width: 1160,
+			data: [
 				'kada',
 				'tasnepře',
 				'bličovasa',
@@ -294,8 +330,11 @@ export const pseudotextData = {
 				'Šelpři',
 				'tadýt',
 				'a'
-			],
-			[
+			]
+		},
+		{
+			width: 932,
+			data: [
 				'ručvin',
 				'le.',
 				'Myja',
@@ -310,6 +349,6 @@ export const pseudotextData = {
 				'lehou',
 				'řepine.'
 			]
-		]
+		}
 	]
 };

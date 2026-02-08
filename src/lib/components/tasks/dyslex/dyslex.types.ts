@@ -11,3 +11,10 @@ export interface MeantextItem {
 }
 
 export type MeantextData = DyslexDataset<MeantextItem[]>;
+
+export interface PseudotextItem {
+	width: number;
+	data: string[];
+}
+
+export type PseudotextData = DyslexDataset<PseudotextItem[]>;

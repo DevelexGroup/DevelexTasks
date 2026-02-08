@@ -1,9 +1,9 @@
 <script lang="ts">
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
-	import type { MeantextItem } from '../dyslex.types';
+	import type { MeantextItem, PseudotextItem } from '../dyslex.types';
 
 	interface Props {
-		data: MeantextItem[];
+		data: MeantextItem[] | PseudotextItem[];
 		lineGap: number;
 		elementBufferSize?: number;
 	}
