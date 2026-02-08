@@ -13,9 +13,10 @@
 			outer: number;
 			inner: number;
 		};
+		onClick: (item: number) => void;
 	}
 
-	let { data, elementBufferSize = 0, slide, isPractice, border }: Props = $props();
+	let { data, elementBufferSize = 0, slide, isPractice, border, onClick }: Props = $props();
 </script>
 
 <div
@@ -24,7 +25,7 @@
 >
 	{#each Array.from({ length: data.end - data.start + 1 }, (_, i) => data.start + i) as item}
 		<GazeArea id={`visdiff-${slide}-${item}`} bufferSize={elementBufferSize}>
-			<button class="cursor-pointer">
+			<button class="cursor-pointer" onclick={() => onClick(item)}>
 				<img
 					class={cn(
 						'border-solid border-black',
