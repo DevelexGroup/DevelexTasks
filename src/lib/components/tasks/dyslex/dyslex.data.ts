@@ -1,4 +1,6 @@
-export const syllablesData = {
+import type { MeantextData, SyllablesData } from './dyslex.types';
+
+export const syllablesData: SyllablesData = {
 	practice: [
 		['ze', 'me', 'va', 'la', 'do'],
 		['pro', 'hlo', 'kra', 'zle', 'vru'],
@@ -18,127 +20,169 @@ export const syllablesData = {
 	]
 };
 
-export const meantextData = {
+export const meantextData: MeantextData = {
 	practice: [
-		['Malý', 'osmiletý', 'chlapec', 'Adam', 'stál', 'u', 'okna', 'a', 'upřeně', 'sledoval'],
-		['silnici', 'vedoucí', 'k', 'jejich', 'domu.', 'Za', 'chvíli', 'by', 'se', 'mělo', 'objevit'],
-		['tatínkovo', 'auto', 's', 'přívěsem', 'na', 'koně.']
+		{
+			width: 800,
+			data: ['Malý', 'osmiletý', 'chlapec', 'Adam', 'stál', 'u', 'okna', 'a', 'upřeně', 'sledoval']
+		},
+		{
+			width: 800,
+			data: [
+				'silnici',
+				'vedoucí',
+				'k',
+				'jejich',
+				'domu.',
+				'Za',
+				'chvíli',
+				'by',
+				'se',
+				'mělo',
+				'objevit'
+			]
+		},
+		{
+			width: 425,
+			data: ['tatínkovo', 'auto', 's', 'přívěsem', 'na', 'koně.']
+		}
 	],
 	content: [
-		[
-			'Malý',
-			'Pepík',
-			'raději',
-			'četl',
-			'doma',
-			'knížky',
-			'plné',
-			'dobrodružství,',
-			'než',
-			'aby',
-			'skotačil',
-			's',
-			'dětmi',
-			'venku.'
-		],
-		[
-			'Možná',
-			'k',
-			'tomu',
-			'přispěla',
-			'i',
-			'nemocná',
-			'noha,',
-			'která',
-			'mu',
-			'mnohé',
-			'neplechy',
-			'znemožňovala.',
-			'Raději',
-			'se'
-		],
-		[
-			'proto',
-			'ponořil',
-			'do',
-			'příběhů',
-			'plných',
-			'plížících',
-			'se',
-			'indiánů,',
-			'odvážných',
-			'zálesáků',
-			'nebo',
-			'zlotřilých'
-		],
-		[
-			'pirátů.',
-			'Občas',
-			'smutně',
-			'vyhlédl',
-			'z',
-			'okna',
-			'na',
-			'hrající',
-			'si',
-			'kamarády',
-			'a',
-			'sledoval',
-			'zpovzdálí',
-			'jejich'
-		],
-		[
-			'rozpustilou',
-			'hru.',
-			'Jednoho',
-			'dne,',
-			'když',
-			'se',
-			'jako',
-			'obvykle',
-			'díval',
-			'částečně',
-			'ukrytý',
-			'za',
-			'záclonou,',
-			'si'
-		],
-		[
-			'uvědomil,',
-			'že',
-			'nějaký',
-			'stín',
-			'se',
-			'jako',
-			'blesk',
-			'pohybuje',
-			'po',
-			'stromě',
-			'nahoru',
-			'a',
-			'dolů.',
-			'Malá',
-			'hnědá',
-			'a',
-			'velice'
-		],
-		[
-			'hbitá',
-			'veverka',
-			'šmejdila',
-			'po',
-			'stromě',
-			'a',
-			'hledala',
-			'oříšky,',
-			'které',
-			'by',
-			'si',
-			'uschovala',
-			'do',
-			'tajné',
-			'skrýše.'
-		]
+		{
+			width: 1160,
+			data: [
+				'Malý',
+				'Pepík',
+				'raději',
+				'četl',
+				'doma',
+				'knížky',
+				'plné',
+				'dobrodružství,',
+				'než',
+				'aby',
+				'skotačil',
+				's',
+				'dětmi',
+				'venku.'
+			]
+		},
+		{
+			width: 1160,
+			data: [
+				'Možná',
+				'k',
+				'tomu',
+				'přispěla',
+				'i',
+				'nemocná',
+				'noha,',
+				'která',
+				'mu',
+				'mnohé',
+				'neplechy',
+				'znemožňovala.',
+				'Raději',
+				'se'
+			]
+		},
+		{
+			width: 1160,
+			data: [
+				'proto',
+				'ponořil',
+				'do',
+				'příběhů',
+				'plných',
+				'plížících',
+				'se',
+				'indiánů,',
+				'odvážných',
+				'zálesáků',
+				'nebo',
+				'zlotřilých'
+			]
+		},
+		{
+			width: 1160,
+			data: [
+				'pirátů.',
+				'Občas',
+				'smutně',
+				'vyhlédl',
+				'z',
+				'okna',
+				'na',
+				'hrající',
+				'si',
+				'kamarády',
+				'a',
+				'sledoval',
+				'zpovzdálí',
+				'jejich'
+			]
+		},
+		{
+			width: 1160,
+			data: [
+				'rozpustilou',
+				'hru.',
+				'Jednoho',
+				'dne,',
+				'když',
+				'se',
+				'jako',
+				'obvykle',
+				'díval',
+				'částečně',
+				'ukrytý',
+				'za',
+				'záclonou,',
+				'si'
+			]
+		},
+		{
+			width: 1160,
+			data: [
+				'uvědomil,',
+				'že',
+				'nějaký',
+				'stín',
+				'se',
+				'jako',
+				'blesk',
+				'pohybuje',
+				'po',
+				'stromě',
+				'nahoru',
+				'a',
+				'dolů.',
+				'Malá',
+				'hnědá',
+				'a',
+				'velice'
+			]
+		},
+		{
+			width: 1080,
+			data: [
+				'hbitá',
+				'veverka',
+				'šmejdila',
+				'po',
+				'stromě',
+				'a',
+				'hledala',
+				'oříšky,',
+				'které',
+				'by',
+				'si',
+				'uschovala',
+				'do',
+				'tajné',
+				'skrýše.'
+			]
+		}
 	]
 };
 
