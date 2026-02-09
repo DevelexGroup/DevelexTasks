@@ -39,7 +39,7 @@
 	$effect(() => {
 		currentTask.update((task) => {
 			if (task) {
-				return { ...task, currentRepetition };
+				return { ...task, currentSlideIndex: currentRepetition };
 			}
 			return task;
 		});
@@ -81,7 +81,7 @@
 				return {
 					...task,
 					stimulusId: id,
-					currentRepetition: currentRepetition + 1
+					currentSlideIndex: currentRepetition + 1
 				};
 			}
 			return task;

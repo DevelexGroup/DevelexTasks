@@ -24,6 +24,17 @@ interface SlideTimeWindow {
 	endTime: number;
 }
 
+interface Deferred {
+	promise: Promise<void>;
+	resolve: () => void;
+}
+
+function createDeferred(): Deferred {
+	let resolve!: () => void;
+	const promise = new Promise<void>((r) => (resolve = r));
+	return { promise, resolve };
+}
+
 export class AnalyticsManager {
 	private POLLING_RATE_HZ = 120;
 	private POLLING_INTERVAL_MS = 1000 / this.POLLING_RATE_HZ;
@@ -59,6 +70,9 @@ export class AnalyticsManager {
 	// private calculateScoreRequest = false;
 	private calculateScoreSlideRequest: number[] = [];
 
+	// Waiting tokens for slide processing completion
+	private slideProcessingTokens: Map<number, Deferred> = new Map();
+
 	private currentTaskState: TrackTaskState | null = null;
 	private currentMetricEvaluation:
 		| ((scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number)
@@ -68,6 +82,44 @@ export class AnalyticsManager {
 		this.gazeManager = gazeManager;
 	}
 
+	/* *************************** *
+	 * Token management for slide processing
+	 * *************************** */
+
+	private createSlideProcessingToken(slideIndex: number): void {
+		this.slideProcessingTokens.set(slideIndex, createDeferred());
+	}
+
+	private resolveSlideProcessingToken(slideIndex: number): void {
+		const token = this.slideProcessingTokens.get(slideIndex);
+		if (token) {
+			token.resolve();
+			this.slideProcessingTokens.delete(slideIndex);
+		}
+	}
+
+	public waitForSlideProcessing(slideIndex: number): Promise<void> {
+		const token = this.slideProcessingTokens.get(slideIndex);
+		if (token) {
+			return token.promise;
+		}
+		// If no token exists, the slide either hasn't started processing
+		// or has already finished - return resolved promise
+		return Promise.resolve();
+	}
+
+	public isSlideProcessing(slideIndex: number): boolean {
+		return this.slideProcessingTokens.has(slideIndex);
+	}
+
+	public getProcessingSlides(): number[] {
+		return Array.from(this.slideProcessingTokens.keys());
+	}
+
+	/* *************************** *
+	 * 	Public API for logging events and state updates
+	 * *************************** */
+
 	private getBaseDataEntry(): BaseDataEntry {
 		const user = get(authUser);
 		const task = get(currentTask);
@@ -76,7 +128,7 @@ export class AnalyticsManager {
 			child_id: user?.username ?? 'host',
 			session_id: task ? task.session : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
-			slide_index: task?.currentRepetition ?? -1,
+			slide_index: task?.currentSlideIndex ?? -1,
 			stimulus_id: task?.stimulusId ?? 'null',
 			timestamp: window.performance.timeOrigin + window.performance.now()
 		};
@@ -93,6 +145,9 @@ export class AnalyticsManager {
 	) {
 		this.eventBuffer.events.add(`complete-slide-${slideIndex}`);
 		this.calculateScoreSlideRequest.push(slideIndex);
+
+		// Create a waiting token for this slide
+		this.createSlideProcessingToken(slideIndex);
 
 		if (taskState) this.currentTaskState = taskState;
 		if (metricEvaluation) this.currentMetricEvaluation = metricEvaluation;
@@ -187,9 +242,20 @@ export class AnalyticsManager {
 					slideIndex
 				);
 			}
-		}).catch((error) => {
-			console.error('Transaction failed:', error);
-		});
+		})
+			.then(() => {
+				// Resolve the waiting token for this slide after processing completes
+				if (shouldCalculateScore) {
+					this.resolveSlideProcessingToken(slideIndex);
+				}
+			})
+			.catch((error) => {
+				console.error('Transaction failed:', error);
+				// Still resolve the token on error to prevent deadlocks
+				if (shouldCalculateScore) {
+					this.resolveSlideProcessingToken(slideIndex);
+				}
+			});
 
 		if (this.pauseRequest) {
 			this.loggingPaused = true;
@@ -245,7 +311,9 @@ export class AnalyticsManager {
 		return this.pollingTimer !== null && !this.loggingPaused;
 	}
 
-	// Event handlers
+	/* *************************** *
+	 * 	Event listeners and handlers
+	 * *************************** */
 	private registerListeners() {
 		if (!browser) return;
 
@@ -331,7 +399,10 @@ export class AnalyticsManager {
 		this.updateActiveAOI(intersectionData.target.map((target) => target.id));
 	};
 
-	/* Metric calculations */
+	/* *************************** *
+	 * 	Score calculation based on gaze and fixation data
+	 * *************************** */
+
 	private async calculateScoreMetrics(
 		taskState: TrackTaskState,
 		metricEvaluation: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number,

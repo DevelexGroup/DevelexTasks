@@ -19,6 +19,7 @@ function getAuthToken(): string | null {
 
 interface ApiClientOptions extends RequestInit {
 	params?: Record<string, string | number | boolean>;
+	responseType?: 'json' | 'blob' | 'stream';
 }
 
 export async function apiClient<T>(endpoint: string, options?: ApiClientOptions): Promise<T> {
@@ -42,7 +43,7 @@ export async function apiClient<T>(endpoint: string, options?: ApiClientOptions)
 		url += `?${searchParams.toString()}`;
 	}
 
-	const { params, ...fetchOptions } = options || {};
+	const { params, responseType, ...fetchOptions } = options || {};
 
 	const response = await fetch(url, {
 		headers,
@@ -57,6 +58,15 @@ export async function apiClient<T>(endpoint: string, options?: ApiClientOptions)
 	// Handle empty responses (e.g., 204 No Content)
 	if (response.status === 204) {
 		return undefined as T;
+	}
+
+	// Handle different response types
+	if (responseType === 'blob') {
+		return (await response.blob()) as T;
+	}
+
+	if (responseType === 'stream') {
+		return response as unknown as T;
 	}
 
 	return response.json();

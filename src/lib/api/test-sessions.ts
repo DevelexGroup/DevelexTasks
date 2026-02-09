@@ -100,24 +100,20 @@ export async function addFileToTestSessionPart(
 	});
 }
 
-export async function streamTestSessionPartFile(sessionId: string, fileId: string): Promise<Blob> {
-	return apiClient<Blob>(`/test-sessions/${sessionId}/files/${fileId}`, {
-		method: 'GET'
+export async function downloadTestSessionFile(
+	sessionId: string,
+	fileId: string
+): Promise<Blob> {
+	return apiClient<Blob>(`/test-sessions/${sessionId}/files/${fileId}/download`, {
+		responseType: 'blob'
 	});
 }
 
-export async function downloadTestSessionPartFile(
+export async function streamTestSessionFile(
 	sessionId: string,
-	fileId: string,
-	fileName: string
-): Promise<void> {
-	const blob = await streamTestSessionPartFile(sessionId, fileId);
-	const url = window.URL.createObjectURL(blob);
-	const a = document.createElement('a');
-	a.href = url;
-	a.download = fileName;
-	document.body.appendChild(a);
-	a.click();
-	a.remove();
-	window.URL.revokeObjectURL(url);
+	fileId: string
+): Promise<Response> {
+	return apiClient<Response>(`/test-sessions/${sessionId}/files/${fileId}/stream`, {
+		responseType: 'stream'
+	});
 }

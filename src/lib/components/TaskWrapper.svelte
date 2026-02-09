@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { currentTask, remoteTestSessionId, taskStage } from '$lib/stores/task';
+	import { currentTask, taskStage } from '$lib/stores/task';
 	import { TaskResult, TaskStage } from '$lib/types/task.types';
-	import { getContext, onDestroy, onMount, untrack } from 'svelte';
+	import { getContext, onDestroy, onMount } from 'svelte';
 	import TaskTrackerLoader from './TaskTrackerLoader.svelte';
 	import TaskEndScreen from '$lib/components/TaskEndScreen.svelte';
 	import {
@@ -15,12 +15,7 @@
 	import DialogPopup from '$lib/components/DialogPopup.svelte';
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { GazeManager } from 'develex-js-sdk';
-	import {
-		abortTestSession,
-		completeTestSession,
-		createTestSession,
-		getTestSessions
-	} from '$lib/api/test-sessions';
+	import TestSessionHandler from '$lib/components/TestSessionHandler.svelte';
 
 	const DEFAULT_TIMEOUT_INTERVAL = 80000; // 80 seconds
 	const TIMEOUT_EVENT_LOG = 'inactivity_timeout';
@@ -41,78 +36,8 @@
 		window.addEventListener('keydown', resetTimeoutOnInteraction);
 	});
 
-	$effect(() => {
-		if ($taskStage === TaskStage.Task) {
-			analyticsManager.startLogging();
-			const task = untrack(() => $currentTask);
-			if (!task) {
-				console.error('No current task found when trying to create test session.');
-				return;
-			}
-			createTestSession(`${task.slug}-${task.level}`)
-				.then((session) => {
-					console.log('Test session created:', session);
-					$remoteTestSessionId = session.id;
-				})
-				.catch((err) => {
-					console.error('Failed to create test session:', err);
-				});
-		}
-	});
-
-	$effect(() => {
-		if ($taskStage === TaskStage.End) {
-			const result = untrack(() => $currentTask?.result);
-			if (result) {
-				analyticsManager.stopLogging(result);
-
-				if ($remoteTestSessionId) {
-					if (result === TaskResult.Natural) {
-						completeTestSession($remoteTestSessionId)
-							.then(() => {
-								console.log('Test session completed successfully on task end.');
-								$remoteTestSessionId = null;
-							})
-							.catch((err) => {
-								console.error('Failed to complete test session on task end:', err);
-							});
-					} else {
-						abortTestSession($remoteTestSessionId)
-							.then(() => {
-								console.log('Test session aborted on task end.');
-								$remoteTestSessionId = null;
-							})
-							.catch((err) => {
-								console.error('Failed to abort test session on task end:', err);
-							});
-					}
-				}
-			}
-		}
-	});
-
-	// Track slide/repetition changes
-	$effect(() => {
-		const repetition = $currentTask?.currentRepetition;
-		if (repetition !== undefined && repetition >= 0 && $taskStage === TaskStage.Task) {
-			console.log(`Current slide: ${repetition}`);
-		}
-	});
-
 	onDestroy(() => {
 		if (!browser) return;
-
-		analyticsManager.stopLogging(TaskResult.Terminate);
-		if ($remoteTestSessionId) {
-			abortTestSession($remoteTestSessionId)
-				.then(() => {
-					console.log('Test session aborted successfully.');
-					$remoteTestSessionId = null;
-				})
-				.catch((err) => {
-					console.error('Failed to abort test session:', err);
-				});
-		}
 
 		window.removeEventListener('mousemove', resetTimeoutOnInteraction);
 		window.removeEventListener('mouseup', resetTimeoutOnInteraction);
@@ -224,3 +149,4 @@
 </div>
 
 <DialogPopup />
+<TestSessionHandler />

@@ -6,7 +6,7 @@ export const currentTask = writable<{
 	level: string;
 	session: string;
 	stimulusId: string;
-	currentRepetition: number;
+	currentSlideIndex: number;
 	result: TaskResult | null;
 } | null>(null);
 

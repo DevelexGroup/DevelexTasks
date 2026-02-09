@@ -31,7 +31,7 @@
 			level: data.level,
 			session: Date.now().toString(),
 			stimulusId: 'null',
-			currentRepetition: -1,
+			currentSlideIndex: -1,
 			result: null
 		};
 	});
