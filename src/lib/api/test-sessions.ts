@@ -92,7 +92,7 @@ export async function addFileToTestSessionPart(
 	file: File
 ): Promise<void> {
 	const formData = new FormData();
-	formData.append('file', file);
+	formData.append('files', file);
 
 	await apiClient<void>(`/test-sessions/${sessionId}/parts/${partId}/files`, {
 		method: 'POST',

@@ -24,9 +24,12 @@ interface ApiClientOptions extends RequestInit {
 
 export async function apiClient<T>(endpoint: string, options?: ApiClientOptions): Promise<T> {
 	const headers: HeadersInit = {
-		'Content-Type': 'application/json',
 		...options?.headers
 	};
+
+	if (!(options?.body instanceof FormData)) {
+		(headers as Record<string, string>)['Content-Type'] = 'application/json';
+	}
 
 	const token = getAuthToken();
 	if (token) {
