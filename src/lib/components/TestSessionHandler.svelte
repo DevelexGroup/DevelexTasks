@@ -6,11 +6,16 @@
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import {
-		abortTestSession, addFileToTestSessionPart,
+		abortTestSession, addFilesToTestSessionPart,
 		addTestSessionPart,
 		completeTestSession,
 		createTestSession
 	} from '$lib/api/test-sessions';
+	import { DatabaseExporter } from '$lib/utils/databaseExport';
+	import { get } from 'svelte/store';
+	import { authUser } from '$lib/stores/auth';
+
+	const FIRST_SLIDE_INDEX = 1;
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
@@ -30,6 +35,7 @@
 				.then((session) => {
 					console.log('Test session created:', session);
 					$remoteTestSessionId = session.id;
+					createSessionPartForSlide(session.id, FIRST_SLIDE_INDEX);
 				})
 				.catch((err) => {
 					console.error('Failed to create test session:', err);
@@ -69,55 +75,69 @@
 		}
 	});
 
-	const createTestFile = (slideIndex: number) => {
-		// Create a test blob file here based on the slide index or other relevant data
-		const blobContent = `Test data for slide ${slideIndex}`;
-		const blob = new Blob([blobContent], { type: 'text/plain' });
-		return new File([blob], `slide-${slideIndex}-data.txt`, { type: 'text/plain' });
+	const getFilesForSlide = async (slideIndex: number): Promise<File[]> => {
+		const sessionId = $currentTask?.sessionId ?? undefined;
+		const childId = get(authUser)?.username ?? undefined;
+		if (!sessionId || !childId) {
+			console.error('Missing sessionId or childId for getting files for slide.');
+			return [];
+		}
+		// Get from databaseExport
+		return await DatabaseExporter.exportToFiles({
+			mode: 'session',
+			sessionId,
+			childId,
+			slideIndex: slideIndex
+		})
 	}
 
-	const handleSlideChange = async (previousSlideIndex: number | undefined, slideIndex: number | 'end') => {
-		if ($remoteTestSessionId) {
-			if (previousSlideIndex && currentSessionPartId) {
-				console.log(`Processing slide change from ${previousSlideIndex} to ${slideIndex}. Logging file for previous slide.`);
-				// Wait for previous session to fully log into local database before adding the files
-				await analyticsManager.waitForSlideProcessing(previousSlideIndex);
-				// Create a test blob file here in this function
-				const testFile = createTestFile(previousSlideIndex);
-				// Add the file to the current session part
-				addFileToTestSessionPart($remoteTestSessionId, currentSessionPartId, testFile)
-					.then(() => {
-						console.log(`Logged file for slide ${previousSlideIndex} to test session.`);
-					})
-					.catch((err) => {
-						console.error(`Failed to log file for slide ${previousSlideIndex} to test session:`, err);
-					});
-			}
+	const uploadFilesForSlide = async (currentRemoteTestSessionId: string, currentSessionPartIdAtChange: string, slideIndex: number) => {
+		await analyticsManager.waitForSlideProcessing(slideIndex);
+		const testFiles = await getFilesForSlide(slideIndex);
+		await addFilesToTestSessionPart(currentRemoteTestSessionId, currentSessionPartIdAtChange, testFiles);
+		console.log(`Logged file for slide ${slideIndex} to test session.`);
+	}
 
-			// If not end, then add new session part for the new slide
-			if (slideIndex !== 'end') {
-				addTestSessionPart($remoteTestSessionId, slideIndex)
-					.then((testSessionPart) => {
-						console.log(`Logged slide ${slideIndex} to test session:`, testSessionPart);
-						currentSessionPartId = testSessionPart.id;
-					})
-					.catch((err) => {
-						console.error(`Failed to log slide ${slideIndex} to test session:`, err);
-					});
-			}
+	const createSessionPartForSlide = (currentRemoteTestSessionId: string, slideIndex: number) => {
+		addTestSessionPart(currentRemoteTestSessionId, slideIndex)
+			.then((testSessionPart) => {
+				console.log(`Logged slide ${slideIndex} to test session:`, testSessionPart);
+				currentSessionPartId = testSessionPart.id;
+			})
+			.catch((err) => {
+				console.error(`Failed to log slide ${slideIndex} to test session:`, err);
+			});
+	}
+
+	const handleSlideChange = async (currentRemoteTestSessionId: string, currentSessionPartIdAtChange: string | null, previousSlideIndex: number | undefined, slideIndex: number | 'end') => {
+		if (slideIndex === previousSlideIndex) {
+			return;
+		}
+		if (previousSlideIndex !== undefined && currentSessionPartIdAtChange) {
+			console.log(`Processing slide change from ${previousSlideIndex} to ${slideIndex}. Logging file for previous slide.`);
+			await uploadFilesForSlide(currentRemoteTestSessionId, currentSessionPartIdAtChange, previousSlideIndex);
+		}
+
+		// If not end, then add new session part for the new slide
+		if (slideIndex !== 'end') {
+			createSessionPartForSlide(currentRemoteTestSessionId, slideIndex);
 		}
 	}
 
 	// Slide change
 	$effect(() => {
 		const slideIndex = $currentTask?.currentSlideIndex;
-		if (slideIndex !== undefined && slideIndex >= 0 && $taskStage === TaskStage.Task) {
+		if (slideIndex !== undefined && slideIndex >= 0 && ($taskStage === TaskStage.Task || $taskStage === TaskStage.End)) {
 			const prevSlideIndex = untrack(() => previousSlideIndex);
 			console.log(`Current slide: ${slideIndex}, Previous slide: ${prevSlideIndex}`);
 
-			untrack(() => handleSlideChange(previousSlideIndex, slideIndex));
+			// Capture both remoteTestSessionId and currentSessionPartId at the time of slide change
+			const currentRemoteTestSessionId = untrack(() => $remoteTestSessionId);
+			const currentSessionPartIdAtChange = untrack(() => currentSessionPartId);
 
-			// Update previous slide index after processing
+			if (currentRemoteTestSessionId)
+					untrack(() => handleSlideChange(currentRemoteTestSessionId, currentSessionPartIdAtChange, prevSlideIndex, $taskStage === TaskStage.End ? 'end' : slideIndex));
+
 			previousSlideIndex = slideIndex;
 		}
 	});

@@ -29,7 +29,7 @@
 		$currentTask = {
 			slug: data.task,
 			level: data.level,
-			session: Date.now().toString(),
+			sessionId: Date.now().toString(),
 			stimulusId: 'null',
 			currentSlideIndex: -1,
 			result: null

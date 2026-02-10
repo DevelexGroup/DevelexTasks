@@ -4,7 +4,7 @@ import { writable } from 'svelte/store';
 export const currentTask = writable<{
 	slug: string;
 	level: string;
-	session: string;
+	sessionId: string;
 	stimulusId: string;
 	currentSlideIndex: number;
 	result: TaskResult | null;

@@ -126,7 +126,7 @@ export class AnalyticsManager {
 
 		return {
 			child_id: user?.username ?? 'host',
-			session_id: task ? task.session : 'unknown',
+			session_id: task ? task.sessionId : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
 			slide_index: task?.currentSlideIndex ?? -1,
 			stimulus_id: task?.stimulusId ?? 'null',

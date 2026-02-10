@@ -86,13 +86,15 @@ export async function getTestSessionPart(
 }
 
 // Files are sent as org.springframework.web.multipart MultipartFile[]
-export async function addFileToTestSessionPart(
+export async function addFilesToTestSessionPart(
 	sessionId: string,
 	partId: string,
-	file: File
+	files: File[]
 ): Promise<void> {
 	const formData = new FormData();
-	formData.append('files', file);
+	for (const file of files) {
+		formData.append('files', file);
+	}
 
 	await apiClient<void>(`/test-sessions/${sessionId}/parts/${partId}/files`, {
 		method: 'POST',
