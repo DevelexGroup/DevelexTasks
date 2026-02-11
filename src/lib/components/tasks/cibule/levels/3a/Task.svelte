@@ -54,6 +54,7 @@
 		{data}
 		{validateSymbol}
 		validateStage={validateStageWithSpace}
+		stopLoggingValidationCheck={validateStage}
 		{calculateFluencyScore}
 		onCompleted={() => {
 			taskStage.set(TaskStage.End);

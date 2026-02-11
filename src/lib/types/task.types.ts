@@ -56,6 +56,7 @@ export interface TrackTaskProps extends BaseTaskProps {
 	playValidationSounds?: boolean;
 	onStageAdvance?: () => void;
 	onSpace?: (state: TrackTaskState) => void;
+	stopLoggingValidationCheck?: (state: TrackTaskState) => TaskMistake[] | true;
 	trackComponent?: Snippet<[TrackComponent]>;
 	hintComponent?: Snippet<[ExtraComponent]>;
 	extraComponent?: Snippet<[ExtraComponent]>;
