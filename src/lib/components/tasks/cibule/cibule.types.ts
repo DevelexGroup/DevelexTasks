@@ -15,13 +15,13 @@ export interface CibuleRawDataEntry extends RawDataEntry {
 }
 
 export enum CibuleDataType {
+	Pismena0 = 'pismena0',
 	Pismena1 = 'pismena1',
 	Pismena2 = 'pismena2',
-	Slabiky21A = 'slabiky2_1a',
-	Slabiky21B = 'slabiky2_1b',
-	Slabiky21C = 'slabiky2_1c',
-	Slabiky21D = 'slabiky2_1d',
-	Slabiky22 = 'slabiky2_2',
-	Slova3Sl = 'slova_3sl',
-	Slova4Sl = 'slova_4sl'
+	Pismena3 = 'pismena3',
+	Pismena4 = 'pismena4',
+	Slova1Sl3 = 'slova1_3sl',
+	Slova1Sl4 = 'slova1_4sl',
+	Slova2Sl3 = 'slova2_3sl',
+	Slova2Sl4 = 'slova2_4sl',
 }

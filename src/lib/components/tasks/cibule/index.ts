@@ -13,49 +13,29 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		practiceContent: [
 			{
 				generate: {
-					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2],
-					n_targets: [3, 4],
-					n_background: 1
+					type: [CibuleDataType.Pismena0]
 				}
 			}
 		],
 		content: [
 			{
 				generate: {
-					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2],
-					n_targets: [2, 3, 4],
-					n_background: 1
+					type: [CibuleDataType.Pismena1]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2],
-					n_targets: [3, 4, 5],
-					n_background: [3, 4]
+					type: [CibuleDataType.Pismena2]
 				}
 			},
 			{
 				generate: {
-					type: [
-						CibuleDataType.Slabiky21A,
-						CibuleDataType.Slabiky21B,
-						CibuleDataType.Slabiky21C,
-						CibuleDataType.Slabiky21D,
-						CibuleDataType.Slabiky22
-					],
-					n_background: 1
+					type: [CibuleDataType.Pismena3]
 				}
 			},
 			{
 				generate: {
-					type: [
-						CibuleDataType.Slabiky21A,
-						CibuleDataType.Slabiky21B,
-						CibuleDataType.Slabiky21C,
-						CibuleDataType.Slabiky21D,
-						CibuleDataType.Slabiky22
-					],
-					n_background: [3, 4]
+					type: [CibuleDataType.Pismena4]
 				}
 			}
 		]
@@ -66,49 +46,29 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		practiceContent: [
 			{
 				generate: {
-					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2],
-					n_targets: [3, 4],
-					n_background: 1
+					type: [CibuleDataType.Pismena0]
 				}
 			}
 		],
 		content: [
 			{
 				generate: {
-					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2],
-					n_targets: [2, 3, 4],
-					n_background: 1
+					type: [CibuleDataType.Pismena1]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Pismena1, CibuleDataType.Pismena2],
-					n_targets: [3, 4, 5],
-					n_background: [3, 4]
+					type: [CibuleDataType.Pismena2]
 				}
 			},
 			{
 				generate: {
-					type: [
-						CibuleDataType.Slabiky21A,
-						CibuleDataType.Slabiky21B,
-						CibuleDataType.Slabiky21C,
-						CibuleDataType.Slabiky21D,
-						CibuleDataType.Slabiky22
-					],
-					n_background: 1
+					type: [CibuleDataType.Pismena3]
 				}
 			},
 			{
 				generate: {
-					type: [
-						CibuleDataType.Slabiky21A,
-						CibuleDataType.Slabiky21B,
-						CibuleDataType.Slabiky21C,
-						CibuleDataType.Slabiky21D,
-						CibuleDataType.Slabiky22
-					],
-					n_background: [3, 4]
+					type: [CibuleDataType.Pismena4]
 				}
 			}
 		]
@@ -119,29 +79,29 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		practiceContent: [
 			{
 				generate: {
-					type: [CibuleDataType.Slova3Sl]
+					type: [CibuleDataType.Slova1Sl3]
 				}
 			}
 		],
 		content: [
 			{
 				generate: {
-					type: [CibuleDataType.Slova3Sl]
+					type: [CibuleDataType.Slova1Sl3]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slova3Sl]
+					type: [CibuleDataType.Slova1Sl3]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slova4Sl]
+					type: [CibuleDataType.Slova1Sl4]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slova4Sl]
+					type: [CibuleDataType.Slova1Sl4]
 				}
 			}
 		]
@@ -152,29 +112,29 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		practiceContent: [
 			{
 				generate: {
-					type: [CibuleDataType.Slova3Sl]
+					type: [CibuleDataType.Slova2Sl3]
 				}
 			}
 		],
 		content: [
 			{
 				generate: {
-					type: [CibuleDataType.Slova3Sl]
+					type: [CibuleDataType.Slova2Sl3]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slova3Sl]
+					type: [CibuleDataType.Slova2Sl3]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slova4Sl]
+					type: [CibuleDataType.Slova2Sl4]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Slova4Sl]
+					type: [CibuleDataType.Slova2Sl4]
 				}
 			}
 		]
