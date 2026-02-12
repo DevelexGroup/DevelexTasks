@@ -15,7 +15,7 @@
 <div class="flex h-full flex-col items-start justify-center" style={`row-gap: ${lineGap}px;`}>
 	{#each data as line, i}
 		<div
-			class="flex w-full items-start justify-between text-[30px]"
+			class="flex w-full items-start justify-between text-[28px]"
 			style={`width: ${line.width}px;`}
 		>
 			{#each line.data as item, j}
