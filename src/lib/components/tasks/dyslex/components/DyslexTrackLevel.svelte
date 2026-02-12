@@ -9,6 +9,7 @@
 	import { currentTask } from '$lib/stores/task';
 	import { AvaiableTracker, trackerConfig } from '$lib/stores/tracker';
 	import DyslexFixCross from './DyslexFixCross.svelte';
+	import { id as visDiffId } from '$lib/components/tasks/dyslex/levels/4_visdiff/index';
 
 	interface Props {
 		id: string;
@@ -66,7 +67,7 @@
 
 	$effect(() => {
 		if (
-			currentStage === TrackSlideStage.InitialDwell &&
+			(currentStage === TrackSlideStage.InitialDwell || id !== visDiffId) &&
 			$trackerConfig !== AvaiableTracker.MouseIdt
 		) {
 			cursorVisible.set(false);
