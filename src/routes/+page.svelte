@@ -3,6 +3,8 @@
 	import type { PageProps } from './$types';
 	import { resolve } from '$app/paths';
 	import UserSelect from '$lib/components/UserSelect.svelte';
+	import RoleGuard from '$lib/components/RoleGuard.svelte';
+	import { RoleGuards } from '$lib/utils/roleGuard';
 
 	let { data }: PageProps = $props();
 </script>
@@ -35,12 +37,14 @@
 		</button>
 	</div>
 
-	<button
-		class="fixed right-4 bottom-4 rounded-md bg-purple-500 px-3 py-1.5 text-gray-50 hover:bg-purple-600"
-		onclick={() => goto(resolve('/admin'))}
-	>
-		Administrace
-	</button>
+	<RoleGuard config={RoleGuards.garantOnly}>
+		<button
+			class="fixed right-4 bottom-4 rounded-md bg-purple-500 px-3 py-1.5 text-gray-50 hover:bg-purple-600"
+			onclick={() => goto(resolve('/admin'))}
+		>
+			Administrace
+		</button>
+	</RoleGuard>
 
 	<div class="mt-3">
 		<UserSelect />
