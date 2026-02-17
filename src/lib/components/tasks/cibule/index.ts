@@ -1,6 +1,6 @@
 import type { TaskMetadata, TrackTaskState, TrackTaskPreset } from '$lib/types/task.types';
 import { CibuleDataType, type CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
-import type { SessionScoreDataEntry, SessionScoreMetrics } from '$lib/database/db.types';
+import type { SessionScoreMetrics } from '$lib/database/db.types';
 
 export const addToList = true;
 export const label = 'Cibule';
@@ -30,12 +30,12 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Pismena3]
+					type: [CibuleDataType.Slabiky1]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Pismena4]
+					type: [CibuleDataType.Slabiky2]
 				}
 			}
 		]
@@ -63,12 +63,12 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Pismena3]
+					type: [CibuleDataType.Slabiky1]
 				}
 			},
 			{
 				generate: {
-					type: [CibuleDataType.Pismena4]
+					type: [CibuleDataType.Slabiky2]
 				}
 			}
 		]
