@@ -139,3 +139,61 @@ export interface Page<TContent> {
 	pageable: PageableObject;
 	sort: SortObject;
 }
+
+// User Management Types
+export enum UserStatus {
+	Active = 'ACTIVE',
+	Unactive = 'UNACTIVE',
+	Locked = 'LOCKED',
+	Pending = 'PENDING'
+}
+
+export interface UserBasicDTO {
+	uuid: string;
+	username: string;
+	email: string;
+	firstName: string;
+	lastName: string;
+	userType: UserRole;
+	status: UserStatus;
+}
+
+export interface UserDetailDTO {
+	uuid: string;
+	username: string;
+	email: string;
+	firstName: string;
+	lastName: string;
+	userType: UserRole;
+	status: UserStatus;
+	createdAt: Date;
+	updatedAt: Date;
+	lastLoginAt?: Date;
+	loginAttempts: number;
+	locked: boolean;
+}
+
+export interface UserCreateRequest {
+	username: string;
+	password: string;
+	email: string;
+	firstName: string;
+	lastName: string;
+	userRole?: UserRole;
+}
+
+export interface UserEditRequest {
+	firstName?: string;
+	lastName?: string;
+	email?: string;
+	userRole?: UserRole;
+	status?: UserStatus;
+	newPassword?: string;
+}
+
+export interface UserActionResponse {
+	message: string;
+	uuid: string;
+	newRole?: string;
+	newStatus?: string;
+}
