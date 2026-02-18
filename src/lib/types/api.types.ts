@@ -144,8 +144,7 @@ export interface Page<TContent> {
 export enum UserStatus {
 	Active = 'ACTIVE',
 	Unactive = 'UNACTIVE',
-	Locked = 'LOCKED',
-	Pending = 'PENDING'
+	Locked = 'LOCKED'
 }
 
 export interface UserBasicDTO {
