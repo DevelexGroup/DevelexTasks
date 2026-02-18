@@ -15,6 +15,7 @@
 	import BulkCreateDialog from './components/BulkCreateDialog.svelte';
 	import EditUserDialog from './components/EditUserDialog.svelte';
 	import ChangeRoleDialog from './components/ChangeRoleDialog.svelte';
+	import DeleteUserDialog from './components/DeleteUserDialog.svelte';
 
 	// State
 	let users = $state<UserBasicDTO[]>([]);
@@ -29,6 +30,7 @@
 	let bulkCreateOpen = $state(false);
 	let editUserOpen = $state(false);
 	let changeRoleOpen = $state(false);
+	let deleteUserOpen = $state(false);
 	let selectedUser = $state<UserBasicDTO | null>(null);
 
 	// Filtered users
@@ -99,15 +101,8 @@
 	}
 
 	async function handleDeleteUser(user: UserBasicDTO) {
-		if (!confirm(`Opravdu chcete smazat uživatele ${user.username}?`)) {
-			return;
-		}
-		try {
-			await deleteUser(user.uuid);
-			await loadUsers();
-		} catch (err) {
-			error = err instanceof Error ? err.message : 'Nepodařilo se smazat uživatele';
-		}
+		selectedUser = user;
+		deleteUserOpen = true;
 	}
 
 	function openEditDialog(user: UserBasicDTO) {
@@ -451,6 +446,7 @@
 <BulkCreateDialog bind:open={bulkCreateOpen} onSuccess={loadUsers} />
 <EditUserDialog bind:open={editUserOpen} user={selectedUser} onSuccess={loadUsers} />
 <ChangeRoleDialog bind:open={changeRoleOpen} user={selectedUser} onSuccess={loadUsers} />
+<DeleteUserDialog bind:open={deleteUserOpen} user={selectedUser} onSuccess={loadUsers} />
 
 <style>
 	.table-container {
