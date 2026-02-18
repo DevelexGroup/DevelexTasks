@@ -51,8 +51,8 @@
 		if (!user) return;
 		error = '';
 
-		if (!username || !email || !firstName || !lastName) {
-			error = 'Všechna pole jsou povinná';
+		if (!username || !firstName || !lastName) {
+			error = 'Vyplňte všechna povinná pole';
 			return;
 		}
 
@@ -147,7 +147,7 @@
 			</div>
 
 			<div class="space-y-2">
-				<label for="editEmail" class="text-sm font-medium text-gray-700">E-mail:</label>
+				<label for="editEmail" class="text-sm font-medium text-gray-700">E-mail (volitelné):</label>
 				<input
 					id="editEmail"
 					type="email"

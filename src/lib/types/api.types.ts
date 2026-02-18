@@ -176,7 +176,7 @@ export interface UserDetailDTO {
 export interface UserCreateRequest {
 	username: string;
 	password: string;
-	email: string;
+	email?: string;
 	firstName: string;
 	lastName: string;
 	userRole?: UserRole;

@@ -35,8 +35,8 @@
 	async function handleSubmit() {
 		error = '';
 
-		if (!username || !email || !password || !firstName || !lastName) {
-			error = 'Všechna pole jsou povinná';
+		if (!username || !password || !firstName || !lastName) {
+			error = 'Vyplňte všechna povinná pole';
 			return;
 		}
 
@@ -123,7 +123,7 @@
 			</div>
 
 			<div class="space-y-2">
-				<label for="email" class="text-sm font-medium text-gray-700">E-mail:</label>
+				<label for="email" class="text-sm font-medium text-gray-700">E-mail (volitelné):</label>
 				<input
 					id="email"
 					type="email"
