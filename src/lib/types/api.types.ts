@@ -154,7 +154,7 @@ export interface UserBasicDTO {
 	email: string;
 	firstName: string;
 	lastName: string;
-	userType: UserRole;
+	userRole: UserRole;
 	status: UserStatus;
 }
 
@@ -164,7 +164,7 @@ export interface UserDetailDTO {
 	email: string;
 	firstName: string;
 	lastName: string;
-	userType: UserRole;
+	userRole: UserRole;
 	status: UserStatus;
 	createdAt: Date;
 	updatedAt: Date;

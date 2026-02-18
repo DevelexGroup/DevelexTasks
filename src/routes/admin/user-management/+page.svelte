@@ -61,6 +61,7 @@
 				filterStatus ? filterStatus : undefined,
 				filterRole ? filterRole : undefined
 			);
+			console.log(users);
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se načíst uživatele';
 		} finally {
@@ -202,7 +203,7 @@
 			u.email,
 			u.firstName,
 			u.lastName,
-			u.userType,
+			u.userRole,
 			u.status
 		]);
 
@@ -361,15 +362,19 @@
 								</div>
 							</td>
 							<td class="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-								{user.email}
+								{#if user.email}
+									{user.email}
+								{:else}
+									<span class="text-gray-500 italic">Žádný email</span>
+								{/if}
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<span
 									class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {getRoleColor(
-										user.userType
+										user.userRole
 									)}"
 								>
-									{getRoleLabel(user.userType)}
+									{getRoleLabel(user.userRole)}
 								</span>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">

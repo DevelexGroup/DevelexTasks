@@ -19,7 +19,7 @@
 
 	$effect(() => {
 		if (user && open) {
-			selectedRole = user.userType;
+			selectedRole = user.userRole;
 			error = '';
 		}
 	});
@@ -28,7 +28,7 @@
 		if (!user) return;
 		error = '';
 
-		if (selectedRole === user.userType) {
+		if (selectedRole === user.userRole) {
 			open = false;
 			return;
 		}
@@ -74,7 +74,7 @@
 		<div class="space-y-4 py-4">
 			<div class="space-y-2">
 				<label for="roleSelect" class="text-sm font-medium text-gray-700">Současná role:</label>
-				<p class="text-sm text-gray-600">{user ? getRoleName(user.userType) : '-'}</p>
+				<p class="text-sm text-gray-600">{user ? getRoleName(user.userRole) : '-'}</p>
 			</div>
 
 			<div class="space-y-2">
