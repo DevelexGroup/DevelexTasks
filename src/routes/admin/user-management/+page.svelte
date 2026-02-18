@@ -75,7 +75,6 @@
 		try {
 			switch (user.status) {
 				case UserStatus.Unactive:
-				case UserStatus.Pending:
 					await activateUser(user.uuid);
 					break;
 				case UserStatus.Active:
@@ -123,8 +122,6 @@
 				return 'Neaktivní';
 			case UserStatus.Locked:
 				return 'Zamčený';
-			case UserStatus.Pending:
-				return 'Čeká na schválení';
 			default:
 				return status;
 		}
@@ -138,8 +135,6 @@
 				return 'bg-gray-100 text-gray-800';
 			case UserStatus.Locked:
 				return 'bg-red-100 text-red-800';
-			case UserStatus.Pending:
-				return 'bg-yellow-100 text-yellow-800';
 			default:
 				return 'bg-gray-100 text-gray-800';
 		}
@@ -150,7 +145,6 @@
 			case UserStatus.Active:
 				return 'Deaktivovat';
 			case UserStatus.Unactive:
-			case UserStatus.Pending:
 				return 'Aktivovat';
 			case UserStatus.Locked:
 				return 'Odemknout';
@@ -240,7 +234,6 @@
 			<option value={UserStatus.Active}>Aktivní</option>
 			<option value={UserStatus.Unactive}>Neaktivní</option>
 			<option value={UserStatus.Locked}>Zamčení</option>
-			<option value={UserStatus.Pending}>Čekající</option>
 		</select>
 	</div>
 
@@ -258,17 +251,6 @@
 			<option value={UserRole.Student}>Student</option>
 		</select>
 	</div>
-
-	<div class="flex flex-col">
-		<label for="search" class="mb-1 text-sm font-medium text-gray-700">Hledat:</label>
-		<input
-			id="search"
-			type="text"
-			bind:value={searchQuery}
-			placeholder="Jméno, email..."
-			class="min-w-[200px] rounded-md border border-gray-300 bg-white px-3 py-1.5 text-gray-800"
-		/>
-	</div>
 </section>
 
 <!-- Action buttons -->
@@ -278,12 +260,6 @@
 		onclick={() => (createUserOpen = true)}
 	>
 		+ Nový uživatel
-	</button>
-	<button
-		class="mt-6 rounded-md bg-purple-500 px-3 py-1.5 text-gray-50 hover:bg-purple-600"
-		onclick={() => (bulkCreateOpen = true)}
-	>
-		Hromadné vytvoření
 	</button>
 	<button
 		class="mt-6 rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
