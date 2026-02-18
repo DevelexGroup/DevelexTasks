@@ -44,7 +44,11 @@
 		} catch (err) {
 			if (err instanceof ApiError && err.status === 401) {
 				loginError = 'Neplatné uživatelské jméno nebo heslo.';
-			} else {
+			}
+			else if (err instanceof ApiError && err.status === 403) {
+				loginError = 'Váš účet není aktivní. Kontaktujte administrátora.';
+			}
+			else {
 				loginError = 'Chyba serveru. Zkuste to prosím znovu.';
 			}
 			console.error('Login error:', err);
@@ -94,10 +98,6 @@
 			registerFirstName = '';
 			registerLastName = '';
 			registerEmail = '';
-			// Clear success message after a delay
-			setTimeout(() => {
-				registerSuccess = false;
-			}, 5000);
 		} catch (err) {
 			if (err instanceof ApiError) {
 				registerError = 'Registrace se nezdařila. Zkuste to prosím znovu.';
@@ -133,8 +133,8 @@
 					</Card.Header>
 					<Card.Content>
 						{#if registerSuccess}
-							<p class="mb-4 text-sm text-green-600">
-								Registrace byla úspěšná! Nyní se můžete přihlásit.
+							<p class="mb-4 text-sm text-yellow-600">
+								Registrace byla úspěšná! Vyčkejte na aktivaci účtu administrátorem.
 							</p>
 						{/if}
 						<form
