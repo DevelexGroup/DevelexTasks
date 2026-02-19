@@ -1,6 +1,7 @@
 ﻿import type { RawDataEntry } from '$lib/types/data.types';
 
 export interface CibuleRawDataEntry extends RawDataEntry {
+	type: string;
 	target_letter: string;
 	background_letters: string[];
 	n_targets: number;

@@ -1,5 +1,4 @@
 ﻿export interface RawDataEntry {
-	task_id: number;
-	id: number;
-	type: string;
+	task_id: string;
+	id: string;
 }

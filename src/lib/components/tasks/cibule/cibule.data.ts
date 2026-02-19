@@ -2,8 +2,8 @@
 
 export const cibuleL1RawData: CibuleRawDataEntry[] = [
 	{
-		task_id: 1,
-		id: 1001,
+		task_id: "cibule",
+		id: "CI1001",
 		type: 'pismena0',
 		target_letter: 'x',
 		background_letters: ['r'],
@@ -18,8 +18,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 21, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1002,
+		task_id: "cibule",
+		id: "CI1002",
 		type: 'pismena0',
 		target_letter: 'ž',
 		background_letters: ['j'],
@@ -34,8 +34,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 20, 36]
 	},
 	{
-		task_id: 1,
-		id: 1003,
+		task_id: "cibule",
+		id: "CI1003",
 		type: 'pismena0',
 		target_letter: 'p',
 		background_letters: ['ě'],
@@ -50,8 +50,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 20, 27, 34]
 	},
 	{
-		task_id: 1,
-		id: 1004,
+		task_id: "cibule",
+		id: "CI1004",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['p'],
@@ -66,8 +66,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 7, 18, 31]
 	},
 	{
-		task_id: 1,
-		id: 1005,
+		task_id: "cibule",
+		id: "CI1005",
 		type: 'pismena0',
 		target_letter: 'z',
 		background_letters: ['l'],
@@ -82,8 +82,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 19, 32, 36]
 	},
 	{
-		task_id: 1,
-		id: 1006,
+		task_id: "cibule",
+		id: "CI1006",
 		type: 'pismena0',
 		target_letter: 'p',
 		background_letters: ['s'],
@@ -98,8 +98,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 29, 37]
 	},
 	{
-		task_id: 1,
-		id: 1007,
+		task_id: "cibule",
+		id: "CI1007",
 		type: 'pismena0',
 		target_letter: 'a',
 		background_letters: ['y'],
@@ -114,8 +114,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 14, 30, 36]
 	},
 	{
-		task_id: 1,
-		id: 1008,
+		task_id: "cibule",
+		id: "CI1008",
 		type: 'pismena0',
 		target_letter: 't',
 		background_letters: ['g'],
@@ -130,8 +130,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 20, 28, 34]
 	},
 	{
-		task_id: 1,
-		id: 1009,
+		task_id: "cibule",
+		id: "CI1009",
 		type: 'pismena0',
 		target_letter: 'y',
 		background_letters: ['v'],
@@ -146,8 +146,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 23, 31, 38]
 	},
 	{
-		task_id: 1,
-		id: 1010,
+		task_id: "cibule",
+		id: "CI1010",
 		type: 'pismena0',
 		target_letter: 'h',
 		background_letters: ['q'],
@@ -162,8 +162,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 8, 19, 25, 34]
 	},
 	{
-		task_id: 1,
-		id: 1011,
+		task_id: "cibule",
+		id: "CI1011",
 		type: 'pismena0',
 		target_letter: 'b',
 		background_letters: ['é'],
@@ -178,8 +178,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 23, 28, 37]
 	},
 	{
-		task_id: 1,
-		id: 1012,
+		task_id: "cibule",
+		id: "CI1012",
 		type: 'pismena0',
 		target_letter: 'š',
 		background_letters: ['k'],
@@ -194,8 +194,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 10, 18, 25, 31]
 	},
 	{
-		task_id: 1,
-		id: 1013,
+		task_id: "cibule",
+		id: "CI1013",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['ú'],
@@ -210,8 +210,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 22, 33]
 	},
 	{
-		task_id: 1,
-		id: 1014,
+		task_id: "cibule",
+		id: "CI1014",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['ř'],
@@ -226,8 +226,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 10, 28, 37]
 	},
 	{
-		task_id: 1,
-		id: 1015,
+		task_id: "cibule",
+		id: "CI1015",
 		type: 'pismena0',
 		target_letter: 't',
 		background_letters: ['ů'],
@@ -242,8 +242,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 17, 29, 36]
 	},
 	{
-		task_id: 1,
-		id: 1016,
+		task_id: "cibule",
+		id: "CI1016",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['x'],
@@ -258,8 +258,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 8, 16, 20, 28]
 	},
 	{
-		task_id: 1,
-		id: 1017,
+		task_id: "cibule",
+		id: "CI1017",
 		type: 'pismena0',
 		target_letter: 'f',
 		background_letters: ['g'],
@@ -274,8 +274,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 4, 15, 31]
 	},
 	{
-		task_id: 1,
-		id: 1018,
+		task_id: "cibule",
+		id: "CI1018",
 		type: 'pismena0',
 		target_letter: 'b',
 		background_letters: ['ř'],
@@ -290,8 +290,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 26, 34]
 	},
 	{
-		task_id: 1,
-		id: 1019,
+		task_id: "cibule",
+		id: "CI1019",
 		type: 'pismena0',
 		target_letter: 'x',
 		background_letters: ['c'],
@@ -306,8 +306,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 9, 21, 27, 36]
 	},
 	{
-		task_id: 1,
-		id: 1020,
+		task_id: "cibule",
+		id: "CI1020",
 		type: 'pismena0',
 		target_letter: 'j',
 		background_letters: ['é'],
@@ -322,8 +322,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 23, 29]
 	},
 	{
-		task_id: 1,
-		id: 1021,
+		task_id: "cibule",
+		id: "CI1021",
 		type: 'pismena0',
 		target_letter: 'ů',
 		background_letters: ['h'],
@@ -338,8 +338,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 6, 12, 23, 30]
 	},
 	{
-		task_id: 1,
-		id: 1022,
+		task_id: "cibule",
+		id: "CI1022",
 		type: 'pismena0',
 		target_letter: 'z',
 		background_letters: ['š'],
@@ -354,8 +354,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 18, 35]
 	},
 	{
-		task_id: 1,
-		id: 1023,
+		task_id: "cibule",
+		id: "CI1023",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['k'],
@@ -370,8 +370,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 16]
 	},
 	{
-		task_id: 1,
-		id: 1024,
+		task_id: "cibule",
+		id: "CI1024",
 		type: 'pismena0',
 		target_letter: 'p',
 		background_letters: ['h'],
@@ -386,8 +386,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 17, 21, 33]
 	},
 	{
-		task_id: 1,
-		id: 1025,
+		task_id: "cibule",
+		id: "CI1025",
 		type: 'pismena0',
 		target_letter: 'k',
 		background_letters: ['g'],
@@ -402,8 +402,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 17, 22, 33]
 	},
 	{
-		task_id: 1,
-		id: 1026,
+		task_id: "cibule",
+		id: "CI1026",
 		type: 'pismena0',
 		target_letter: 'z',
 		background_letters: ['l'],
@@ -418,8 +418,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 18, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1027,
+		task_id: "cibule",
+		id: "CI1027",
 		type: 'pismena0',
 		target_letter: 'k',
 		background_letters: ['i'],
@@ -434,8 +434,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 16, 21]
 	},
 	{
-		task_id: 1,
-		id: 1028,
+		task_id: "cibule",
+		id: "CI1028",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['d'],
@@ -450,8 +450,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 29, 35]
 	},
 	{
-		task_id: 1,
-		id: 1029,
+		task_id: "cibule",
+		id: "CI1029",
 		type: 'pismena0',
 		target_letter: 'ú',
 		background_letters: ['k'],
@@ -466,8 +466,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 19, 33]
 	},
 	{
-		task_id: 1,
-		id: 1030,
+		task_id: "cibule",
+		id: "CI1030",
 		type: 'pismena0',
 		target_letter: 't',
 		background_letters: ['s'],
@@ -482,8 +482,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 23, 32]
 	},
 	{
-		task_id: 1,
-		id: 1031,
+		task_id: "cibule",
+		id: "CI1031",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['z'],
@@ -498,8 +498,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 11, 20, 24]
 	},
 	{
-		task_id: 1,
-		id: 1032,
+		task_id: "cibule",
+		id: "CI1032",
 		type: 'pismena0',
 		target_letter: 'e',
 		background_letters: ['h'],
@@ -514,8 +514,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1033,
+		task_id: "cibule",
+		id: "CI1033",
 		type: 'pismena0',
 		target_letter: 'o',
 		background_letters: ['ě'],
@@ -530,8 +530,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 25]
 	},
 	{
-		task_id: 1,
-		id: 1034,
+		task_id: "cibule",
+		id: "CI1034",
 		type: 'pismena0',
 		target_letter: 'š',
 		background_letters: ['v'],
@@ -546,8 +546,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 22, 30]
 	},
 	{
-		task_id: 1,
-		id: 1035,
+		task_id: "cibule",
+		id: "CI1035",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['ů'],
@@ -562,8 +562,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 29, 34, 38]
 	},
 	{
-		task_id: 1,
-		id: 1036,
+		task_id: "cibule",
+		id: "CI1036",
 		type: 'pismena0',
 		target_letter: 'o',
 		background_letters: ['u'],
@@ -578,8 +578,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 10, 15, 20, 34]
 	},
 	{
-		task_id: 1,
-		id: 1037,
+		task_id: "cibule",
+		id: "CI1037",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['p'],
@@ -594,8 +594,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 21, 34]
 	},
 	{
-		task_id: 1,
-		id: 1038,
+		task_id: "cibule",
+		id: "CI1038",
 		type: 'pismena0',
 		target_letter: 'n',
 		background_letters: ['i'],
@@ -610,8 +610,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 14, 22, 33]
 	},
 	{
-		task_id: 1,
-		id: 1039,
+		task_id: "cibule",
+		id: "CI1039",
 		type: 'pismena0',
 		target_letter: 'r',
 		background_letters: ['č'],
@@ -626,8 +626,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 25, 30, 36]
 	},
 	{
-		task_id: 1,
-		id: 1040,
+		task_id: "cibule",
+		id: "CI1040",
 		type: 'pismena0',
 		target_letter: 'é',
 		background_letters: ['r'],
@@ -642,8 +642,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 24, 30]
 	},
 	{
-		task_id: 1,
-		id: 1041,
+		task_id: "cibule",
+		id: "CI1041",
 		type: 'pismena0',
 		target_letter: 'z',
 		background_letters: ['q'],
@@ -658,8 +658,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11, 16, 22, 29]
 	},
 	{
-		task_id: 1,
-		id: 1042,
+		task_id: "cibule",
+		id: "CI1042",
 		type: 'pismena0',
 		target_letter: 'e',
 		background_letters: ['é'],
@@ -674,8 +674,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 14, 21]
 	},
 	{
-		task_id: 1,
-		id: 1043,
+		task_id: "cibule",
+		id: "CI1043",
 		type: 'pismena0',
 		target_letter: 'ž',
 		background_letters: ['á'],
@@ -690,8 +690,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 16, 27, 36]
 	},
 	{
-		task_id: 1,
-		id: 1044,
+		task_id: "cibule",
+		id: "CI1044",
 		type: 'pismena0',
 		target_letter: 'm',
 		background_letters: ['p'],
@@ -706,8 +706,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 15, 22, 26, 33]
 	},
 	{
-		task_id: 1,
-		id: 1045,
+		task_id: "cibule",
+		id: "CI1045",
 		type: 'pismena0',
 		target_letter: 'a',
 		background_letters: ['h'],
@@ -722,8 +722,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 13, 18, 29, 35]
 	},
 	{
-		task_id: 1,
-		id: 1046,
+		task_id: "cibule",
+		id: "CI1046",
 		type: 'pismena0',
 		target_letter: 'ů',
 		background_letters: ['s'],
@@ -738,8 +738,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 14, 25]
 	},
 	{
-		task_id: 1,
-		id: 1047,
+		task_id: "cibule",
+		id: "CI1047",
 		type: 'pismena0',
 		target_letter: 'ů',
 		background_letters: ['b'],
@@ -754,8 +754,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 19, 35]
 	},
 	{
-		task_id: 1,
-		id: 1048,
+		task_id: "cibule",
+		id: "CI1048",
 		type: 'pismena0',
 		target_letter: 'b',
 		background_letters: ['u'],
@@ -770,8 +770,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 28]
 	},
 	{
-		task_id: 1,
-		id: 1049,
+		task_id: "cibule",
+		id: "CI1049",
 		type: 'pismena0',
 		target_letter: 'q',
 		background_letters: ['x'],
@@ -786,8 +786,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 17, 25, 33]
 	},
 	{
-		task_id: 1,
-		id: 1050,
+		task_id: "cibule",
+		id: "CI1050",
 		type: 'pismena0',
 		target_letter: 'g',
 		background_letters: ['ů'],
@@ -802,8 +802,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 18, 31]
 	},
 	{
-		task_id: 1,
-		id: 1051,
+		task_id: "cibule",
+		id: "CI1051",
 		type: 'pismena0',
 		target_letter: 'é',
 		background_letters: ['a'],
@@ -818,8 +818,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 23, 36]
 	},
 	{
-		task_id: 1,
-		id: 1052,
+		task_id: "cibule",
+		id: "CI1052",
 		type: 'pismena0',
 		target_letter: 'u',
 		background_letters: ['ě'],
@@ -834,8 +834,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 25]
 	},
 	{
-		task_id: 1,
-		id: 1053,
+		task_id: "cibule",
+		id: "CI1053",
 		type: 'pismena0',
 		target_letter: 'k',
 		background_letters: ['r'],
@@ -850,8 +850,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 18, 26, 38]
 	},
 	{
-		task_id: 1,
-		id: 1054,
+		task_id: "cibule",
+		id: "CI1054",
 		type: 'pismena0',
 		target_letter: 'j',
 		background_letters: ['b'],
@@ -866,8 +866,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 14, 31]
 	},
 	{
-		task_id: 1,
-		id: 1055,
+		task_id: "cibule",
+		id: "CI1055",
 		type: 'pismena0',
 		target_letter: 'e',
 		background_letters: ['l'],
@@ -882,8 +882,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 27, 36]
 	},
 	{
-		task_id: 1,
-		id: 1056,
+		task_id: "cibule",
+		id: "CI1056",
 		type: 'pismena0',
 		target_letter: 'h',
 		background_letters: ['ú'],
@@ -898,8 +898,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 17, 25, 35]
 	},
 	{
-		task_id: 1,
-		id: 1057,
+		task_id: "cibule",
+		id: "CI1057",
 		type: 'pismena0',
 		target_letter: 'f',
 		background_letters: ['á'],
@@ -914,8 +914,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 8, 35]
 	},
 	{
-		task_id: 1,
-		id: 1058,
+		task_id: "cibule",
+		id: "CI1058",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['ó'],
@@ -930,8 +930,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 14, 26, 34]
 	},
 	{
-		task_id: 1,
-		id: 1059,
+		task_id: "cibule",
+		id: "CI1059",
 		type: 'pismena0',
 		target_letter: 'm',
 		background_letters: ['ř'],
@@ -946,8 +946,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 18, 25]
 	},
 	{
-		task_id: 1,
-		id: 1060,
+		task_id: "cibule",
+		id: "CI1060",
 		type: 'pismena0',
 		target_letter: 'e',
 		background_letters: ['b'],
@@ -962,8 +962,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 15, 35]
 	},
 	{
-		task_id: 1,
-		id: 1061,
+		task_id: "cibule",
+		id: "CI1061",
 		type: 'pismena0',
 		target_letter: 'č',
 		background_letters: ['u'],
@@ -978,8 +978,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 5, 15, 28]
 	},
 	{
-		task_id: 1,
-		id: 1062,
+		task_id: "cibule",
+		id: "CI1062",
 		type: 'pismena0',
 		target_letter: 'l',
 		background_letters: ['g'],
@@ -994,8 +994,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 18, 26, 31]
 	},
 	{
-		task_id: 1,
-		id: 1063,
+		task_id: "cibule",
+		id: "CI1063",
 		type: 'pismena0',
 		target_letter: 'o',
 		background_letters: ['ě'],
@@ -1010,8 +1010,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 17, 21, 30]
 	},
 	{
-		task_id: 1,
-		id: 1064,
+		task_id: "cibule",
+		id: "CI1064",
 		type: 'pismena0',
 		target_letter: 'e',
 		background_letters: ['ů'],
@@ -1026,8 +1026,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 23, 28, 32, 38]
 	},
 	{
-		task_id: 1,
-		id: 1065,
+		task_id: "cibule",
+		id: "CI1065",
 		type: 'pismena0',
 		target_letter: 'g',
 		background_letters: ['k'],
@@ -1042,8 +1042,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 29, 35]
 	},
 	{
-		task_id: 1,
-		id: 1066,
+		task_id: "cibule",
+		id: "CI1066",
 		type: 'pismena0',
 		target_letter: 'o',
 		background_letters: ['n'],
@@ -1058,8 +1058,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 15, 28, 36]
 	},
 	{
-		task_id: 1,
-		id: 1067,
+		task_id: "cibule",
+		id: "CI1067",
 		type: 'pismena0',
 		target_letter: 'j',
 		background_letters: ['ů'],
@@ -1074,8 +1074,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 22, 29, 35, 40]
 	},
 	{
-		task_id: 1,
-		id: 1068,
+		task_id: "cibule",
+		id: "CI1068",
 		type: 'pismena0',
 		target_letter: 'f',
 		background_letters: ['d'],
@@ -1090,8 +1090,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 15, 22, 27]
 	},
 	{
-		task_id: 1,
-		id: 1069,
+		task_id: "cibule",
+		id: "CI1069",
 		type: 'pismena0',
 		target_letter: 'y',
 		background_letters: ['l'],
@@ -1106,8 +1106,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 26, 33, 37]
 	},
 	{
-		task_id: 1,
-		id: 1070,
+		task_id: "cibule",
+		id: "CI1070",
 		type: 'pismena0',
 		target_letter: 'ř',
 		background_letters: ['m'],
@@ -1122,8 +1122,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1071,
+		task_id: "cibule",
+		id: "CI1071",
 		type: 'pismena0',
 		target_letter: 'b',
 		background_letters: ['u'],
@@ -1138,8 +1138,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 18, 22, 29]
 	},
 	{
-		task_id: 1,
-		id: 1072,
+		task_id: "cibule",
+		id: "CI1072",
 		type: 'pismena0',
 		target_letter: 's',
 		background_letters: ['n'],
@@ -1154,8 +1154,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 15, 19, 28, 36]
 	},
 	{
-		task_id: 1,
-		id: 1073,
+		task_id: "cibule",
+		id: "CI1073",
 		type: 'pismena0',
 		target_letter: 'o',
 		background_letters: ['z'],
@@ -1170,8 +1170,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 18, 33, 37]
 	},
 	{
-		task_id: 1,
-		id: 1074,
+		task_id: "cibule",
+		id: "CI1074",
 		type: 'pismena0',
 		target_letter: 'j',
 		background_letters: ['é'],
@@ -1186,8 +1186,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 25, 36]
 	},
 	{
-		task_id: 1,
-		id: 1075,
+		task_id: "cibule",
+		id: "CI1075",
 		type: 'pismena0',
 		target_letter: 'y',
 		background_letters: ['j'],
@@ -1202,8 +1202,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 21, 26, 32]
 	},
 	{
-		task_id: 1,
-		id: 1076,
+		task_id: "cibule",
+		id: "CI1076",
 		type: 'pismena0',
 		target_letter: 'ž',
 		background_letters: ['r'],
@@ -1218,8 +1218,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 10, 19, 28]
 	},
 	{
-		task_id: 1,
-		id: 1077,
+		task_id: "cibule",
+		id: "CI1077",
 		type: 'pismena0',
 		target_letter: 'h',
 		background_letters: ['l'],
@@ -1234,8 +1234,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 16, 24, 30]
 	},
 	{
-		task_id: 1,
-		id: 1078,
+		task_id: "cibule",
+		id: "CI1078",
 		type: 'pismena0',
 		target_letter: 'c',
 		background_letters: ['n'],
@@ -1250,8 +1250,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1079,
+		task_id: "cibule",
+		id: "CI1079",
 		type: 'pismena0',
 		target_letter: 'd',
 		background_letters: ['a'],
@@ -1266,8 +1266,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 5, 19, 35]
 	},
 	{
-		task_id: 1,
-		id: 1080,
+		task_id: "cibule",
+		id: "CI1080",
 		type: 'pismena0',
 		target_letter: 'f',
 		background_letters: ['ů'],
@@ -1282,8 +1282,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 24, 29]
 	},
 	{
-		task_id: 1,
-		id: 1081,
+		task_id: "cibule",
+		id: "CI1081",
 		type: 'pismena0',
 		target_letter: 'v',
 		background_letters: ['k'],
@@ -1298,8 +1298,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 11, 22, 35]
 	},
 	{
-		task_id: 1,
-		id: 1082,
+		task_id: "cibule",
+		id: "CI1082",
 		type: 'pismena0',
 		target_letter: 'r',
 		background_letters: ['y'],
@@ -1314,8 +1314,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 33, 38]
 	},
 	{
-		task_id: 1,
-		id: 1083,
+		task_id: "cibule",
+		id: "CI1083",
 		type: 'pismena0',
 		target_letter: 'm',
 		background_letters: ['š'],
@@ -1330,8 +1330,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 13, 35]
 	},
 	{
-		task_id: 1,
-		id: 1084,
+		task_id: "cibule",
+		id: "CI1084",
 		type: 'pismena0',
 		target_letter: 'ř',
 		background_letters: ['i'],
@@ -1346,8 +1346,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 13, 21]
 	},
 	{
-		task_id: 1,
-		id: 1085,
+		task_id: "cibule",
+		id: "CI1085",
 		type: 'pismena0',
 		target_letter: 'g',
 		background_letters: ['e'],
@@ -1362,8 +1362,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 39]
 	},
 	{
-		task_id: 1,
-		id: 1086,
+		task_id: "cibule",
+		id: "CI1086",
 		type: 'pismena0',
 		target_letter: 'ú',
 		background_letters: ['x'],
@@ -1378,8 +1378,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 16, 34]
 	},
 	{
-		task_id: 1,
-		id: 1087,
+		task_id: "cibule",
+		id: "CI1087",
 		type: 'pismena0',
 		target_letter: 'b',
 		background_letters: ['s'],
@@ -1394,8 +1394,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 13, 20, 29, 38]
 	},
 	{
-		task_id: 1,
-		id: 1088,
+		task_id: "cibule",
+		id: "CI1088",
 		type: 'pismena0',
 		target_letter: 'h',
 		background_letters: ['č'],
@@ -1410,8 +1410,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 31, 36]
 	},
 	{
-		task_id: 1,
-		id: 1089,
+		task_id: "cibule",
+		id: "CI1089",
 		type: 'pismena0',
 		target_letter: 'd',
 		background_letters: ['o'],
@@ -1426,8 +1426,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 11, 20, 26]
 	},
 	{
-		task_id: 1,
-		id: 1090,
+		task_id: "cibule",
+		id: "CI1090",
 		type: 'pismena0',
 		target_letter: 'n',
 		background_letters: ['é'],
@@ -1442,8 +1442,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 18, 22]
 	},
 	{
-		task_id: 1,
-		id: 1091,
+		task_id: "cibule",
+		id: "CI1091",
 		type: 'pismena0',
 		target_letter: 'j',
 		background_letters: ['z'],
@@ -1458,8 +1458,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 7, 17, 26, 32]
 	},
 	{
-		task_id: 1,
-		id: 1092,
+		task_id: "cibule",
+		id: "CI1092",
 		type: 'pismena0',
 		target_letter: 'c',
 		background_letters: ['m'],
@@ -1474,8 +1474,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [24, 30, 37]
 	},
 	{
-		task_id: 1,
-		id: 1093,
+		task_id: "cibule",
+		id: "CI1093",
 		type: 'pismena0',
 		target_letter: 'b',
 		background_letters: ['ž'],
@@ -1490,8 +1490,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 16, 23, 27]
 	},
 	{
-		task_id: 1,
-		id: 1094,
+		task_id: "cibule",
+		id: "CI1094",
 		type: 'pismena0',
 		target_letter: 's',
 		background_letters: ['b'],
@@ -1506,8 +1506,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 23, 37]
 	},
 	{
-		task_id: 1,
-		id: 1095,
+		task_id: "cibule",
+		id: "CI1095",
 		type: 'pismena0',
 		target_letter: 'i',
 		background_letters: ['z'],
@@ -1522,8 +1522,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 14, 32]
 	},
 	{
-		task_id: 1,
-		id: 1096,
+		task_id: "cibule",
+		id: "CI1096",
 		type: 'pismena0',
 		target_letter: 'ě',
 		background_letters: ['ó'],
@@ -1538,8 +1538,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 18, 23, 28]
 	},
 	{
-		task_id: 1,
-		id: 1097,
+		task_id: "cibule",
+		id: "CI1097",
 		type: 'pismena0',
 		target_letter: 'š',
 		background_letters: ['m'],
@@ -1554,8 +1554,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 10, 37]
 	},
 	{
-		task_id: 1,
-		id: 1098,
+		task_id: "cibule",
+		id: "CI1098",
 		type: 'pismena0',
 		target_letter: 'd',
 		background_letters: ['j'],
@@ -1570,8 +1570,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 15, 21, 25, 36]
 	},
 	{
-		task_id: 1,
-		id: 1099,
+		task_id: "cibule",
+		id: "CI1099",
 		type: 'pismena0',
 		target_letter: 'a',
 		background_letters: ['s'],
@@ -1586,8 +1586,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 10, 19, 31, 35]
 	},
 	{
-		task_id: 1,
-		id: 1100,
+		task_id: "cibule",
+		id: "CI1100",
 		type: 'pismena0',
 		target_letter: 'n',
 		background_letters: ['a'],
@@ -1602,8 +1602,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 12, 27, 36]
 	},
 	{
-		task_id: 1,
-		id: 1101,
+		task_id: "cibule",
+		id: "CI1101",
 		type: 'pismena1',
 		target_letter: 'x',
 		background_letters: ['s'],
@@ -1618,8 +1618,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 21, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1102,
+		task_id: "cibule",
+		id: "CI1102",
 		type: 'pismena1',
 		target_letter: 'ž',
 		background_letters: ['ě'],
@@ -1634,8 +1634,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 20, 36]
 	},
 	{
-		task_id: 1,
-		id: 1103,
+		task_id: "cibule",
+		id: "CI1103",
 		type: 'pismena1',
 		target_letter: 'p',
 		background_letters: ['y'],
@@ -1650,8 +1650,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 20, 27, 34]
 	},
 	{
-		task_id: 1,
-		id: 1104,
+		task_id: "cibule",
+		id: "CI1104",
 		type: 'pismena1',
 		target_letter: 'l',
 		background_letters: ['f'],
@@ -1666,8 +1666,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 16, 25, 31]
 	},
 	{
-		task_id: 1,
-		id: 1105,
+		task_id: "cibule",
+		id: "CI1105",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['e'],
@@ -1682,8 +1682,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 17, 21, 37]
 	},
 	{
-		task_id: 1,
-		id: 1106,
+		task_id: "cibule",
+		id: "CI1106",
 		type: 'pismena1',
 		target_letter: 'x',
 		background_letters: ['z'],
@@ -1698,8 +1698,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 9, 16, 27, 37]
 	},
 	{
-		task_id: 1,
-		id: 1107,
+		task_id: "cibule",
+		id: "CI1107",
 		type: 'pismena1',
 		target_letter: 'š',
 		background_letters: ['ž'],
@@ -1714,8 +1714,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 8, 35]
 	},
 	{
-		task_id: 1,
-		id: 1108,
+		task_id: "cibule",
+		id: "CI1108",
 		type: 'pismena1',
 		target_letter: 'o',
 		background_letters: ['c'],
@@ -1730,8 +1730,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 33, 37]
 	},
 	{
-		task_id: 1,
-		id: 1109,
+		task_id: "cibule",
+		id: "CI1109",
 		type: 'pismena1',
 		target_letter: 'e',
 		background_letters: ['o'],
@@ -1746,8 +1746,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 16, 25, 31]
 	},
 	{
-		task_id: 1,
-		id: 1110,
+		task_id: "cibule",
+		id: "CI1110",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['e'],
@@ -1762,8 +1762,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 8, 23, 28]
 	},
 	{
-		task_id: 1,
-		id: 1111,
+		task_id: "cibule",
+		id: "CI1111",
 		type: 'pismena1',
 		target_letter: 's',
 		background_letters: ['x'],
@@ -1778,8 +1778,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 8, 15, 22, 32]
 	},
 	{
-		task_id: 1,
-		id: 1112,
+		task_id: "cibule",
+		id: "CI1112",
 		type: 'pismena1',
 		target_letter: 'x',
 		background_letters: ['z'],
@@ -1794,8 +1794,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 24, 29]
 	},
 	{
-		task_id: 1,
-		id: 1113,
+		task_id: "cibule",
+		id: "CI1113",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['d'],
@@ -1810,8 +1810,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 20, 25, 29]
 	},
 	{
-		task_id: 1,
-		id: 1114,
+		task_id: "cibule",
+		id: "CI1114",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['y'],
@@ -1826,8 +1826,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 22, 30]
 	},
 	{
-		task_id: 1,
-		id: 1115,
+		task_id: "cibule",
+		id: "CI1115",
 		type: 'pismena1',
 		target_letter: 'o',
 		background_letters: ['e'],
@@ -1842,8 +1842,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 24, 28]
 	},
 	{
-		task_id: 1,
-		id: 1116,
+		task_id: "cibule",
+		id: "CI1116",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['p'],
@@ -1858,8 +1858,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 13, 20, 27]
 	},
 	{
-		task_id: 1,
-		id: 1117,
+		task_id: "cibule",
+		id: "CI1117",
 		type: 'pismena1',
 		target_letter: 'u',
 		background_letters: ['v'],
@@ -1874,8 +1874,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 15, 26, 32, 36]
 	},
 	{
-		task_id: 1,
-		id: 1118,
+		task_id: "cibule",
+		id: "CI1118",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['a'],
@@ -1890,8 +1890,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 18, 31]
 	},
 	{
-		task_id: 1,
-		id: 1119,
+		task_id: "cibule",
+		id: "CI1119",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['d'],
@@ -1906,8 +1906,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 17, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1120,
+		task_id: "cibule",
+		id: "CI1120",
 		type: 'pismena1',
 		target_letter: 'u',
 		background_letters: ['a'],
@@ -1922,8 +1922,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 22, 27, 36]
 	},
 	{
-		task_id: 1,
-		id: 1121,
+		task_id: "cibule",
+		id: "CI1121",
 		type: 'pismena1',
 		target_letter: 'ř',
 		background_letters: ['ž'],
@@ -1938,8 +1938,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 9, 19, 32, 37]
 	},
 	{
-		task_id: 1,
-		id: 1122,
+		task_id: "cibule",
+		id: "CI1122",
 		type: 'pismena1',
 		target_letter: 'ó',
 		background_letters: ['ú'],
@@ -1954,8 +1954,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 27, 34]
 	},
 	{
-		task_id: 1,
-		id: 1123,
+		task_id: "cibule",
+		id: "CI1123",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['l'],
@@ -1970,8 +1970,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 13, 29, 33]
 	},
 	{
-		task_id: 1,
-		id: 1124,
+		task_id: "cibule",
+		id: "CI1124",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['h'],
@@ -1986,8 +1986,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 20, 29, 34]
 	},
 	{
-		task_id: 1,
-		id: 1125,
+		task_id: "cibule",
+		id: "CI1125",
 		type: 'pismena1',
 		target_letter: 'e',
 		background_letters: ['c'],
@@ -2002,8 +2002,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 26, 30]
 	},
 	{
-		task_id: 1,
-		id: 1126,
+		task_id: "cibule",
+		id: "CI1126",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['l'],
@@ -2018,8 +2018,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 21, 30, 38]
 	},
 	{
-		task_id: 1,
-		id: 1127,
+		task_id: "cibule",
+		id: "CI1127",
 		type: 'pismena1',
 		target_letter: 'č',
 		background_letters: ['š'],
@@ -2034,8 +2034,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 27, 31]
 	},
 	{
-		task_id: 1,
-		id: 1128,
+		task_id: "cibule",
+		id: "CI1128",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['h'],
@@ -2050,8 +2050,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 27, 33, 38]
 	},
 	{
-		task_id: 1,
-		id: 1129,
+		task_id: "cibule",
+		id: "CI1129",
 		type: 'pismena1',
 		target_letter: 'u',
 		background_letters: ['v'],
@@ -2066,8 +2066,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 17, 24, 36]
 	},
 	{
-		task_id: 1,
-		id: 1130,
+		task_id: "cibule",
+		id: "CI1130",
 		type: 'pismena1',
 		target_letter: 'ř',
 		background_letters: ['ž'],
@@ -2082,8 +2082,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1131,
+		task_id: "cibule",
+		id: "CI1131",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['o'],
@@ -2098,8 +2098,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 16, 22, 27, 37]
 	},
 	{
-		task_id: 1,
-		id: 1132,
+		task_id: "cibule",
+		id: "CI1132",
 		type: 'pismena1',
 		target_letter: 'o',
 		background_letters: ['e'],
@@ -2114,8 +2114,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 13, 24, 38]
 	},
 	{
-		task_id: 1,
-		id: 1133,
+		task_id: "cibule",
+		id: "CI1133",
 		type: 'pismena1',
 		target_letter: 'e',
 		background_letters: ['o'],
@@ -2130,8 +2130,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1134,
+		task_id: "cibule",
+		id: "CI1134",
 		type: 'pismena1',
 		target_letter: 'o',
 		background_letters: ['c'],
@@ -2146,8 +2146,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 25, 36]
 	},
 	{
-		task_id: 1,
-		id: 1135,
+		task_id: "cibule",
+		id: "CI1135",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['y'],
@@ -2162,8 +2162,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 27, 38]
 	},
 	{
-		task_id: 1,
-		id: 1136,
+		task_id: "cibule",
+		id: "CI1136",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['e'],
@@ -2178,8 +2178,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 29, 34]
 	},
 	{
-		task_id: 1,
-		id: 1137,
+		task_id: "cibule",
+		id: "CI1137",
 		type: 'pismena1',
 		target_letter: 'é',
 		background_letters: ['ů'],
@@ -2194,8 +2194,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 15, 20, 34]
 	},
 	{
-		task_id: 1,
-		id: 1138,
+		task_id: "cibule",
+		id: "CI1138",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['a'],
@@ -2210,8 +2210,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 11, 22, 35]
 	},
 	{
-		task_id: 1,
-		id: 1139,
+		task_id: "cibule",
+		id: "CI1139",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['r'],
@@ -2226,8 +2226,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 13, 23, 27, 34]
 	},
 	{
-		task_id: 1,
-		id: 1140,
+		task_id: "cibule",
+		id: "CI1140",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['p'],
@@ -2242,8 +2242,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 16, 26, 30, 38]
 	},
 	{
-		task_id: 1,
-		id: 1141,
+		task_id: "cibule",
+		id: "CI1141",
 		type: 'pismena1',
 		target_letter: 'y',
 		background_letters: ['q'],
@@ -2258,8 +2258,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 18]
 	},
 	{
-		task_id: 1,
-		id: 1142,
+		task_id: "cibule",
+		id: "CI1142",
 		type: 'pismena1',
 		target_letter: 'ů',
 		background_letters: ['á'],
@@ -2274,8 +2274,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 10, 24, 33]
 	},
 	{
-		task_id: 1,
-		id: 1143,
+		task_id: "cibule",
+		id: "CI1143",
 		type: 'pismena1',
 		target_letter: 'ž',
 		background_letters: ['ř'],
@@ -2290,8 +2290,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 11, 16, 24]
 	},
 	{
-		task_id: 1,
-		id: 1144,
+		task_id: "cibule",
+		id: "CI1144",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['l'],
@@ -2306,8 +2306,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 12, 20]
 	},
 	{
-		task_id: 1,
-		id: 1145,
+		task_id: "cibule",
+		id: "CI1145",
 		type: 'pismena1',
 		target_letter: 'r',
 		background_letters: ['m'],
@@ -2322,8 +2322,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 19, 29, 36]
 	},
 	{
-		task_id: 1,
-		id: 1146,
+		task_id: "cibule",
+		id: "CI1146",
 		type: 'pismena1',
 		target_letter: 'i',
 		background_letters: ['l'],
@@ -2338,8 +2338,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 7, 16, 26]
 	},
 	{
-		task_id: 1,
-		id: 1147,
+		task_id: "cibule",
+		id: "CI1147",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['x'],
@@ -2354,8 +2354,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 26, 34]
 	},
 	{
-		task_id: 1,
-		id: 1148,
+		task_id: "cibule",
+		id: "CI1148",
 		type: 'pismena1',
 		target_letter: 'ů',
 		background_letters: ['ú'],
@@ -2370,8 +2370,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 9, 17, 21]
 	},
 	{
-		task_id: 1,
-		id: 1149,
+		task_id: "cibule",
+		id: "CI1149",
 		type: 'pismena1',
 		target_letter: 'o',
 		background_letters: ['c'],
@@ -2386,8 +2386,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 13, 25, 29, 33]
 	},
 	{
-		task_id: 1,
-		id: 1150,
+		task_id: "cibule",
+		id: "CI1150",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['l'],
@@ -2402,8 +2402,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 12, 24]
 	},
 	{
-		task_id: 1,
-		id: 1151,
+		task_id: "cibule",
+		id: "CI1151",
 		type: 'pismena1',
 		target_letter: 'š',
 		background_letters: ['ř'],
@@ -2418,8 +2418,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 21, 34]
 	},
 	{
-		task_id: 1,
-		id: 1152,
+		task_id: "cibule",
+		id: "CI1152",
 		type: 'pismena1',
 		target_letter: 'ó',
 		background_letters: ['ú'],
@@ -2434,8 +2434,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 20, 25, 29, 37]
 	},
 	{
-		task_id: 1,
-		id: 1153,
+		task_id: "cibule",
+		id: "CI1153",
 		type: 'pismena1',
 		target_letter: 'x',
 		background_letters: ['s'],
@@ -2450,8 +2450,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 17, 31, 37]
 	},
 	{
-		task_id: 1,
-		id: 1154,
+		task_id: "cibule",
+		id: "CI1154",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['e'],
@@ -2466,8 +2466,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 10, 21, 31, 38]
 	},
 	{
-		task_id: 1,
-		id: 1155,
+		task_id: "cibule",
+		id: "CI1155",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['h'],
@@ -2482,8 +2482,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 21, 33, 37]
 	},
 	{
-		task_id: 1,
-		id: 1156,
+		task_id: "cibule",
+		id: "CI1156",
 		type: 'pismena1',
 		target_letter: 'u',
 		background_letters: ['v'],
@@ -2498,8 +2498,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 16, 23, 33]
 	},
 	{
-		task_id: 1,
-		id: 1157,
+		task_id: "cibule",
+		id: "CI1157",
 		type: 'pismena1',
 		target_letter: 'j',
 		background_letters: ['l'],
@@ -2514,8 +2514,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 25, 33]
 	},
 	{
-		task_id: 1,
-		id: 1158,
+		task_id: "cibule",
+		id: "CI1158",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['a'],
@@ -2530,8 +2530,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 29, 34]
 	},
 	{
-		task_id: 1,
-		id: 1159,
+		task_id: "cibule",
+		id: "CI1159",
 		type: 'pismena1',
 		target_letter: 'l',
 		background_letters: ['f'],
@@ -2546,8 +2546,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 14, 26, 34]
 	},
 	{
-		task_id: 1,
-		id: 1160,
+		task_id: "cibule",
+		id: "CI1160",
 		type: 'pismena1',
 		target_letter: 'm',
 		background_letters: ['n'],
@@ -2562,8 +2562,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 29]
 	},
 	{
-		task_id: 1,
-		id: 1161,
+		task_id: "cibule",
+		id: "CI1161",
 		type: 'pismena1',
 		target_letter: 'o',
 		background_letters: ['c'],
@@ -2578,8 +2578,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 15, 23]
 	},
 	{
-		task_id: 1,
-		id: 1162,
+		task_id: "cibule",
+		id: "CI1162",
 		type: 'pismena1',
 		target_letter: 'e',
 		background_letters: ['c'],
@@ -2594,8 +2594,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 27, 32]
 	},
 	{
-		task_id: 1,
-		id: 1163,
+		task_id: "cibule",
+		id: "CI1163",
 		type: 'pismena1',
 		target_letter: 'j',
 		background_letters: ['i'],
@@ -2610,8 +2610,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 31, 36]
 	},
 	{
-		task_id: 1,
-		id: 1164,
+		task_id: "cibule",
+		id: "CI1164",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['o'],
@@ -2626,8 +2626,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 18, 23, 27]
 	},
 	{
-		task_id: 1,
-		id: 1165,
+		task_id: "cibule",
+		id: "CI1165",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['u'],
@@ -2642,8 +2642,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 12, 17, 32]
 	},
 	{
-		task_id: 1,
-		id: 1166,
+		task_id: "cibule",
+		id: "CI1166",
 		type: 'pismena1',
 		target_letter: 'l',
 		background_letters: ['j'],
@@ -2658,8 +2658,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 14, 26, 33]
 	},
 	{
-		task_id: 1,
-		id: 1167,
+		task_id: "cibule",
+		id: "CI1167",
 		type: 'pismena1',
 		target_letter: 'q',
 		background_letters: ['y'],
@@ -2674,8 +2674,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 20, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1168,
+		task_id: "cibule",
+		id: "CI1168",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['h'],
@@ -2690,8 +2690,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 10, 15, 22, 33]
 	},
 	{
-		task_id: 1,
-		id: 1169,
+		task_id: "cibule",
+		id: "CI1169",
 		type: 'pismena1',
 		target_letter: 'h',
 		background_letters: ['d'],
@@ -2706,8 +2706,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 12, 18, 36]
 	},
 	{
-		task_id: 1,
-		id: 1170,
+		task_id: "cibule",
+		id: "CI1170",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['b'],
@@ -2722,8 +2722,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 17, 34]
 	},
 	{
-		task_id: 1,
-		id: 1171,
+		task_id: "cibule",
+		id: "CI1171",
 		type: 'pismena1',
 		target_letter: 'u',
 		background_letters: ['v'],
@@ -2738,8 +2738,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 21, 28]
 	},
 	{
-		task_id: 1,
-		id: 1172,
+		task_id: "cibule",
+		id: "CI1172",
 		type: 'pismena1',
 		target_letter: 'f',
 		background_letters: ['l'],
@@ -2754,8 +2754,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 12, 34]
 	},
 	{
-		task_id: 1,
-		id: 1173,
+		task_id: "cibule",
+		id: "CI1173",
 		type: 'pismena1',
 		target_letter: 'e',
 		background_letters: ['o'],
@@ -2770,8 +2770,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 9, 18, 23, 37]
 	},
 	{
-		task_id: 1,
-		id: 1174,
+		task_id: "cibule",
+		id: "CI1174",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['e'],
@@ -2786,8 +2786,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 18, 25, 33]
 	},
 	{
-		task_id: 1,
-		id: 1175,
+		task_id: "cibule",
+		id: "CI1175",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['r'],
@@ -2802,8 +2802,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 20, 26, 34]
 	},
 	{
-		task_id: 1,
-		id: 1176,
+		task_id: "cibule",
+		id: "CI1176",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['d'],
@@ -2818,8 +2818,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 27, 32]
 	},
 	{
-		task_id: 1,
-		id: 1177,
+		task_id: "cibule",
+		id: "CI1177",
 		type: 'pismena1',
 		target_letter: 'ó',
 		background_letters: ['ú'],
@@ -2834,8 +2834,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11, 21, 28, 35]
 	},
 	{
-		task_id: 1,
-		id: 1178,
+		task_id: "cibule",
+		id: "CI1178",
 		type: 'pismena1',
 		target_letter: 'x',
 		background_letters: ['z'],
@@ -2850,8 +2850,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 14, 21, 25, 30]
 	},
 	{
-		task_id: 1,
-		id: 1179,
+		task_id: "cibule",
+		id: "CI1179",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['k'],
@@ -2866,8 +2866,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 15, 19, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1180,
+		task_id: "cibule",
+		id: "CI1180",
 		type: 'pismena1',
 		target_letter: 'a',
 		background_letters: ['v'],
@@ -2882,8 +2882,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 9, 35]
 	},
 	{
-		task_id: 1,
-		id: 1181,
+		task_id: "cibule",
+		id: "CI1181",
 		type: 'pismena1',
 		target_letter: 'o',
 		background_letters: ['e'],
@@ -2898,8 +2898,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 18, 23, 28]
 	},
 	{
-		task_id: 1,
-		id: 1182,
+		task_id: "cibule",
+		id: "CI1182",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['d'],
@@ -2914,8 +2914,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 15, 19, 27]
 	},
 	{
-		task_id: 1,
-		id: 1183,
+		task_id: "cibule",
+		id: "CI1183",
 		type: 'pismena1',
 		target_letter: 'o',
 		background_letters: ['e'],
@@ -2930,8 +2930,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 12, 20, 33]
 	},
 	{
-		task_id: 1,
-		id: 1184,
+		task_id: "cibule",
+		id: "CI1184",
 		type: 'pismena1',
 		target_letter: 'ú',
 		background_letters: ['á'],
@@ -2946,8 +2946,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 4, 12, 24, 32]
 	},
 	{
-		task_id: 1,
-		id: 1185,
+		task_id: "cibule",
+		id: "CI1185",
 		type: 'pismena1',
 		target_letter: 'r',
 		background_letters: ['n'],
@@ -2962,8 +2962,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 7, 12, 21, 32]
 	},
 	{
-		task_id: 1,
-		id: 1186,
+		task_id: "cibule",
+		id: "CI1186",
 		type: 'pismena1',
 		target_letter: 'x',
 		background_letters: ['z'],
@@ -2978,8 +2978,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 15, 33]
 	},
 	{
-		task_id: 1,
-		id: 1187,
+		task_id: "cibule",
+		id: "CI1187",
 		type: 'pismena1',
 		target_letter: 'l',
 		background_letters: ['t'],
@@ -2994,8 +2994,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 8, 18, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1188,
+		task_id: "cibule",
+		id: "CI1188",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['x'],
@@ -3010,8 +3010,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 5, 15, 29, 35]
 	},
 	{
-		task_id: 1,
-		id: 1189,
+		task_id: "cibule",
+		id: "CI1189",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['p'],
@@ -3026,8 +3026,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 22, 36]
 	},
 	{
-		task_id: 1,
-		id: 1190,
+		task_id: "cibule",
+		id: "CI1190",
 		type: 'pismena1',
 		target_letter: 'ř',
 		background_letters: ['ě'],
@@ -3042,8 +3042,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 23]
 	},
 	{
-		task_id: 1,
-		id: 1191,
+		task_id: "cibule",
+		id: "CI1191",
 		type: 'pismena1',
 		target_letter: 'x',
 		background_letters: ['s'],
@@ -3058,8 +3058,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 19, 25]
 	},
 	{
-		task_id: 1,
-		id: 1192,
+		task_id: "cibule",
+		id: "CI1192",
 		type: 'pismena1',
 		target_letter: 'r',
 		background_letters: ['n'],
@@ -3074,8 +3074,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 13, 28]
 	},
 	{
-		task_id: 1,
-		id: 1193,
+		task_id: "cibule",
+		id: "CI1193",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['k'],
@@ -3090,8 +3090,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 17, 26]
 	},
 	{
-		task_id: 1,
-		id: 1194,
+		task_id: "cibule",
+		id: "CI1194",
 		type: 'pismena1',
 		target_letter: 'u',
 		background_letters: ['v'],
@@ -3106,8 +3106,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [24, 31, 37]
 	},
 	{
-		task_id: 1,
-		id: 1195,
+		task_id: "cibule",
+		id: "CI1195",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['h'],
@@ -3122,8 +3122,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 15, 22, 31]
 	},
 	{
-		task_id: 1,
-		id: 1196,
+		task_id: "cibule",
+		id: "CI1196",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['x'],
@@ -3138,8 +3138,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 23, 27, 37]
 	},
 	{
-		task_id: 1,
-		id: 1197,
+		task_id: "cibule",
+		id: "CI1197",
 		type: 'pismena1',
 		target_letter: 'p',
 		background_letters: ['g'],
@@ -3154,8 +3154,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 13, 25]
 	},
 	{
-		task_id: 1,
-		id: 1198,
+		task_id: "cibule",
+		id: "CI1198",
 		type: 'pismena1',
 		target_letter: 'é',
 		background_letters: ['ú'],
@@ -3170,8 +3170,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 20, 34]
 	},
 	{
-		task_id: 1,
-		id: 1199,
+		task_id: "cibule",
+		id: "CI1199",
 		type: 'pismena1',
 		target_letter: 'q',
 		background_letters: ['p'],
@@ -3186,8 +3186,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 19, 28, 32, 38]
 	},
 	{
-		task_id: 1,
-		id: 1200,
+		task_id: "cibule",
+		id: "CI1200",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['r'],
@@ -3202,8 +3202,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 17, 24, 28]
 	},
 	{
-		task_id: 1,
-		id: 1201,
+		task_id: "cibule",
+		id: "CI1201",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['ť'],
@@ -3218,8 +3218,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 21, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1202,
+		task_id: "cibule",
+		id: "CI1202",
 		type: 'pismena1',
 		target_letter: 'ď',
 		background_letters: ['d'],
@@ -3234,8 +3234,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 20, 36]
 	},
 	{
-		task_id: 1,
-		id: 1203,
+		task_id: "cibule",
+		id: "CI1203",
 		type: 'pismena1',
 		target_letter: 'a',
 		background_letters: ['á'],
@@ -3250,8 +3250,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 20, 27, 34]
 	},
 	{
-		task_id: 1,
-		id: 1204,
+		task_id: "cibule",
+		id: "CI1204",
 		type: 'pismena1',
 		target_letter: 'm',
 		background_letters: ['n'],
@@ -3266,8 +3266,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 16, 25, 31]
 	},
 	{
-		task_id: 1,
-		id: 1205,
+		task_id: "cibule",
+		id: "CI1205",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['d'],
@@ -3282,8 +3282,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 17, 21, 37]
 	},
 	{
-		task_id: 1,
-		id: 1206,
+		task_id: "cibule",
+		id: "CI1206",
 		type: 'pismena1',
 		target_letter: 'ž',
 		background_letters: ['z'],
@@ -3298,8 +3298,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 8, 15, 28, 38]
 	},
 	{
-		task_id: 1,
-		id: 1207,
+		task_id: "cibule",
+		id: "CI1207",
 		type: 'pismena1',
 		target_letter: 'ď',
 		background_letters: ['d'],
@@ -3314,8 +3314,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 10, 37]
 	},
 	{
-		task_id: 1,
-		id: 1208,
+		task_id: "cibule",
+		id: "CI1208",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['t'],
@@ -3330,8 +3330,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 33, 37]
 	},
 	{
-		task_id: 1,
-		id: 1209,
+		task_id: "cibule",
+		id: "CI1209",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['d'],
@@ -3346,8 +3346,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 16, 25, 31]
 	},
 	{
-		task_id: 1,
-		id: 1210,
+		task_id: "cibule",
+		id: "CI1210",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['d'],
@@ -3362,8 +3362,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 8, 23, 28]
 	},
 	{
-		task_id: 1,
-		id: 1211,
+		task_id: "cibule",
+		id: "CI1211",
 		type: 'pismena1',
 		target_letter: 'ž',
 		background_letters: ['z'],
@@ -3378,8 +3378,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 15, 31]
 	},
 	{
-		task_id: 1,
-		id: 1212,
+		task_id: "cibule",
+		id: "CI1212",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['t'],
@@ -3394,8 +3394,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 24, 29]
 	},
 	{
-		task_id: 1,
-		id: 1213,
+		task_id: "cibule",
+		id: "CI1213",
 		type: 'pismena1',
 		target_letter: 's',
 		background_letters: ['z'],
@@ -3410,8 +3410,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 20, 25, 29]
 	},
 	{
-		task_id: 1,
-		id: 1214,
+		task_id: "cibule",
+		id: "CI1214",
 		type: 'pismena1',
 		target_letter: 'á',
 		background_letters: ['a'],
@@ -3426,8 +3426,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 22, 30]
 	},
 	{
-		task_id: 1,
-		id: 1215,
+		task_id: "cibule",
+		id: "CI1215",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['t'],
@@ -3442,8 +3442,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 24, 28]
 	},
 	{
-		task_id: 1,
-		id: 1216,
+		task_id: "cibule",
+		id: "CI1216",
 		type: 'pismena1',
 		target_letter: 'á',
 		background_letters: ['a'],
@@ -3458,8 +3458,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 13, 20, 27]
 	},
 	{
-		task_id: 1,
-		id: 1217,
+		task_id: "cibule",
+		id: "CI1217",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['f'],
@@ -3474,8 +3474,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 17, 28, 34]
 	},
 	{
-		task_id: 1,
-		id: 1218,
+		task_id: "cibule",
+		id: "CI1218",
 		type: 'pismena1',
 		target_letter: 's',
 		background_letters: ['c'],
@@ -3490,8 +3490,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 10, 17, 22, 30]
 	},
 	{
-		task_id: 1,
-		id: 1219,
+		task_id: "cibule",
+		id: "CI1219",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['d'],
@@ -3506,8 +3506,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 17, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1220,
+		task_id: "cibule",
+		id: "CI1220",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -3522,8 +3522,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 22, 27, 36]
 	},
 	{
-		task_id: 1,
-		id: 1221,
+		task_id: "cibule",
+		id: "CI1221",
 		type: 'pismena1',
 		target_letter: 'ď',
 		background_letters: ['d'],
@@ -3538,8 +3538,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 9, 19, 32, 37]
 	},
 	{
-		task_id: 1,
-		id: 1222,
+		task_id: "cibule",
+		id: "CI1222",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['ň'],
@@ -3554,8 +3554,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 27, 34]
 	},
 	{
-		task_id: 1,
-		id: 1223,
+		task_id: "cibule",
+		id: "CI1223",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['ž'],
@@ -3570,8 +3570,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 13, 19, 26]
 	},
 	{
-		task_id: 1,
-		id: 1224,
+		task_id: "cibule",
+		id: "CI1224",
 		type: 'pismena1',
 		target_letter: 'š',
 		background_letters: ['s'],
@@ -3586,8 +3586,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 9, 18, 25]
 	},
 	{
-		task_id: 1,
-		id: 1225,
+		task_id: "cibule",
+		id: "CI1225",
 		type: 'pismena1',
 		target_letter: 'b',
 		background_letters: ['p'],
@@ -3602,8 +3602,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 17, 21, 33]
 	},
 	{
-		task_id: 1,
-		id: 1226,
+		task_id: "cibule",
+		id: "CI1226",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['s'],
@@ -3618,8 +3618,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 17, 22, 33]
 	},
 	{
-		task_id: 1,
-		id: 1227,
+		task_id: "cibule",
+		id: "CI1227",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -3634,8 +3634,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 18, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1228,
+		task_id: "cibule",
+		id: "CI1228",
 		type: 'pismena1',
 		target_letter: 'c',
 		background_letters: ['z'],
@@ -3650,8 +3650,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 16, 21]
 	},
 	{
-		task_id: 1,
-		id: 1229,
+		task_id: "cibule",
+		id: "CI1229",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['k'],
@@ -3666,8 +3666,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 32, 36]
 	},
 	{
-		task_id: 1,
-		id: 1230,
+		task_id: "cibule",
+		id: "CI1230",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['ň'],
@@ -3682,8 +3682,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 19, 33]
 	},
 	{
-		task_id: 1,
-		id: 1231,
+		task_id: "cibule",
+		id: "CI1231",
 		type: 'pismena1',
 		target_letter: 'm',
 		background_letters: ['n'],
@@ -3698,8 +3698,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 23, 32]
 	},
 	{
-		task_id: 1,
-		id: 1232,
+		task_id: "cibule",
+		id: "CI1232",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['k'],
@@ -3714,8 +3714,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 15, 23, 36]
 	},
 	{
-		task_id: 1,
-		id: 1233,
+		task_id: "cibule",
+		id: "CI1233",
 		type: 'pismena1',
 		target_letter: 'p',
 		background_letters: ['b'],
@@ -3730,8 +3730,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 26]
 	},
 	{
-		task_id: 1,
-		id: 1234,
+		task_id: "cibule",
+		id: "CI1234",
 		type: 'pismena1',
 		target_letter: 'ď',
 		background_letters: ['d'],
@@ -3746,8 +3746,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 23]
 	},
 	{
-		task_id: 1,
-		id: 1235,
+		task_id: "cibule",
+		id: "CI1235",
 		type: 'pismena1',
 		target_letter: 'š',
 		background_letters: ['s'],
@@ -3762,8 +3762,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 23, 27]
 	},
 	{
-		task_id: 1,
-		id: 1236,
+		task_id: "cibule",
+		id: "CI1236",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -3778,8 +3778,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 22, 27]
 	},
 	{
-		task_id: 1,
-		id: 1237,
+		task_id: "cibule",
+		id: "CI1237",
 		type: 'pismena1',
 		target_letter: 'm',
 		background_letters: ['n'],
@@ -3794,8 +3794,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 22, 26, 37]
 	},
 	{
-		task_id: 1,
-		id: 1238,
+		task_id: "cibule",
+		id: "CI1238",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['t'],
@@ -3810,8 +3810,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 19, 23]
 	},
 	{
-		task_id: 1,
-		id: 1239,
+		task_id: "cibule",
+		id: "CI1239",
 		type: 'pismena1',
 		target_letter: 'm',
 		background_letters: ['n'],
@@ -3826,8 +3826,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 19, 26, 30, 36]
 	},
 	{
-		task_id: 1,
-		id: 1240,
+		task_id: "cibule",
+		id: "CI1240",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['k'],
@@ -3842,8 +3842,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 27, 35]
 	},
 	{
-		task_id: 1,
-		id: 1241,
+		task_id: "cibule",
+		id: "CI1241",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['f'],
@@ -3858,8 +3858,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 16, 29]
 	},
 	{
-		task_id: 1,
-		id: 1242,
+		task_id: "cibule",
+		id: "CI1242",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['s'],
@@ -3874,8 +3874,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 13, 21, 26, 32]
 	},
 	{
-		task_id: 1,
-		id: 1243,
+		task_id: "cibule",
+		id: "CI1243",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['m'],
@@ -3890,8 +3890,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 13, 18, 22, 28]
 	},
 	{
-		task_id: 1,
-		id: 1244,
+		task_id: "cibule",
+		id: "CI1244",
 		type: 'pismena1',
 		target_letter: 'á',
 		background_letters: ['a'],
@@ -3906,8 +3906,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 20, 28, 35]
 	},
 	{
-		task_id: 1,
-		id: 1245,
+		task_id: "cibule",
+		id: "CI1245",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['t'],
@@ -3922,8 +3922,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1246,
+		task_id: "cibule",
+		id: "CI1246",
 		type: 'pismena1',
 		target_letter: 'f',
 		background_letters: ['v'],
@@ -3938,8 +3938,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 20, 38]
 	},
 	{
-		task_id: 1,
-		id: 1247,
+		task_id: "cibule",
+		id: "CI1247",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['d'],
@@ -3954,8 +3954,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 18, 28, 39]
 	},
 	{
-		task_id: 1,
-		id: 1248,
+		task_id: "cibule",
+		id: "CI1248",
 		type: 'pismena1',
 		target_letter: 'ž',
 		background_letters: ['z'],
@@ -3970,8 +3970,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 21, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1249,
+		task_id: "cibule",
+		id: "CI1249",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['ň'],
@@ -3986,8 +3986,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 10, 23]
 	},
 	{
-		task_id: 1,
-		id: 1250,
+		task_id: "cibule",
+		id: "CI1250",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['s'],
@@ -4002,8 +4002,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 22, 27, 37]
 	},
 	{
-		task_id: 1,
-		id: 1251,
+		task_id: "cibule",
+		id: "CI1251",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['ž'],
@@ -4018,8 +4018,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 12, 23, 34]
 	},
 	{
-		task_id: 1,
-		id: 1252,
+		task_id: "cibule",
+		id: "CI1252",
 		type: 'pismena1',
 		target_letter: 'ď',
 		background_letters: ['d'],
@@ -4034,8 +4034,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 21, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1253,
+		task_id: "cibule",
+		id: "CI1253",
 		type: 'pismena1',
 		target_letter: 'f',
 		background_letters: ['v'],
@@ -4050,8 +4050,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 23, 29, 33]
 	},
 	{
-		task_id: 1,
-		id: 1254,
+		task_id: "cibule",
+		id: "CI1254",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['ž'],
@@ -4066,8 +4066,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 12, 17, 23, 35]
 	},
 	{
-		task_id: 1,
-		id: 1255,
+		task_id: "cibule",
+		id: "CI1255",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['c'],
@@ -4082,8 +4082,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 10, 25]
 	},
 	{
-		task_id: 1,
-		id: 1256,
+		task_id: "cibule",
+		id: "CI1256",
 		type: 'pismena1',
 		target_letter: 'a',
 		background_letters: ['á'],
@@ -4098,8 +4098,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 20, 31, 35]
 	},
 	{
-		task_id: 1,
-		id: 1257,
+		task_id: "cibule",
+		id: "CI1257",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['f'],
@@ -4114,8 +4114,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 16, 23, 33]
 	},
 	{
-		task_id: 1,
-		id: 1258,
+		task_id: "cibule",
+		id: "CI1258",
 		type: 'pismena1',
 		target_letter: 'k',
 		background_letters: ['g'],
@@ -4130,8 +4130,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 25, 33]
 	},
 	{
-		task_id: 1,
-		id: 1259,
+		task_id: "cibule",
+		id: "CI1259",
 		type: 'pismena1',
 		target_letter: 'f',
 		background_letters: ['v'],
@@ -4146,8 +4146,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 29, 34]
 	},
 	{
-		task_id: 1,
-		id: 1260,
+		task_id: "cibule",
+		id: "CI1260",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['m'],
@@ -4162,8 +4162,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 11, 21, 26]
 	},
 	{
-		task_id: 1,
-		id: 1261,
+		task_id: "cibule",
+		id: "CI1261",
 		type: 'pismena1',
 		target_letter: 'a',
 		background_letters: ['á'],
@@ -4178,8 +4178,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 26, 32]
 	},
 	{
-		task_id: 1,
-		id: 1262,
+		task_id: "cibule",
+		id: "CI1262",
 		type: 'pismena1',
 		target_letter: 'š',
 		background_letters: ['s'],
@@ -4194,8 +4194,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 6, 16, 24]
 	},
 	{
-		task_id: 1,
-		id: 1263,
+		task_id: "cibule",
+		id: "CI1263",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['f'],
@@ -4210,8 +4210,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 27, 32]
 	},
 	{
-		task_id: 1,
-		id: 1264,
+		task_id: "cibule",
+		id: "CI1264",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['k'],
@@ -4226,8 +4226,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 10, 31, 36]
 	},
 	{
-		task_id: 1,
-		id: 1265,
+		task_id: "cibule",
+		id: "CI1265",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['ň'],
@@ -4242,8 +4242,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 25, 32]
 	},
 	{
-		task_id: 1,
-		id: 1266,
+		task_id: "cibule",
+		id: "CI1266",
 		type: 'pismena1',
 		target_letter: 'z',
 		background_letters: ['ž'],
@@ -4258,8 +4258,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 12, 17, 25, 34]
 	},
 	{
-		task_id: 1,
-		id: 1267,
+		task_id: "cibule",
+		id: "CI1267",
 		type: 'pismena1',
 		target_letter: 'k',
 		background_letters: ['g'],
@@ -4274,8 +4274,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 9, 13, 19, 38]
 	},
 	{
-		task_id: 1,
-		id: 1268,
+		task_id: "cibule",
+		id: "CI1268",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -4290,8 +4290,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 10, 17]
 	},
 	{
-		task_id: 1,
-		id: 1269,
+		task_id: "cibule",
+		id: "CI1269",
 		type: 'pismena1',
 		target_letter: 'á',
 		background_letters: ['a'],
@@ -4306,8 +4306,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 20, 34]
 	},
 	{
-		task_id: 1,
-		id: 1270,
+		task_id: "cibule",
+		id: "CI1270",
 		type: 'pismena1',
 		target_letter: 'm',
 		background_letters: ['n'],
@@ -4322,8 +4322,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 14, 24, 28, 33]
 	},
 	{
-		task_id: 1,
-		id: 1271,
+		task_id: "cibule",
+		id: "CI1271",
 		type: 'pismena1',
 		target_letter: 'f',
 		background_letters: ['v'],
@@ -4338,8 +4338,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 15, 19, 23, 37]
 	},
 	{
-		task_id: 1,
-		id: 1272,
+		task_id: "cibule",
+		id: "CI1272",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['t'],
@@ -4354,8 +4354,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 9, 16, 38]
 	},
 	{
-		task_id: 1,
-		id: 1273,
+		task_id: "cibule",
+		id: "CI1273",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['f'],
@@ -4370,8 +4370,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 20, 30]
 	},
 	{
-		task_id: 1,
-		id: 1274,
+		task_id: "cibule",
+		id: "CI1274",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -4386,8 +4386,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 28, 35]
 	},
 	{
-		task_id: 1,
-		id: 1275,
+		task_id: "cibule",
+		id: "CI1275",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['k'],
@@ -4402,8 +4402,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 16, 29]
 	},
 	{
-		task_id: 1,
-		id: 1276,
+		task_id: "cibule",
+		id: "CI1276",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['f'],
@@ -4418,8 +4418,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 16, 23, 32]
 	},
 	{
-		task_id: 1,
-		id: 1277,
+		task_id: "cibule",
+		id: "CI1277",
 		type: 'pismena1',
 		target_letter: 'a',
 		background_letters: ['á'],
@@ -4434,8 +4434,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 15, 29, 33]
 	},
 	{
-		task_id: 1,
-		id: 1278,
+		task_id: "cibule",
+		id: "CI1278",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['k'],
@@ -4450,8 +4450,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 22, 29, 34]
 	},
 	{
-		task_id: 1,
-		id: 1279,
+		task_id: "cibule",
+		id: "CI1279",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['m'],
@@ -4466,8 +4466,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 8, 19]
 	},
 	{
-		task_id: 1,
-		id: 1280,
+		task_id: "cibule",
+		id: "CI1280",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -4482,8 +4482,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 31, 36]
 	},
 	{
-		task_id: 1,
-		id: 1281,
+		task_id: "cibule",
+		id: "CI1281",
 		type: 'pismena1',
 		target_letter: 'ž',
 		background_letters: ['z'],
@@ -4498,8 +4498,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 17, 22, 36]
 	},
 	{
-		task_id: 1,
-		id: 1282,
+		task_id: "cibule",
+		id: "CI1282",
 		type: 'pismena1',
 		target_letter: 'ď',
 		background_letters: ['d'],
@@ -4514,8 +4514,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 24, 28]
 	},
 	{
-		task_id: 1,
-		id: 1283,
+		task_id: "cibule",
+		id: "CI1283",
 		type: 'pismena1',
 		target_letter: 'n',
 		background_letters: ['ň'],
@@ -4530,8 +4530,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 14, 20, 25]
 	},
 	{
-		task_id: 1,
-		id: 1284,
+		task_id: "cibule",
+		id: "CI1284",
 		type: 'pismena1',
 		target_letter: 'p',
 		background_letters: ['b'],
@@ -4546,8 +4546,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 8, 15, 19, 27]
 	},
 	{
-		task_id: 1,
-		id: 1285,
+		task_id: "cibule",
+		id: "CI1285",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -4562,8 +4562,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 19, 27]
 	},
 	{
-		task_id: 1,
-		id: 1286,
+		task_id: "cibule",
+		id: "CI1286",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['ď'],
@@ -4578,8 +4578,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 15, 19, 29, 33]
 	},
 	{
-		task_id: 1,
-		id: 1287,
+		task_id: "cibule",
+		id: "CI1287",
 		type: 'pismena1',
 		target_letter: 'á',
 		background_letters: ['a'],
@@ -4594,8 +4594,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1288,
+		task_id: "cibule",
+		id: "CI1288",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['t'],
@@ -4610,8 +4610,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 17, 30]
 	},
 	{
-		task_id: 1,
-		id: 1289,
+		task_id: "cibule",
+		id: "CI1289",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['f'],
@@ -4626,8 +4626,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 15, 19, 23, 29]
 	},
 	{
-		task_id: 1,
-		id: 1290,
+		task_id: "cibule",
+		id: "CI1290",
 		type: 'pismena1',
 		target_letter: 'v',
 		background_letters: ['f'],
@@ -4642,8 +4642,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 25, 31]
 	},
 	{
-		task_id: 1,
-		id: 1291,
+		task_id: "cibule",
+		id: "CI1291",
 		type: 'pismena1',
 		target_letter: 'ň',
 		background_letters: ['n'],
@@ -4658,8 +4658,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 35]
 	},
 	{
-		task_id: 1,
-		id: 1292,
+		task_id: "cibule",
+		id: "CI1292",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -4674,8 +4674,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 10, 18, 25, 36]
 	},
 	{
-		task_id: 1,
-		id: 1293,
+		task_id: "cibule",
+		id: "CI1293",
 		type: 'pismena1',
 		target_letter: 'ď',
 		background_letters: ['d'],
@@ -4690,8 +4690,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 16, 22, 32, 36]
 	},
 	{
-		task_id: 1,
-		id: 1294,
+		task_id: "cibule",
+		id: "CI1294",
 		type: 'pismena1',
 		target_letter: 'ť',
 		background_letters: ['t'],
@@ -4706,8 +4706,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 23, 30]
 	},
 	{
-		task_id: 1,
-		id: 1295,
+		task_id: "cibule",
+		id: "CI1295",
 		type: 'pismena1',
 		target_letter: 'ž',
 		background_letters: ['z'],
@@ -4722,8 +4722,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 26, 30, 35]
 	},
 	{
-		task_id: 1,
-		id: 1296,
+		task_id: "cibule",
+		id: "CI1296",
 		type: 'pismena1',
 		target_letter: 'd',
 		background_letters: ['ď'],
@@ -4738,8 +4738,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 21, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1297,
+		task_id: "cibule",
+		id: "CI1297",
 		type: 'pismena1',
 		target_letter: 't',
 		background_letters: ['ť'],
@@ -4754,8 +4754,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 22, 29, 35]
 	},
 	{
-		task_id: 1,
-		id: 1298,
+		task_id: "cibule",
+		id: "CI1298",
 		type: 'pismena1',
 		target_letter: 'p',
 		background_letters: ['b'],
@@ -4770,8 +4770,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 9, 13, 24, 28]
 	},
 	{
-		task_id: 1,
-		id: 1299,
+		task_id: "cibule",
+		id: "CI1299",
 		type: 'pismena1',
 		target_letter: 's',
 		background_letters: ['z'],
@@ -4786,8 +4786,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11, 27, 38]
 	},
 	{
-		task_id: 1,
-		id: 1300,
+		task_id: "cibule",
+		id: "CI1300",
 		type: 'pismena1',
 		target_letter: 'g',
 		background_letters: ['k'],
@@ -4802,8 +4802,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 15, 27, 31]
 	},
 	{
-		task_id: 1,
-		id: 1301,
+		task_id: "cibule",
+		id: "CI1301",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['r', 'a', 'k', 'l'],
@@ -4818,8 +4818,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 19, 25, 33]
 	},
 	{
-		task_id: 1,
-		id: 1302,
+		task_id: "cibule",
+		id: "CI1302",
 		type: 'pismena2',
 		target_letter: 'ž',
 		background_letters: ['j', 'p', 'q', 'u'],
@@ -4834,8 +4834,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 14, 21, 37]
 	},
 	{
-		task_id: 1,
-		id: 1303,
+		task_id: "cibule",
+		id: "CI1303",
 		type: 'pismena2',
 		target_letter: 'p',
 		background_letters: ['ě', 'i', 'm', 'ů'],
@@ -4850,8 +4850,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 16, 22, 30, 38]
 	},
 	{
-		task_id: 1,
-		id: 1304,
+		task_id: "cibule",
+		id: "CI1304",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['p', 'ů', 'h', 'd'],
@@ -4866,8 +4866,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 15, 24, 30]
 	},
 	{
-		task_id: 1,
-		id: 1305,
+		task_id: "cibule",
+		id: "CI1305",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['f', 'n', 'ř', 'ů'],
@@ -4882,8 +4882,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 31, 37]
 	},
 	{
-		task_id: 1,
-		id: 1306,
+		task_id: "cibule",
+		id: "CI1306",
 		type: 'pismena2',
 		target_letter: 'k',
 		background_letters: ['o', 'y', 's', 'q'],
@@ -4898,8 +4898,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 27, 35]
 	},
 	{
-		task_id: 1,
-		id: 1307,
+		task_id: "cibule",
+		id: "CI1307",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['y', 'p', 'ř', 'm'],
@@ -4914,8 +4914,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 17, 24, 33]
 	},
 	{
-		task_id: 1,
-		id: 1308,
+		task_id: "cibule",
+		id: "CI1308",
 		type: 'pismena2',
 		target_letter: 'ů',
 		background_letters: ['k', 'r', 'h', 'l'],
@@ -4930,8 +4930,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 23, 32]
 	},
 	{
-		task_id: 1,
-		id: 1309,
+		task_id: "cibule",
+		id: "CI1309",
 		type: 'pismena2',
 		target_letter: 'č',
 		background_letters: ['m', 'y', 'p', 'g'],
@@ -4946,8 +4946,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 20, 33]
 	},
 	{
-		task_id: 1,
-		id: 1310,
+		task_id: "cibule",
+		id: "CI1310",
 		type: 'pismena2',
 		target_letter: 's',
 		background_letters: ['e', 'ž', 'k', 'š'],
@@ -4962,8 +4962,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 11, 18, 24, 29]
 	},
 	{
-		task_id: 1,
-		id: 1311,
+		task_id: "cibule",
+		id: "CI1311",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['s', 'ú', 'a', 'ó'],
@@ -4978,8 +4978,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 18, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1312,
+		task_id: "cibule",
+		id: "CI1312",
 		type: 'pismena2',
 		target_letter: 'i',
 		background_letters: ['á', 'ů', 'p', 'c'],
@@ -4994,8 +4994,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 8, 14, 23, 31]
 	},
 	{
-		task_id: 1,
-		id: 1313,
+		task_id: "cibule",
+		id: "CI1313",
 		type: 'pismena2',
 		target_letter: 'c',
 		background_letters: ['l', 'y', 'ě', 'q'],
@@ -5010,8 +5010,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 26, 31]
 	},
 	{
-		task_id: 1,
-		id: 1314,
+		task_id: "cibule",
+		id: "CI1314",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['b', 'ř', 'e', 'š'],
@@ -5026,8 +5026,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 18, 31]
 	},
 	{
-		task_id: 1,
-		id: 1315,
+		task_id: "cibule",
+		id: "CI1315",
 		type: 'pismena2',
 		target_letter: 'ř',
 		background_letters: ['n', 'l', 'p', 'x'],
@@ -5042,8 +5042,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 20, 28, 32]
 	},
 	{
-		task_id: 1,
-		id: 1316,
+		task_id: "cibule",
+		id: "CI1316",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['č', 'q', 'v', 'á'],
@@ -5058,8 +5058,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 36]
 	},
 	{
-		task_id: 1,
-		id: 1317,
+		task_id: "cibule",
+		id: "CI1317",
 		type: 'pismena2',
 		target_letter: 'v',
 		background_letters: ['j', 'd', 'q', 'b'],
@@ -5074,8 +5074,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 17]
 	},
 	{
-		task_id: 1,
-		id: 1318,
+		task_id: "cibule",
+		id: "CI1318",
 		type: 'pismena2',
 		target_letter: 'e',
 		background_letters: ['x', 'á', 'k', 'l'],
@@ -5090,8 +5090,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 17, 23, 33, 37]
 	},
 	{
-		task_id: 1,
-		id: 1319,
+		task_id: "cibule",
+		id: "CI1319",
 		type: 'pismena2',
 		target_letter: 'b',
 		background_letters: ['j', 'o', 'z', 'ě'],
@@ -5106,8 +5106,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 11, 20, 28]
 	},
 	{
-		task_id: 1,
-		id: 1320,
+		task_id: "cibule",
+		id: "CI1320",
 		type: 'pismena2',
 		target_letter: 'c',
 		background_letters: ['č', 't', 'ó', 'h'],
@@ -5122,8 +5122,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 30, 36]
 	},
 	{
-		task_id: 1,
-		id: 1321,
+		task_id: "cibule",
+		id: "CI1321",
 		type: 'pismena2',
 		target_letter: 'r',
 		background_letters: ['ú', 'p', 's', 'd'],
@@ -5138,8 +5138,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 11, 15, 36]
 	},
 	{
-		task_id: 1,
-		id: 1322,
+		task_id: "cibule",
+		id: "CI1322",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['ě', 'y', 'c', 'ů'],
@@ -5154,8 +5154,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 14, 28, 33]
 	},
 	{
-		task_id: 1,
-		id: 1323,
+		task_id: "cibule",
+		id: "CI1323",
 		type: 'pismena2',
 		target_letter: 'b',
 		background_letters: ['y', 'l', 'r', 'q'],
@@ -5170,8 +5170,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 11, 20]
 	},
 	{
-		task_id: 1,
-		id: 1324,
+		task_id: "cibule",
+		id: "CI1324",
 		type: 'pismena2',
 		target_letter: 'e',
 		background_letters: ['ř', 'q', 'y', 'x'],
@@ -5186,8 +5186,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 20, 30, 35]
 	},
 	{
-		task_id: 1,
-		id: 1325,
+		task_id: "cibule",
+		id: "CI1325",
 		type: 'pismena2',
 		target_letter: 'ú',
 		background_letters: ['l', 'i', 'f', 'v'],
@@ -5202,8 +5202,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 4, 14, 21, 31]
 	},
 	{
-		task_id: 1,
-		id: 1326,
+		task_id: "cibule",
+		id: "CI1326",
 		type: 'pismena2',
 		target_letter: 'š',
 		background_letters: ['e', 'p', 'a', 'q'],
@@ -5218,8 +5218,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 14, 29, 35]
 	},
 	{
-		task_id: 1,
-		id: 1327,
+		task_id: "cibule",
+		id: "CI1327",
 		type: 'pismena2',
 		target_letter: 'ů',
 		background_letters: ['y', 'e', 'r', 'l'],
@@ -5234,8 +5234,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 13, 28, 32]
 	},
 	{
-		task_id: 1,
-		id: 1328,
+		task_id: "cibule",
+		id: "CI1328",
 		type: 'pismena2',
 		target_letter: 'h',
 		background_letters: ['ů', 'c', 'ě', 'z'],
@@ -5250,8 +5250,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 16, 24]
 	},
 	{
-		task_id: 1,
-		id: 1329,
+		task_id: "cibule",
+		id: "CI1329",
 		type: 'pismena2',
 		target_letter: 'č',
 		background_letters: ['ů', 't', 'á', 'y'],
@@ -5266,8 +5266,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 13, 17, 28]
 	},
 	{
-		task_id: 1,
-		id: 1330,
+		task_id: "cibule",
+		id: "CI1330",
 		type: 'pismena2',
 		target_letter: 'q',
 		background_letters: ['c', 'ř', 'z', 'š'],
@@ -5282,8 +5282,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1331,
+		task_id: "cibule",
+		id: "CI1331",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['m', 'a', 'á', 'ř'],
@@ -5298,8 +5298,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 19, 26]
 	},
 	{
-		task_id: 1,
-		id: 1332,
+		task_id: "cibule",
+		id: "CI1332",
 		type: 'pismena2',
 		target_letter: 'k',
 		background_letters: ['t', 'c', 'p', 'z'],
@@ -5314,8 +5314,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 24, 31, 36]
 	},
 	{
-		task_id: 1,
-		id: 1333,
+		task_id: "cibule",
+		id: "CI1333",
 		type: 'pismena2',
 		target_letter: 'y',
 		background_letters: ['ž', 'o', 'u', 'i'],
@@ -5330,8 +5330,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 8, 35]
 	},
 	{
-		task_id: 1,
-		id: 1334,
+		task_id: "cibule",
+		id: "CI1334",
 		type: 'pismena2',
 		target_letter: 'm',
 		background_letters: ['i', 'v', 'č', 'p'],
@@ -5346,8 +5346,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 19, 24, 31]
 	},
 	{
-		task_id: 1,
-		id: 1335,
+		task_id: "cibule",
+		id: "CI1335",
 		type: 'pismena2',
 		target_letter: 'n',
 		background_letters: ['x', 'p', 'y', 'ž'],
@@ -5362,8 +5362,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 22, 37]
 	},
 	{
-		task_id: 1,
-		id: 1336,
+		task_id: "cibule",
+		id: "CI1336",
 		type: 'pismena2',
 		target_letter: 'o',
 		background_letters: ['f', 'l', 'q', 'á'],
@@ -5378,8 +5378,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 15, 29]
 	},
 	{
-		task_id: 1,
-		id: 1337,
+		task_id: "cibule",
+		id: "CI1337",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['i', 'b', 'ě', 's'],
@@ -5394,8 +5394,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 10, 15, 26]
 	},
 	{
-		task_id: 1,
-		id: 1338,
+		task_id: "cibule",
+		id: "CI1338",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['ě', 'f', 'é', 'p'],
@@ -5410,8 +5410,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 15, 33, 38]
 	},
 	{
-		task_id: 1,
-		id: 1339,
+		task_id: "cibule",
+		id: "CI1339",
 		type: 'pismena2',
 		target_letter: 'š',
 		background_letters: ['o', 'z', 'l', 'f'],
@@ -5426,8 +5426,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 6, 11, 35]
 	},
 	{
-		task_id: 1,
-		id: 1340,
+		task_id: "cibule",
+		id: "CI1340",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['x', 't', 'n', 'y'],
@@ -5442,8 +5442,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 10, 24, 33]
 	},
 	{
-		task_id: 1,
-		id: 1341,
+		task_id: "cibule",
+		id: "CI1341",
 		type: 'pismena2',
 		target_letter: 'ž',
 		background_letters: ['l', 'ú', 'i', 'a'],
@@ -5458,8 +5458,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 11, 16, 24]
 	},
 	{
-		task_id: 1,
-		id: 1342,
+		task_id: "cibule",
+		id: "CI1342",
 		type: 'pismena2',
 		target_letter: 't',
 		background_letters: ['ú', 'e', 'n', 'q'],
@@ -5474,8 +5474,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 28, 36]
 	},
 	{
-		task_id: 1,
-		id: 1343,
+		task_id: "cibule",
+		id: "CI1343",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['p', 'z', 'i', 'ů'],
@@ -5490,8 +5490,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 18, 29]
 	},
 	{
-		task_id: 1,
-		id: 1344,
+		task_id: "cibule",
+		id: "CI1344",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['č', 'c', 'd', 'ó'],
@@ -5506,8 +5506,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 26, 32]
 	},
 	{
-		task_id: 1,
-		id: 1345,
+		task_id: "cibule",
+		id: "CI1345",
 		type: 'pismena2',
 		target_letter: 'b',
 		background_letters: ['m', 'á', 'q', 'x'],
@@ -5522,8 +5522,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 17, 28, 34]
 	},
 	{
-		task_id: 1,
-		id: 1346,
+		task_id: "cibule",
+		id: "CI1346",
 		type: 'pismena2',
 		target_letter: 'i',
 		background_letters: ['p', 'q', 'k', 'y'],
@@ -5538,8 +5538,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 12, 26, 32]
 	},
 	{
-		task_id: 1,
-		id: 1347,
+		task_id: "cibule",
+		id: "CI1347",
 		type: 'pismena2',
 		target_letter: 'm',
 		background_letters: ['ú', 'g', 's', 'ě'],
@@ -5554,8 +5554,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 19, 29, 35]
 	},
 	{
-		task_id: 1,
-		id: 1348,
+		task_id: "cibule",
+		id: "CI1348",
 		type: 'pismena2',
 		target_letter: 'n',
 		background_letters: ['ů', 'k', 'é', 'u'],
@@ -5570,8 +5570,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 19, 27, 31]
 	},
 	{
-		task_id: 1,
-		id: 1349,
+		task_id: "cibule",
+		id: "CI1349",
 		type: 'pismena2',
 		target_letter: 'š',
 		background_letters: ['c', 't', 'g', 'á'],
@@ -5586,8 +5586,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 11, 23, 35]
 	},
 	{
-		task_id: 1,
-		id: 1350,
+		task_id: "cibule",
+		id: "CI1350",
 		type: 'pismena2',
 		target_letter: 'ř',
 		background_letters: ['é', 'á', 'u', 'l'],
@@ -5602,8 +5602,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 16, 24, 32]
 	},
 	{
-		task_id: 1,
-		id: 1351,
+		task_id: "cibule",
+		id: "CI1351",
 		type: 'pismena2',
 		target_letter: 'q',
 		background_letters: ['é', 'r', 's', 'c'],
@@ -5618,8 +5618,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 10, 32, 38]
 	},
 	{
-		task_id: 1,
-		id: 1352,
+		task_id: "cibule",
+		id: "CI1352",
 		type: 'pismena2',
 		target_letter: 'č',
 		background_letters: ['j', 'ó', 'n', 'o'],
@@ -5634,8 +5634,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 14, 21, 33, 37]
 	},
 	{
-		task_id: 1,
-		id: 1353,
+		task_id: "cibule",
+		id: "CI1353",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['n', 'a', 'y', 'á'],
@@ -5650,8 +5650,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 8, 20, 27, 36]
 	},
 	{
-		task_id: 1,
-		id: 1354,
+		task_id: "cibule",
+		id: "CI1354",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['t', 'v', 'ř', 'h'],
@@ -5666,8 +5666,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 16, 20, 31, 35]
 	},
 	{
-		task_id: 1,
-		id: 1355,
+		task_id: "cibule",
+		id: "CI1355",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['é', 'ř', 'a', 'á'],
@@ -5682,8 +5682,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 18, 24, 35]
 	},
 	{
-		task_id: 1,
-		id: 1356,
+		task_id: "cibule",
+		id: "CI1356",
 		type: 'pismena2',
 		target_letter: 'e',
 		background_letters: ['k', 'ů', 'n', 'a'],
@@ -5698,8 +5698,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 24]
 	},
 	{
-		task_id: 1,
-		id: 1357,
+		task_id: "cibule",
+		id: "CI1357",
 		type: 'pismena2',
 		target_letter: 'u',
 		background_letters: ['b', 'x', 'l', 'š'],
@@ -5714,8 +5714,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 4, 15, 22]
 	},
 	{
-		task_id: 1,
-		id: 1358,
+		task_id: "cibule",
+		id: "CI1358",
 		type: 'pismena2',
 		target_letter: 'ě',
 		background_letters: ['é', 'z', 'e', 'n'],
@@ -5730,8 +5730,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 11, 15]
 	},
 	{
-		task_id: 1,
-		id: 1359,
+		task_id: "cibule",
+		id: "CI1359",
 		type: 'pismena2',
 		target_letter: 'ř',
 		background_letters: ['p', 'q', 'y', 'ú'],
@@ -5746,8 +5746,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 27, 34]
 	},
 	{
-		task_id: 1,
-		id: 1360,
+		task_id: "cibule",
+		id: "CI1360",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['k', 'u', 'x', 'š'],
@@ -5762,8 +5762,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 11, 22, 29]
 	},
 	{
-		task_id: 1,
-		id: 1361,
+		task_id: "cibule",
+		id: "CI1361",
 		type: 'pismena2',
 		target_letter: 'y',
 		background_letters: ['d', 'ž', 'x', 'z'],
@@ -5778,8 +5778,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 12, 36]
 	},
 	{
-		task_id: 1,
-		id: 1362,
+		task_id: "cibule",
+		id: "CI1362",
 		type: 'pismena2',
 		target_letter: 'c',
 		background_letters: ['j', 'é', 't', 'i'],
@@ -5794,8 +5794,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 4, 22, 28, 38]
 	},
 	{
-		task_id: 1,
-		id: 1363,
+		task_id: "cibule",
+		id: "CI1363",
 		type: 'pismena2',
 		target_letter: 'm',
 		background_letters: ['v', 'é', 'l', 'i'],
@@ -5810,8 +5810,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 20, 30]
 	},
 	{
-		task_id: 1,
-		id: 1364,
+		task_id: "cibule",
+		id: "CI1364",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['l', 'l', 'j', 'y'],
@@ -5826,8 +5826,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 11, 15, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1365,
+		task_id: "cibule",
+		id: "CI1365",
 		type: 'pismena2',
 		target_letter: 'h',
 		background_letters: ['g', 'š', 't', 'ů'],
@@ -5842,8 +5842,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 11, 17, 35]
 	},
 	{
-		task_id: 1,
-		id: 1366,
+		task_id: "cibule",
+		id: "CI1366",
 		type: 'pismena2',
 		target_letter: 'd',
 		background_letters: ['t', 'ó', 'u', 'é'],
@@ -5858,8 +5858,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 18, 34]
 	},
 	{
-		task_id: 1,
-		id: 1367,
+		task_id: "cibule",
+		id: "CI1367",
 		type: 'pismena2',
 		target_letter: 'u',
 		background_letters: ['c', 'š', 's', 'g'],
@@ -5874,8 +5874,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 19, 27]
 	},
 	{
-		task_id: 1,
-		id: 1368,
+		task_id: "cibule",
+		id: "CI1368",
 		type: 'pismena2',
 		target_letter: 'f',
 		background_letters: ['ž', 'u', 'i', 'r'],
@@ -5890,8 +5890,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 8, 21]
 	},
 	{
-		task_id: 1,
-		id: 1369,
+		task_id: "cibule",
+		id: "CI1369",
 		type: 'pismena2',
 		target_letter: 'f',
 		background_letters: ['h', 'u', 'š', 's'],
@@ -5906,8 +5906,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 28, 35]
 	},
 	{
-		task_id: 1,
-		id: 1370,
+		task_id: "cibule",
+		id: "CI1370",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['z', 'h', 'e', 'v'],
@@ -5922,8 +5922,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 10, 18, 33]
 	},
 	{
-		task_id: 1,
-		id: 1371,
+		task_id: "cibule",
+		id: "CI1371",
 		type: 'pismena2',
 		target_letter: 'u',
 		background_letters: ['ř', 'l', 't', 'á'],
@@ -5938,8 +5938,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 18, 25, 29]
 	},
 	{
-		task_id: 1,
-		id: 1372,
+		task_id: "cibule",
+		id: "CI1372",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['ž', 'ó', 't', 'f'],
@@ -5954,8 +5954,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 18, 23, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1373,
+		task_id: "cibule",
+		id: "CI1373",
 		type: 'pismena2',
 		target_letter: 'f',
 		background_letters: ['ú', 'c', 'ů', 'e'],
@@ -5970,8 +5970,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 15, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1374,
+		task_id: "cibule",
+		id: "CI1374",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['e', 'c', 'k', 'č'],
@@ -5986,8 +5986,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 5, 21, 25, 36]
 	},
 	{
-		task_id: 1,
-		id: 1375,
+		task_id: "cibule",
+		id: "CI1375",
 		type: 'pismena2',
 		target_letter: 'š',
 		background_letters: ['k', 'é', 'v', 'l'],
@@ -6002,8 +6002,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 21, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1376,
+		task_id: "cibule",
+		id: "CI1376",
 		type: 'pismena2',
 		target_letter: 'j',
 		background_letters: ['m', 'p', 'ř', 'g'],
@@ -6018,8 +6018,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 34]
 	},
 	{
-		task_id: 1,
-		id: 1377,
+		task_id: "cibule",
+		id: "CI1377",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['k', 'c', 'l', 'j'],
@@ -6034,8 +6034,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 8, 19, 23, 28]
 	},
 	{
-		task_id: 1,
-		id: 1378,
+		task_id: "cibule",
+		id: "CI1378",
 		type: 'pismena2',
 		target_letter: 'ú',
 		background_letters: ['j', 'č', 'p', 'b'],
@@ -6050,8 +6050,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 22, 29, 33]
 	},
 	{
-		task_id: 1,
-		id: 1379,
+		task_id: "cibule",
+		id: "CI1379",
 		type: 'pismena2',
 		target_letter: 'j',
 		background_letters: ['ú', 'é', 'k', 'l'],
@@ -6066,8 +6066,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 24, 28, 35]
 	},
 	{
-		task_id: 1,
-		id: 1380,
+		task_id: "cibule",
+		id: "CI1380",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['v', 'd', 'ř', 'p'],
@@ -6082,8 +6082,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 19, 29]
 	},
 	{
-		task_id: 1,
-		id: 1381,
+		task_id: "cibule",
+		id: "CI1381",
 		type: 'pismena2',
 		target_letter: 'h',
 		background_letters: ['o', 'č', 'y', 'u'],
@@ -6098,8 +6098,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1382,
+		task_id: "cibule",
+		id: "CI1382",
 		type: 'pismena2',
 		target_letter: 'č',
 		background_letters: ['g', 'z', 'c', 's'],
@@ -6114,8 +6114,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 17, 33]
 	},
 	{
-		task_id: 1,
-		id: 1383,
+		task_id: "cibule",
+		id: "CI1383",
 		type: 'pismena2',
 		target_letter: 'u',
 		background_letters: ['ó', 'z', 'c', 'b'],
@@ -6130,8 +6130,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 15, 20, 24, 31]
 	},
 	{
-		task_id: 1,
-		id: 1384,
+		task_id: "cibule",
+		id: "CI1384",
 		type: 'pismena2',
 		target_letter: 'u',
 		background_letters: ['ú', 'm', 'á', 't'],
@@ -6146,8 +6146,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 17, 26]
 	},
 	{
-		task_id: 1,
-		id: 1385,
+		task_id: "cibule",
+		id: "CI1385",
 		type: 'pismena2',
 		target_letter: 'm',
 		background_letters: ['f', 's', 'ř', 'g'],
@@ -6162,8 +6162,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 8, 24, 33]
 	},
 	{
-		task_id: 1,
-		id: 1386,
+		task_id: "cibule",
+		id: "CI1386",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['ř', 'n', 'c', 'k'],
@@ -6178,8 +6178,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 13, 19, 26]
 	},
 	{
-		task_id: 1,
-		id: 1387,
+		task_id: "cibule",
+		id: "CI1387",
 		type: 'pismena2',
 		target_letter: 'b',
 		background_letters: ['s', 'ř', 'a', 'j'],
@@ -6194,8 +6194,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 24, 28, 34]
 	},
 	{
-		task_id: 1,
-		id: 1388,
+		task_id: "cibule",
+		id: "CI1388",
 		type: 'pismena2',
 		target_letter: 'h',
 		background_letters: ['č', 'z', 'š', 'ř'],
@@ -6210,8 +6210,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 6, 14, 28, 33]
 	},
 	{
-		task_id: 1,
-		id: 1389,
+		task_id: "cibule",
+		id: "CI1389",
 		type: 'pismena2',
 		target_letter: 'd',
 		background_letters: ['c', 'é', 'ž', 'ú'],
@@ -6226,8 +6226,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 15, 22, 31]
 	},
 	{
-		task_id: 1,
-		id: 1390,
+		task_id: "cibule",
+		id: "CI1390",
 		type: 'pismena2',
 		target_letter: 'z',
 		background_letters: ['b', 'r', 'é', 'j'],
@@ -6242,8 +6242,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 11, 17, 26, 34]
 	},
 	{
-		task_id: 1,
-		id: 1391,
+		task_id: "cibule",
+		id: "CI1391",
 		type: 'pismena2',
 		target_letter: 'b',
 		background_letters: ['ó', 'ž', 'o', 'r'],
@@ -6258,8 +6258,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 7, 27, 31, 35]
 	},
 	{
-		task_id: 1,
-		id: 1392,
+		task_id: "cibule",
+		id: "CI1392",
 		type: 'pismena2',
 		target_letter: 'c',
 		background_letters: ['é', 'v', 'z', 'n'],
@@ -6274,8 +6274,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 9, 13, 21, 35]
 	},
 	{
-		task_id: 1,
-		id: 1393,
+		task_id: "cibule",
+		id: "CI1393",
 		type: 'pismena2',
 		target_letter: 'ř',
 		background_letters: ['m', 'ú', 'c', 'y'],
@@ -6290,8 +6290,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 21, 35, 39]
 	},
 	{
-		task_id: 1,
-		id: 1394,
+		task_id: "cibule",
+		id: "CI1394",
 		type: 'pismena2',
 		target_letter: 'm',
 		background_letters: ['i', 'ž', 'ú', 'b'],
@@ -6306,8 +6306,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 12, 22]
 	},
 	{
-		task_id: 1,
-		id: 1395,
+		task_id: "cibule",
+		id: "CI1395",
 		type: 'pismena2',
 		target_letter: 'á',
 		background_letters: ['z', 'š', 'e', 'j'],
@@ -6322,8 +6322,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 23, 27, 31]
 	},
 	{
-		task_id: 1,
-		id: 1396,
+		task_id: "cibule",
+		id: "CI1396",
 		type: 'pismena2',
 		target_letter: 'd',
 		background_letters: ['a', 'ú', 'e', 'o'],
@@ -6338,8 +6338,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 16, 30]
 	},
 	{
-		task_id: 1,
-		id: 1397,
+		task_id: "cibule",
+		id: "CI1397",
 		type: 'pismena2',
 		target_letter: 'y',
 		background_letters: ['ó', 'a', 'h', 'o'],
@@ -6354,8 +6354,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 23, 27]
 	},
 	{
-		task_id: 1,
-		id: 1398,
+		task_id: "cibule",
+		id: "CI1398",
 		type: 'pismena2',
 		target_letter: 'g',
 		background_letters: ['x', 's', 'r', 'ú'],
@@ -6370,8 +6370,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 10, 25, 33]
 	},
 	{
-		task_id: 1,
-		id: 1399,
+		task_id: "cibule",
+		id: "CI1399",
 		type: 'pismena2',
 		target_letter: 'p',
 		background_letters: ['ů', 'k', 'n', 'i'],
@@ -6386,8 +6386,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 15, 24, 33]
 	},
 	{
-		task_id: 1,
-		id: 1400,
+		task_id: "cibule",
+		id: "CI1400",
 		type: 'pismena2',
 		target_letter: 'š',
 		background_letters: ['á', 'b', 'z', 'm'],
@@ -6402,8 +6402,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 14, 18, 34]
 	},
 	{
-		task_id: 1,
-		id: 1401,
+		task_id: "cibule",
+		id: "CI1401",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['s', 'z'],
@@ -6418,8 +6418,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 21, 26, 35]
 	},
 	{
-		task_id: 1,
-		id: 1402,
+		task_id: "cibule",
+		id: "CI1402",
 		type: 'pismena2',
 		target_letter: 'ž',
 		background_letters: ['ě', 'č'],
@@ -6434,8 +6434,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 14, 21, 37]
 	},
 	{
-		task_id: 1,
-		id: 1403,
+		task_id: "cibule",
+		id: "CI1403",
 		type: 'pismena2',
 		target_letter: 'p',
 		background_letters: ['y', 'q'],
@@ -6450,8 +6450,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 16, 23, 29, 34]
 	},
 	{
-		task_id: 1,
-		id: 1404,
+		task_id: "cibule",
+		id: "CI1404",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['ó', 'ú'],
@@ -6466,8 +6466,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 15, 24, 30]
 	},
 	{
-		task_id: 1,
-		id: 1405,
+		task_id: "cibule",
+		id: "CI1405",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['v', 'u'],
@@ -6482,8 +6482,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 32, 37]
 	},
 	{
-		task_id: 1,
-		id: 1406,
+		task_id: "cibule",
+		id: "CI1406",
 		type: 'pismena2',
 		target_letter: 'k',
 		background_letters: ['b', 'd'],
@@ -6498,8 +6498,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 29, 37]
 	},
 	{
-		task_id: 1,
-		id: 1407,
+		task_id: "cibule",
+		id: "CI1407",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['u', 'v'],
@@ -6514,8 +6514,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 14, 30, 36]
 	},
 	{
-		task_id: 1,
-		id: 1408,
+		task_id: "cibule",
+		id: "CI1408",
 		type: 'pismena2',
 		target_letter: 't',
 		background_letters: ['l', 'f'],
@@ -6530,8 +6530,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 20, 28, 34]
 	},
 	{
-		task_id: 1,
-		id: 1409,
+		task_id: "cibule",
+		id: "CI1409",
 		type: 'pismena2',
 		target_letter: 'y',
 		background_letters: ['p', 'q'],
@@ -6546,8 +6546,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 23, 31, 38]
 	},
 	{
-		task_id: 1,
-		id: 1410,
+		task_id: "cibule",
+		id: "CI1410",
 		type: 'pismena2',
 		target_letter: 'h',
 		background_letters: ['d', 'k'],
@@ -6562,8 +6562,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 16, 25, 34]
 	},
 	{
-		task_id: 1,
-		id: 1411,
+		task_id: "cibule",
+		id: "CI1411",
 		type: 'pismena2',
 		target_letter: 'r',
 		background_letters: ['m', 'n'],
@@ -6578,8 +6578,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 17, 24, 30, 36]
 	},
 	{
-		task_id: 1,
-		id: 1412,
+		task_id: "cibule",
+		id: "CI1412",
 		type: 'pismena2',
 		target_letter: 'd',
 		background_letters: ['k', 'b'],
@@ -6594,8 +6594,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 16, 25, 30]
 	},
 	{
-		task_id: 1,
-		id: 1413,
+		task_id: "cibule",
+		id: "CI1413",
 		type: 'pismena2',
 		target_letter: 'o',
 		background_letters: ['e', 'c'],
@@ -6610,8 +6610,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 13, 17, 22]
 	},
 	{
-		task_id: 1,
-		id: 1414,
+		task_id: "cibule",
+		id: "CI1414",
 		type: 'pismena2',
 		target_letter: 'p',
 		background_letters: ['q', 'g'],
@@ -6626,8 +6626,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 18, 29, 36]
 	},
 	{
-		task_id: 1,
-		id: 1415,
+		task_id: "cibule",
+		id: "CI1415",
 		type: 'pismena2',
 		target_letter: 'v',
 		background_letters: ['a', 'u'],
@@ -6642,8 +6642,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 19, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1416,
+		task_id: "cibule",
+		id: "CI1416",
 		type: 'pismena2',
 		target_letter: 't',
 		background_letters: ['l', 'f'],
@@ -6658,8 +6658,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 15, 22, 29]
 	},
 	{
-		task_id: 1,
-		id: 1417,
+		task_id: "cibule",
+		id: "CI1417",
 		type: 'pismena2',
 		target_letter: 'o',
 		background_letters: ['e', 'c'],
@@ -6674,8 +6674,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 15, 20, 25, 37]
 	},
 	{
-		task_id: 1,
-		id: 1418,
+		task_id: "cibule",
+		id: "CI1418",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['i', 'j'],
@@ -6690,8 +6690,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 16, 29]
 	},
 	{
-		task_id: 1,
-		id: 1419,
+		task_id: "cibule",
+		id: "CI1419",
 		type: 'pismena2',
 		target_letter: 'f',
 		background_letters: ['t', 'l'],
@@ -6706,8 +6706,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 4, 13, 20, 27]
 	},
 	{
-		task_id: 1,
-		id: 1420,
+		task_id: "cibule",
+		id: "CI1420",
 		type: 'pismena2',
 		target_letter: 'm',
 		background_letters: ['r', 'n'],
@@ -6722,8 +6722,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 4, 17, 31]
 	},
 	{
-		task_id: 1,
-		id: 1421,
+		task_id: "cibule",
+		id: "CI1421",
 		type: 'pismena2',
 		target_letter: 'c',
 		background_letters: ['o', 'e'],
@@ -6738,8 +6738,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 11, 20, 27, 32]
 	},
 	{
-		task_id: 1,
-		id: 1422,
+		task_id: "cibule",
+		id: "CI1422",
 		type: 'pismena2',
 		target_letter: 'v',
 		background_letters: ['u', 'a'],
@@ -6754,8 +6754,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 8, 19, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1423,
+		task_id: "cibule",
+		id: "CI1423",
 		type: 'pismena2',
 		target_letter: 'ó',
 		background_letters: ['ů', 'é'],
@@ -6770,8 +6770,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 13, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1424,
+		task_id: "cibule",
+		id: "CI1424",
 		type: 'pismena2',
 		target_letter: 'z',
 		background_letters: ['s', 'x'],
@@ -6786,8 +6786,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 28, 38]
 	},
 	{
-		task_id: 1,
-		id: 1425,
+		task_id: "cibule",
+		id: "CI1425",
 		type: 'pismena2',
 		target_letter: 'p',
 		background_letters: ['y', 'q'],
@@ -6802,8 +6802,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 15, 24]
 	},
 	{
-		task_id: 1,
-		id: 1426,
+		task_id: "cibule",
+		id: "CI1426",
 		type: 'pismena2',
 		target_letter: 'y',
 		background_letters: ['q', 'p'],
@@ -6818,8 +6818,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 24, 34]
 	},
 	{
-		task_id: 1,
-		id: 1427,
+		task_id: "cibule",
+		id: "CI1427",
 		type: 'pismena2',
 		target_letter: 'j',
 		background_letters: ['l', 'i'],
@@ -6834,8 +6834,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 17, 24]
 	},
 	{
-		task_id: 1,
-		id: 1428,
+		task_id: "cibule",
+		id: "CI1428",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['i', 'j'],
@@ -6850,8 +6850,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 32, 36]
 	},
 	{
-		task_id: 1,
-		id: 1429,
+		task_id: "cibule",
+		id: "CI1429",
 		type: 'pismena2',
 		target_letter: 'ú',
 		background_letters: ['ů', 'á'],
@@ -6866,8 +6866,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 19, 33]
 	},
 	{
-		task_id: 1,
-		id: 1430,
+		task_id: "cibule",
+		id: "CI1430",
 		type: 'pismena2',
 		target_letter: 't',
 		background_letters: ['f', 'l'],
@@ -6882,8 +6882,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 22, 31]
 	},
 	{
-		task_id: 1,
-		id: 1431,
+		task_id: "cibule",
+		id: "CI1431",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['j', 'i'],
@@ -6898,8 +6898,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 15, 23, 36]
 	},
 	{
-		task_id: 1,
-		id: 1432,
+		task_id: "cibule",
+		id: "CI1432",
 		type: 'pismena2',
 		target_letter: 'm',
 		background_letters: ['r', 'n'],
@@ -6914,8 +6914,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 26]
 	},
 	{
-		task_id: 1,
-		id: 1433,
+		task_id: "cibule",
+		id: "CI1433",
 		type: 'pismena2',
 		target_letter: 'ř',
 		background_letters: ['č', 'ž'],
@@ -6930,8 +6930,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 18, 35]
 	},
 	{
-		task_id: 1,
-		id: 1434,
+		task_id: "cibule",
+		id: "CI1434",
 		type: 'pismena2',
 		target_letter: 'y',
 		background_letters: ['g', 'p'],
@@ -6946,8 +6946,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 19, 23, 28, 33]
 	},
 	{
-		task_id: 1,
-		id: 1435,
+		task_id: "cibule",
+		id: "CI1435",
 		type: 'pismena2',
 		target_letter: 'c',
 		background_letters: ['e', 'o'],
@@ -6962,8 +6962,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 29, 34]
 	},
 	{
-		task_id: 1,
-		id: 1436,
+		task_id: "cibule",
+		id: "CI1436",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['ů', 'ú'],
@@ -6978,8 +6978,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 15, 20, 34]
 	},
 	{
-		task_id: 1,
-		id: 1437,
+		task_id: "cibule",
+		id: "CI1437",
 		type: 'pismena2',
 		target_letter: 'v',
 		background_letters: ['a', 'u'],
@@ -6994,8 +6994,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 11, 22, 35]
 	},
 	{
-		task_id: 1,
-		id: 1438,
+		task_id: "cibule",
+		id: "CI1438",
 		type: 'pismena2',
 		target_letter: 'n',
 		background_letters: ['r', 'm'],
@@ -7010,8 +7010,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11, 21, 25, 33]
 	},
 	{
-		task_id: 1,
-		id: 1439,
+		task_id: "cibule",
+		id: "CI1439",
 		type: 'pismena2',
 		target_letter: 'g',
 		background_letters: ['p', 'y'],
@@ -7026,8 +7026,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 16, 20, 26, 30]
 	},
 	{
-		task_id: 1,
-		id: 1440,
+		task_id: "cibule",
+		id: "CI1440",
 		type: 'pismena2',
 		target_letter: 'q',
 		background_letters: ['g', 'y'],
@@ -7042,8 +7042,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 10, 16, 23, 29]
 	},
 	{
-		task_id: 1,
-		id: 1441,
+		task_id: "cibule",
+		id: "CI1441",
 		type: 'pismena2',
 		target_letter: 'c',
 		background_letters: ['o', 'e'],
@@ -7058,8 +7058,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 10, 24, 33]
 	},
 	{
-		task_id: 1,
-		id: 1442,
+		task_id: "cibule",
+		id: "CI1442",
 		type: 'pismena2',
 		target_letter: 'ž',
 		background_letters: ['ř', 'č'],
@@ -7074,8 +7074,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 12, 23, 33]
 	},
 	{
-		task_id: 1,
-		id: 1443,
+		task_id: "cibule",
+		id: "CI1443",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['ú', 'á'],
@@ -7090,8 +7090,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 10, 28]
 	},
 	{
-		task_id: 1,
-		id: 1444,
+		task_id: "cibule",
+		id: "CI1444",
 		type: 'pismena2',
 		target_letter: 'r',
 		background_letters: ['m', 'n'],
@@ -7106,8 +7106,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 21, 30, 36]
 	},
 	{
-		task_id: 1,
-		id: 1445,
+		task_id: "cibule",
+		id: "CI1445",
 		type: 'pismena2',
 		target_letter: 'n',
 		background_letters: ['r', 'm'],
@@ -7122,8 +7122,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 16, 26]
 	},
 	{
-		task_id: 1,
-		id: 1446,
+		task_id: "cibule",
+		id: "CI1446",
 		type: 'pismena2',
 		target_letter: 'v',
 		background_letters: ['a', 'u'],
@@ -7138,8 +7138,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 22, 26, 34]
 	},
 	{
-		task_id: 1,
-		id: 1447,
+		task_id: "cibule",
+		id: "CI1447",
 		type: 'pismena2',
 		target_letter: 'ů',
 		background_letters: ['ú', 'é'],
@@ -7154,8 +7154,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11, 17, 36]
 	},
 	{
-		task_id: 1,
-		id: 1448,
+		task_id: "cibule",
+		id: "CI1448",
 		type: 'pismena2',
 		target_letter: 'm',
 		background_letters: ['n', 'r'],
@@ -7170,8 +7170,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 7, 17, 28, 32]
 	},
 	{
-		task_id: 1,
-		id: 1449,
+		task_id: "cibule",
+		id: "CI1449",
 		type: 'pismena2',
 		target_letter: 'e',
 		background_letters: ['o', 'c'],
@@ -7186,8 +7186,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 20, 29]
 	},
 	{
-		task_id: 1,
-		id: 1450,
+		task_id: "cibule",
+		id: "CI1450",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['z', 's'],
@@ -7202,8 +7202,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 23, 29, 36]
 	},
 	{
-		task_id: 1,
-		id: 1451,
+		task_id: "cibule",
+		id: "CI1451",
 		type: 'pismena2',
 		target_letter: 'q',
 		background_letters: ['p', 'g'],
@@ -7218,8 +7218,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 4, 10, 35]
 	},
 	{
-		task_id: 1,
-		id: 1452,
+		task_id: "cibule",
+		id: "CI1452",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['t', 'f'],
@@ -7234,8 +7234,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 24, 33]
 	},
 	{
-		task_id: 1,
-		id: 1453,
+		task_id: "cibule",
+		id: "CI1453",
 		type: 'pismena2',
 		target_letter: 'g',
 		background_letters: ['q', 'y'],
@@ -7250,8 +7250,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 8, 14, 27, 31]
 	},
 	{
-		task_id: 1,
-		id: 1454,
+		task_id: "cibule",
+		id: "CI1454",
 		type: 'pismena2',
 		target_letter: 'y',
 		background_letters: ['p', 'q'],
@@ -7266,8 +7266,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 21, 29]
 	},
 	{
-		task_id: 1,
-		id: 1455,
+		task_id: "cibule",
+		id: "CI1455",
 		type: 'pismena2',
 		target_letter: 'á',
 		background_letters: ['ó', 'ú'],
@@ -7282,8 +7282,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 16, 22, 28]
 	},
 	{
-		task_id: 1,
-		id: 1456,
+		task_id: "cibule",
+		id: "CI1456",
 		type: 'pismena2',
 		target_letter: 'ě',
 		background_letters: ['ž', 'č'],
@@ -7298,8 +7298,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 11, 21]
 	},
 	{
-		task_id: 1,
-		id: 1457,
+		task_id: "cibule",
+		id: "CI1457",
 		type: 'pismena2',
 		target_letter: 'l',
 		background_letters: ['j', 'i'],
@@ -7314,8 +7314,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 15, 32]
 	},
 	{
-		task_id: 1,
-		id: 1458,
+		task_id: "cibule",
+		id: "CI1458",
 		type: 'pismena2',
 		target_letter: 'p',
 		background_letters: ['q', 'g'],
@@ -7330,8 +7330,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 10, 22, 30, 34]
 	},
 	{
-		task_id: 1,
-		id: 1459,
+		task_id: "cibule",
+		id: "CI1459",
 		type: 'pismena2',
 		target_letter: 'o',
 		background_letters: ['e', 'c'],
@@ -7346,8 +7346,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 26, 31]
 	},
 	{
-		task_id: 1,
-		id: 1460,
+		task_id: "cibule",
+		id: "CI1460",
 		type: 'pismena2',
 		target_letter: 'ž',
 		background_letters: ['ě', 'č'],
@@ -7362,8 +7362,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 5, 12, 18, 36]
 	},
 	{
-		task_id: 1,
-		id: 1461,
+		task_id: "cibule",
+		id: "CI1461",
 		type: 'pismena2',
 		target_letter: 'č',
 		background_letters: ['š', 'ž'],
@@ -7378,8 +7378,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 10, 20, 27, 33]
 	},
 	{
-		task_id: 1,
-		id: 1462,
+		task_id: "cibule",
+		id: "CI1462",
 		type: 'pismena2',
 		target_letter: 'z',
 		background_letters: ['x', 's'],
@@ -7394,8 +7394,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 23, 27]
 	},
 	{
-		task_id: 1,
-		id: 1463,
+		task_id: "cibule",
+		id: "CI1463",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['s', 'z'],
@@ -7410,8 +7410,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 15, 29, 36]
 	},
 	{
-		task_id: 1,
-		id: 1464,
+		task_id: "cibule",
+		id: "CI1464",
 		type: 'pismena2',
 		target_letter: 'ó',
 		background_letters: ['ů', 'á'],
@@ -7426,8 +7426,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 15, 22, 36]
 	},
 	{
-		task_id: 1,
-		id: 1465,
+		task_id: "cibule",
+		id: "CI1465",
 		type: 'pismena2',
 		target_letter: 'u',
 		background_letters: ['v', 'a'],
@@ -7442,8 +7442,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 20, 30]
 	},
 	{
-		task_id: 1,
-		id: 1466,
+		task_id: "cibule",
+		id: "CI1466",
 		type: 'pismena2',
 		target_letter: 'x',
 		background_letters: ['z', 's'],
@@ -7458,8 +7458,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 15, 19, 24, 38]
 	},
 	{
-		task_id: 1,
-		id: 1467,
+		task_id: "cibule",
+		id: "CI1467",
 		type: 'pismena2',
 		target_letter: 'ů',
 		background_letters: ['é', 'ó'],
@@ -7474,8 +7474,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 12, 18, 36]
 	},
 	{
-		task_id: 1,
-		id: 1468,
+		task_id: "cibule",
+		id: "CI1468",
 		type: 'pismena2',
 		target_letter: 'd',
 		background_letters: ['b', 'h'],
@@ -7490,8 +7490,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 8, 16, 33]
 	},
 	{
-		task_id: 1,
-		id: 1469,
+		task_id: "cibule",
+		id: "CI1469",
 		type: 'pismena2',
 		target_letter: 'u',
 		background_letters: ['v', 'a'],
@@ -7506,8 +7506,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 21, 28]
 	},
 	{
-		task_id: 1,
-		id: 1470,
+		task_id: "cibule",
+		id: "CI1470",
 		type: 'pismena2',
 		target_letter: 'f',
 		background_letters: ['l', 't'],
@@ -7522,8 +7522,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 12, 34]
 	},
 	{
-		task_id: 1,
-		id: 1471,
+		task_id: "cibule",
+		id: "CI1471",
 		type: 'pismena2',
 		target_letter: 'e',
 		background_letters: ['o', 'c'],
@@ -7538,8 +7538,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 9, 18, 23, 37]
 	},
 	{
-		task_id: 1,
-		id: 1472,
+		task_id: "cibule",
+		id: "CI1472",
 		type: 'pismena2',
 		target_letter: 'c',
 		background_letters: ['e', 'o'],
@@ -7554,8 +7554,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 18, 25, 33]
 	},
 	{
-		task_id: 1,
-		id: 1473,
+		task_id: "cibule",
+		id: "CI1473",
 		type: 'pismena2',
 		target_letter: 'n',
 		background_letters: ['r', 'm'],
@@ -7570,8 +7570,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 15, 19, 24, 32]
 	},
 	{
-		task_id: 1,
-		id: 1474,
+		task_id: "cibule",
+		id: "CI1474",
 		type: 'pismena2',
 		target_letter: 'š',
 		background_letters: ['č', 'ž'],
@@ -7586,8 +7586,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 10, 16, 28, 33]
 	},
 	{
-		task_id: 1,
-		id: 1475,
+		task_id: "cibule",
+		id: "CI1475",
 		type: 'pismena2',
 		target_letter: 'j',
 		background_letters: ['i', 'l'],
@@ -7602,8 +7602,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 22, 28, 33]
 	},
 	{
-		task_id: 1,
-		id: 1476,
+		task_id: "cibule",
+		id: "CI1476",
 		type: 'pismena2',
 		target_letter: 't',
 		background_letters: ['l', 'f'],
@@ -7618,8 +7618,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 31, 36]
 	},
 	{
-		task_id: 1,
-		id: 1477,
+		task_id: "cibule",
+		id: "CI1477",
 		type: 'pismena2',
 		target_letter: 's',
 		background_letters: ['z', 'x'],
@@ -7634,8 +7634,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 35]
 	},
 	{
-		task_id: 1,
-		id: 1478,
+		task_id: "cibule",
+		id: "CI1478",
 		type: 'pismena2',
 		target_letter: 'ě',
 		background_letters: ['č', 'ř'],
@@ -7650,8 +7650,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 16, 20, 24, 37]
 	},
 	{
-		task_id: 1,
-		id: 1479,
+		task_id: "cibule",
+		id: "CI1479",
 		type: 'pismena2',
 		target_letter: 'n',
 		background_letters: ['r', 'm'],
@@ -7666,8 +7666,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 9, 17, 23, 34]
 	},
 	{
-		task_id: 1,
-		id: 1480,
+		task_id: "cibule",
+		id: "CI1480",
 		type: 'pismena2',
 		target_letter: 'č',
 		background_letters: ['ž', 'š'],
@@ -7682,8 +7682,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 24, 30, 35]
 	},
 	{
-		task_id: 1,
-		id: 1481,
+		task_id: "cibule",
+		id: "CI1481",
 		type: 'pismena2',
 		target_letter: 'g',
 		background_letters: ['y', 'p'],
@@ -7698,8 +7698,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 19, 25, 30, 36]
 	},
 	{
-		task_id: 1,
-		id: 1482,
+		task_id: "cibule",
+		id: "CI1482",
 		type: 'pismena2',
 		target_letter: 'g',
 		background_letters: ['p', 'q'],
@@ -7714,8 +7714,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 14, 32]
 	},
 	{
-		task_id: 1,
-		id: 1483,
+		task_id: "cibule",
+		id: "CI1483",
 		type: 'pismena2',
 		target_letter: 'y',
 		background_letters: ['g', 'q'],
@@ -7730,8 +7730,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 23, 29]
 	},
 	{
-		task_id: 1,
-		id: 1484,
+		task_id: "cibule",
+		id: "CI1484",
 		type: 'pismena2',
 		target_letter: 'e',
 		background_letters: ['c', 'o'],
@@ -7746,8 +7746,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 16, 22, 33, 38]
 	},
 	{
-		task_id: 1,
-		id: 1485,
+		task_id: "cibule",
+		id: "CI1485",
 		type: 'pismena2',
 		target_letter: 'k',
 		background_letters: ['d', 'h'],
@@ -7762,8 +7762,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 16, 28, 33]
 	},
 	{
-		task_id: 1,
-		id: 1486,
+		task_id: "cibule",
+		id: "CI1486",
 		type: 'pismena2',
 		target_letter: 'č',
 		background_letters: ['ž', 'š'],
@@ -7778,8 +7778,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 14, 21, 30]
 	},
 	{
-		task_id: 1,
-		id: 1487,
+		task_id: "cibule",
+		id: "CI1487",
 		type: 'pismena2',
 		target_letter: 'ř',
 		background_letters: ['ě', 'š'],
@@ -7794,8 +7794,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 14, 23, 36]
 	},
 	{
-		task_id: 1,
-		id: 1488,
+		task_id: "cibule",
+		id: "CI1488",
 		type: 'pismena2',
 		target_letter: 'š',
 		background_letters: ['ř', 'ě'],
@@ -7810,8 +7810,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 19, 25]
 	},
 	{
-		task_id: 1,
-		id: 1489,
+		task_id: "cibule",
+		id: "CI1489",
 		type: 'pismena2',
 		target_letter: 'r',
 		background_letters: ['n', 'm'],
@@ -7826,8 +7826,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 13, 28]
 	},
 	{
-		task_id: 1,
-		id: 1490,
+		task_id: "cibule",
+		id: "CI1490",
 		type: 'pismena2',
 		target_letter: 'd',
 		background_letters: ['k', 'h'],
@@ -7842,8 +7842,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 18, 28]
 	},
 	{
-		task_id: 1,
-		id: 1491,
+		task_id: "cibule",
+		id: "CI1491",
 		type: 'pismena2',
 		target_letter: 'u',
 		background_letters: ['v', 'a'],
@@ -7858,8 +7858,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 31, 38]
 	},
 	{
-		task_id: 1,
-		id: 1492,
+		task_id: "cibule",
+		id: "CI1492",
 		type: 'pismena2',
 		target_letter: 'b',
 		background_letters: ['h', 'k'],
@@ -7874,8 +7874,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 12, 16, 22, 33]
 	},
 	{
-		task_id: 1,
-		id: 1493,
+		task_id: "cibule",
+		id: "CI1493",
 		type: 'pismena2',
 		target_letter: 'z',
 		background_letters: ['x', 's'],
@@ -7890,8 +7890,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 12, 24, 28, 37]
 	},
 	{
-		task_id: 1,
-		id: 1494,
+		task_id: "cibule",
+		id: "CI1494",
 		type: 'pismena2',
 		target_letter: 'p',
 		background_letters: ['g', 'y'],
@@ -7906,8 +7906,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 13, 25]
 	},
 	{
-		task_id: 1,
-		id: 1495,
+		task_id: "cibule",
+		id: "CI1495",
 		type: 'pismena2',
 		target_letter: 'é',
 		background_letters: ['ú', 'ó'],
@@ -7922,8 +7922,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 19, 33]
 	},
 	{
-		task_id: 1,
-		id: 1496,
+		task_id: "cibule",
+		id: "CI1496",
 		type: 'pismena2',
 		target_letter: 'q',
 		background_letters: ['p', 'y'],
@@ -7938,8 +7938,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 6, 12, 19, 31]
 	},
 	{
-		task_id: 1,
-		id: 1497,
+		task_id: "cibule",
+		id: "CI1497",
 		type: 'pismena2',
 		target_letter: 'o',
 		background_letters: ['c', 'e'],
@@ -7954,8 +7954,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 20, 24, 35]
 	},
 	{
-		task_id: 1,
-		id: 1498,
+		task_id: "cibule",
+		id: "CI1498",
 		type: 'pismena2',
 		target_letter: 'p',
 		background_letters: ['q', 'g'],
@@ -7970,8 +7970,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 10, 17, 22, 30]
 	},
 	{
-		task_id: 1,
-		id: 1499,
+		task_id: "cibule",
+		id: "CI1499",
 		type: 'pismena2',
 		target_letter: 'd',
 		background_letters: ['k', 'b'],
@@ -7986,8 +7986,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 21, 25, 31]
 	},
 	{
-		task_id: 1,
-		id: 1500,
+		task_id: "cibule",
+		id: "CI1500",
 		type: 'pismena2',
 		target_letter: 'a',
 		background_letters: ['v', 'u'],
@@ -8002,8 +8002,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 10, 19, 29, 37]
 	},
 	{
-		task_id: 2,
-		id: 1501,
+		task_id: "cibule",
+		id: "CI1501",
 		type: 'slabiky1',
 		target_letter: 'zi',
 		background_letters: ['e'],
@@ -8018,8 +8018,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 28, 4, 0, 20]
 	},
 	{
-		task_id: 2,
-		id: 1502,
+		task_id: "cibule",
+		id: "CI1502",
 		type: 'slabiky1',
 		target_letter: 'co',
 		background_letters: ['r'],
@@ -8034,8 +8034,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 19, 25, 4]
 	},
 	{
-		task_id: 2,
-		id: 1503,
+		task_id: "cibule",
+		id: "CI1503",
 		type: 'slabiky1',
 		target_letter: 'či',
 		background_letters: ['z'],
@@ -8050,8 +8050,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 18, 22]
 	},
 	{
-		task_id: 2,
-		id: 1504,
+		task_id: "cibule",
+		id: "CI1504",
 		type: 'slabiky1',
 		target_letter: 'nu',
 		background_letters: ['c'],
@@ -8066,8 +8066,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 23, 27, 0]
 	},
 	{
-		task_id: 2,
-		id: 1505,
+		task_id: "cibule",
+		id: "CI1505",
 		type: 'slabiky1',
 		target_letter: 'zo',
 		background_letters: ['e'],
@@ -8082,8 +8082,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 1, 21]
 	},
 	{
-		task_id: 2,
-		id: 1506,
+		task_id: "cibule",
+		id: "CI1506",
 		type: 'slabiky1',
 		target_letter: 'mo',
 		background_letters: ['i'],
@@ -8098,8 +8098,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 14, 4]
 	},
 	{
-		task_id: 2,
-		id: 1507,
+		task_id: "cibule",
+		id: "CI1507",
 		type: 'slabiky1',
 		target_letter: 've',
 		background_letters: ['a'],
@@ -8114,8 +8114,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [22, 27, 1, 6, 14]
 	},
 	{
-		task_id: 2,
-		id: 1508,
+		task_id: "cibule",
+		id: "CI1508",
 		type: 'slabiky1',
 		target_letter: 've',
 		background_letters: ['u'],
@@ -8130,8 +8130,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 16, 1, 24, 28]
 	},
 	{
-		task_id: 2,
-		id: 1509,
+		task_id: "cibule",
+		id: "CI1509",
 		type: 'slabiky1',
 		target_letter: 'zo',
 		background_letters: ['u'],
@@ -8146,8 +8146,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 26, 5, 9]
 	},
 	{
-		task_id: 2,
-		id: 1510,
+		task_id: "cibule",
+		id: "CI1510",
 		type: 'slabiky1',
 		target_letter: 'co',
 		background_letters: ['z'],
@@ -8162,8 +8162,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 0, 23, 19]
 	},
 	{
-		task_id: 2,
-		id: 1511,
+		task_id: "cibule",
+		id: "CI1511",
 		type: 'slabiky1',
 		target_letter: 'vo',
 		background_letters: ['m'],
@@ -8178,8 +8178,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [22, 18, 5]
 	},
 	{
-		task_id: 2,
-		id: 1512,
+		task_id: "cibule",
+		id: "CI1512",
 		type: 'slabiky1',
 		target_letter: 'zu',
 		background_letters: ['š'],
@@ -8194,8 +8194,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 1, 17]
 	},
 	{
-		task_id: 2,
-		id: 1513,
+		task_id: "cibule",
+		id: "CI1513",
 		type: 'slabiky1',
 		target_letter: 've',
 		background_letters: ['o'],
@@ -8210,8 +8210,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 17, 28]
 	},
 	{
-		task_id: 2,
-		id: 1514,
+		task_id: "cibule",
+		id: "CI1514",
 		type: 'slabiky1',
 		target_letter: 'sa',
 		background_letters: ['c'],
@@ -8226,8 +8226,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 26, 18, 1]
 	},
 	{
-		task_id: 2,
-		id: 1515,
+		task_id: "cibule",
+		id: "CI1515",
 		type: 'slabiky1',
 		target_letter: 'zu',
 		background_letters: ['š'],
@@ -8242,8 +8242,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 8, 3, 12, 18]
 	},
 	{
-		task_id: 2,
-		id: 1516,
+		task_id: "cibule",
+		id: "CI1516",
 		type: 'slabiky1',
 		target_letter: 'zu',
 		background_letters: ['c'],
@@ -8258,8 +8258,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 20, 12, 7]
 	},
 	{
-		task_id: 2,
-		id: 1517,
+		task_id: "cibule",
+		id: "CI1517",
 		type: 'slabiky1',
 		target_letter: 'zo',
 		background_letters: ['a'],
@@ -8274,8 +8274,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 4, 0]
 	},
 	{
-		task_id: 2,
-		id: 1518,
+		task_id: "cibule",
+		id: "CI1518",
 		type: 'slabiky1',
 		target_letter: 'co',
 		background_letters: ['o'],
@@ -8290,8 +8290,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 9, 18, 13, 2]
 	},
 	{
-		task_id: 2,
-		id: 1519,
+		task_id: "cibule",
+		id: "CI1519",
 		type: 'slabiky1',
 		target_letter: 'sa',
 		background_letters: ['o'],
@@ -8306,8 +8306,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 14, 28]
 	},
 	{
-		task_id: 2,
-		id: 1520,
+		task_id: "cibule",
+		id: "CI1520",
 		type: 'slabiky1',
 		target_letter: 'no',
 		background_letters: ['r'],
@@ -8322,8 +8322,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 17, 11, 26, 21]
 	},
 	{
-		task_id: 2,
-		id: 1521,
+		task_id: "cibule",
+		id: "CI1521",
 		type: 'slabiky1',
 		target_letter: 'no',
 		background_letters: ['s'],
@@ -8338,8 +8338,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 20, 6, 24, 1]
 	},
 	{
-		task_id: 2,
-		id: 1522,
+		task_id: "cibule",
+		id: "CI1522",
 		type: 'slabiky1',
 		target_letter: 'co',
 		background_letters: ['š'],
@@ -8354,8 +8354,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 20, 26, 2]
 	},
 	{
-		task_id: 2,
-		id: 1523,
+		task_id: "cibule",
+		id: "CI1523",
 		type: 'slabiky1',
 		target_letter: 'nu',
 		background_letters: ['a'],
@@ -8370,8 +8370,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 5, 17, 21]
 	},
 	{
-		task_id: 2,
-		id: 1524,
+		task_id: "cibule",
+		id: "CI1524",
 		type: 'slabiky1',
 		target_letter: 'zo',
 		background_letters: ['n'],
@@ -8386,8 +8386,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12, 28]
 	},
 	{
-		task_id: 2,
-		id: 1525,
+		task_id: "cibule",
+		id: "CI1525",
 		type: 'slabiky1',
 		target_letter: 'zo',
 		background_letters: ['c'],
@@ -8402,8 +8402,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 3, 25]
 	},
 	{
-		task_id: 2,
-		id: 1526,
+		task_id: "cibule",
+		id: "CI1526",
 		type: 'slabiky1',
 		target_letter: 'bok',
 		background_letters: ['o'],
@@ -8418,8 +8418,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 17, 13]
 	},
 	{
-		task_id: 2,
-		id: 1527,
+		task_id: "cibule",
+		id: "CI1527",
 		type: 'slabiky1',
 		target_letter: 'do',
 		background_letters: ['d'],
@@ -8434,8 +8434,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 28, 4, 0]
 	},
 	{
-		task_id: 2,
-		id: 1528,
+		task_id: "cibule",
+		id: "CI1528",
 		type: 'slabiky1',
 		target_letter: 'la',
 		background_letters: ['a'],
@@ -8450,8 +8450,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 11, 4, 18, 28]
 	},
 	{
-		task_id: 2,
-		id: 1529,
+		task_id: "cibule",
+		id: "CI1529",
 		type: 'slabiky1',
 		target_letter: 'hů',
 		background_letters: ['b'],
@@ -8466,8 +8466,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 4, 20, 28]
 	},
 	{
-		task_id: 2,
-		id: 1530,
+		task_id: "cibule",
+		id: "CI1530",
 		type: 'slabiky1',
 		target_letter: 'do',
 		background_letters: ['e'],
@@ -8482,8 +8482,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 18, 0, 4]
 	},
 	{
-		task_id: 2,
-		id: 1531,
+		task_id: "cibule",
+		id: "CI1531",
 		type: 'slabiky1',
 		target_letter: 'hů',
 		background_letters: ['a'],
@@ -8498,8 +8498,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 10]
 	},
 	{
-		task_id: 2,
-		id: 1532,
+		task_id: "cibule",
+		id: "CI1532",
 		type: 'slabiky1',
 		target_letter: 'dá',
 		background_letters: ['o'],
@@ -8514,8 +8514,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 24]
 	},
 	{
-		task_id: 2,
-		id: 1533,
+		task_id: "cibule",
+		id: "CI1533",
 		type: 'slabiky1',
 		target_letter: 'ho',
 		background_letters: ['h'],
@@ -8530,8 +8530,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 5]
 	},
 	{
-		task_id: 2,
-		id: 1534,
+		task_id: "cibule",
+		id: "CI1534",
 		type: 'slabiky1',
 		target_letter: 'ba',
 		background_letters: ['o'],
@@ -8546,8 +8546,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 28]
 	},
 	{
-		task_id: 2,
-		id: 1535,
+		task_id: "cibule",
+		id: "CI1535",
 		type: 'slabiky1',
 		target_letter: 'la',
 		background_letters: ['a'],
@@ -8562,8 +8562,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 1, 27, 9]
 	},
 	{
-		task_id: 2,
-		id: 1536,
+		task_id: "cibule",
+		id: "CI1536",
 		type: 'slabiky1',
 		target_letter: 'la',
 		background_letters: ['e'],
@@ -8578,8 +8578,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [28, 23, 7]
 	},
 	{
-		task_id: 2,
-		id: 1537,
+		task_id: "cibule",
+		id: "CI1537",
 		type: 'slabiky1',
 		target_letter: 'do',
 		background_letters: ['e'],
@@ -8594,8 +8594,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [24, 16, 4, 28]
 	},
 	{
-		task_id: 2,
-		id: 1538,
+		task_id: "cibule",
+		id: "CI1538",
 		type: 'slabiky1',
 		target_letter: 'le',
 		background_letters: ['b'],
@@ -8610,8 +8610,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 12, 3, 16]
 	},
 	{
-		task_id: 2,
-		id: 1539,
+		task_id: "cibule",
+		id: "CI1539",
 		type: 'slabiky1',
 		target_letter: 'la',
 		background_letters: ['u'],
@@ -8626,8 +8626,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 10]
 	},
 	{
-		task_id: 2,
-		id: 1540,
+		task_id: "cibule",
+		id: "CI1540",
 		type: 'slabiky1',
 		target_letter: 'ba',
 		background_letters: ['h'],
@@ -8642,8 +8642,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 14, 1, 21, 6]
 	},
 	{
-		task_id: 2,
-		id: 1541,
+		task_id: "cibule",
+		id: "CI1541",
 		type: 'slabiky1',
 		target_letter: 'he',
 		background_letters: ['o'],
@@ -8658,8 +8658,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 23, 18, 14, 7]
 	},
 	{
-		task_id: 2,
-		id: 1542,
+		task_id: "cibule",
+		id: "CI1542",
 		type: 'slabiky1',
 		target_letter: 'do',
 		background_letters: ['u'],
@@ -8674,8 +8674,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 8, 26, 1]
 	},
 	{
-		task_id: 2,
-		id: 1543,
+		task_id: "cibule",
+		id: "CI1543",
 		type: 'slabiky1',
 		target_letter: 'le',
 		background_letters: ['b'],
@@ -8690,8 +8690,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 6, 0]
 	},
 	{
-		task_id: 2,
-		id: 1544,
+		task_id: "cibule",
+		id: "CI1544",
 		type: 'slabiky1',
 		target_letter: 'dá',
 		background_letters: ['h'],
@@ -8706,8 +8706,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 14, 24, 20, 8]
 	},
 	{
-		task_id: 2,
-		id: 1545,
+		task_id: "cibule",
+		id: "CI1545",
 		type: 'slabiky1',
 		target_letter: 'ba',
 		background_letters: ['o'],
@@ -8722,8 +8722,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 15, 4, 11]
 	},
 	{
-		task_id: 2,
-		id: 1546,
+		task_id: "cibule",
+		id: "CI1546",
 		type: 'slabiky1',
 		target_letter: 'de',
 		background_letters: ['h'],
@@ -8738,8 +8738,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 17]
 	},
 	{
-		task_id: 2,
-		id: 1547,
+		task_id: "cibule",
+		id: "CI1547",
 		type: 'slabiky1',
 		target_letter: 'he',
 		background_letters: ['u'],
@@ -8754,8 +8754,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 10, 26, 2, 22]
 	},
 	{
-		task_id: 2,
-		id: 1548,
+		task_id: "cibule",
+		id: "CI1548",
 		type: 'slabiky1',
 		target_letter: 'be',
 		background_letters: ['u'],
@@ -8770,8 +8770,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 2, 27, 14, 21]
 	},
 	{
-		task_id: 2,
-		id: 1549,
+		task_id: "cibule",
+		id: "CI1549",
 		type: 'slabiky1',
 		target_letter: 'dá',
 		background_letters: ['u'],
@@ -8786,8 +8786,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 2, 17]
 	},
 	{
-		task_id: 2,
-		id: 1550,
+		task_id: "cibule",
+		id: "CI1550",
 		type: 'slabiky1',
 		target_letter: 'lu',
 		background_letters: ['a'],
@@ -8802,8 +8802,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 12]
 	},
 	{
-		task_id: 2,
-		id: 1551,
+		task_id: "cibule",
+		id: "CI1551",
 		type: 'slabiky1',
 		target_letter: 'hů',
 		background_letters: ['a'],
@@ -8818,8 +8818,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 12]
 	},
 	{
-		task_id: 2,
-		id: 1552,
+		task_id: "cibule",
+		id: "CI1552",
 		type: 'slabiky1',
 		target_letter: 'pa',
 		background_letters: ['g'],
@@ -8834,8 +8834,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 28, 4, 0]
 	},
 	{
-		task_id: 2,
-		id: 1553,
+		task_id: "cibule",
+		id: "CI1553",
 		type: 'slabiky1',
 		target_letter: 'qi',
 		background_letters: ['i'],
@@ -8850,8 +8850,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 11, 4, 18, 28]
 	},
 	{
-		task_id: 2,
-		id: 1554,
+		task_id: "cibule",
+		id: "CI1554",
 		type: 'slabiky1',
 		target_letter: 'pi',
 		background_letters: ['q'],
@@ -8866,8 +8866,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 4, 20, 28]
 	},
 	{
-		task_id: 2,
-		id: 1555,
+		task_id: "cibule",
+		id: "CI1555",
 		type: 'slabiky1',
 		target_letter: 'pa',
 		background_letters: ['a'],
@@ -8882,8 +8882,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 18, 0, 4]
 	},
 	{
-		task_id: 2,
-		id: 1556,
+		task_id: "cibule",
+		id: "CI1556",
 		type: 'slabiky1',
 		target_letter: 'pi',
 		background_letters: ['i'],
@@ -8898,8 +8898,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 10]
 	},
 	{
-		task_id: 2,
-		id: 1557,
+		task_id: "cibule",
+		id: "CI1557",
 		type: 'slabiky1',
 		target_letter: 'jo',
 		background_letters: ['o'],
@@ -8914,8 +8914,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 24]
 	},
 	{
-		task_id: 2,
-		id: 1558,
+		task_id: "cibule",
+		id: "CI1558",
 		type: 'slabiky1',
 		target_letter: 'ji',
 		background_letters: ['p'],
@@ -8930,8 +8930,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 5]
 	},
 	{
-		task_id: 2,
-		id: 1559,
+		task_id: "cibule",
+		id: "CI1559",
 		type: 'slabiky1',
 		target_letter: 'go',
 		background_letters: ['o'],
@@ -8946,8 +8946,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 28]
 	},
 	{
-		task_id: 2,
-		id: 1560,
+		task_id: "cibule",
+		id: "CI1560",
 		type: 'slabiky1',
 		target_letter: 'qi',
 		background_letters: ['i'],
@@ -8962,8 +8962,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 1, 27, 9]
 	},
 	{
-		task_id: 2,
-		id: 1561,
+		task_id: "cibule",
+		id: "CI1561",
 		type: 'slabiky1',
 		target_letter: 'qi',
 		background_letters: ['a'],
@@ -8978,8 +8978,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [28, 23, 7]
 	},
 	{
-		task_id: 2,
-		id: 1562,
+		task_id: "cibule",
+		id: "CI1562",
 		type: 'slabiky1',
 		target_letter: 'pa',
 		background_letters: ['a'],
@@ -8994,8 +8994,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [24, 16, 4, 28]
 	},
 	{
-		task_id: 2,
-		id: 1563,
+		task_id: "cibule",
+		id: "CI1563",
 		type: 'slabiky1',
 		target_letter: 'gu',
 		background_letters: ['q'],
@@ -9010,8 +9010,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 12, 3, 16]
 	},
 	{
-		task_id: 2,
-		id: 1564,
+		task_id: "cibule",
+		id: "CI1564",
 		type: 'slabiky1',
 		target_letter: 'qi',
 		background_letters: ['q'],
@@ -9026,8 +9026,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11]
 	},
 	{
-		task_id: 2,
-		id: 1565,
+		task_id: "cibule",
+		id: "CI1565",
 		type: 'slabiky1',
 		target_letter: 'go',
 		background_letters: ['p'],
@@ -9042,8 +9042,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 14, 1, 21, 6]
 	},
 	{
-		task_id: 2,
-		id: 1566,
+		task_id: "cibule",
+		id: "CI1566",
 		type: 'slabiky1',
 		target_letter: 'po',
 		background_letters: ['o'],
@@ -9058,8 +9058,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 23, 18, 14, 7]
 	},
 	{
-		task_id: 2,
-		id: 1567,
+		task_id: "cibule",
+		id: "CI1567",
 		type: 'slabiky1',
 		target_letter: 'pa',
 		background_letters: ['a'],
@@ -9074,8 +9074,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 20, 27, 1]
 	},
 	{
-		task_id: 2,
-		id: 1568,
+		task_id: "cibule",
+		id: "CI1568",
 		type: 'slabiky1',
 		target_letter: 'gu',
 		background_letters: ['q'],
@@ -9090,8 +9090,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 6, 0]
 	},
 	{
-		task_id: 2,
-		id: 1569,
+		task_id: "cibule",
+		id: "CI1569",
 		type: 'slabiky1',
 		target_letter: 'jo',
 		background_letters: ['p'],
@@ -9106,8 +9106,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 14, 24, 20, 8]
 	},
 	{
-		task_id: 2,
-		id: 1570,
+		task_id: "cibule",
+		id: "CI1570",
 		type: 'slabiky1',
 		target_letter: 'go',
 		background_letters: ['o'],
@@ -9122,8 +9122,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 15, 4, 11]
 	},
 	{
-		task_id: 2,
-		id: 1571,
+		task_id: "cibule",
+		id: "CI1571",
 		type: 'slabiky1',
 		target_letter: 'ja',
 		background_letters: ['p'],
@@ -9138,8 +9138,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 17]
 	},
 	{
-		task_id: 2,
-		id: 1572,
+		task_id: "cibule",
+		id: "CI1572",
 		type: 'slabiky1',
 		target_letter: 'po',
 		background_letters: ['a'],
@@ -9154,8 +9154,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 25, 17, 4, 21]
 	},
 	{
-		task_id: 2,
-		id: 1573,
+		task_id: "cibule",
+		id: "CI1573",
 		type: 'slabiky1',
 		target_letter: 'ja',
 		background_letters: ['o'],
@@ -9170,8 +9170,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 16, 3]
 	},
 	{
-		task_id: 2,
-		id: 1574,
+		task_id: "cibule",
+		id: "CI1574",
 		type: 'slabiky1',
 		target_letter: 'ja',
 		background_letters: ['q'],
@@ -9186,8 +9186,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 17, 8, 23, 27]
 	},
 	{
-		task_id: 2,
-		id: 1575,
+		task_id: "cibule",
+		id: "CI1575",
 		type: 'slabiky1',
 		target_letter: 'go',
 		background_letters: ['a'],
@@ -9202,8 +9202,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 19, 11]
 	},
 	{
-		task_id: 2,
-		id: 1576,
+		task_id: "cibule",
+		id: "CI1576",
 		type: 'slabiky1',
 		target_letter: 'qi',
 		background_letters: ['g'],
@@ -9218,8 +9218,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 0, 24, 7, 14]
 	},
 	{
-		task_id: 2,
-		id: 1577,
+		task_id: "cibule",
+		id: "CI1577",
 		type: 'slabiky1',
 		target_letter: 'cop',
 		background_letters: ['d'],
@@ -9234,8 +9234,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 4, 0, 20]
 	},
 	{
-		task_id: 2,
-		id: 1578,
+		task_id: "cibule",
+		id: "CI1578",
 		type: 'slabiky1',
 		target_letter: 'hud',
 		background_letters: ['s'],
@@ -9250,8 +9250,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 0, 26]
 	},
 	{
-		task_id: 2,
-		id: 1579,
+		task_id: "cibule",
+		id: "CI1579",
 		type: 'slabiky1',
 		target_letter: 'čap',
 		background_letters: ['q'],
@@ -9266,8 +9266,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 4]
 	},
 	{
-		task_id: 2,
-		id: 1580,
+		task_id: "cibule",
+		id: "CI1580",
 		type: 'slabiky1',
 		target_letter: 'taš',
 		background_letters: ['a'],
@@ -9282,8 +9282,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 18, 27, 0, 23]
 	},
 	{
-		task_id: 2,
-		id: 1581,
+		task_id: "cibule",
+		id: "CI1581",
 		type: 'slabiky1',
 		target_letter: 'suj',
 		background_letters: ['t'],
@@ -9298,8 +9298,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [24, 12, 20, 3, 7]
 	},
 	{
-		task_id: 2,
-		id: 1582,
+		task_id: "cibule",
+		id: "CI1582",
 		type: 'slabiky1',
 		target_letter: 'chlu',
 		background_letters: ['l'],
@@ -9314,8 +9314,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 12, 25, 17, 7]
 	},
 	{
-		task_id: 2,
-		id: 1583,
+		task_id: "cibule",
+		id: "CI1583",
 		type: 'slabiky1',
 		target_letter: 'šla',
 		background_letters: ['p'],
@@ -9330,8 +9330,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 10]
 	},
 	{
-		task_id: 2,
-		id: 1584,
+		task_id: "cibule",
+		id: "CI1584",
 		type: 'slabiky1',
 		target_letter: 'koš',
 		background_letters: ['c'],
@@ -9346,8 +9346,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 27]
 	},
 	{
-		task_id: 2,
-		id: 1585,
+		task_id: "cibule",
+		id: "CI1585",
 		type: 'slabiky1',
 		target_letter: 'taš',
 		background_letters: ['d'],
@@ -9362,8 +9362,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 21]
 	},
 	{
-		task_id: 2,
-		id: 1586,
+		task_id: "cibule",
+		id: "CI1586",
 		type: 'slabiky1',
 		target_letter: 'han',
 		background_letters: ['m'],
@@ -9378,8 +9378,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 7, 0]
 	},
 	{
-		task_id: 2,
-		id: 1587,
+		task_id: "cibule",
+		id: "CI1587",
 		type: 'slabiky1',
 		target_letter: 'zád',
 		background_letters: ['c'],
@@ -9394,8 +9394,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 1, 10, 27, 5]
 	},
 	{
-		task_id: 2,
-		id: 1588,
+		task_id: "cibule",
+		id: "CI1588",
 		type: 'slabiky1',
 		target_letter: 'ket',
 		background_letters: ['s'],
@@ -9410,8 +9410,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 10, 23, 16, 8]
 	},
 	{
-		task_id: 2,
-		id: 1589,
+		task_id: "cibule",
+		id: "CI1589",
 		type: 'slabiky1',
 		target_letter: 'cop',
 		background_letters: ['b'],
@@ -9426,8 +9426,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 27]
 	},
 	{
-		task_id: 2,
-		id: 1590,
+		task_id: "cibule",
+		id: "CI1590",
 		type: 'slabiky1',
 		target_letter: 'cop',
 		background_letters: ['a'],
@@ -9442,8 +9442,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 17]
 	},
 	{
-		task_id: 2,
-		id: 1591,
+		task_id: "cibule",
+		id: "CI1591",
 		type: 'slabiky1',
 		target_letter: 'suj',
 		background_letters: ['k'],
@@ -9458,8 +9458,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 25]
 	},
 	{
-		task_id: 2,
-		id: 1592,
+		task_id: "cibule",
+		id: "CI1592",
 		type: 'slabiky1',
 		target_letter: 'zád',
 		background_letters: ['g'],
@@ -9474,8 +9474,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 3, 12]
 	},
 	{
-		task_id: 2,
-		id: 1593,
+		task_id: "cibule",
+		id: "CI1593",
 		type: 'slabiky1',
 		target_letter: 'mej',
 		background_letters: ['l'],
@@ -9490,8 +9490,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 3]
 	},
 	{
-		task_id: 2,
-		id: 1594,
+		task_id: "cibule",
+		id: "CI1594",
 		type: 'slabiky1',
 		target_letter: 'her',
 		background_letters: ['t'],
@@ -9506,8 +9506,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 16]
 	},
 	{
-		task_id: 2,
-		id: 1595,
+		task_id: "cibule",
+		id: "CI1595",
 		type: 'slabiky1',
 		target_letter: 'koš',
 		background_letters: ['e'],
@@ -9522,8 +9522,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 7]
 	},
 	{
-		task_id: 2,
-		id: 1596,
+		task_id: "cibule",
+		id: "CI1596",
 		type: 'slabiky1',
 		target_letter: 'zád',
 		background_letters: ['e'],
@@ -9538,8 +9538,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 16, 23, 12, 27]
 	},
 	{
-		task_id: 2,
-		id: 1597,
+		task_id: "cibule",
+		id: "CI1597",
 		type: 'slabiky1',
 		target_letter: 'pek',
 		background_letters: ['a'],
@@ -9554,8 +9554,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 6]
 	},
 	{
-		task_id: 2,
-		id: 1598,
+		task_id: "cibule",
+		id: "CI1598",
 		type: 'slabiky1',
 		target_letter: 'her',
 		background_letters: ['t'],
@@ -9570,8 +9570,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 18, 5]
 	},
 	{
-		task_id: 2,
-		id: 1599,
+		task_id: "cibule",
+		id: "CI1599",
 		type: 'slabiky1',
 		target_letter: 'tah',
 		background_letters: ['m'],
@@ -9586,8 +9586,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 1, 8, 13, 17]
 	},
 	{
-		task_id: 2,
-		id: 1600,
+		task_id: "cibule",
+		id: "CI1600",
 		type: 'slabiky1',
 		target_letter: 'mej',
 		background_letters: ['r'],
@@ -9602,8 +9602,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 23, 13]
 	},
 	{
-		task_id: 2,
-		id: 1601,
+		task_id: "cibule",
+		id: "CI1601",
 		type: 'slabiky2',
 		target_letter: 'jo',
 		background_letters: ['c', 'é', 'í'],
@@ -9618,8 +9618,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 0, 26, 11, 7]
 	},
 	{
-		task_id: 2,
-		id: 1602,
+		task_id: "cibule",
+		id: "CI1602",
 		type: 'slabiky2',
 		target_letter: 'co',
 		background_letters: ['ř', 'v', 'i'],
@@ -9634,8 +9634,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 20, 0, 27]
 	},
 	{
-		task_id: 2,
-		id: 1603,
+		task_id: "cibule",
+		id: "CI1603",
 		type: 'slabiky2',
 		target_letter: 'pi',
 		background_letters: ['u', 'ř', 'g'],
@@ -9650,8 +9650,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 25, 4]
 	},
 	{
-		task_id: 2,
-		id: 1604,
+		task_id: "cibule",
+		id: "CI1604",
 		type: 'slabiky2',
 		target_letter: 'fe',
 		background_letters: ['ž', 'í', 'n'],
@@ -9666,8 +9666,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 28, 24, 16]
 	},
 	{
-		task_id: 2,
-		id: 1605,
+		task_id: "cibule",
+		id: "CI1605",
 		type: 'slabiky2',
 		target_letter: 'go',
 		background_letters: ['ý', 'i', 'n'],
@@ -9682,8 +9682,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [22, 14, 4, 0, 28]
 	},
 	{
-		task_id: 2,
-		id: 1606,
+		task_id: "cibule",
+		id: "CI1606",
 		type: 'slabiky2',
 		target_letter: 'da',
 		background_letters: ['y', 'o', 'e'],
@@ -9698,8 +9698,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 4, 11]
 	},
 	{
-		task_id: 2,
-		id: 1607,
+		task_id: "cibule",
+		id: "CI1607",
 		type: 'slabiky2',
 		target_letter: 'he',
 		background_letters: ['r', 'l', 'n'],
@@ -9714,8 +9714,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 11, 5, 27, 21]
 	},
 	{
-		task_id: 2,
-		id: 1608,
+		task_id: "cibule",
+		id: "CI1608",
 		type: 'slabiky2',
 		target_letter: 'ku',
 		background_letters: ['v', 'h', 'l'],
@@ -9730,8 +9730,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 16, 28, 24]
 	},
 	{
-		task_id: 2,
-		id: 1609,
+		task_id: "cibule",
+		id: "CI1609",
 		type: 'slabiky2',
 		target_letter: 'ju',
 		background_letters: ['í', 'š', 'd'],
@@ -9746,8 +9746,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 27, 6, 20]
 	},
 	{
-		task_id: 2,
-		id: 1610,
+		task_id: "cibule",
+		id: "CI1610",
 		type: 'slabiky2',
 		target_letter: 'di',
 		background_letters: ['g', 'y', 'q'],
@@ -9762,8 +9762,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 24, 4, 19]
 	},
 	{
-		task_id: 2,
-		id: 1611,
+		task_id: "cibule",
+		id: "CI1611",
 		type: 'slabiky2',
 		target_letter: 'ka',
 		background_letters: ['g', 'b', 'ž'],
@@ -9778,8 +9778,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 26, 0]
 	},
 	{
-		task_id: 2,
-		id: 1612,
+		task_id: "cibule",
+		id: "CI1612",
 		type: 'slabiky2',
 		target_letter: 'zu',
 		background_letters: ['r', 'é', 'j'],
@@ -9794,8 +9794,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 11, 19]
 	},
 	{
-		task_id: 2,
-		id: 1613,
+		task_id: "cibule",
+		id: "CI1613",
 		type: 'slabiky2',
 		target_letter: 'le',
 		background_letters: ['k', 'z', 'u'],
@@ -9810,8 +9810,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 9, 14, 22, 26]
 	},
 	{
-		task_id: 2,
-		id: 1614,
+		task_id: "cibule",
+		id: "CI1614",
 		type: 'slabiky2',
 		target_letter: 'ka',
 		background_letters: ['j', 'é', 's'],
@@ -9826,8 +9826,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 23, 16, 11, 28]
 	},
 	{
-		task_id: 2,
-		id: 1615,
+		task_id: "cibule",
+		id: "CI1615",
 		type: 'slabiky2',
 		target_letter: 'bů',
 		background_letters: ['i', 'y', 'j'],
@@ -9842,8 +9842,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 18, 14]
 	},
 	{
-		task_id: 2,
-		id: 1616,
+		task_id: "cibule",
+		id: "CI1616",
 		type: 'slabiky2',
 		target_letter: 'go',
 		background_letters: ['l', 's', 'i'],
@@ -9858,8 +9858,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 9, 16, 5, 28]
 	},
 	{
-		task_id: 2,
-		id: 1617,
+		task_id: "cibule",
+		id: "CI1617",
 		type: 'slabiky2',
 		target_letter: 'hů',
 		background_letters: ['o', 'r', 'f'],
@@ -9874,8 +9874,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 7, 13, 17, 1]
 	},
 	{
-		task_id: 2,
-		id: 1618,
+		task_id: "cibule",
+		id: "CI1618",
 		type: 'slabiky2',
 		target_letter: 'fe',
 		background_letters: ['p', 'j', 'l'],
@@ -9890,8 +9890,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 24, 14, 1, 9]
 	},
 	{
-		task_id: 2,
-		id: 1619,
+		task_id: "cibule",
+		id: "CI1619",
 		type: 'slabiky2',
 		target_letter: 're',
 		background_letters: ['é', 'v', 'e'],
@@ -9906,8 +9906,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 6, 2, 20]
 	},
 	{
-		task_id: 2,
-		id: 1620,
+		task_id: "cibule",
+		id: "CI1620",
 		type: 'slabiky2',
 		target_letter: 'me',
 		background_letters: ['b', 'v', 'd'],
@@ -9922,8 +9922,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 20, 12, 8, 24]
 	},
 	{
-		task_id: 2,
-		id: 1621,
+		task_id: "cibule",
+		id: "CI1621",
 		type: 'slabiky2',
 		target_letter: 'cho',
 		background_letters: ['g', 'u', 'ř'],
@@ -9938,8 +9938,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 10, 20, 27]
 	},
 	{
-		task_id: 2,
-		id: 1622,
+		task_id: "cibule",
+		id: "CI1622",
 		type: 'slabiky2',
 		target_letter: 're',
 		background_letters: ['e', 'ř', 'í'],
@@ -9954,8 +9954,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 28, 23, 5]
 	},
 	{
-		task_id: 2,
-		id: 1623,
+		task_id: "cibule",
+		id: "CI1623",
 		type: 'slabiky2',
 		target_letter: 'zo',
 		background_letters: ['g', 'v', 'k'],
@@ -9970,8 +9970,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 28, 0]
 	},
 	{
-		task_id: 2,
-		id: 1624,
+		task_id: "cibule",
+		id: "CI1624",
 		type: 'slabiky2',
 		target_letter: 'pa',
 		background_letters: ['i', 'x', 'u'],
@@ -9986,8 +9986,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 27, 4, 8]
 	},
 	{
-		task_id: 2,
-		id: 1625,
+		task_id: "cibule",
+		id: "CI1625",
 		type: 'slabiky2',
 		target_letter: 'do',
 		background_letters: ['t', 'e', 'é'],
@@ -10002,8 +10002,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 23, 16, 3]
 	},
 	{
-		task_id: 2,
-		id: 1626,
+		task_id: "cibule",
+		id: "CI1626",
 		type: 'slabiky2',
 		target_letter: 'da',
 		background_letters: ['f', 'd', 'l'],
@@ -10018,8 +10018,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 2, 23, 6]
 	},
 	{
-		task_id: 2,
-		id: 1627,
+		task_id: "cibule",
+		id: "CI1627",
 		type: 'slabiky2',
 		target_letter: 'ma',
 		background_letters: ['b', 'x', 'y'],
@@ -10034,8 +10034,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 26, 14, 1]
 	},
 	{
-		task_id: 2,
-		id: 1628,
+		task_id: "cibule",
+		id: "CI1628",
 		type: 'slabiky2',
 		target_letter: 'ty',
 		background_letters: ['é', 'c', 'p'],
@@ -10050,8 +10050,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 24, 16, 2, 12]
 	},
 	{
-		task_id: 2,
-		id: 1629,
+		task_id: "cibule",
+		id: "CI1629",
 		type: 'slabiky2',
 		target_letter: 'co',
 		background_letters: ['t', 'a', 's'],
@@ -10066,8 +10066,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 19, 23, 1]
 	},
 	{
-		task_id: 2,
-		id: 1630,
+		task_id: "cibule",
+		id: "CI1630",
 		type: 'slabiky2',
 		target_letter: 'za',
 		background_letters: ['é', 'ý', 'z'],
@@ -10082,8 +10082,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 13, 17]
 	},
 	{
-		task_id: 2,
-		id: 1631,
+		task_id: "cibule",
+		id: "CI1631",
 		type: 'slabiky2',
 		target_letter: 'di',
 		background_letters: ['í', 'a', 'ř'],
@@ -10098,8 +10098,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 9, 21, 17, 26]
 	},
 	{
-		task_id: 2,
-		id: 1632,
+		task_id: "cibule",
+		id: "CI1632",
 		type: 'slabiky2',
 		target_letter: 'mau',
 		background_letters: ['o', 'x', 'l'],
@@ -10114,8 +10114,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 25, 12, 21, 17]
 	},
 	{
-		task_id: 2,
-		id: 1633,
+		task_id: "cibule",
+		id: "CI1633",
 		type: 'slabiky2',
 		target_letter: 'ti',
 		background_letters: ['g', 'š', 'k'],
@@ -10130,8 +10130,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 22, 0, 10]
 	},
 	{
-		task_id: 2,
-		id: 1634,
+		task_id: "cibule",
+		id: "CI1634",
 		type: 'slabiky2',
 		target_letter: 'ju',
 		background_letters: ['š', 'z', 'a'],
@@ -10146,8 +10146,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [22, 14, 26, 18, 0]
 	},
 	{
-		task_id: 2,
-		id: 1635,
+		task_id: "cibule",
+		id: "CI1635",
 		type: 'slabiky2',
 		target_letter: 'ju',
 		background_letters: ['b', 'u', 'ž'],
@@ -10162,8 +10162,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 28, 16, 20, 12]
 	},
 	{
-		task_id: 2,
-		id: 1636,
+		task_id: "cibule",
+		id: "CI1636",
 		type: 'slabiky2',
 		target_letter: 'ka',
 		background_letters: ['n', 'p', 'c'],
@@ -10178,8 +10178,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 9, 25, 0, 14]
 	},
 	{
-		task_id: 2,
-		id: 1637,
+		task_id: "cibule",
+		id: "CI1637",
 		type: 'slabiky2',
 		target_letter: 'he',
 		background_letters: ['i', 'ž', 'a'],
@@ -10194,8 +10194,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 20, 27, 3, 12]
 	},
 	{
-		task_id: 2,
-		id: 1638,
+		task_id: "cibule",
+		id: "CI1638",
 		type: 'slabiky2',
 		target_letter: 'de',
 		background_letters: ['y', 'y', 'č'],
@@ -10210,8 +10210,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 26, 4, 0, 18]
 	},
 	{
-		task_id: 2,
-		id: 1639,
+		task_id: "cibule",
+		id: "CI1639",
 		type: 'slabiky2',
 		target_letter: 'py',
 		background_letters: ['g', 'f', 'm'],
@@ -10226,8 +10226,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 0, 23]
 	},
 	{
-		task_id: 2,
-		id: 1640,
+		task_id: "cibule",
+		id: "CI1640",
 		type: 'slabiky2',
 		target_letter: 'le',
 		background_letters: ['z', 'j', 'm'],
@@ -10242,8 +10242,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 20, 6, 27]
 	},
 	{
-		task_id: 2,
-		id: 1641,
+		task_id: "cibule",
+		id: "CI1641",
 		type: 'slabiky2',
 		target_letter: 'nu',
 		background_letters: ['r', 'k', 'j'],
@@ -10258,8 +10258,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 0, 26]
 	},
 	{
-		task_id: 2,
-		id: 1642,
+		task_id: "cibule",
+		id: "CI1642",
 		type: 'slabiky2',
 		target_letter: 'ha',
 		background_letters: ['b', 'v', 'g'],
@@ -10274,8 +10274,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 12, 25]
 	},
 	{
-		task_id: 2,
-		id: 1643,
+		task_id: "cibule",
+		id: "CI1643",
 		type: 'slabiky2',
 		target_letter: 'ky',
 		background_letters: ['p', 'x', 'd'],
@@ -10290,8 +10290,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 9, 22, 16, 27]
 	},
 	{
-		task_id: 2,
-		id: 1644,
+		task_id: "cibule",
+		id: "CI1644",
 		type: 'slabiky2',
 		target_letter: 'hů',
 		background_letters: ['í', 'c', 'q'],
@@ -10306,8 +10306,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [24, 7, 18, 1, 13]
 	},
 	{
-		task_id: 2,
-		id: 1645,
+		task_id: "cibule",
+		id: "CI1645",
 		type: 'slabiky2',
 		target_letter: 'ka',
 		background_letters: ['b', 'h', 'i'],
@@ -10322,8 +10322,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 8, 18, 26]
 	},
 	{
-		task_id: 2,
-		id: 1646,
+		task_id: "cibule",
+		id: "CI1646",
 		type: 'slabiky2',
 		target_letter: 'hů',
 		background_letters: ['d', 'y', 'p'],
@@ -10338,8 +10338,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 19, 15, 24]
 	},
 	{
-		task_id: 2,
-		id: 1647,
+		task_id: "cibule",
+		id: "CI1647",
 		type: 'slabiky2',
 		target_letter: 'cho',
 		background_letters: ['n', 'd', 'g'],
@@ -10354,8 +10354,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 21, 17, 2]
 	},
 	{
-		task_id: 2,
-		id: 1648,
+		task_id: "cibule",
+		id: "CI1648",
 		type: 'slabiky2',
 		target_letter: 'ši',
 		background_letters: ['c', 'k', 'p'],
@@ -10370,8 +10370,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 24]
 	},
 	{
-		task_id: 2,
-		id: 1649,
+		task_id: "cibule",
+		id: "CI1649",
 		type: 'slabiky2',
 		target_letter: 'mi',
 		background_letters: ['g', 'h', 'f'],
@@ -10386,8 +10386,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 0, 5, 19, 28]
 	},
 	{
-		task_id: 2,
-		id: 1650,
+		task_id: "cibule",
+		id: "CI1650",
 		type: 'slabiky2',
 		target_letter: 'hů',
 		background_letters: ['j', 'a', 'v'],
@@ -10402,8 +10402,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 5, 11, 16]
 	},
 	{
-		task_id: 2,
-		id: 1651,
+		task_id: "cibule",
+		id: "CI1651",
 		type: 'slabiky2',
 		target_letter: 'jó',
 		background_letters: ['y', 'o', 'f'],
@@ -10418,8 +10418,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 18, 22, 14, 5]
 	},
 	{
-		task_id: 2,
-		id: 1652,
+		task_id: "cibule",
+		id: "CI1652",
 		type: 'slabiky2',
 		target_letter: 'la',
 		background_letters: ['š', 'n', 'ý'],
@@ -10434,8 +10434,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 4, 18, 22, 10]
 	},
 	{
-		task_id: 2,
-		id: 1653,
+		task_id: "cibule",
+		id: "CI1653",
 		type: 'slabiky2',
 		target_letter: 'du',
 		background_letters: ['q', 'l', 'ž'],
@@ -10450,8 +10450,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 19, 1, 10]
 	},
 	{
-		task_id: 2,
-		id: 1654,
+		task_id: "cibule",
+		id: "CI1654",
 		type: 'slabiky2',
 		target_letter: 'ni',
 		background_letters: ['š', 'e', 'é'],
@@ -10466,8 +10466,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 26, 16, 12, 20]
 	},
 	{
-		task_id: 2,
-		id: 1655,
+		task_id: "cibule",
+		id: "CI1655",
 		type: 'slabiky2',
 		target_letter: 'po',
 		background_letters: ['k', 'j', 'ř'],
@@ -10482,8 +10482,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 19, 10, 15]
 	},
 	{
-		task_id: 2,
-		id: 1656,
+		task_id: "cibule",
+		id: "CI1656",
 		type: 'slabiky2',
 		target_letter: 'dy',
 		background_letters: ['í', 'h', 'u'],
@@ -10498,8 +10498,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 6, 22, 1, 28]
 	},
 	{
-		task_id: 2,
-		id: 1657,
+		task_id: "cibule",
+		id: "CI1657",
 		type: 'slabiky2',
 		target_letter: 'du',
 		background_letters: ['b', 'c', 't'],
@@ -10514,8 +10514,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [28, 23, 4]
 	},
 	{
-		task_id: 2,
-		id: 1658,
+		task_id: "cibule",
+		id: "CI1658",
 		type: 'slabiky2',
 		target_letter: 'le',
 		background_letters: ['é', 'a', 'š'],
@@ -10530,8 +10530,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 28, 24, 18, 7]
 	},
 	{
-		task_id: 2,
-		id: 1659,
+		task_id: "cibule",
+		id: "CI1659",
 		type: 'slabiky2',
 		target_letter: 'jo',
 		background_letters: ['t', 'ř', 'p'],
@@ -10546,8 +10546,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 27, 2, 14, 20]
 	},
 	{
-		task_id: 2,
-		id: 1660,
+		task_id: "cibule",
+		id: "CI1660",
 		type: 'slabiky2',
 		target_letter: 'ku',
 		background_letters: ['b', 'x', 'n'],
@@ -10562,8 +10562,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 3, 20, 28]
 	},
 	{
-		task_id: 2,
-		id: 1661,
+		task_id: "cibule",
+		id: "CI1661",
 		type: 'slabiky2',
 		target_letter: 'cha',
 		background_letters: ['v', 'e', 'y'],
@@ -10578,8 +10578,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 25, 2, 17]
 	},
 	{
-		task_id: 2,
-		id: 1662,
+		task_id: "cibule",
+		id: "CI1662",
 		type: 'slabiky2',
 		target_letter: 'he',
 		background_letters: ['b', 'q', 'a'],
@@ -10594,8 +10594,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 25, 19]
 	},
 	{
-		task_id: 2,
-		id: 1663,
+		task_id: "cibule",
+		id: "CI1663",
 		type: 'slabiky2',
 		target_letter: 're',
 		background_letters: ['n', 'r', 'u'],
@@ -10610,8 +10610,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 21, 4, 17]
 	},
 	{
-		task_id: 2,
-		id: 1664,
+		task_id: "cibule",
+		id: "CI1664",
 		type: 'slabiky2',
 		target_letter: 'ma',
 		background_letters: ['o', 'í', 'é'],
@@ -10626,8 +10626,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 10, 24, 1]
 	},
 	{
-		task_id: 2,
-		id: 1665,
+		task_id: "cibule",
+		id: "CI1665",
 		type: 'slabiky2',
 		target_letter: 'do',
 		background_letters: ['d', 'c', 'd'],
@@ -10642,8 +10642,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 14, 18, 10, 6]
 	},
 	{
-		task_id: 2,
-		id: 1666,
+		task_id: "cibule",
+		id: "CI1666",
 		type: 'slabiky2',
 		target_letter: 'cha',
 		background_letters: ['z', 'd', 'y'],
@@ -10658,8 +10658,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 27, 11, 23, 0]
 	},
 	{
-		task_id: 2,
-		id: 1667,
+		task_id: "cibule",
+		id: "CI1667",
 		type: 'slabiky2',
 		target_letter: 'ky',
 		background_letters: ['c', 'g', 'o'],
@@ -10674,8 +10674,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 5, 1]
 	},
 	{
-		task_id: 2,
-		id: 1668,
+		task_id: "cibule",
+		id: "CI1668",
 		type: 'slabiky2',
 		target_letter: 'do',
 		background_letters: ['j', 'f', 'c'],
@@ -10690,8 +10690,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 26, 5]
 	},
 	{
-		task_id: 2,
-		id: 1669,
+		task_id: "cibule",
+		id: "CI1669",
 		type: 'slabiky2',
 		target_letter: 'hý',
 		background_letters: ['u', 'q', 'š'],
@@ -10706,8 +10706,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 27, 13, 1]
 	},
 	{
-		task_id: 2,
-		id: 1670,
+		task_id: "cibule",
+		id: "CI1670",
 		type: 'slabiky2',
 		target_letter: 'ku',
 		background_letters: ['ý', 'd', 'n'],
@@ -10722,8 +10722,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 9, 1]
 	},
 	{
-		task_id: 2,
-		id: 1671,
+		task_id: "cibule",
+		id: "CI1671",
 		type: 'slabiky2',
 		target_letter: 'ko',
 		background_letters: ['y', 'š', 'n'],
@@ -10738,8 +10738,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 23, 8, 0]
 	},
 	{
-		task_id: 2,
-		id: 1672,
+		task_id: "cibule",
+		id: "CI1672",
 		type: 'slabiky2',
 		target_letter: 'fe',
 		background_letters: ['č', 'b', 'q'],
@@ -10754,8 +10754,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 27, 22, 16, 0]
 	},
 	{
-		task_id: 2,
-		id: 1673,
+		task_id: "cibule",
+		id: "CI1673",
 		type: 'slabiky2',
 		target_letter: 'ka',
 		background_letters: ['u', 'v', 'd'],
@@ -10770,8 +10770,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 19, 10, 23]
 	},
 	{
-		task_id: 2,
-		id: 1674,
+		task_id: "cibule",
+		id: "CI1674",
 		type: 'slabiky2',
 		target_letter: 'hý',
 		background_letters: ['t', 'l', 'j'],
@@ -10786,8 +10786,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 8, 26, 2]
 	},
 	{
-		task_id: 2,
-		id: 1675,
+		task_id: "cibule",
+		id: "CI1675",
 		type: 'slabiky2',
 		target_letter: 'ky',
 		background_letters: ['e', 'j', 'c'],
@@ -10802,8 +10802,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 0, 5, 13, 17]
 	},
 	{
-		task_id: 2,
-		id: 1676,
+		task_id: "cibule",
+		id: "CI1676",
 		type: 'slabiky2',
 		target_letter: 'suj',
 		background_letters: ['l', 'z', 's'],
@@ -10818,8 +10818,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 13, 22, 18, 9]
 	},
 	{
-		task_id: 2,
-		id: 1677,
+		task_id: "cibule",
+		id: "CI1677",
 		type: 'slabiky2',
 		target_letter: 'cop',
 		background_letters: ['d', 'g', 'a'],
@@ -10834,8 +10834,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 0, 26, 11]
 	},
 	{
-		task_id: 2,
-		id: 1678,
+		task_id: "cibule",
+		id: "CI1678",
 		type: 'slabiky2',
 		target_letter: 'han',
 		background_letters: ['h', 'b', 'č'],
@@ -10850,8 +10850,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 1, 21]
 	},
 	{
-		task_id: 2,
-		id: 1679,
+		task_id: "cibule",
+		id: "CI1679",
 		type: 'slabiky2',
 		target_letter: 'roj',
 		background_letters: ['e', 'e', 'd'],
@@ -10866,8 +10866,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 2]
 	},
 	{
-		task_id: 2,
-		id: 1680,
+		task_id: "cibule",
+		id: "CI1680",
 		type: 'slabiky2',
 		target_letter: 'taš',
 		background_letters: ['p', 'q', 'h'],
@@ -10882,8 +10882,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 12]
 	},
 	{
-		task_id: 2,
-		id: 1681,
+		task_id: "cibule",
+		id: "CI1681",
 		type: 'slabiky2',
 		target_letter: 'cop',
 		background_letters: ['p', 'r', 'k'],
@@ -10898,8 +10898,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 14, 4]
 	},
 	{
-		task_id: 2,
-		id: 1682,
+		task_id: "cibule",
+		id: "CI1682",
 		type: 'slabiky2',
 		target_letter: 'čap',
 		background_letters: ['p', 'u', 'i'],
@@ -10914,8 +10914,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 4, 11, 16]
 	},
 	{
-		task_id: 2,
-		id: 1683,
+		task_id: "cibule",
+		id: "CI1683",
 		type: 'slabiky2',
 		target_letter: 'han',
 		background_letters: ['m', 'č', 'e'],
@@ -10930,8 +10930,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 17]
 	},
 	{
-		task_id: 2,
-		id: 1684,
+		task_id: "cibule",
+		id: "CI1684",
 		type: 'slabiky2',
 		target_letter: 'čep',
 		background_letters: ['t', 'm', 'l'],
@@ -10946,8 +10946,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 7, 0]
 	},
 	{
-		task_id: 2,
-		id: 1685,
+		task_id: "cibule",
+		id: "CI1685",
 		type: 'slabiky2',
 		target_letter: 'hud',
 		background_letters: ['c', 'k', 'a'],
@@ -10962,8 +10962,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 4, 14, 8]
 	},
 	{
-		task_id: 2,
-		id: 1686,
+		task_id: "cibule",
+		id: "CI1686",
 		type: 'slabiky2',
 		target_letter: 'pek',
 		background_letters: ['s', 'e', 'z'],
@@ -10978,8 +10978,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 24, 4, 19, 10]
 	},
 	{
-		task_id: 2,
-		id: 1687,
+		task_id: "cibule",
+		id: "CI1687",
 		type: 'slabiky2',
 		target_letter: 'zád',
 		background_letters: ['l', 's', 'o'],
@@ -10994,8 +10994,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [1, 23, 27]
 	},
 	{
-		task_id: 2,
-		id: 1688,
+		task_id: "cibule",
+		id: "CI1688",
 		type: 'slabiky2',
 		target_letter: 'han',
 		background_letters: ['c', 'c', 'a'],
@@ -11010,8 +11010,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 0, 16, 24]
 	},
 	{
-		task_id: 2,
-		id: 1689,
+		task_id: "cibule",
+		id: "CI1689",
 		type: 'slabiky2',
 		target_letter: 'zel',
 		background_letters: ['z', 'q', 'd'],
@@ -11026,8 +11026,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 5]
 	},
 	{
-		task_id: 2,
-		id: 1690,
+		task_id: "cibule",
+		id: "CI1690",
 		type: 'slabiky2',
 		target_letter: 'mej',
 		background_letters: ['d', 'r', 'e'],
@@ -11042,8 +11042,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 6]
 	},
 	{
-		task_id: 2,
-		id: 1691,
+		task_id: "cibule",
+		id: "CI1691",
 		type: 'slabiky2',
 		target_letter: 'tah',
 		background_letters: ['b', 'i', 'd'],
@@ -11058,8 +11058,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [22, 17, 9]
 	},
 	{
-		task_id: 2,
-		id: 1692,
+		task_id: "cibule",
+		id: "CI1692",
 		type: 'slabiky2',
 		target_letter: 'tah',
 		background_letters: ['a', 'i', 'b'],
@@ -11074,8 +11074,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 26, 11, 7]
 	},
 	{
-		task_id: 2,
-		id: 1693,
+		task_id: "cibule",
+		id: "CI1693",
 		type: 'slabiky2',
 		target_letter: 'chlu',
 		background_letters: ['d', 'm', 'e'],
@@ -11090,8 +11090,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 22, 1, 10]
 	},
 	{
-		task_id: 2,
-		id: 1694,
+		task_id: "cibule",
+		id: "CI1694",
 		type: 'slabiky2',
 		target_letter: 'her',
 		background_letters: ['t', 'd', 'č'],
@@ -11106,8 +11106,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 24, 11]
 	},
 	{
-		task_id: 2,
-		id: 1695,
+		task_id: "cibule",
+		id: "CI1695",
 		type: 'slabiky2',
 		target_letter: 'čap',
 		background_letters: ['c', 'z', 't'],
@@ -11122,8 +11122,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 0, 23]
 	},
 	{
-		task_id: 2,
-		id: 1696,
+		task_id: "cibule",
+		id: "CI1696",
 		type: 'slabiky2',
 		target_letter: 'hud',
 		background_letters: ['z', 'a', 'č'],
@@ -11138,8 +11138,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 13]
 	},
 	{
-		task_id: 2,
-		id: 1697,
+		task_id: "cibule",
+		id: "CI1697",
 		type: 'slabiky2',
 		target_letter: 'roj',
 		background_letters: ['p', 'č', 'c'],
@@ -11154,8 +11154,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 10, 0, 15]
 	},
 	{
-		task_id: 2,
-		id: 1698,
+		task_id: "cibule",
+		id: "CI1698",
 		type: 'slabiky2',
 		target_letter: 'zád',
 		background_letters: ['d', 'e', 'r'],
@@ -11170,8 +11170,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 16, 11, 2, 20]
 	},
 	{
-		task_id: 2,
-		id: 1699,
+		task_id: "cibule",
+		id: "CI1699",
 		type: 'slabiky2',
 		target_letter: 'her',
 		background_letters: ['r', 'p', 'd'],
@@ -11186,8 +11186,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 24, 9, 19, 13]
 	},
 	{
-		task_id: 2,
-		id: 1700,
+		task_id: "cibule",
+		id: "CI1700",
 		type: 'slabiky2',
 		target_letter: 'rub',
 		background_letters: ['z', 'q', 'j'],
@@ -11205,8 +11205,8 @@ export const cibuleL1RawData: CibuleRawDataEntry[] = [
 
 export const cibuleL3RawData: CibuleRawDataEntry[] = [
 	{
-		task_id: 1,
-		id: 3101,
+		task_id: "cibule",
+		id: "CI3101",
 		type: 'slova1_3sl',
 		target_letter: 'le-tiš-tě',
 		background_letters: ['w'],
@@ -11219,8 +11219,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 15, 21]
 	},
 	{
-		task_id: 1,
-		id: 3102,
+		task_id: "cibule",
+		id: "CI3102",
 		type: 'slova1_3sl',
 		target_letter: 'te-le-fon',
 		background_letters: ['y'],
@@ -11233,8 +11233,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 13, 25]
 	},
 	{
-		task_id: 1,
-		id: 3103,
+		task_id: "cibule",
+		id: "CI3103",
 		type: 'slova1_3sl',
 		target_letter: 'pří-ro-da',
 		background_letters: ['b'],
@@ -11247,8 +11247,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 21]
 	},
 	{
-		task_id: 1,
-		id: 3104,
+		task_id: "cibule",
+		id: "CI3104",
 		type: 'slova1_3sl',
 		target_letter: 'rad-ni-ce',
 		background_letters: ['t'],
@@ -11261,8 +11261,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 17, 27]
 	},
 	{
-		task_id: 1,
-		id: 3105,
+		task_id: "cibule",
+		id: "CI3105",
 		type: 'slova1_3sl',
 		target_letter: 'po-chva-la',
 		background_letters: ['d'],
@@ -11275,8 +11275,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 16, 24]
 	},
 	{
-		task_id: 1,
-		id: 3106,
+		task_id: "cibule",
+		id: "CI3106",
 		type: 'slova1_3sl',
 		target_letter: 'pra-vít-ko',
 		background_letters: ['f'],
@@ -11289,8 +11289,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 17, 23]
 	},
 	{
-		task_id: 1,
-		id: 3107,
+		task_id: "cibule",
+		id: "CI3107",
 		type: 'slova1_3sl',
 		target_letter: 'vo-zid-lo',
 		background_letters: ['t'],
@@ -11303,8 +11303,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 15, 23]
 	},
 	{
-		task_id: 1,
-		id: 3108,
+		task_id: "cibule",
+		id: "CI3108",
 		type: 'slova1_3sl',
 		target_letter: 'ko-ží-šek',
 		background_letters: ['s'],
@@ -11317,8 +11317,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 25]
 	},
 	{
-		task_id: 1,
-		id: 3109,
+		task_id: "cibule",
+		id: "CI3109",
 		type: 'slova1_3sl',
 		target_letter: 'ko-py-to',
 		background_letters: ['m'],
@@ -11331,8 +11331,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 12, 19]
 	},
 	{
-		task_id: 1,
-		id: 3110,
+		task_id: "cibule",
+		id: "CI3110",
 		type: 'slova1_3sl',
 		target_letter: 'sto-do-la',
 		background_letters: ['r'],
@@ -11345,8 +11345,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 17]
 	},
 	{
-		task_id: 1,
-		id: 3111,
+		task_id: "cibule",
+		id: "CI3111",
 		type: 'slova1_3sl',
 		target_letter: 'po-ho-ří',
 		background_letters: ['l'],
@@ -11359,8 +11359,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 23]
 	},
 	{
-		task_id: 1,
-		id: 3112,
+		task_id: "cibule",
+		id: "CI3112",
 		type: 'slova1_3sl',
 		target_letter: 'po-sta-va',
 		background_letters: ['w'],
@@ -11373,8 +11373,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 11, 20]
 	},
 	{
-		task_id: 1,
-		id: 3113,
+		task_id: "cibule",
+		id: "CI3113",
 		type: 'slova1_3sl',
 		target_letter: 'je-ží-šek',
 		background_letters: ['t'],
@@ -11387,8 +11387,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 18, 24]
 	},
 	{
-		task_id: 1,
-		id: 3114,
+		task_id: "cibule",
+		id: "CI3114",
 		type: 'slova1_3sl',
 		target_letter: 'vlád-ky-ně',
 		background_letters: ['a'],
@@ -11401,8 +11401,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 9, 19]
 	},
 	{
-		task_id: 1,
-		id: 3115,
+		task_id: "cibule",
+		id: "CI3115",
 		type: 'slova1_3sl',
 		target_letter: 'ma-ce-cha',
 		background_letters: ['b'],
@@ -11415,8 +11415,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 13, 24]
 	},
 	{
-		task_id: 1,
-		id: 3116,
+		task_id: "cibule",
+		id: "CI3116",
 		type: 'slova1_3sl',
 		target_letter: 'ko-leč-ko',
 		background_letters: ['q'],
@@ -11429,8 +11429,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 19, 25]
 	},
 	{
-		task_id: 1,
-		id: 3117,
+		task_id: "cibule",
+		id: "CI3117",
 		type: 'slova1_3sl',
 		target_letter: 'u-či-tel',
 		background_letters: ['n'],
@@ -11443,8 +11443,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 13, 27]
 	},
 	{
-		task_id: 1,
-		id: 3118,
+		task_id: "cibule",
+		id: "CI3118",
 		type: 'slova1_3sl',
 		target_letter: 'po-lév-ka',
 		background_letters: ['b'],
@@ -11457,8 +11457,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 16, 22]
 	},
 	{
-		task_id: 1,
-		id: 3119,
+		task_id: "cibule",
+		id: "CI3119",
 		type: 'slova1_3sl',
 		target_letter: 'ad-mi-rál',
 		background_letters: ['c'],
@@ -11471,8 +11471,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 18, 23]
 	},
 	{
-		task_id: 1,
-		id: 3120,
+		task_id: "cibule",
+		id: "CI3120",
 		type: 'slova1_3sl',
 		target_letter: 'pe-ní-ze',
 		background_letters: ['f'],
@@ -11485,8 +11485,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 22]
 	},
 	{
-		task_id: 1,
-		id: 3121,
+		task_id: "cibule",
+		id: "CI3121",
 		type: 'slova1_3sl',
 		target_letter: 'led-ni-ce',
 		background_letters: ['g'],
@@ -11499,8 +11499,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 10, 21]
 	},
 	{
-		task_id: 1,
-		id: 3122,
+		task_id: "cibule",
+		id: "CI3122",
 		type: 'slova1_3sl',
 		target_letter: 'ko-lo-toč',
 		background_letters: ['c'],
@@ -11513,8 +11513,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 10, 23]
 	},
 	{
-		task_id: 1,
-		id: 3123,
+		task_id: "cibule",
+		id: "CI3123",
 		type: 'slova1_3sl',
 		target_letter: 'mi-ki-na',
 		background_letters: ['l'],
@@ -11527,8 +11527,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 10, 23]
 	},
 	{
-		task_id: 1,
-		id: 3124,
+		task_id: "cibule",
+		id: "CI3124",
 		type: 'slova1_3sl',
 		target_letter: 'jí-del-na',
 		background_letters: ['u'],
@@ -11541,8 +11541,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 17, 24]
 	},
 	{
-		task_id: 1,
-		id: 3125,
+		task_id: "cibule",
+		id: "CI3125",
 		type: 'slova1_3sl',
 		target_letter: 'po-nož-ka',
 		background_letters: ['c'],
@@ -11555,8 +11555,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 18, 26]
 	},
 	{
-		task_id: 1,
-		id: 3126,
+		task_id: "cibule",
+		id: "CI3126",
 		type: 'slova1_3sl',
 		target_letter: 'po-ho-da',
 		background_letters: ['n'],
@@ -11569,8 +11569,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 14, 19]
 	},
 	{
-		task_id: 1,
-		id: 3127,
+		task_id: "cibule",
+		id: "CI3127",
 		type: 'slova1_3sl',
 		target_letter: 'stra-ši-dlo',
 		background_letters: ['k'],
@@ -11583,8 +11583,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 19, 24]
 	},
 	{
-		task_id: 1,
-		id: 3128,
+		task_id: "cibule",
+		id: "CI3128",
 		type: 'slova1_3sl',
 		target_letter: 'o-bli-čej',
 		background_letters: ['t'],
@@ -11597,8 +11597,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 15, 21]
 	},
 	{
-		task_id: 1,
-		id: 3129,
+		task_id: "cibule",
+		id: "CI3129",
 		type: 'slova1_3sl',
 		target_letter: 'ko-py-to',
 		background_letters: ['w'],
@@ -11611,8 +11611,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 13, 22]
 	},
 	{
-		task_id: 1,
-		id: 3130,
+		task_id: "cibule",
+		id: "CI3130",
 		type: 'slova1_3sl',
 		target_letter: 'o-pa-sek',
 		background_letters: ['f'],
@@ -11625,8 +11625,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 24]
 	},
 	{
-		task_id: 1,
-		id: 3131,
+		task_id: "cibule",
+		id: "CI3131",
 		type: 'slova1_3sl',
 		target_letter: 'slu-níč-ko',
 		background_letters: ['z'],
@@ -11639,8 +11639,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 13, 23]
 	},
 	{
-		task_id: 1,
-		id: 3132,
+		task_id: "cibule",
+		id: "CI3132",
 		type: 'slova1_3sl',
 		target_letter: 'u-či-tel',
 		background_letters: ['o'],
@@ -11653,8 +11653,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 13, 26]
 	},
 	{
-		task_id: 1,
-		id: 3133,
+		task_id: "cibule",
+		id: "CI3133",
 		type: 'slova1_3sl',
 		target_letter: 'dvoj-ča-ta',
 		background_letters: ['c'],
@@ -11667,8 +11667,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 23]
 	},
 	{
-		task_id: 1,
-		id: 3134,
+		task_id: "cibule",
+		id: "CI3134",
 		type: 'slova1_3sl',
 		target_letter: 'pla-ne-ta',
 		background_letters: ['s'],
@@ -11681,8 +11681,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 17, 22]
 	},
 	{
-		task_id: 1,
-		id: 3135,
+		task_id: "cibule",
+		id: "CI3135",
 		type: 'slova1_3sl',
 		target_letter: 'kob-li-ha',
 		background_letters: ['d'],
@@ -11695,8 +11695,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 14, 26]
 	},
 	{
-		task_id: 1,
-		id: 3136,
+		task_id: "cibule",
+		id: "CI3136",
 		type: 'slova1_3sl',
 		target_letter: 'zá-sil-ka',
 		background_letters: ['t'],
@@ -11709,8 +11709,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 10, 20]
 	},
 	{
-		task_id: 1,
-		id: 3137,
+		task_id: "cibule",
+		id: "CI3137",
 		type: 'slova1_3sl',
 		target_letter: 'se-ši-ty',
 		background_letters: ['w'],
@@ -11723,8 +11723,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 11, 17]
 	},
 	{
-		task_id: 1,
-		id: 3138,
+		task_id: "cibule",
+		id: "CI3138",
 		type: 'slova1_3sl',
 		target_letter: 'ko-čá-rek',
 		background_letters: ['a'],
@@ -11737,8 +11737,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 19, 27]
 	},
 	{
-		task_id: 1,
-		id: 3139,
+		task_id: "cibule",
+		id: "CI3139",
 		type: 'slova1_3sl',
 		target_letter: 'sta-ni-ce',
 		background_letters: ['l'],
@@ -11751,8 +11751,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 17, 28]
 	},
 	{
-		task_id: 1,
-		id: 3140,
+		task_id: "cibule",
+		id: "CI3140",
 		type: 'slova1_3sl',
 		target_letter: 'ko-ši-le',
 		background_letters: ['r'],
@@ -11765,8 +11765,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 15]
 	},
 	{
-		task_id: 1,
-		id: 3141,
+		task_id: "cibule",
+		id: "CI3141",
 		type: 'slova1_3sl',
 		target_letter: 'pa-vi-lon',
 		background_letters: ['q'],
@@ -11779,8 +11779,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 12, 26]
 	},
 	{
-		task_id: 1,
-		id: 3142,
+		task_id: "cibule",
+		id: "CI3142",
 		type: 'slova1_3sl',
 		target_letter: 'ka-vár-na',
 		background_letters: ['m'],
@@ -11793,8 +11793,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 9, 18]
 	},
 	{
-		task_id: 1,
-		id: 3143,
+		task_id: "cibule",
+		id: "CI3143",
 		type: 'slova1_3sl',
 		target_letter: 'ká-vo-var',
 		background_letters: ['i'],
@@ -11807,8 +11807,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 12, 17]
 	},
 	{
-		task_id: 1,
-		id: 3144,
+		task_id: "cibule",
+		id: "CI3144",
 		type: 'slova1_3sl',
 		target_letter: 'pří-še-ra',
 		background_letters: ['s'],
@@ -11821,8 +11821,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 14, 19]
 	},
 	{
-		task_id: 1,
-		id: 3145,
+		task_id: "cibule",
+		id: "CI3145",
 		type: 'slova1_3sl',
 		target_letter: 'po-sta-va',
 		background_letters: ['z'],
@@ -11835,8 +11835,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 13, 23]
 	},
 	{
-		task_id: 1,
-		id: 3146,
+		task_id: "cibule",
+		id: "CI3146",
 		type: 'slova1_3sl',
 		target_letter: 'ko-čá-rek',
 		background_letters: ['l'],
@@ -11849,8 +11849,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 8, 16]
 	},
 	{
-		task_id: 1,
-		id: 3147,
+		task_id: "cibule",
+		id: "CI3147",
 		type: 'slova1_3sl',
 		target_letter: 'po-ho-da',
 		background_letters: ['z'],
@@ -11863,8 +11863,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 15, 22]
 	},
 	{
-		task_id: 1,
-		id: 3148,
+		task_id: "cibule",
+		id: "CI3148",
 		type: 'slova1_3sl',
 		target_letter: 'ko-ru-na',
 		background_letters: ['x'],
@@ -11877,8 +11877,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 11, 25]
 	},
 	{
-		task_id: 1,
-		id: 3149,
+		task_id: "cibule",
+		id: "CI3149",
 		type: 'slova1_3sl',
 		target_letter: 'pa-pr-sek',
 		background_letters: ['b'],
@@ -11891,8 +11891,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 15, 25]
 	},
 	{
-		task_id: 1,
-		id: 3150,
+		task_id: "cibule",
+		id: "CI3150",
 		type: 'slova1_3sl',
 		target_letter: 'jes-ky-ně',
 		background_letters: ['i'],
@@ -11905,8 +11905,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 8, 20]
 	},
 	{
-		task_id: 1,
-		id: 3251,
+		task_id: "cibule",
+		id: "CI3251",
 		type: 'slova1_4sl',
 		target_letter: 'ka-bri-o-let',
 		background_letters: ['h'],
@@ -11919,8 +11919,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 19, 25]
 	},
 	{
-		task_id: 1,
-		id: 3152,
+		task_id: "cibule",
+		id: "CI3152",
 		type: 'slova1_4sl',
 		target_letter: 'cho-bot-ni-ce',
 		background_letters: ['f'],
@@ -11933,8 +11933,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 8, 14, 24]
 	},
 	{
-		task_id: 1,
-		id: 3153,
+		task_id: "cibule",
+		id: "CI3153",
 		type: 'slova1_4sl',
 		target_letter: 'za-kla-da-tel',
 		background_letters: ['y'],
@@ -11947,8 +11947,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 13, 19, 25]
 	},
 	{
-		task_id: 1,
-		id: 3154,
+		task_id: "cibule",
+		id: "CI3154",
 		type: 'slova1_4sl',
 		target_letter: 'a-pli-ka-ce',
 		background_letters: ['r'],
@@ -11961,8 +11961,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 20, 26]
 	},
 	{
-		task_id: 1,
-		id: 3155,
+		task_id: "cibule",
+		id: "CI3155",
 		type: 'slova1_4sl',
 		target_letter: 'au-to-mo-bil',
 		background_letters: ['w'],
@@ -11975,8 +11975,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 11, 18, 26]
 	},
 	{
-		task_id: 1,
-		id: 3156,
+		task_id: "cibule",
+		id: "CI3156",
 		type: 'slova1_4sl',
 		target_letter: 'ka-ta-stro-fa',
 		background_letters: ['u'],
@@ -11989,8 +11989,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 14, 22, 27]
 	},
 	{
-		task_id: 1,
-		id: 3157,
+		task_id: "cibule",
+		id: "CI3157",
 		type: 'slova1_4sl',
 		target_letter: 'zá-te-ra-sa',
 		background_letters: ['o'],
@@ -12003,8 +12003,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 13, 21, 26]
 	},
 	{
-		task_id: 1,
-		id: 3158,
+		task_id: "cibule",
+		id: "CI3158",
 		type: 'slova1_4sl',
 		target_letter: 'u-čeb-ni-ce',
 		background_letters: ['o'],
@@ -12017,8 +12017,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 15, 21]
 	},
 	{
-		task_id: 1,
-		id: 3159,
+		task_id: "cibule",
+		id: "CI3159",
 		type: 'slova1_4sl',
 		target_letter: 'o-ran-gu-tan',
 		background_letters: ['m'],
@@ -12031,8 +12031,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 12, 23]
 	},
 	{
-		task_id: 1,
-		id: 3160,
+		task_id: "cibule",
+		id: "CI3160",
 		type: 'slova1_4sl',
 		target_letter: 'te-le-vi-ze',
 		background_letters: ['d'],
@@ -12045,8 +12045,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 10, 15, 27]
 	},
 	{
-		task_id: 1,
-		id: 3161,
+		task_id: "cibule",
+		id: "CI3161",
 		type: 'slova1_4sl',
 		target_letter: 'la-bo-ra-toř',
 		background_letters: ['g'],
@@ -12059,8 +12059,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 9, 20, 27]
 	},
 	{
-		task_id: 1,
-		id: 3162,
+		task_id: "cibule",
+		id: "CI3162",
 		type: 'slova1_4sl',
 		target_letter: 'o-pe-ra-ce',
 		background_letters: ['v'],
@@ -12073,8 +12073,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 10, 16, 21]
 	},
 	{
-		task_id: 1,
-		id: 3163,
+		task_id: "cibule",
+		id: "CI3163",
 		type: 'slova1_4sl',
 		target_letter: 'u-klí-zeč-ka',
 		background_letters: ['q'],
@@ -12087,8 +12087,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 12, 19, 27]
 	},
 	{
-		task_id: 1,
-		id: 3164,
+		task_id: "cibule",
+		id: "CI3164",
 		type: 'slova1_4sl',
 		target_letter: 'u-čeb-ni-ce',
 		background_letters: ['h'],
@@ -12101,8 +12101,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 21, 26]
 	},
 	{
-		task_id: 1,
-		id: 3165,
+		task_id: "cibule",
+		id: "CI3165",
 		type: 'slova1_4sl',
 		target_letter: 'a-pli-ka-ce',
 		background_letters: ['d'],
@@ -12115,8 +12115,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 13, 18, 23]
 	},
 	{
-		task_id: 1,
-		id: 3166,
+		task_id: "cibule",
+		id: "CI3166",
 		type: 'slova1_4sl',
 		target_letter: 'po-vle-če-ní',
 		background_letters: ['y'],
@@ -12129,8 +12129,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 17, 23, 28]
 	},
 	{
-		task_id: 1,
-		id: 3167,
+		task_id: "cibule",
+		id: "CI3167",
 		type: 'slova1_4sl',
 		target_letter: 'har-mo-ni-ka',
 		background_letters: ['d'],
@@ -12143,8 +12143,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 10, 17, 24]
 	},
 	{
-		task_id: 1,
-		id: 3168,
+		task_id: "cibule",
+		id: "CI3168",
 		type: 'slova1_4sl',
 		target_letter: 'har-mo-ni-ka',
 		background_letters: ['p'],
@@ -12157,8 +12157,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 12, 20, 27]
 	},
 	{
-		task_id: 1,
-		id: 3169,
+		task_id: "cibule",
+		id: "CI3169",
 		type: 'slova1_4sl',
 		target_letter: 'skla-da-tel-ka',
 		background_letters: ['h'],
@@ -12171,8 +12171,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 8, 16, 24]
 	},
 	{
-		task_id: 1,
-		id: 3170,
+		task_id: "cibule",
+		id: "CI3170",
 		type: 'slova1_4sl',
 		target_letter: 'ma-ko-vi-ce',
 		background_letters: ['y'],
@@ -12185,8 +12185,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11, 21, 26]
 	},
 	{
-		task_id: 1,
-		id: 3171,
+		task_id: "cibule",
+		id: "CI3171",
 		type: 'slova1_4sl',
 		target_letter: 'je-řa-bi-na',
 		background_letters: ['y'],
@@ -12199,8 +12199,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 17, 22]
 	},
 	{
-		task_id: 1,
-		id: 3172,
+		task_id: "cibule",
+		id: "CI3172",
 		type: 'slova1_4sl',
 		target_letter: 'o-ran-gu-tan',
 		background_letters: ['s'],
@@ -12213,8 +12213,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 15, 21, 27]
 	},
 	{
-		task_id: 1,
-		id: 3173,
+		task_id: "cibule",
+		id: "CI3173",
 		type: 'slova1_4sl',
 		target_letter: 'ko-tr-me-lec',
 		background_letters: ['d'],
@@ -12227,8 +12227,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 17, 22, 27]
 	},
 	{
-		task_id: 1,
-		id: 3174,
+		task_id: "cibule",
+		id: "CI3174",
 		type: 'slova1_4sl',
 		target_letter: 'ho-lu-bi-ce',
 		background_letters: ['j'],
@@ -12241,8 +12241,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 18, 27]
 	},
 	{
-		task_id: 1,
-		id: 3175,
+		task_id: "cibule",
+		id: "CI3175",
 		type: 'slova1_4sl',
 		target_letter: 'ko-že-ši-na',
 		background_letters: ['z'],
@@ -12255,8 +12255,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 12, 17, 22]
 	},
 	{
-		task_id: 1,
-		id: 3176,
+		task_id: "cibule",
+		id: "CI3176",
 		type: 'slova1_4sl',
 		target_letter: 'a-pli-ka-ce',
 		background_letters: ['d'],
@@ -12269,8 +12269,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 12, 16, 27]
 	},
 	{
-		task_id: 1,
-		id: 3177,
+		task_id: "cibule",
+		id: "CI3177",
 		type: 'slova1_4sl',
 		target_letter: 'sa-ze-ni-ce',
 		background_letters: ['v'],
@@ -12283,8 +12283,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 18, 23]
 	},
 	{
-		task_id: 1,
-		id: 3178,
+		task_id: "cibule",
+		id: "CI3178",
 		type: 'slova1_4sl',
 		target_letter: 'po-si-lov-na',
 		background_letters: ['m'],
@@ -12297,8 +12297,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 10, 16, 27]
 	},
 	{
-		task_id: 1,
-		id: 3179,
+		task_id: "cibule",
+		id: "CI3179",
 		type: 'slova1_4sl',
 		target_letter: 'ře-di-tel-ka',
 		background_letters: ['v'],
@@ -12311,8 +12311,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 10, 20, 27]
 	},
 	{
-		task_id: 1,
-		id: 3180,
+		task_id: "cibule",
+		id: "CI3180",
 		type: 'slova1_4sl',
 		target_letter: 'slu-neč-ni-ce',
 		background_letters: ['a'],
@@ -12325,8 +12325,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 15, 22]
 	},
 	{
-		task_id: 1,
-		id: 3181,
+		task_id: "cibule",
+		id: "CI3181",
 		type: 'slova1_4sl',
 		target_letter: 'ná-stu-piš-tě',
 		background_letters: ['z'],
@@ -12339,8 +12339,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 13, 21, 27]
 	},
 	{
-		task_id: 1,
-		id: 3182,
+		task_id: "cibule",
+		id: "CI3182",
 		type: 'slova1_4sl',
 		target_letter: 'ne-bez-pe-čí',
 		background_letters: ['j'],
@@ -12353,8 +12353,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 17, 25]
 	},
 	{
-		task_id: 1,
-		id: 3183,
+		task_id: "cibule",
+		id: "CI3183",
 		type: 'slova1_4sl',
 		target_letter: 'ře-di-tel-ka',
 		background_letters: ['u'],
@@ -12367,8 +12367,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 10, 18, 26]
 	},
 	{
-		task_id: 1,
-		id: 3184,
+		task_id: "cibule",
+		id: "CI3184",
 		type: 'slova1_4sl',
 		target_letter: 're-pu-bli-ka',
 		background_letters: ['d'],
@@ -12381,8 +12381,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 11, 21, 27]
 	},
 	{
-		task_id: 1,
-		id: 3185,
+		task_id: "cibule",
+		id: "CI3185",
 		type: 'slova1_4sl',
 		target_letter: 'te-le-vi-ze',
 		background_letters: ['q'],
@@ -12395,8 +12395,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 9, 18, 23]
 	},
 	{
-		task_id: 1,
-		id: 3186,
+		task_id: "cibule",
+		id: "CI3186",
 		type: 'slova1_4sl',
 		target_letter: 'po-ko-le-ní',
 		background_letters: ['z'],
@@ -12409,8 +12409,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11, 16, 26]
 	},
 	{
-		task_id: 1,
-		id: 3187,
+		task_id: "cibule",
+		id: "CI3187",
 		type: 'slova1_4sl',
 		target_letter: 'do-bro-druž-ství',
 		background_letters: ['g'],
@@ -12423,8 +12423,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 3, 12, 26]
 	},
 	{
-		task_id: 1,
-		id: 3188,
+		task_id: "cibule",
+		id: "CI3188",
 		type: 'slova1_4sl',
 		target_letter: 'do-vo-le-ná',
 		background_letters: ['f'],
@@ -12437,8 +12437,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 11, 19, 24]
 	},
 	{
-		task_id: 1,
-		id: 3189,
+		task_id: "cibule",
+		id: "CI3189",
 		type: 'slova1_4sl',
 		target_letter: 'slu-neč-ni-ce',
 		background_letters: ['a'],
@@ -12451,8 +12451,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 15, 21, 26]
 	},
 	{
-		task_id: 1,
-		id: 3190,
+		task_id: "cibule",
+		id: "CI3190",
 		type: 'slova1_4sl',
 		target_letter: 'na-bí-ječ-ka',
 		background_letters: ['u'],
@@ -12465,8 +12465,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 13, 22, 28]
 	},
 	{
-		task_id: 1,
-		id: 3191,
+		task_id: "cibule",
+		id: "CI3191",
 		type: 'slova1_4sl',
 		target_letter: 'po-ko-le-ní',
 		background_letters: ['z'],
@@ -12479,8 +12479,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 10, 19, 26]
 	},
 	{
-		task_id: 1,
-		id: 3192,
+		task_id: "cibule",
+		id: "CI3192",
 		type: 'slova1_4sl',
 		target_letter: 'po-vle-če-ní',
 		background_letters: ['r'],
@@ -12493,8 +12493,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 11, 18, 28]
 	},
 	{
-		task_id: 1,
-		id: 3193,
+		task_id: "cibule",
+		id: "CI3193",
 		type: 'slova1_4sl',
 		target_letter: 'o-pe-ra-ce',
 		background_letters: ['j'],
@@ -12507,8 +12507,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 15, 21, 26]
 	},
 	{
-		task_id: 1,
-		id: 3194,
+		task_id: "cibule",
+		id: "CI3194",
 		type: 'slova1_4sl',
 		target_letter: 'u-čeb-ni-ce',
 		background_letters: ['j'],
@@ -12521,8 +12521,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 7, 16, 23]
 	},
 	{
-		task_id: 1,
-		id: 3195,
+		task_id: "cibule",
+		id: "CI3195",
 		type: 'slova1_4sl',
 		target_letter: 'ka-bri-o-let',
 		background_letters: ['c'],
@@ -12535,8 +12535,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [0, 8, 18, 25]
 	},
 	{
-		task_id: 1,
-		id: 3196,
+		task_id: "cibule",
+		id: "CI3196",
 		type: 'slova1_4sl',
 		target_letter: 'po-vle-če-ní',
 		background_letters: ['s'],
@@ -12549,8 +12549,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 9, 18, 27]
 	},
 	{
-		task_id: 1,
-		id: 3197,
+		task_id: "cibule",
+		id: "CI3197",
 		type: 'slova1_4sl',
 		target_letter: 'na-bí-ječ-ka',
 		background_letters: ['i'],
@@ -12563,8 +12563,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 15, 21, 28]
 	},
 	{
-		task_id: 1,
-		id: 3198,
+		task_id: "cibule",
+		id: "CI3198",
 		type: 'slova1_4sl',
 		target_letter: 'mo-le-ku-la',
 		background_letters: ['c'],
@@ -12577,8 +12577,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 9, 16, 26]
 	},
 	{
-		task_id: 1,
-		id: 3199,
+		task_id: "cibule",
+		id: "CI3199",
 		type: 'slova1_4sl',
 		target_letter: 'do-bro-druž-ství',
 		background_letters: ['g'],
@@ -12591,8 +12591,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 13, 20, 26]
 	},
 	{
-		task_id: 1,
-		id: 3200,
+		task_id: "cibule",
+		id: "CI3200",
 		type: 'slova1_4sl',
 		target_letter: 'čo-ko-lá-da',
 		background_letters: ['x'],
@@ -12605,8 +12605,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 8, 16, 27]
 	},
 	{
-		task_id: 1,
-		id: 3201,
+		task_id: "cibule",
+		id: "CI3201",
 		type: 'slova2_3sl',
 		target_letter: 'le-tiš-tě',
 		background_letters: ['w'],
@@ -12619,8 +12619,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 4, 21]
 	},
 	{
-		task_id: 1,
-		id: 3202,
+		task_id: "cibule",
+		id: "CI3202",
 		type: 'slova2_3sl',
 		target_letter: 'ko-čič-ka',
 		background_letters: ['g'],
@@ -12633,8 +12633,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 3, 8]
 	},
 	{
-		task_id: 1,
-		id: 3203,
+		task_id: "cibule",
+		id: "CI3203",
 		type: 'slova2_3sl',
 		target_letter: 'rad-ni-ce',
 		background_letters: ['t'],
@@ -12647,8 +12647,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 27, 6]
 	},
 	{
-		task_id: 1,
-		id: 3204,
+		task_id: "cibule",
+		id: "CI3204",
 		type: 'slova2_3sl',
 		target_letter: 'ko-be-rec',
 		background_letters: ['q'],
@@ -12661,8 +12661,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 25, 16]
 	},
 	{
-		task_id: 1,
-		id: 3205,
+		task_id: "cibule",
+		id: "CI3205",
 		type: 'slova2_3sl',
 		target_letter: 'stu-dán-ka',
 		background_letters: ['o'],
@@ -12675,8 +12675,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 26, 6]
 	},
 	{
-		task_id: 1,
-		id: 3206,
+		task_id: "cibule",
+		id: "CI3206",
 		type: 'slova2_3sl',
 		target_letter: 'po-čí-tač',
 		background_letters: ['z'],
@@ -12689,8 +12689,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 5, 28]
 	},
 	{
-		task_id: 1,
-		id: 3207,
+		task_id: "cibule",
+		id: "CI3207",
 		type: 'slova2_3sl',
 		target_letter: 'ra-me-no',
 		background_letters: ['g'],
@@ -12703,8 +12703,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [28, 20, 10]
 	},
 	{
-		task_id: 1,
-		id: 3208,
+		task_id: "cibule",
+		id: "CI3208",
 		type: 'slova2_3sl',
 		target_letter: 'vlád-ky-ně',
 		background_letters: ['b'],
@@ -12717,8 +12717,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 7, 26]
 	},
 	{
-		task_id: 1,
-		id: 3209,
+		task_id: "cibule",
+		id: "CI3209",
 		type: 'slova2_3sl',
 		target_letter: 'u-li-ce',
 		background_letters: ['f'],
@@ -12731,8 +12731,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 3, 9]
 	},
 	{
-		task_id: 1,
-		id: 3210,
+		task_id: "cibule",
+		id: "CI3210",
 		type: 'slova2_3sl',
 		target_letter: 'po-lév-ka',
 		background_letters: ['i'],
@@ -12745,8 +12745,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 11, 2]
 	},
 	{
-		task_id: 1,
-		id: 3211,
+		task_id: "cibule",
+		id: "CI3211",
 		type: 'slova2_3sl',
 		target_letter: 'ma-ce-cha',
 		background_letters: ['b'],
@@ -12759,8 +12759,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 5, 24]
 	},
 	{
-		task_id: 1,
-		id: 3212,
+		task_id: "cibule",
+		id: "CI3212",
 		type: 'slova2_3sl',
 		target_letter: 'ko-le-no',
 		background_letters: ['p'],
@@ -12773,8 +12773,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 3, 13]
 	},
 	{
-		task_id: 1,
-		id: 3213,
+		task_id: "cibule",
+		id: "CI3213",
 		type: 'slova2_3sl',
 		target_letter: 'sko-ři-ce',
 		background_letters: ['t'],
@@ -12787,8 +12787,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 14, 9]
 	},
 	{
-		task_id: 1,
-		id: 3214,
+		task_id: "cibule",
+		id: "CI3214",
 		type: 'slova2_3sl',
 		target_letter: 'ba-la-da',
 		background_letters: ['m'],
@@ -12801,8 +12801,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 26, 5]
 	},
 	{
-		task_id: 1,
-		id: 3215,
+		task_id: "cibule",
+		id: "CI3215",
 		type: 'slova2_3sl',
 		target_letter: 'u-li-ce',
 		background_letters: ['d'],
@@ -12815,8 +12815,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [22, 10, 28]
 	},
 	{
-		task_id: 1,
-		id: 3216,
+		task_id: "cibule",
+		id: "CI3216",
 		type: 'slova2_3sl',
 		target_letter: 'sta-ve-ní',
 		background_letters: ['d'],
@@ -12829,8 +12829,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 26, 5]
 	},
 	{
-		task_id: 1,
-		id: 3217,
+		task_id: "cibule",
+		id: "CI3217",
 		type: 'slova2_3sl',
 		target_letter: 'le-tuš-ka',
 		background_letters: ['m'],
@@ -12843,8 +12843,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 3, 24]
 	},
 	{
-		task_id: 1,
-		id: 3218,
+		task_id: "cibule",
+		id: "CI3218",
 		type: 'slova2_3sl',
 		target_letter: 'zá-sil-ka',
 		background_letters: ['q'],
@@ -12857,8 +12857,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [28, 20, 6]
 	},
 	{
-		task_id: 1,
-		id: 3219,
+		task_id: "cibule",
+		id: "CI3219",
 		type: 'slova2_3sl',
 		target_letter: 'o-bli-čej',
 		background_letters: ['t'],
@@ -12871,8 +12871,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 9, 15]
 	},
 	{
-		task_id: 1,
-		id: 3220,
+		task_id: "cibule",
+		id: "CI3220",
 		type: 'slova2_3sl',
 		target_letter: 'ko-lo-toč',
 		background_letters: ['d'],
@@ -12885,8 +12885,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 6, 25]
 	},
 	{
-		task_id: 1,
-		id: 3221,
+		task_id: "cibule",
+		id: "CI3221",
 		type: 'slova2_3sl',
 		target_letter: 'při-krýv-ka',
 		background_letters: ['z'],
@@ -12899,8 +12899,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 12, 2]
 	},
 	{
-		task_id: 1,
-		id: 3222,
+		task_id: "cibule",
+		id: "CI3222",
 		type: 'slova2_3sl',
 		target_letter: 'o-bli-čej',
 		background_letters: ['q'],
@@ -12913,8 +12913,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [24, 6, 18]
 	},
 	{
-		task_id: 1,
-		id: 3223,
+		task_id: "cibule",
+		id: "CI3223",
 		type: 'slova2_3sl',
 		target_letter: 'po-sta-va',
 		background_letters: ['i'],
@@ -12927,8 +12927,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 11, 21]
 	},
 	{
-		task_id: 1,
-		id: 3224,
+		task_id: "cibule",
+		id: "CI3224",
 		type: 'slova2_3sl',
 		target_letter: 'u-či-tel',
 		background_letters: ['r'],
@@ -12941,8 +12941,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 20, 3]
 	},
 	{
-		task_id: 1,
-		id: 3225,
+		task_id: "cibule",
+		id: "CI3225",
 		type: 'slova2_3sl',
 		target_letter: 'ko-ží-šek',
 		background_letters: ['x'],
@@ -12955,8 +12955,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 2, 8]
 	},
 	{
-		task_id: 1,
-		id: 3226,
+		task_id: "cibule",
+		id: "CI3226",
 		type: 'slova2_3sl',
 		target_letter: 'pa-le-ta',
 		background_letters: ['u'],
@@ -12969,8 +12969,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 27, 15]
 	},
 	{
-		task_id: 1,
-		id: 3227,
+		task_id: "cibule",
+		id: "CI3227",
 		type: 'slova2_3sl',
 		target_letter: 'ko-ši-le',
 		background_letters: ['r'],
@@ -12983,8 +12983,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 15, 5]
 	},
 	{
-		task_id: 1,
-		id: 3228,
+		task_id: "cibule",
+		id: "CI3228",
 		type: 'slova2_3sl',
 		target_letter: 'ře-di-tel',
 		background_letters: ['b'],
@@ -12997,8 +12997,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 11, 21]
 	},
 	{
-		task_id: 1,
-		id: 3229,
+		task_id: "cibule",
+		id: "CI3229",
 		type: 'slova2_3sl',
 		target_letter: 'pa-ne-lák',
 		background_letters: ['b'],
@@ -13011,8 +13011,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 18, 13]
 	},
 	{
-		task_id: 1,
-		id: 3230,
+		task_id: "cibule",
+		id: "CI3230",
 		type: 'slova2_3sl',
 		target_letter: 'hra-ni-ce',
 		background_letters: ['v'],
@@ -13025,8 +13025,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 14, 5]
 	},
 	{
-		task_id: 1,
-		id: 3231,
+		task_id: "cibule",
+		id: "CI3231",
 		type: 'slova2_3sl',
 		target_letter: 'le-tuš-ka',
 		background_letters: ['p'],
@@ -13039,8 +13039,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [3, 26, 12]
 	},
 	{
-		task_id: 1,
-		id: 3232,
+		task_id: "cibule",
+		id: "CI3232",
 		type: 'slova2_3sl',
 		target_letter: 'po-hov-ka',
 		background_letters: ['z'],
@@ -13053,8 +13053,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 6, 23]
 	},
 	{
-		task_id: 1,
-		id: 3233,
+		task_id: "cibule",
+		id: "CI3233",
 		type: 'slova2_3sl',
 		target_letter: 'sa-mo-ta',
 		background_letters: ['q'],
@@ -13067,8 +13067,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [24, 6, 16]
 	},
 	{
-		task_id: 1,
-		id: 3234,
+		task_id: "cibule",
+		id: "CI3234",
 		type: 'slova2_3sl',
 		target_letter: 'o-pa-sek',
 		background_letters: ['z'],
@@ -13081,8 +13081,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 10, 19]
 	},
 	{
-		task_id: 1,
-		id: 3235,
+		task_id: "cibule",
+		id: "CI3235",
 		type: 'slova2_3sl',
 		target_letter: 'pis-to-le',
 		background_letters: ['u'],
@@ -13095,8 +13095,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 18, 12]
 	},
 	{
-		task_id: 1,
-		id: 3236,
+		task_id: "cibule",
+		id: "CI3236",
 		type: 'slova2_3sl',
 		target_letter: 'ko-ží-šek',
 		background_letters: ['d'],
@@ -13109,8 +13109,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 2, 16]
 	},
 	{
-		task_id: 1,
-		id: 3237,
+		task_id: "cibule",
+		id: "CI3237",
 		type: 'slova2_3sl',
 		target_letter: 'ro-di-na',
 		background_letters: ['z'],
@@ -13123,8 +13123,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 22, 4]
 	},
 	{
-		task_id: 1,
-		id: 3238,
+		task_id: "cibule",
+		id: "CI3238",
 		type: 'slova2_3sl',
 		target_letter: 'ho-di-na',
 		background_letters: ['c'],
@@ -13137,8 +13137,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 16, 3]
 	},
 	{
-		task_id: 1,
-		id: 3239,
+		task_id: "cibule",
+		id: "CI3239",
 		type: 'slova2_3sl',
 		target_letter: 'pro-pis-ka',
 		background_letters: ['y'],
@@ -13151,8 +13151,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 17, 5]
 	},
 	{
-		task_id: 1,
-		id: 3240,
+		task_id: "cibule",
+		id: "CI3240",
 		type: 'slova2_3sl',
 		target_letter: 'ba-la-da',
 		background_letters: ['x'],
@@ -13165,8 +13165,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [22, 4, 11]
 	},
 	{
-		task_id: 1,
-		id: 3241,
+		task_id: "cibule",
+		id: "CI3241",
 		type: 'slova2_3sl',
 		target_letter: 'stu-dán-ka',
 		background_letters: ['l'],
@@ -13179,8 +13179,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 19, 12]
 	},
 	{
-		task_id: 1,
-		id: 3242,
+		task_id: "cibule",
+		id: "CI3242",
 		type: 'slova2_3sl',
 		target_letter: 'ná-la-da',
 		background_letters: ['b'],
@@ -13193,8 +13193,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [26, 12, 5]
 	},
 	{
-		task_id: 1,
-		id: 3243,
+		task_id: "cibule",
+		id: "CI3243",
 		type: 'slova2_3sl',
 		target_letter: 'ko-ru-na',
 		background_letters: ['x'],
@@ -13207,8 +13207,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 28, 11]
 	},
 	{
-		task_id: 1,
-		id: 3244,
+		task_id: "cibule",
+		id: "CI3244",
 		type: 'slova2_3sl',
 		target_letter: 'skle-ni-ce',
 		background_letters: ['y'],
@@ -13221,8 +13221,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 25, 19]
 	},
 	{
-		task_id: 1,
-		id: 3245,
+		task_id: "cibule",
+		id: "CI3245",
 		type: 'slova2_3sl',
 		target_letter: 'vá-ni-ce',
 		background_letters: ['u'],
@@ -13235,8 +13235,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 15, 2]
 	},
 	{
-		task_id: 1,
-		id: 3246,
+		task_id: "cibule",
+		id: "CI3246",
 		type: 'slova2_3sl',
 		target_letter: 'ča-so-pis',
 		background_letters: ['r'],
@@ -13249,8 +13249,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 23, 3]
 	},
 	{
-		task_id: 1,
-		id: 3247,
+		task_id: "cibule",
+		id: "CI3247",
 		type: 'slova2_3sl',
 		target_letter: 'ka-mi-on',
 		background_letters: ['w'],
@@ -13263,8 +13263,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 20, 7]
 	},
 	{
-		task_id: 1,
-		id: 3248,
+		task_id: "cibule",
+		id: "CI3248",
 		type: 'slova2_3sl',
 		target_letter: 'ná-dra-ží',
 		background_letters: ['i'],
@@ -13277,8 +13277,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 28, 20]
 	},
 	{
-		task_id: 1,
-		id: 3249,
+		task_id: "cibule",
+		id: "CI3249",
 		type: 'slova2_3sl',
 		target_letter: 'ko-be-rec',
 		background_letters: ['z'],
@@ -13291,8 +13291,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 4, 23]
 	},
 	{
-		task_id: 1,
-		id: 3250,
+		task_id: "cibule",
+		id: "CI3250",
 		type: 'slova2_3sl',
 		target_letter: 'sta-di-on',
 		background_letters: ['k'],
@@ -13305,8 +13305,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 4, 24]
 	},
 	{
-		task_id: 1,
-		id: 3351,
+		task_id: "cibule",
+		id: "CI3351",
 		type: 'slova2_4sl',
 		target_letter: 'kos-me-ti-ka',
 		background_letters: ['b'],
@@ -13319,8 +13319,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [28, 13, 21, 2]
 	},
 	{
-		task_id: 1,
-		id: 3252,
+		task_id: "cibule",
+		id: "CI3252",
 		type: 'slova2_4sl',
 		target_letter: 'cho-bot-ni-ce',
 		background_letters: ['f'],
@@ -13333,8 +13333,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [8, 24, 3, 14]
 	},
 	{
-		task_id: 1,
-		id: 3253,
+		task_id: "cibule",
+		id: "CI3253",
 		type: 'slova2_4sl',
 		target_letter: 'ne-bez-pe-čí',
 		background_letters: ['h'],
@@ -13347,8 +13347,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [17, 28, 3, 8]
 	},
 	{
-		task_id: 1,
-		id: 3254,
+		task_id: "cibule",
+		id: "CI3254",
 		type: 'slova2_4sl',
 		target_letter: 'slu-neč-ni-ce',
 		background_letters: ['w'],
@@ -13361,8 +13361,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 6, 19, 24]
 	},
 	{
-		task_id: 1,
-		id: 3255,
+		task_id: "cibule",
+		id: "CI3255",
 		type: 'slova2_4sl',
 		target_letter: 'ko-že-ši-na',
 		background_letters: ['g'],
@@ -13375,8 +13375,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 27, 17, 22]
 	},
 	{
-		task_id: 1,
-		id: 3256,
+		task_id: "cibule",
+		id: "CI3256",
 		type: 'slova2_4sl',
 		target_letter: 'a-pli-ka-ce',
 		background_letters: ['w'],
@@ -13389,8 +13389,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [25, 11, 5, 14]
 	},
 	{
-		task_id: 1,
-		id: 3257,
+		task_id: "cibule",
+		id: "CI3257",
 		type: 'slova2_4sl',
 		target_letter: 'u-čeb-ni-ce',
 		background_letters: ['o'],
@@ -13403,8 +13403,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 3, 9, 21]
 	},
 	{
-		task_id: 1,
-		id: 3258,
+		task_id: "cibule",
+		id: "CI3258",
 		type: 'slova2_4sl',
 		target_letter: 'ne-bez-pe-čí',
 		background_letters: ['m'],
@@ -13417,8 +13417,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 2, 27, 20]
 	},
 	{
-		task_id: 1,
-		id: 3259,
+		task_id: "cibule",
+		id: "CI3259",
 		type: 'slova2_4sl',
 		target_letter: 'ko-tr-me-lec',
 		background_letters: ['g'],
@@ -13431,8 +13431,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [9, 2, 27, 20]
 	},
 	{
-		task_id: 1,
-		id: 3260,
+		task_id: "cibule",
+		id: "CI3260",
 		type: 'slova2_4sl',
 		target_letter: 'od-po-led-ne',
 		background_letters: ['t'],
@@ -13445,8 +13445,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 22, 17, 11]
 	},
 	{
-		task_id: 1,
-		id: 3261,
+		task_id: "cibule",
+		id: "CI3261",
 		type: 'slova2_4sl',
 		target_letter: 'in-for-ma-ce',
 		background_letters: ['j'],
@@ -13459,8 +13459,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [2, 27, 13, 22]
 	},
 	{
-		task_id: 1,
-		id: 3262,
+		task_id: "cibule",
+		id: "CI3262",
 		type: 'slova2_4sl',
 		target_letter: 'je-řa-bi-na',
 		background_letters: ['f'],
@@ -13473,8 +13473,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 24, 19, 6]
 	},
 	{
-		task_id: 1,
-		id: 3263,
+		task_id: "cibule",
+		id: "CI3263",
 		type: 'slova2_4sl',
 		target_letter: 'la-bo-ra-toř',
 		background_letters: ['e'],
@@ -13487,8 +13487,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 16, 2, 23]
 	},
 	{
-		task_id: 1,
-		id: 3264,
+		task_id: "cibule",
+		id: "CI3264",
 		type: 'slova2_4sl',
 		target_letter: 'pod-ko-len-ka',
 		background_letters: ['w'],
@@ -13501,8 +13501,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 12, 6, 25]
 	},
 	{
-		task_id: 1,
-		id: 3265,
+		task_id: "cibule",
+		id: "CI3265",
 		type: 'slova2_4sl',
 		target_letter: 'neš-to-vi-ce',
 		background_letters: ['m'],
@@ -13515,8 +13515,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 19, 4, 24]
 	},
 	{
-		task_id: 1,
-		id: 3266,
+		task_id: "cibule",
+		id: "CI3266",
 		type: 'slova2_4sl',
 		target_letter: 'o-ran-gu-tan',
 		background_letters: ['s'],
@@ -13529,8 +13529,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 9, 27, 21]
 	},
 	{
-		task_id: 1,
-		id: 3267,
+		task_id: "cibule",
+		id: "CI3267",
 		type: 'slova2_4sl',
 		target_letter: 'čo-ko-lá-da',
 		background_letters: ['n'],
@@ -13543,8 +13543,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 6, 19, 24]
 	},
 	{
-		task_id: 1,
-		id: 3268,
+		task_id: "cibule",
+		id: "CI3268",
 		type: 'slova2_4sl',
 		target_letter: 'ru-ka-vi-ce',
 		background_letters: ['q'],
@@ -13557,8 +13557,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 18, 2, 23]
 	},
 	{
-		task_id: 1,
-		id: 3269,
+		task_id: "cibule",
+		id: "CI3269",
 		type: 'slova2_4sl',
 		target_letter: 'sa-ze-ni-ce',
 		background_letters: ['v'],
@@ -13571,8 +13571,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 23, 9, 3]
 	},
 	{
-		task_id: 1,
-		id: 3270,
+		task_id: "cibule",
+		id: "CI3270",
 		type: 'slova2_4sl',
 		target_letter: 'u-či-tel-ka',
 		background_letters: ['x'],
@@ -13585,8 +13585,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 19, 14, 24]
 	},
 	{
-		task_id: 1,
-		id: 3271,
+		task_id: "cibule",
+		id: "CI3271",
 		type: 'slova2_4sl',
 		target_letter: 'a-pli-ka-ce',
 		background_letters: ['y'],
@@ -13599,8 +13599,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [20, 7, 25, 2]
 	},
 	{
-		task_id: 1,
-		id: 3272,
+		task_id: "cibule",
+		id: "CI3272",
 		type: 'slova2_4sl',
 		target_letter: 'ge-ne-ti-ka',
 		background_letters: ['w'],
@@ -13613,8 +13613,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 5, 18, 23]
 	},
 	{
-		task_id: 1,
-		id: 3273,
+		task_id: "cibule",
+		id: "CI3273",
 		type: 'slova2_4sl',
 		target_letter: 'neš-to-vi-ce',
 		background_letters: ['b'],
@@ -13627,8 +13627,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 22, 4, 17]
 	},
 	{
-		task_id: 1,
-		id: 3274,
+		task_id: "cibule",
+		id: "CI3274",
 		type: 'slova2_4sl',
 		target_letter: 'po-si-lov-na',
 		background_letters: ['q'],
@@ -13641,8 +13641,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 8, 20, 25]
 	},
 	{
-		task_id: 1,
-		id: 3275,
+		task_id: "cibule",
+		id: "CI3275",
 		type: 'slova2_4sl',
 		target_letter: 'u-klí-zeč-ka',
 		background_letters: ['p'],
@@ -13655,8 +13655,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 28, 3, 13]
 	},
 	{
-		task_id: 1,
-		id: 3276,
+		task_id: "cibule",
+		id: "CI3276",
 		type: 'slova2_4sl',
 		target_letter: 'kos-me-ti-ka',
 		background_letters: ['f'],
@@ -13669,8 +13669,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 15, 7, 20]
 	},
 	{
-		task_id: 1,
-		id: 3277,
+		task_id: "cibule",
+		id: "CI3277",
 		type: 'slova2_4sl',
 		target_letter: 'o-pe-ra-ce',
 		background_letters: ['t'],
@@ -13683,8 +13683,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [6, 24, 16, 11]
 	},
 	{
-		task_id: 1,
-		id: 3278,
+		task_id: "cibule",
+		id: "CI3278",
 		type: 'slova2_4sl',
 		target_letter: 'ře-di-tel-ka',
 		background_letters: ['x'],
@@ -13697,8 +13697,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [4, 19, 12, 24]
 	},
 	{
-		task_id: 1,
-		id: 3279,
+		task_id: "cibule",
+		id: "CI3279",
 		type: 'slova2_4sl',
 		target_letter: 'na-bí-ječ-ka',
 		background_letters: ['c'],
@@ -13711,8 +13711,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [19, 27, 12, 7]
 	},
 	{
-		task_id: 1,
-		id: 3280,
+		task_id: "cibule",
+		id: "CI3280",
 		type: 'slova2_4sl',
 		target_letter: 'sa-ze-ni-ce',
 		background_letters: ['m'],
@@ -13725,8 +13725,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [18, 2, 10, 24]
 	},
 	{
-		task_id: 1,
-		id: 3281,
+		task_id: "cibule",
+		id: "CI3281",
 		type: 'slova2_4sl',
 		target_letter: 'ne-bez-pe-čí',
 		background_letters: ['x'],
@@ -13739,8 +13739,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 4, 22, 9]
 	},
 	{
-		task_id: 1,
-		id: 3282,
+		task_id: "cibule",
+		id: "CI3282",
 		type: 'slova2_4sl',
 		target_letter: 'mo-le-ku-la',
 		background_letters: ['c'],
@@ -13753,8 +13753,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [16, 9, 3, 26]
 	},
 	{
-		task_id: 1,
-		id: 3283,
+		task_id: "cibule",
+		id: "CI3283",
 		type: 'slova2_4sl',
 		target_letter: 'ma-ko-vi-ce',
 		background_letters: ['z'],
@@ -13767,8 +13767,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 16, 28, 5]
 	},
 	{
-		task_id: 1,
-		id: 3284,
+		task_id: "cibule",
+		id: "CI3284",
 		type: 'slova2_4sl',
 		target_letter: 'do-bro-druž-ství',
 		background_letters: ['l'],
@@ -13781,8 +13781,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 24, 17, 6]
 	},
 	{
-		task_id: 1,
-		id: 3285,
+		task_id: "cibule",
+		id: "CI3285",
 		type: 'slova2_4sl',
 		target_letter: 'ko-lo-běž-ka',
 		background_letters: ['g'],
@@ -13795,8 +13795,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [11, 26, 20, 3]
 	},
 	{
-		task_id: 1,
-		id: 3286,
+		task_id: "cibule",
+		id: "CI3286",
 		type: 'slova2_4sl',
 		target_letter: 'la-bo-ra-toř',
 		background_letters: ['f'],
@@ -13809,8 +13809,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [12, 28, 3, 20]
 	},
 	{
-		task_id: 1,
-		id: 3287,
+		task_id: "cibule",
+		id: "CI3287",
 		type: 'slova2_4sl',
 		target_letter: 'slu-neč-ni-ce',
 		background_letters: ['q'],
@@ -13823,8 +13823,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [7, 16, 23, 1]
 	},
 	{
-		task_id: 1,
-		id: 3288,
+		task_id: "cibule",
+		id: "CI3288",
 		type: 'slova2_4sl',
 		target_letter: 'je-řa-bi-na',
 		background_letters: ['k'],
@@ -13837,8 +13837,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 19, 4, 10]
 	},
 	{
-		task_id: 1,
-		id: 3289,
+		task_id: "cibule",
+		id: "CI3289",
 		type: 'slova2_4sl',
 		target_letter: 'skla-da-tel-ka',
 		background_letters: ['b'],
@@ -13851,8 +13851,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 28, 3, 15]
 	},
 	{
-		task_id: 1,
-		id: 3290,
+		task_id: "cibule",
+		id: "CI3290",
 		type: 'slova2_4sl',
 		target_letter: 'zá-te-ra-sa',
 		background_letters: ['w'],
@@ -13865,8 +13865,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 27, 3, 8]
 	},
 	{
-		task_id: 1,
-		id: 3291,
+		task_id: "cibule",
+		id: "CI3291",
 		type: 'slova2_4sl',
 		target_letter: 'ko-tr-me-lec',
 		background_letters: ['z'],
@@ -13879,8 +13879,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [27, 17, 22, 6]
 	},
 	{
-		task_id: 1,
-		id: 3292,
+		task_id: "cibule",
+		id: "CI3292",
 		type: 'slova2_4sl',
 		target_letter: 'skla-da-tel-ka',
 		background_letters: ['v'],
@@ -13893,8 +13893,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [5, 28, 21, 11]
 	},
 	{
-		task_id: 1,
-		id: 3293,
+		task_id: "cibule",
+		id: "CI3293",
 		type: 'slova2_4sl',
 		target_letter: 'po-si-lov-na',
 		background_letters: ['y'],
@@ -13907,8 +13907,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [21, 4, 27, 14]
 	},
 	{
-		task_id: 1,
-		id: 3294,
+		task_id: "cibule",
+		id: "CI3294",
 		type: 'slova2_4sl',
 		target_letter: 'po-si-lov-na',
 		background_letters: ['z'],
@@ -13921,8 +13921,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [23, 5, 18, 12]
 	},
 	{
-		task_id: 1,
-		id: 3295,
+		task_id: "cibule",
+		id: "CI3295",
 		type: 'slova2_4sl',
 		target_letter: 'au-to-mo-bil',
 		background_letters: ['r'],
@@ -13935,8 +13935,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [13, 19, 25, 6]
 	},
 	{
-		task_id: 1,
-		id: 3296,
+		task_id: "cibule",
+		id: "CI3296",
 		type: 'slova2_4sl',
 		target_letter: 'dy-nas-ti-e',
 		background_letters: ['f'],
@@ -13949,8 +13949,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [10, 5, 28, 18]
 	},
 	{
-		task_id: 1,
-		id: 3297,
+		task_id: "cibule",
+		id: "CI3297",
 		type: 'slova2_4sl',
 		target_letter: 'pod-ko-len-ka',
 		background_letters: ['i'],
@@ -13963,8 +13963,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [22, 28, 10, 2]
 	},
 	{
-		task_id: 1,
-		id: 3298,
+		task_id: "cibule",
+		id: "CI3298",
 		type: 'slova2_4sl',
 		target_letter: 'zá-te-ra-sa',
 		background_letters: ['c'],
@@ -13977,8 +13977,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [15, 22, 7, 27]
 	},
 	{
-		task_id: 1,
-		id: 3299,
+		task_id: "cibule",
+		id: "CI3299",
 		type: 'slova2_4sl',
 		target_letter: 'po-hled-ni-ce',
 		background_letters: ['q'],
@@ -13991,8 +13991,8 @@ export const cibuleL3RawData: CibuleRawDataEntry[] = [
 		target_positions: [14, 19, 5, 25]
 	},
 	{
-		task_id: 1,
-		id: 3300,
+		task_id: "cibule",
+		id: "CI3300",
 		type: 'slova2_4sl',
 		target_letter: 'o-ran-gu-tan',
 		background_letters: ['w'],
