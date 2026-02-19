@@ -196,7 +196,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 	}
 ];
 
-const fonologieL4Data : FonologieManipulationRawDataEntry[] = [
+export const fonologieL4Data : FonologieManipulationRawDataEntry[] = [
 	{
 		task_id: 'fonologie',
 		id: 'FL4001',

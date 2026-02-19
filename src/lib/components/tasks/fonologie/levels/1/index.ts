@@ -1,22 +1,7 @@
-﻿import type { TrackTaskDataEntry } from '$lib/types/task.types';
+﻿import type { FonologieAudioRawDataEntry } from '$lib/components/tasks/fonologie/fonologie.types';
+import { fonologieL1Data } from '$lib/components/tasks/fonologie/fonologie.data';
 
 export const id = 'level1';
+export const rawData: FonologieAudioRawDataEntry[] = fonologieL1Data;
 
 export const instructionVideo = null;
-
-export function getShowcaseData(data: TrackTaskDataEntry[]): TrackTaskDataEntry[] {
-	const allSymbols = data
-		? data.flatMap((entry) =>
-				Array.isArray(entry.sequence[0])
-					? (entry.sequence as string[][]).flat()
-					: (entry.sequence as string[])
-			)
-		: [];
-	const uniqueSymbols = Array.from(new Set(allSymbols));
-	return [
-		{
-			sequence: uniqueSymbols,
-			correct: uniqueSymbols
-		}
-	];
-}
