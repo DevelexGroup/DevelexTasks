@@ -2,20 +2,22 @@
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
 	import { type TaskMistake, TaskStage, type TrackTaskState } from '$lib/types/task.types';
-	import { fonologieTestData } from '$lib/components/tasks/fonologie/fonologie.data';
-	import { getShowcaseData, id } from '$lib/components/tasks/fonologie/levels/1/index';
+	import { id, rawData } from '$lib/components/tasks/fonologie/levels/1/index';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import { getWordAudioSource } from '$lib/utils/trackLevelUtils';
+	import { getLevelData, getWordAudioSource } from '$lib/utils/trackLevelUtils';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
 	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
 	import {
+		fonologieLevelPreset,
 		fonologieStageValidation,
-		fonologieSymbolValidation
+		fonologieSymbolValidation, formatFonologieRawData, getShowcaseData
 	} from '$lib/components/tasks/fonologie';
 	import { fade } from 'svelte/transition';
+	import type { FonologieAudioRawDataEntry } from '$lib/components/tasks/fonologie/fonologie.types';
 
-	const data = fonologieTestData.find((level) => level.levelID === id)?.practiceContent;
+	const preset = fonologieLevelPreset.find((level) => level.levelID === id)?.practiceContent;
+	const data = preset ? getLevelData<FonologieAudioRawDataEntry>(preset, rawData, formatFonologieRawData) : null;
 	const showcaseData = data ? getShowcaseData(data) : null;
 
 	let symbolsShowcase = true;
