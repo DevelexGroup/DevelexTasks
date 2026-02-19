@@ -9,19 +9,19 @@
 		rawData
 	} from '$lib/components/tasks/cibule/levels/3a/index';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
-	import { calculateFluencyScore, cibuleLevelPreset } from '$lib/components/tasks/cibule';
+	import { calculateFluencyScore, cibuleLevelPreset, formatCibuleRawData } from '$lib/components/tasks/cibule';
 	import { getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
-	import { tryReadWordFromState } from '$lib/utils/trackLevelUtils';
+	import { getLevelData, tryReadWordFromState } from '$lib/utils/trackLevelUtils';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
 	import MicrophoneHint from '$lib/components/common/MicrophoneHint.svelte';
+	import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 
 	const preset = cibuleLevelPreset.find((level) => level.levelID === id)?.content;
-	const data = preset ? getCibuleLevelData(preset, rawData) : null;
+	const data = preset ? getLevelData<CibuleRawDataEntry>(preset, rawData, formatCibuleRawData) : null;
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 

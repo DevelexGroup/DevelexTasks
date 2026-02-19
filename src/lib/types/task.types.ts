@@ -1,6 +1,7 @@
 import type { Snippet } from 'svelte';
 import type { SessionScoreMetrics } from '$lib/database/db.types';
 import type { PartialArrayable } from '$lib/types/util.types';
+import type { RawDataEntry } from '$lib/types/data.types';
 
 export interface TaskMetadata {
 	label: string;
@@ -72,11 +73,11 @@ export enum TrackSlideStage {
 	Task
 }
 
-export interface TrackTaskDataEntry {
+export interface TrackTaskDataEntry<TElement = string> {
 	id: string;
-	sequence: string[] | string[][];
-	correct?: string[];
-	wordToRead?: string;
+	sequence: TElement[] | TElement[][];
+	correct?: TElement[];
+	sound?: string;
 	correctCount?: number;
 }
 
@@ -85,12 +86,12 @@ export type TrackTaskData = TaskData<TrackTaskDataEntry>;
 export interface TrackTaskPresetEntryDefinition extends TrackTaskDataEntry {
 	generate?: null;
 }
-export interface TrackTaskPresetEntryGenerator<TDataEntry> {
-	generate: PartialArrayable<TDataEntry> & { type?: string | string[] };
+export interface TrackTaskPresetEntryGenerator<TRawDataEntry extends RawDataEntry> {
+	generate: PartialArrayable<TRawDataEntry>;
 }
 
-export type TrackTaskPreset<TDataEntry> = TaskData<
-	TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<TDataEntry>
+export type TrackTaskPreset<TRawDataEntry extends RawDataEntry> = TaskData<
+	TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<TRawDataEntry>
 >;
 
 // Components

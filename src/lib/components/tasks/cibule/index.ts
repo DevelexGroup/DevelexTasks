@@ -1,4 +1,9 @@
-import type { TaskMetadata, TrackTaskState, TrackTaskPreset } from '$lib/types/task.types';
+import type {
+	TaskMetadata,
+	TrackTaskState,
+	TrackTaskPreset,
+	TrackTaskDataEntry
+} from '$lib/types/task.types';
 import { CibuleDataType, type CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 import type { SessionScoreMetrics } from '$lib/database/db.types';
 
@@ -6,6 +11,7 @@ export const addToList = true;
 export const label = 'Cibule';
 export const description = 'Example description';
 
+// #region Presets
 export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 	{
 		levelID: 'level1',
@@ -140,7 +146,9 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		]
 	}
 ];
+// #endregion
 
+// #region Scoring
 const FLUENCY_MAX_SCORE = 100; // points
 
 const FLUENCY_TIME_MIN = 2000; // ms
@@ -201,6 +209,39 @@ export function calculateFluencyScore(
 
 	return Math.max(0, Math.min(score, FLUENCY_MAX_SCORE)); // Clamp score between 0 and 100
 }
+// #endregion
+
+// #region Data formatting
+export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackTaskDataEntry {
+	const correct = rawData.target_letter
+		? rawData.target_letter.split('-').map((item) => item.trim())
+		: undefined;
+	const sequence = splitSequence(rawData.search_string, correct || []);
+	const correctCount = sequence.filter((item) => correct?.includes(item)).length;
+	return {
+		id: rawData.id.toString(),
+		sequence,
+		correct,
+		sound: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase(),
+		correctCount
+	};
+}
+
+function splitSequence(sequence: string, targets: string[]): string[] {
+	const regions = sequence.trim().match(/[^ ]+ *| +/g) || [];
+
+	const pattern = new RegExp(`(${targets.join('|')})`, 'g');
+
+	const result: string[] = [];
+
+	for (const region of regions) {
+		const parts = region.split(pattern).filter((part) => part !== '');
+		result.push(...parts);
+	}
+
+	return result;
+}
+// #endregion
 
 export default {
 	label,

@@ -26,12 +26,12 @@
 		}}
 	>
 		{#snippet hintComponent({ state })}
-			{#if state.dataEntry.wordToRead}
+			{#if state.dataEntry.sound}
 				<AudioHint
-					audioSrc={getWordAudioSource(state.dataEntry.wordToRead)}
+					audioSrc={getWordAudioSource(state.dataEntry.sound)}
 					playOnStart
 					playOnStartDelay={750}
-					ttsFallback={state.dataEntry.wordToRead}
+					ttsFallback={state.dataEntry.sound}
 				/>
 			{/if}
 		{/snippet}

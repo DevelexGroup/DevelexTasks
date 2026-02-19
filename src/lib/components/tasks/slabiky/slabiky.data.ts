@@ -9,7 +9,7 @@ export const slabikyTestData: TrackTaskData = [
 				id: 'practice1',
 				sequence: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be'],
 				correct: ['do'],
-				wordToRead: 'DO'
+				sound: 'DO'
 			}
 		],
 		content: [
@@ -33,7 +33,7 @@ export const slabikyTestData: TrackTaskData = [
 					'sa'
 				],
 				correct: ['se'],
-				wordToRead: 'SE'
+				sound: 'SE'
 			},
 			{
 				id: 'content2',
@@ -55,7 +55,7 @@ export const slabikyTestData: TrackTaskData = [
 					'po'
 				],
 				correct: ['po'],
-				wordToRead: 'PO'
+				sound: 'PO'
 			},
 			{
 				id: 'content3',
@@ -77,7 +77,7 @@ export const slabikyTestData: TrackTaskData = [
 					'ja'
 				],
 				correct: ['ja'],
-				wordToRead: 'JA'
+				sound: 'JA'
 			},
 			{
 				id: 'content4',
@@ -88,7 +88,7 @@ export const slabikyTestData: TrackTaskData = [
 					['cu', 'ci', 'ic', 'ci', 'ca', 'ce', 'ci']
 				],
 				correct: ['ci'],
-				wordToRead: 'CI'
+				sound: 'CI'
 			},
 			{
 				id: 'content5',
@@ -99,7 +99,7 @@ export const slabikyTestData: TrackTaskData = [
 					['ku', 'lu', 'ka', 'ku', 'hu', 'ku', 'ak']
 				],
 				correct: ['ku'],
-				wordToRead: 'KU'
+				sound: 'KU'
 			},
 			{
 				id: 'content6',
@@ -118,7 +118,7 @@ export const slabikyTestData: TrackTaskData = [
 					'hól'
 				],
 				correct: ['hůl'],
-				wordToRead: 'HŮL'
+				sound: 'HŮL'
 			},
 			{
 				id: 'content7',
@@ -140,7 +140,7 @@ export const slabikyTestData: TrackTaskData = [
 					'šok'
 				],
 				correct: ['kos'],
-				wordToRead: 'KOS'
+				sound: 'KOS'
 			},
 			{
 				id: 'content8',
@@ -162,7 +162,7 @@ export const slabikyTestData: TrackTaskData = [
 					'nám'
 				],
 				correct: ['nám'],
-				wordToRead: 'NÁM'
+				sound: 'NÁM'
 			},
 			{
 				id: 'content9',
@@ -173,7 +173,7 @@ export const slabikyTestData: TrackTaskData = [
 					['výr', 'vír', 'rýv', 'výr', 'vír', 'výr', 'výr']
 				],
 				correct: ['výr'],
-				wordToRead: 'VÝR'
+				sound: 'VÝR'
 			},
 			{
 				id: 'content10',
@@ -184,7 +184,7 @@ export const slabikyTestData: TrackTaskData = [
 					['cer', 'sar', 'car', 'cra', 'car', 'čar', 'rec']
 				],
 				correct: ['car'],
-				wordToRead: 'CAR'
+				sound: 'CAR'
 			}
 		]
 	},
@@ -196,7 +196,7 @@ export const slabikyTestData: TrackTaskData = [
 				id: 'practice2',
 				sequence: ['po', 'pe', 'ba', 'du', 'pa', 'do', 'be'],
 				correct: ['do'],
-				wordToRead: 'DO'
+				sound: 'DO'
 			}
 		],
 		content: [
@@ -204,7 +204,7 @@ export const slabikyTestData: TrackTaskData = [
 				id: 'content11',
 				sequence: ['nr', 'vr', 'vř', 'rv', 'vr', 'br', 'ir', 'vr', 'vl', 'ru', 'pr', 'vr'],
 				correct: ['vr'],
-				wordToRead: 'VR'
+				sound: 'VR'
 			},
 			{
 				id: 'content12',
@@ -226,7 +226,7 @@ export const slabikyTestData: TrackTaskData = [
 					'tř'
 				],
 				correct: ['tr'],
-				wordToRead: 'TR'
+				sound: 'TR'
 			},
 			{
 				id: 'content13',
@@ -248,7 +248,7 @@ export const slabikyTestData: TrackTaskData = [
 					'rm'
 				],
 				correct: ['mr'],
-				wordToRead: 'MR'
+				sound: 'MR'
 			},
 			{
 				id: 'content14',
@@ -259,7 +259,7 @@ export const slabikyTestData: TrackTaskData = [
 					['ht', 'rl', 'fr', 'hr', 'hr', 'tr', 'rh']
 				],
 				correct: ['hr'],
-				wordToRead: 'HR'
+				sound: 'HR'
 			},
 			{
 				id: 'content15',
@@ -270,7 +270,7 @@ export const slabikyTestData: TrackTaskData = [
 					['rb', 'br', 'pr', 'br', 'dr', 'br', 'rb', 'br']
 				],
 				correct: ['br'],
-				wordToRead: 'BR'
+				sound: 'BR'
 			},
 			{
 				id: 'content16',
@@ -289,7 +289,7 @@ export const slabikyTestData: TrackTaskData = [
 					'zrob'
 				],
 				correct: ['zrod'],
-				wordToRead: 'ZROD'
+				sound: 'ZROD'
 			},
 			{
 				id: 'content17',
@@ -311,7 +311,7 @@ export const slabikyTestData: TrackTaskData = [
 					'slyš'
 				],
 				correct: ['plyš'],
-				wordToRead: 'PLYŠ'
+				sound: 'PLYŠ'
 			},
 			{
 				id: 'content18',
@@ -333,7 +333,7 @@ export const slabikyTestData: TrackTaskData = [
 					'vrám'
 				],
 				correct: ['krám'],
-				wordToRead: 'KRÁM'
+				sound: 'KRÁM'
 			},
 			{
 				id: 'content19',
@@ -344,7 +344,7 @@ export const slabikyTestData: TrackTaskData = [
 					['gram', 'gern', 'fram', 'tran', 'garm', 'gram', 'gran']
 				],
 				correct: ['gram'],
-				wordToRead: 'GRAM'
+				sound: 'GRAM'
 			},
 			{
 				id: 'content20',
@@ -355,7 +355,7 @@ export const slabikyTestData: TrackTaskData = [
 					['chlub', 'chlup', 'pluh', 'bluch', 'chulp', 'chlud', 'chlup', 'chlap']
 				],
 				correct: ['chlup'],
-				wordToRead: 'CHLUP'
+				sound: 'CHLUP'
 			}
 		]
 	}

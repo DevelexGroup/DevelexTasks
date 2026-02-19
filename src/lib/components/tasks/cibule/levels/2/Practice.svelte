@@ -6,15 +6,15 @@
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
 	import {
 		defaultValidateStage,
-		defaultValidateSymbol,
+		defaultValidateSymbol, getLevelData,
 		getWordAudioSource
 	} from '$lib/utils/trackLevelUtils';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
-	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
+	import { cibuleLevelPreset, formatCibuleRawData } from '$lib/components/tasks/cibule';
+	import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 
 	const preset = cibuleLevelPreset.find((level) => level.levelID === id)?.practiceContent;
-	const data = preset ? getCibuleLevelData(preset, rawData) : null;
+	const data = preset ? getLevelData<CibuleRawDataEntry>(preset, rawData, formatCibuleRawData) : null;
 </script>
 
 {#if data}
@@ -29,12 +29,12 @@
 		}}
 	>
 		{#snippet hintComponent({ state })}
-			{#if state.dataEntry.wordToRead}
+			{#if state.dataEntry.sound}
 				<AudioHint
-					audioSrc={getWordAudioSource(state.dataEntry.wordToRead)}
+					audioSrc={getWordAudioSource(state.dataEntry.sound)}
 					playOnStart
 					playOnStartDelay={750}
-					ttsFallback={state.dataEntry.wordToRead}
+					ttsFallback={state.dataEntry.sound}
 				/>
 			{/if}
 		{/snippet}

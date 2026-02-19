@@ -5,12 +5,12 @@
 	import { id, rawData } from '$lib/components/tasks/cibule/levels/1/index';
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import { defaultValidateStage, defaultValidateSymbol } from '$lib/utils/trackLevelUtils';
-	import { cibuleLevelPreset } from '$lib/components/tasks/cibule';
-	import { getCibuleLevelData } from '$lib/components/tasks/cibule/utils/levelLoader';
+	import { defaultValidateStage, defaultValidateSymbol, getLevelData } from '$lib/utils/trackLevelUtils';
+	import { cibuleLevelPreset, formatCibuleRawData } from '$lib/components/tasks/cibule';
+	import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 
 	const preset = cibuleLevelPreset.find((level) => level.levelID === id)?.practiceContent;
-	const data = preset ? getCibuleLevelData(preset, rawData) : null;
+	const data = preset ? getLevelData<CibuleRawDataEntry>(preset, rawData, formatCibuleRawData) : null;
 </script>
 
 {#if data}
