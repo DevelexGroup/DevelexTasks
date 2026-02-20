@@ -125,3 +125,52 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+@font-face {
+	font-family: 'Aptos';
+	src: url('/fonts/zrakovka/Aptos.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'BPG Nino Mtavruli';
+	src: url('/fonts/zrakovka/BPGNinoMtavruli.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Dotum';
+	src: url('/fonts/zrakovka/Dotum.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Heavenezer';
+	src: url('/fonts/zrakovka/Heavenezer.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Meine Regular';
+	src: url('/fonts/zrakovka/Meine.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Screws Regular';
+	src: url('/fonts/zrakovka/Screws.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Various Materials';
+	src: url('/fonts/zrakovka/VariousMaterials.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
