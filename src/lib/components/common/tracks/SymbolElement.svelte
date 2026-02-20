@@ -5,6 +5,8 @@
 		validateSymbolClick?: (symbol: string, index: number) => boolean;
 		interactable?: boolean;
 		letterSpacing?: number;
+		fontFamily?: string;
+		fontSize?: string;
 	}
 
 	let isCorrect = $state<boolean>(false);
@@ -15,7 +17,9 @@
 		index = -1,
 		validateSymbolClick = () => true,
 		interactable = true,
-		letterSpacing = 0
+		letterSpacing = 0,
+		fontFamily,
+		fontSize
 	}: Props = $props();
 
 	let isWhitespace = symbol.trim() === '';
@@ -36,8 +40,8 @@
 
 <button
 	type="button"
-	class="symbol font-serif text-4xl text-gray-800"
-	style="letter-spacing: {letterSpacing}px;"
+	class="symbol {fontFamily == null && 'font-serif'} {fontSize == null && 'text-4xl'} text-gray-800"
+	style="letter-spacing: {letterSpacing}px; font-family: {fontFamily}; font-size: {fontSize};"
 	class:correct-symbol={isCorrect}
 	class:incorrect-symbol={!isCorrect}
 	class:non-interactable={isWhitespace || !interactable}

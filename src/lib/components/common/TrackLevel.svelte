@@ -257,7 +257,8 @@
 									{@render trackComponent({
 										symbols: symbols(),
 										correctSymbols: currentData().correct,
-										validateSymbolClick
+										validateSymbolClick,
+										dataEntry: currentData()
 									})}
 								</div>
 							</GazeArea>
@@ -273,7 +274,8 @@
 							{@render trackComponent({
 								symbols: symbols(),
 								correctSymbols: currentData().correct,
-								validateSymbolClick
+								validateSymbolClick,
+								dataEntry: currentData()
 							})}
 						</div>
 					</GazeArea>

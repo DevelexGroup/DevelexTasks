@@ -79,6 +79,8 @@ export interface TrackTaskDataEntry<TElement = string> {
 	correct?: TElement[];
 	sound?: string;
 	correctCount?: number;
+	font?: string;
+	size?: number;
 }
 
 export type TrackTaskData = TaskData<TrackTaskDataEntry>;
@@ -107,6 +109,7 @@ export interface TrackComponent {
 	correctSymbols?: string[];
 	letterSpacing?: number;
 	symbolSpacing?: number;
+	dataEntry?: TrackTaskDataEntry;
 }
 
 export interface TrackSymbolComponent {

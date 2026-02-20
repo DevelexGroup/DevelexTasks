@@ -1,15 +1,24 @@
 <script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
-	import { TaskStage } from '$lib/types/task.types';
+	import { TaskStage, type TrackTaskDataEntry } from '$lib/types/task.types';
 	import { id } from '$lib/components/tasks/zrakovka/levels/1/index';
 	import { resolveAny } from '$lib/utils/resolveAny';
-	import { zrakovkaTestData } from '$lib/components/tasks/zrakovka/zrakovka.data';
+	import { zrakovkaZacvikData } from '$lib/components/tasks/zrakovka/zrakovka.data';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import { defaultValidateStage, defaultValidateSymbol } from '$lib/utils/trackLevelUtils';
+	import {
+		defaultValidateStage,
+		defaultValidateSymbol,
+		getLevelData
+	} from '$lib/utils/trackLevelUtils';
 	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
+	import { formatZrakovkaRawData, zrakovkaLevelPreset } from '../..';
+	import { type ZrakovkaRawDataEntry } from '../../zrakovka.types';
 
-	const data = zrakovkaTestData.find((level) => level.levelID === id)?.practiceContent;
+	const preset = zrakovkaLevelPreset.find((level) => level.levelID === id)?.practiceContent;
+	const data = preset
+		? getLevelData<ZrakovkaRawDataEntry>(preset, zrakovkaZacvikData, formatZrakovkaRawData)
+		: null;
 </script>
 
 {#if data}
@@ -24,9 +33,9 @@
 	>
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
-				<div class="h-20 w-20">
+				<div class="h-12 w-12">
 					<img
-						class="h-20 h-full w-20 w-full object-contain"
+						class="h-full w-full object-contain"
 						src={resolveAny(`/images/tasks/zrakovka/${state.dataEntry.correct[0]}.png`)}
 						alt={state.dataEntry.correct[0]}
 					/>
@@ -40,6 +49,7 @@
 						{symbol}
 						{index}
 						{validateSymbolClick}
+						width={12}
 						basePath="/images/tasks/zrakovka"
 					/>
 				{/snippet}

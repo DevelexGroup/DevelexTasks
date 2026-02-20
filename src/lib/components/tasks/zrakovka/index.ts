@@ -21,6 +21,61 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 				generate: {
 					sada: ['sada1.1']
 				}
+			},
+			{
+				generate: {
+					sada: ['sada1.2']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.3']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.4']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.5']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.6']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.7']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.8']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.9']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.10']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.11']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada1.12']
+				}
 			}
 		]
 	}
@@ -33,7 +88,8 @@ export const formatZrakovkaRawData = (rawData: ZrakovkaRawDataEntry): TrackTaskD
 			? rawData.string
 			: rawData.string.split(',').map((item) => item.trim()),
 		correct: rawData.target ? rawData.target.split(',').map((item) => item.trim()) : undefined,
-		font: rawData.font
+		font: rawData.font,
+		size: rawData.size
 	};
 };
 
