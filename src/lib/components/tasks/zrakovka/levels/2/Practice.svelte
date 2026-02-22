@@ -2,7 +2,7 @@
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
-	import { id } from '$lib/components/tasks/zrakovka/levels/1/index';
+	import { id } from '$lib/components/tasks/zrakovka/levels/2/index';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import { zrakovkaZacvikData } from '$lib/components/tasks/zrakovka/zrakovka.data';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
@@ -49,7 +49,7 @@
 						{symbol}
 						{index}
 						{validateSymbolClick}
-						width={12}
+						width={12 * 1.25}
 						basePath="/images/tasks/zrakovka"
 					/>
 				{/snippet}

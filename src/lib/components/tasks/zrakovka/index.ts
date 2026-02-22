@@ -78,6 +78,152 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 				}
 			}
 		]
+	},
+	{
+		levelID: 'level2',
+		label: 'Úroveň 2',
+		practiceContent: [
+			{
+				generate: {
+					sada: ['zacvik2']
+				}
+			}
+		],
+		content: [
+			{
+				generate: {
+					sada: ['sada2.1']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.2']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.3']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.4']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.5']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.6']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.7']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.8']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.9']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.10']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.11']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada2.12']
+				}
+			}
+		]
+	},
+	{
+		levelID: 'level3',
+		label: 'Úroveň 3',
+		practiceContent: [
+			{
+				generate: {
+					sada: ['zacvik3']
+				}
+			}
+		],
+		content: [
+			{
+				generate: {
+					sada: ['sada3.1']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.2']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.3']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.4']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.5']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.6']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.7']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.8']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.9']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.10']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.11']
+				}
+			},
+			{
+				generate: {
+					sada: ['sada3.12']
+				}
+			}
+		]
 	}
 ];
 

@@ -2,8 +2,8 @@
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
-	import { id } from '$lib/components/tasks/zrakovka/levels/1/index';
-	import { zrakovkaLevel1Data } from '$lib/components/tasks/zrakovka/zrakovka.data';
+	import { id } from '$lib/components/tasks/zrakovka/levels/3/index';
+	import { zrakovkaLevel3Data } from '$lib/components/tasks/zrakovka/zrakovka.data';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import {
 		defaultValidateStage,
@@ -17,9 +17,8 @@
 
 	const preset = zrakovkaLevelPreset.find((level) => level.levelID === id)?.content;
 	const data = preset
-		? getLevelData<ZrakovkaRawDataEntry>(preset, zrakovkaLevel1Data, formatZrakovkaRawData)
+		? getLevelData<ZrakovkaRawDataEntry>(preset, zrakovkaLevel3Data, formatZrakovkaRawData)
 		: null;
-	console.log(data);
 </script>
 
 {#if data}
@@ -62,7 +61,7 @@
 							{index}
 							{validateSymbolClick}
 							fontFamily={dataEntry?.font}
-							fontSize={`${dataEntry?.size}px`}
+							fontSize={`${(dataEntry?.size ?? 0) * 2.5}px`}
 						/>
 					{:else}
 						<ImageSymbolElement
@@ -70,8 +69,8 @@
 							{index}
 							{validateSymbolClick}
 							basePath="/images/tasks/zrakovka"
-							height={(dataEntry?.size ?? 0) / 6}
-							width={(dataEntry?.size ?? 0) / 6}
+							height={(dataEntry?.size ?? 0) / (6 / 2)}
+							width={(dataEntry?.size ?? 0) / (6 / 2)}
 						/>
 					{/if}
 				{/snippet}
