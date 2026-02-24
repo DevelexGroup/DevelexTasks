@@ -141,7 +141,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'animals2',
 		level: 'level3',
 		sound: 'P_upr',
-		sequence: ['pstros2', 'slepice2', 'papousek1', 'lemur2', 'kosatka2'],
+		sequence: ['pstros2', 'slepice2', 'papousek2', 'lemur2', 'kosatka2'],
 		correct_indices: [1, 2]
 	},
 	{
