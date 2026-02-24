@@ -21,6 +21,10 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieAudioRawDataEntry> =
 			{ generate: { level: 'level1'	} }
 		],
 		content: [
+			{ generate: { level: 'level1'	} },
+			{ generate: { level: 'level1'	} },
+			{ generate: { level: 'level1'	} },
+			{ generate: { level: 'level1'	} },
 			{ generate: { level: 'level1'	} }
 		]
 	},
@@ -31,6 +35,10 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieAudioRawDataEntry> =
 			{ generate: { level: 'level2'	} }
 		],
 		content: [
+			{ generate: { level: 'level2'	} },
+			{ generate: { level: 'level2'	} },
+			{ generate: { level: 'level2'	} },
+			{ generate: { level: 'level2'	} },
 			{ generate: { level: 'level2'	} }
 		]
 	},
@@ -41,6 +49,10 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieAudioRawDataEntry> =
 			{ generate: { level: 'level3'	} }
 		],
 		content: [
+			{ generate: { level: 'level3'	} },
+			{ generate: { level: 'level3'	} },
+			{ generate: { level: 'level3'	} },
+			{ generate: { level: 'level3'	} },
 			{ generate: { level: 'level3'	} }
 		]
 	},
@@ -51,6 +63,10 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieAudioRawDataEntry> =
 			{ generate: { level: 'level4'	} }
 		],
 		content: [
+			{ generate: { level: 'level4'	} },
+			{ generate: { level: 'level4'	} },
+			{ generate: { level: 'level4'	} },
+			{ generate: { level: 'level4'	} },
 			{ generate: { level: 'level4'	} }
 		]
 	},
@@ -61,6 +77,10 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieAudioRawDataEntry> =
 			{ generate: { level: 'level5'	} }
 		],
 		content: [
+			{ generate: { level: 'level5'	} },
+			{ generate: { level: 'level5'	} },
+			{ generate: { level: 'level5'	} },
+			{ generate: { level: 'level5'	} },
 			{ generate: { level: 'level5'	} }
 		]
 	}
