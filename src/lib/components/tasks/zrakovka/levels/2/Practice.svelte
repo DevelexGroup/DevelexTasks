@@ -49,7 +49,7 @@
 						{symbol}
 						{index}
 						{validateSymbolClick}
-						width={12 * 1.25}
+						width={12}
 						basePath="/images/tasks/zrakovka"
 					/>
 				{/snippet}

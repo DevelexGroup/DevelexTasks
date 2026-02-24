@@ -61,7 +61,7 @@
 							{index}
 							{validateSymbolClick}
 							fontFamily={dataEntry?.font}
-							fontSize={`${(dataEntry?.size ?? 0) * 2}px`}
+							fontSize={`${dataEntry?.size ?? 0}px`}
 						/>
 					{:else}
 						<ImageSymbolElement
@@ -69,8 +69,8 @@
 							{index}
 							{validateSymbolClick}
 							basePath="/images/tasks/zrakovka"
-							height={(dataEntry?.size ?? 0) / 3}
-							width={(dataEntry?.size ?? 0) / 3}
+							height={(dataEntry?.size ?? 0) / 6}
+							width={(dataEntry?.size ?? 0) / 6}
 						/>
 					{/if}
 				{/snippet}
