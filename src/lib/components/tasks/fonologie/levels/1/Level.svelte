@@ -146,7 +146,8 @@
 		padding: 0 1rem;
 		/* Width = columns * item-width + (columns - 1) * gap */
 		--item-width: 160px;
-		--gap: 16px;
+		--gap: 64px;
+		gap: var(--gap) !important;
 		width: calc(var(--optimal-columns, 4) * var(--item-width) + (var(--optimal-columns, 4) - 1) * var(--gap));
 		max-width: 100%;
 		margin: 0 auto;
