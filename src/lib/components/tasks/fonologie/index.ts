@@ -88,7 +88,7 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 // #endregion
 
 // #region Gameplay functions
-export function getShowcaseData(data: TrackTaskDataEntry[]): TrackTaskDataEntry[] {
+export function getShowcaseData(data: TrackTaskDataEntry[], shuffle = false): TrackTaskDataEntry[] {
 	const allSymbols = data
 		? data.flatMap((entry) =>
 				Array.isArray(entry.sequence[0])
@@ -97,6 +97,12 @@ export function getShowcaseData(data: TrackTaskDataEntry[]): TrackTaskDataEntry[
 			)
 		: [];
 	const uniqueSymbols = Array.from(new Set(allSymbols));
+	if (shuffle) {
+		for (let i = uniqueSymbols.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[uniqueSymbols[i], uniqueSymbols[j]] = [uniqueSymbols[j], uniqueSymbols[i]];
+		}
+	}
 	return [
 		{
 			id: 'showcase',

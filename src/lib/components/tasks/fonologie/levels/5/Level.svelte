@@ -32,7 +32,7 @@
 	const data = preset
 		? getLevelData<FonologieTaskRawDataEntry>(preset, rawData, formatFonologieRawData)
 		: null;
-	const showcaseData = data ? getShowcaseData(data) : null;
+	const showcaseData = data ? getShowcaseData(data, true) : null;
 
 	// Track window dimensions for dynamic aspect ratio
 	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
