@@ -1,5 +1,6 @@
 ﻿<script lang="ts">
-	import Level from './Level.svelte';
+	import FonologieLevel from '$lib/components/tasks/fonologie/components/FonologieLevel.svelte';
+	import { id, rawData } from './index';
 </script>
 
-<Level isPractice={true} />
+<FonologieLevel {id} {rawData} isPractice={true} useCategories={false} />

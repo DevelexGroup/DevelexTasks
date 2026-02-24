@@ -2,7 +2,6 @@
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
 	import { type TaskMistake, TaskStage, type TrackTaskState } from '$lib/types/task.types';
-	import { id, rawData } from '$lib/components/tasks/fonologie/levels/4/index';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { getLevelData } from '$lib/utils/trackLevelUtils';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
@@ -16,21 +15,38 @@
 		getShowcaseData
 	} from '$lib/components/tasks/fonologie';
 	import { fade } from 'svelte/transition';
-	import type { FonologieTaskRawDataEntry } from '$lib/components/tasks/fonologie/fonologie.types';
+	import type {
+		FonologieAudioRawDataEntry,
+		FonologieTaskRawDataEntry
+	} from '$lib/components/tasks/fonologie/fonologie.types';
 	import { resolveAny } from '$lib/utils/resolveAny';
 
 	interface Props {
 		isPractice?: boolean;
+		id: string;
+		rawData: FonologieTaskRawDataEntry[];
+		useCategories?: boolean;
 	}
 
-	let { isPractice = false }: Props = $props();
+	let { isPractice = false, id, rawData, useCategories = false }: Props = $props();
 
 	const levelPreset = fonologieLevelPreset.find((level) => level.levelID === id);
 	const preset = isPractice ? levelPreset?.practiceContent : levelPreset?.content;
 
-	// Select one random topic
+	// Select one random topic (only used when useCategories is true)
+	const randomCategory = $derived(
+		useCategories
+			? (rawData[Math.floor(Math.random() * rawData.length)] as FonologieAudioRawDataEntry).topic
+			: null
+	);
+	const filteredRawData = $derived(
+		useCategories
+			? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).topic === randomCategory)
+			: rawData
+	);
+
 	const data = preset
-		? getLevelData<FonologieTaskRawDataEntry>(preset, rawData, formatFonologieRawData)
+		? getLevelData<FonologieTaskRawDataEntry>(preset, filteredRawData, formatFonologieRawData)
 		: null;
 	const showcaseData = data ? getShowcaseData(data, true) : null;
 
@@ -91,6 +107,13 @@
 					{/snippet}
 				</SymbolTrack>
 			{/snippet}
+			{#if useCategories && randomCategory}
+				{#snippet extraComponent()}
+					<div class="text-5xl font-semibold text-center text-gray-700">
+						<h2>{randomCategory.charAt(0).toUpperCase() + randomCategory.slice(1).toLowerCase()}</h2>
+					</div>
+				{/snippet}
+			{/if}
 		</TrackLevel>
 	</div>
 {/if}
@@ -135,34 +158,34 @@
 {/if}
 
 <style>
-	.symbols-showcase :global(.symbol--image.selected) {
-		border-radius: 0.75rem;
-		background: rgba(0, 0, 0, 0.05);
-		transition: background 0.3s ease;
-	}
-
-	.symbols-showcase :global(.symbols-wrapper__row) {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		padding: 0 1rem;
-		/* Width = columns * item-width + (columns - 1) * gap */
-		--item-width: 160px;
-		--gap: 64px;
-		gap: var(--gap) !important;
-		width: calc(var(--optimal-columns, 4) * var(--item-width) + (var(--optimal-columns, 4) - 1) * var(--gap));
-		max-width: 100%;
-		margin: 0 auto;
-	}
-
-  :global(.symbol--image img) {
-		pointer-events: none;
+  .symbols-showcase :global(.symbol--image.selected) {
+    border-radius: 0.75rem;
+    background: rgba(0, 0, 0, 0.05);
+    transition: background 0.3s ease;
   }
 
-  .symbols-showcase :global(.extra-component){
-		order: -1;
-		margin-bottom: 2rem;
-		margin-top: -2rem;
-	}
+  .symbols-showcase :global(.symbols-wrapper__row) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 1rem;
+    /* Width = columns * item-width + (columns - 1) * gap */
+    --item-width: 160px;
+    --gap: 64px;
+    gap: var(--gap) !important;
+    width: calc(var(--optimal-columns, 4) * var(--item-width) + (var(--optimal-columns, 4) - 1) * var(--gap));
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  :global(.symbol--image img) {
+    pointer-events: none;
+  }
+
+  .symbols-showcase :global(.extra-component) {
+    order: -1;
+    margin-bottom: 2rem;
+    margin-top: -2rem;
+  }
 </style>
 
