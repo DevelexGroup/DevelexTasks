@@ -69,9 +69,9 @@
 		{/each}
 	</div>
 {:else}
-	<div class="flex flex-col items-start justify-center" style="gap: {symbolSpacing}px;">
+	<div class="symbols-wrapper flex flex-col items-start justify-center" style="gap: {symbolSpacing}px;">
 		{#each symbolRows as symbolRow, rowIndex (rowIndex)}
-			<div class="flex items-center justify-center" style="gap: {symbolSpacing}px;">
+			<div class="symbols-wrapper__row flex items-center justify-center" style="gap: {symbolSpacing}px;">
 				{#each symbolRow as symbolGroup, colIndex (`${rowIndex}-${colIndex}`)}
 					<SymbolGroup
 						id={`group-${flatIndexFor(rowIndex, colIndex)}`}
