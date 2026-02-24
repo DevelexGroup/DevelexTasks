@@ -16,3 +16,5 @@ export interface FonologieManipulationRawDataEntry extends RawDataEntry {
 	sequence: string[];
 	correct_indices: number[];
 }
+
+export type FonologieTaskRawDataEntry = FonologieAudioRawDataEntry | FonologieManipulationRawDataEntry;

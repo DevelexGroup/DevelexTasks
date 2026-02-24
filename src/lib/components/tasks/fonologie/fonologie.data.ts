@@ -1,6 +1,7 @@
 ﻿import type {
-	FonologieAudioRawDataEntry,
-	FonologieManipulationRawDataEntry
+	FonologieTaskRawDataEntry,
+	FonologieManipulationRawDataEntry,
+	FonologieAudioRawDataEntry
 } from '$lib/components/tasks/fonologie/fonologie.types';
 
 export const fonologieL1Data: FonologieAudioRawDataEntry[] = [

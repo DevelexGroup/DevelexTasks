@@ -16,7 +16,7 @@
 		getShowcaseData
 	} from '$lib/components/tasks/fonologie';
 	import { fade } from 'svelte/transition';
-	import type { FonologieAudioRawDataEntry } from '$lib/components/tasks/fonologie/fonologie.types';
+	import type { FonologieTaskRawDataEntry } from '$lib/components/tasks/fonologie/fonologie.types';
 	import { resolveAny } from '$lib/utils/resolveAny';
 
 	interface Props {
@@ -33,7 +33,7 @@
 	const filteredRawData = rawData.filter((entry) => entry.topic === randomCategory);
 
 	const data = preset
-		? getLevelData<FonologieAudioRawDataEntry>(preset, filteredRawData, formatFonologieRawData)
+		? getLevelData<FonologieTaskRawDataEntry>(preset, filteredRawData, formatFonologieRawData)
 		: null;
 	const showcaseData = data ? getShowcaseData(data) : null;
 

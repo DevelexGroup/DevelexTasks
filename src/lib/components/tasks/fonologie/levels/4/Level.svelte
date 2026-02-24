@@ -2,7 +2,7 @@
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
 	import { type TaskMistake, TaskStage, type TrackTaskState } from '$lib/types/task.types';
-	import { id, rawData } from '$lib/components/tasks/fonologie/levels/3/index';
+	import { id, rawData } from '$lib/components/tasks/fonologie/levels/4/index';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { getLevelData } from '$lib/utils/trackLevelUtils';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
@@ -29,11 +29,8 @@
 	const preset = isPractice ? levelPreset?.practiceContent : levelPreset?.content;
 
 	// Select one random topic
-	const randomCategory = $derived(rawData[Math.floor(Math.random() * rawData.length)].topic);
-	const filteredRawData = rawData.filter((entry) => entry.topic === randomCategory);
-
 	const data = preset
-		? getLevelData<FonologieTaskRawDataEntry>(preset, filteredRawData, formatFonologieRawData)
+		? getLevelData<FonologieTaskRawDataEntry>(preset, rawData, formatFonologieRawData)
 		: null;
 	const showcaseData = data ? getShowcaseData(data) : null;
 
@@ -93,11 +90,6 @@
 						/>
 					{/snippet}
 				</SymbolTrack>
-			{/snippet}
-			{#snippet extraComponent()}
-				<div class="text-5xl font-semibold text-center text-gray-700">
-					<h2>{randomCategory.charAt(0).toUpperCase() + randomCategory.slice(1).toLowerCase()}</h2>
-				</div>
 			{/snippet}
 		</TrackLevel>
 	</div>

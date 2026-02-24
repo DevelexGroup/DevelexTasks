@@ -6,14 +6,14 @@ import type {
 } from '$lib/types/task.types';
 import { MistakeMisclick, MistakeUnfinished } from '$lib/types/mistakes.types';
 import { getFlattenedSymbols } from '$lib/utils/trackLevelUtils';
-import type { FonologieAudioRawDataEntry } from '$lib/components/tasks/fonologie/fonologie.types';
+import type { FonologieTaskRawDataEntry } from '$lib/components/tasks/fonologie/fonologie.types';
 
 export const addToList = true;
 export const label = 'Fonologie';
 export const description = 'Example description';
 
 // #region Presets
-export const fonologieLevelPreset: TrackTaskPreset<FonologieAudioRawDataEntry> = [
+export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = [
 	{
 		levelID: 'level1',
 		label: 'Úroveň 1',
@@ -147,7 +147,7 @@ export function fonologieStageValidation(state: TrackTaskState): TaskMistake[] |
 // #endregion
 
 // #region Data formatting
-export function formatFonologieRawData(rawData: FonologieAudioRawDataEntry): TrackTaskDataEntry {
+export function formatFonologieRawData(rawData: FonologieTaskRawDataEntry): TrackTaskDataEntry {
 	const correct = rawData.correct_indices.map((index) => rawData.sequence[index]);
 	const correctCount = rawData.sequence.filter((item) => correct?.includes(item)).length;
 	return {

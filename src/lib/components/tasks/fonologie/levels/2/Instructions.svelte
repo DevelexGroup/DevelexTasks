@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
-	import { instructionVideo } from '$lib/components/tasks/fonologie/levels/1/index';
+	import { instructionVideo } from '$lib/components/tasks/fonologie/levels/2';
 </script>
 
 <div class="flex h-screen w-full items-center justify-center">
