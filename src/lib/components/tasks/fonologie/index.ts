@@ -154,7 +154,7 @@ export function formatFonologieRawData(rawData: FonologieAudioRawDataEntry): Tra
 		id: rawData.id.toString(),
 		sequence: rawData.sequence,
 		correct,
-		sound: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase(),
+		sound: `${rawData.sound}.ogg`,
 		correctCount
 	};
 }
