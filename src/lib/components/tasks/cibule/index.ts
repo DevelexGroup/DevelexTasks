@@ -151,8 +151,8 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 // #region Scoring
 const FLUENCY_MAX_SCORE = 100; // points
 
-const FLUENCY_TIME_MIN = 2000; // ms
-const FLUENCY_TIME_MAX = 5000; // ms
+const FLUENCY_TIME_MIN = 4000; // ms
+const FLUENCY_TIME_MAX = 9000; // ms
 const FLUENCY_TARGET_REFIXATION_COUNT_PAR = 1; // fixations
 const FLUENCY_FIXATION_COUNT_PAR_BASE = 5; // fixations
 
