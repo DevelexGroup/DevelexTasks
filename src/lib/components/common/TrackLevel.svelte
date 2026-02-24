@@ -238,51 +238,57 @@
 		<div class="flex flex-col items-center justify-center gap-16">
 			<div class="text-center">
 				{#if hintComponent}
-					<div class="flex justify-center gap-32">
-						<GazeArea id="hint" bufferSize={50}>
-							<div in:fade|global={{ delay: 500 }} out:fade|global>
-								{@render hintComponent({
-									state: currentState(),
-									isPractice
-								})}
-							</div>
-						</GazeArea>
-						{#if trackComponent}
-							<GazeArea id="track" bufferSize={50}>
-								<div
-									class="flex items-center justify-center"
-									in:fade|global={{ delay: 800 }}
-									out:fade|global
-								>
-									{@render trackComponent({
-										symbols: symbols(),
-										correctSymbols: currentData().correct,
-										validateSymbolClick,
-										dataEntry: currentData()
+					<div class="main-components flex justify-center gap-32">
+						<div class="hint-component flex items-center justify-center">
+							<GazeArea id="hint" bufferSize={50}>
+								<div in:fade|global={{ delay: 500 }} out:fade|global>
+									{@render hintComponent({
+										state: currentState(),
+										isPractice
 									})}
 								</div>
 							</GazeArea>
+						</div>
+						{#if trackComponent}
+							<div class="track-component">
+								<GazeArea id="track" bufferSize={50}>
+									<div
+										class="flex items-center justify-center"
+										in:fade|global={{ delay: 800 }}
+										out:fade|global
+									>
+										{@render trackComponent({
+											symbols: symbols(),
+											correctSymbols: currentData().correct,
+											validateSymbolClick,
+											dataEntry: currentData()
+										})}
+									</div>
+								</GazeArea>
+							</div>
 						{/if}
 					</div>
 				{:else if trackComponent}
-					<GazeArea id="track" bufferSize={50}>
-						<div
-							class="flex items-center justify-center"
-							in:fade|global={{ delay: 500 }}
-							out:fade|global
-						>
-							{@render trackComponent({
-								symbols: symbols(),
-								correctSymbols: currentData().correct,
-								validateSymbolClick,
-								dataEntry: currentData()
-							})}
-						</div>
-					</GazeArea>
+					<div class="track-component">
+						<GazeArea id="track" bufferSize={50}>
+							<div
+								class="flex items-center justify-center"
+								in:fade|global={{ delay: 500 }}
+								out:fade|global
+							>
+								{@render trackComponent({
+									symbols: symbols(),
+									correctSymbols: currentData().correct,
+									validateSymbolClick,
+									dataEntry: currentData()
+								})}
+							</div>
+						</GazeArea>
+					</div>
 				{/if}
 			</div>
 			{#if extraComponent}
-				<div in:fade|global={{ delay: 500 }} out:fade|global>
+				<div class="extra-component" in:fade|global={{ delay: 500 }} out:fade|global>
 					{@render extraComponent({
 						state: currentState(),
 						isPractice
