@@ -330,7 +330,7 @@ export const fonologieL4Data : FonologieManipulationRawDataEntry[] = [
 		level: 'level5',
 		sound: "5007",
 		model: ['jmeli'],
-		sequence: ['zima', 'zrni', 'zeli', 'zamek'],
+		sequence: ['zima', 'zrni', 'zeli', 'zamek2'],
 		correct_indices: [2]
 	},
 	{
