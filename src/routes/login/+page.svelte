@@ -1,6 +1,7 @@
 ﻿<script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
@@ -8,6 +9,10 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { login, register } from '$lib/api/auth';
 	import { ApiError } from '$lib/api/client';
+
+	// Check if session expired (from URL params)
+	const sessionExpired = $derived($page.url.searchParams.get('expired') === 'true');
+	const returnUrl = $derived($page.url.searchParams.get('returnUrl'));
 
 	// Login form state
 	let loginUsername = $state('');
@@ -40,7 +45,12 @@
 		loginLoading = true;
 		try {
 			await login({ username: loginUsername, password: loginPassword });
-			goto(resolve('/'));
+			// Redirect to return URL if provided, otherwise home
+			if (returnUrl) {
+				window.location.href = decodeURIComponent(returnUrl);
+			} else {
+				goto(resolve('/'));
+			}
 		} catch (err) {
 			if (err instanceof ApiError && err.status === 401) {
 				loginError = 'Neplatné uživatelské jméno nebo heslo.';
@@ -132,6 +142,11 @@
 						<Card.Title>Přihlásit se</Card.Title>
 					</Card.Header>
 					<Card.Content>
+						{#if sessionExpired}
+							<p class="mb-4 rounded-md bg-orange-100 p-3 text-sm text-orange-700">
+								Vaše relace vypršela. Přihlaste se prosím znovu.
+							</p>
+						{/if}
 						{#if registerSuccess}
 							<p class="mb-4 text-sm text-yellow-600">
 								Registrace byla úspěšná! Vyčkejte na aktivaci účtu administrátorem.

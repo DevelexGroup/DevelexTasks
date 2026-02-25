@@ -11,6 +11,7 @@
 		KEYBOARD_MANAGER_KEY
 	} from '$lib/types/general.types';
 	import DebugWindow from '$lib/components/DebugWindow.svelte';
+	import AuthGuard from '$lib/components/AuthGuard.svelte';
 
 	let { children } = $props();
 
@@ -44,10 +45,12 @@
 />
 
 <div class="app" class:cursor-hidden={!$cursorVisible}>
-	<main>
-		{@render children()}
-	</main>
-	<DebugWindow />
+	<AuthGuard>
+		<main>
+			{@render children()}
+		</main>
+		<DebugWindow />
+	</AuthGuard>
 </div>
 
 <style>

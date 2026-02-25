@@ -1,4 +1,8 @@
-﻿const BASE_URL = import.meta.env.VITE_API_ENDPOINT || '/api';
+﻿import { browser } from '$app/environment';
+import { authSession, clearAuthSession } from '$lib/stores/auth';
+import { get } from 'svelte/store';
+
+const BASE_URL = import.meta.env.VITE_API_ENDPOINT || '/api';
 
 export class ApiError extends Error {
 	constructor(
@@ -17,6 +21,28 @@ function getAuthToken(): string | null {
 	return match ? decodeURIComponent(match[1]) : null;
 }
 
+function clearAuthCookie(): void {
+	if (typeof document !== 'undefined') {
+		document.cookie =
+			'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; samesite=strict';
+	}
+}
+
+/**
+ * Handle unauthorized response by clearing auth state and redirecting to login.
+ * Only redirects if the user was previously logged in (had a session).
+ */
+function handleUnauthorized(hadSession: boolean): void {
+	clearAuthSession();
+	clearAuthCookie();
+
+	// Only redirect if the user was previously logged in
+	if (browser && hadSession) {
+		const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+		window.location.href = `/login?expired=true&returnUrl=${returnUrl}`;
+	}
+}
+
 interface ApiClientOptions extends RequestInit {
 	params?: Record<string, string | number | boolean>;
 	responseType?: 'json' | 'blob' | 'stream';
@@ -32,6 +58,9 @@ export async function apiClient<T>(endpoint: string, options?: ApiClientOptions)
 	}
 
 	const token = getAuthToken();
+	// Check if user has a session BEFORE making the request
+	const hadSession = get(authSession) !== null;
+
 	if (token) {
 		(headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
 	}
@@ -54,6 +83,12 @@ export async function apiClient<T>(endpoint: string, options?: ApiClientOptions)
 	});
 
 	if (!response.ok) {
+		// Handle 401 Unauthorized - token expired or invalid
+		if (response.status === 401) {
+			handleUnauthorized(hadSession);
+			throw new ApiError(response.status, response.statusText, 'Session expired. Please log in again.');
+		}
+
 		const errorBody = await response.text();
 		throw new ApiError(response.status, response.statusText, errorBody);
 	}
