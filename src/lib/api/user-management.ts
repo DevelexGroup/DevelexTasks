@@ -6,7 +6,8 @@ import type {
 	UserEditRequest,
 	UserActionResponse,
 	UserRole,
-	UserStatus
+	UserStatus,
+	UserSessionsDTO
 } from '$lib/types/api.types';
 
 export async function createUser(user: UserCreateRequest): Promise<{ uuid: string }> {
@@ -121,3 +122,14 @@ export async function checkUserExists(email: string): Promise<boolean> {
 		params: { email }
 	});
 }
+
+export async function getUserSessions(uuid: string): Promise<UserSessionsDTO> {
+	return apiClient<UserSessionsDTO>(`/user/${uuid}/sessions`);
+}
+
+export async function expireUserTokens(uuid: string): Promise<UserActionResponse> {
+	return apiClient<UserActionResponse>(`/user/${uuid}/expire-tokens`, {
+		method: 'POST'
+	});
+}
+

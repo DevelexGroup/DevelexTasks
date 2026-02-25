@@ -7,8 +7,7 @@
 		activateUser,
 		deactivateUser,
 		lockUser,
-		unlockUser,
-		deleteUser
+		unlockUser
 	} from '$lib/api/user-management';
 	import { UserRole, UserStatus, type UserBasicDTO } from '$lib/types/api.types';
 	import CreateUserDialog from './components/CreateUserDialog.svelte';
@@ -16,6 +15,7 @@
 	import EditUserDialog from './components/EditUserDialog.svelte';
 	import ChangeRoleDialog from './components/ChangeRoleDialog.svelte';
 	import DeleteUserDialog from './components/DeleteUserDialog.svelte';
+	import SessionsDialog from './components/SessionsDialog.svelte';
 
 	// State
 	let users = $state<UserBasicDTO[]>([]);
@@ -31,6 +31,7 @@
 	let editUserOpen = $state(false);
 	let changeRoleOpen = $state(false);
 	let deleteUserOpen = $state(false);
+	let sessionsOpen = $state(false);
 	let selectedUser = $state<UserBasicDTO | null>(null);
 
 	// Filtered users
@@ -114,6 +115,11 @@
 		changeRoleOpen = true;
 	}
 
+	function openSessionsDialog(user: UserBasicDTO) {
+		selectedUser = user;
+		sessionsOpen = true;
+	}
+
 	function getStatusLabel(status: UserStatus): string {
 		switch (status) {
 			case UserStatus.Active:
@@ -177,6 +183,18 @@
 			default:
 				return 'bg-gray-100 text-gray-800';
 		}
+	}
+
+	function formatLastLogin(date: Date | null | undefined): string {
+		if (!date) return 'Nikdy';
+		const d = new Date(date);
+		return d.toLocaleString('cs-CZ', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit'
+		});
 	}
 
 	function exportUsersToCsv() {
@@ -315,6 +333,11 @@
 							Status
 						</th>
 						<th
+							class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+						>
+							Poslední přihlášení
+						</th>
+						<th
 							class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500"
 						>
 							Akce
@@ -357,6 +380,9 @@
 									{getStatusLabel(user.status)}
 								</span>
 							</td>
+							<td class="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
+								{formatLastLogin(user.lastLogin)}
+							</td>
 							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
 								<div class="flex justify-end gap-2">
 									<button
@@ -370,6 +396,12 @@
 										onclick={() => openChangeRoleDialog(user)}
 									>
 										Role
+									</button>
+									<button
+										class="rounded bg-cyan-100 px-2 py-1 text-xs text-cyan-700 hover:bg-cyan-200"
+										onclick={() => openSessionsDialog(user)}
+									>
+										Relace
 									</button>
 									<button
 										class="rounded px-2 py-1 text-xs {user.status === UserStatus.Active
@@ -423,6 +455,7 @@
 <EditUserDialog bind:open={editUserOpen} user={selectedUser} onSuccess={loadUsers} />
 <ChangeRoleDialog bind:open={changeRoleOpen} user={selectedUser} onSuccess={loadUsers} />
 <DeleteUserDialog bind:open={deleteUserOpen} user={selectedUser} onSuccess={loadUsers} />
+<SessionsDialog bind:open={sessionsOpen} user={selectedUser} onSuccess={loadUsers} />
 
 <style>
 	.table-container {

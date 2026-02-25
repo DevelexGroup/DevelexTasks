@@ -155,6 +155,7 @@ export interface UserBasicDTO {
 	lastName: string;
 	userRole: UserRole;
 	status: UserStatus;
+	lastLogin?: Date | null;
 }
 
 export interface UserDetailDTO {
@@ -196,3 +197,11 @@ export interface UserActionResponse {
 	newRole?: string;
 	newStatus?: string;
 }
+
+export interface UserSessionsDTO {
+	uuid: string;
+	lastLogin: Date | null;
+	activeSessionCount: number;
+	hasActiveSession: boolean;
+}
+
