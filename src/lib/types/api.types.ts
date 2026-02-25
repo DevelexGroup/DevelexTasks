@@ -56,11 +56,14 @@ export interface RegisterRequest {
 export interface UserDTO {
 	id: string;
 	username: string;
-	email: string;
 	firstName: string;
 	lastName: string;
+	email: string;
 	role: UserRole;
+	status: UserStatus;
 	createdAt: Date;
+	lastLogin: Date | null;
+	lastAction: Date | null;
 }
 
 export interface LoginRequest {
@@ -145,32 +148,6 @@ export enum UserStatus {
 	Active = 'ACTIVE',
 	Unactive = 'UNACTIVE',
 	Locked = 'LOCKED'
-}
-
-export interface UserBasicDTO {
-	uuid: string;
-	username: string;
-	email: string;
-	firstName: string;
-	lastName: string;
-	userRole: UserRole;
-	status: UserStatus;
-	lastLogin?: Date | null;
-}
-
-export interface UserDetailDTO {
-	uuid: string;
-	username: string;
-	email: string;
-	firstName: string;
-	lastName: string;
-	userRole: UserRole;
-	status: UserStatus;
-	createdAt: Date;
-	updatedAt: Date;
-	lastLoginAt?: Date;
-	loginAttempts: number;
-	locked: boolean;
 }
 
 export interface UserCreateRequest {

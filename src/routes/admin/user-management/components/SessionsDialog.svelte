@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { getUserSessions, expireUserTokens } from '$lib/api/user-management';
-	import type { UserBasicDTO, UserSessionsDTO } from '$lib/types/api.types';
+	import type { UserDTO, UserSessionsDTO } from '$lib/types/api.types';
 
 	let {
 		open = $bindable(false),
@@ -9,7 +9,7 @@
 		onSuccess
 	}: {
 		open?: boolean;
-		user: UserBasicDTO | null;
+		user: UserDTO | null;
 		onSuccess?: () => void;
 	} = $props();
 
@@ -31,7 +31,7 @@
 		error = '';
 		successMessage = '';
 		try {
-			sessions = await getUserSessions(user.uuid);
+			sessions = await getUserSessions(user.id);
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se načíst informace o relacích';
 		} finally {
@@ -45,7 +45,7 @@
 		error = '';
 		successMessage = '';
 		try {
-			await expireUserTokens(user.uuid);
+			await expireUserTokens(user.id);
 			successMessage = 'Všechny přihlašovací relace byly úspěšně ukončeny';
 			await loadSessions();
 			onSuccess?.();

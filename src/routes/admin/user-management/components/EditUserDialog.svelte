@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { updateUser, resetPassword } from '$lib/api/user-management';
-	import type { UserBasicDTO } from '$lib/types/api.types';
+	import type { UserDTO } from '$lib/types/api.types';
 
 	let {
 		open = $bindable(false),
@@ -9,7 +9,7 @@
 		onSuccess
 	}: {
 		open?: boolean;
-		user: UserBasicDTO | null;
+		user: UserDTO | null;
 		onSuccess?: () => void;
 	} = $props();
 
@@ -74,7 +74,7 @@
 		isSubmitting = true;
 		try {
 			// Update user info
-			await updateUser(user.uuid, {
+			await updateUser(user.id, {
 				firstName,
 				lastName,
 				email
@@ -82,7 +82,7 @@
 
 			// Reset password if requested
 			if (changePassword && newPassword) {
-				await resetPassword(user.uuid, newPassword);
+				await resetPassword(user.id, newPassword);
 			}
 
 			resetForm();

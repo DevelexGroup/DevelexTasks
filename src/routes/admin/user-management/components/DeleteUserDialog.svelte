@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { deleteUser } from '$lib/api/user-management';
-	import type { UserBasicDTO } from '$lib/types/api.types';
+	import type { UserDTO } from '$lib/types/api.types';
 
 	let {
 		open = $bindable(false),
@@ -9,7 +9,7 @@
 		onSuccess
 	}: {
 		open?: boolean;
-		user: UserBasicDTO | null;
+		user: UserDTO | null;
 		onSuccess?: () => void;
 	} = $props();
 
@@ -40,7 +40,7 @@
 
 		isSubmitting = true;
 		try {
-			await deleteUser(user.uuid);
+			await deleteUser(user.id);
 			resetForm();
 			open = false;
 			onSuccess?.();

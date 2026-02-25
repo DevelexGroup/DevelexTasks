@@ -1,7 +1,6 @@
 import { apiClient } from './client';
 import type {
-	UserBasicDTO,
-	UserDetailDTO,
+	UserDTO,
 	UserCreateRequest,
 	UserEditRequest,
 	UserActionResponse,
@@ -17,8 +16,8 @@ export async function createUser(user: UserCreateRequest): Promise<{ uuid: strin
 	});
 }
 
-export async function updateUser(uuid: string, userData: UserEditRequest): Promise<UserBasicDTO> {
-	return apiClient<UserBasicDTO>(`/user/${uuid}`, {
+export async function updateUser(uuid: string, userData: UserEditRequest): Promise<UserDTO> {
+	return apiClient<UserDTO>(`/user/${uuid}`, {
 		method: 'PUT',
 		body: JSON.stringify(userData)
 	});
@@ -30,33 +29,26 @@ export async function deleteUser(uuid: string): Promise<UserActionResponse> {
 	});
 }
 
-export async function getBasicInfo(): Promise<UserBasicDTO> {
-	return apiClient<UserBasicDTO>('/user/basicInfo');
+export async function getBasicInfo(): Promise<UserDTO> {
+	return apiClient<UserDTO>('/user/basicInfo');
 }
 
-export async function getAllUsers(
-	status?: UserStatus,
-	role?: UserRole
-): Promise<UserBasicDTO[]> {
+export async function getAllUsers(status?: UserStatus, role?: UserRole): Promise<UserDTO[]> {
 	const params: Record<string, string> = {};
 	if (status) params.status = status;
 	if (role) params.role = role;
 
-	return apiClient<UserBasicDTO[]>('/user', {
+	return apiClient<UserDTO[]>('/user', {
 		params: Object.keys(params).length > 0 ? params : undefined
 	});
 }
 
-export async function getUserDetails(uuid: string): Promise<UserDetailDTO> {
-	return apiClient<UserDetailDTO>(`/user/${uuid}/details`);
+export async function getUsersByStatus(status: UserStatus): Promise<UserDTO[]> {
+	return apiClient<UserDTO[]>(`/user/by-status/${status}`);
 }
 
-export async function getUsersByStatus(status: UserStatus): Promise<UserBasicDTO[]> {
-	return apiClient<UserBasicDTO[]>(`/user/by-status/${status}`);
-}
-
-export async function getUsersByRole(role: UserRole): Promise<UserBasicDTO[]> {
-	return apiClient<UserBasicDTO[]>(`/user/by-role/${role}`);
+export async function getUsersByRole(role: UserRole): Promise<UserDTO[]> {
+	return apiClient<UserDTO[]>(`/user/by-role/${role}`);
 }
 
 export async function enableUser(uuid: string): Promise<void> {

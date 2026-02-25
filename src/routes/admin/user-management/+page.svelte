@@ -9,7 +9,7 @@
 		lockUser,
 		unlockUser
 	} from '$lib/api/user-management';
-	import { UserRole, UserStatus, type UserBasicDTO } from '$lib/types/api.types';
+	import { UserRole, UserStatus, type UserDTO } from '$lib/types/api.types';
 	import CreateUserDialog from './components/CreateUserDialog.svelte';
 	import BulkCreateDialog from './components/BulkCreateDialog.svelte';
 	import EditUserDialog from './components/EditUserDialog.svelte';
@@ -18,7 +18,7 @@
 	import SessionsDialog from './components/SessionsDialog.svelte';
 
 	// State
-	let users = $state<UserBasicDTO[]>([]);
+	let users = $state<UserDTO[]>([]);
 	let isLoading = $state(true);
 	let error = $state('');
 	let filterStatus = $state<UserStatus | ''>('');
@@ -32,7 +32,7 @@
 	let changeRoleOpen = $state(false);
 	let deleteUserOpen = $state(false);
 	let sessionsOpen = $state(false);
-	let selectedUser = $state<UserBasicDTO | null>(null);
+	let selectedUser = $state<UserDTO | null>(null);
 
 	// Filtered users
 	let filteredUsers = $derived(() => {
@@ -72,17 +72,17 @@
 		}
 	}
 
-	async function handleStatusAction(user: UserBasicDTO) {
+	async function handleStatusAction(user: UserDTO) {
 		try {
 			switch (user.status) {
 				case UserStatus.Unactive:
-					await activateUser(user.uuid);
+					await activateUser(user.id);
 					break;
 				case UserStatus.Active:
-					await deactivateUser(user.uuid);
+					await deactivateUser(user.id);
 					break;
 				case UserStatus.Locked:
-					await unlockUser(user.uuid);
+					await unlockUser(user.id);
 					break;
 			}
 			await loadUsers();
@@ -91,31 +91,31 @@
 		}
 	}
 
-	async function handleLockUser(user: UserBasicDTO) {
+	async function handleLockUser(user: UserDTO) {
 		try {
-			await lockUser(user.uuid);
+			await lockUser(user.id);
 			await loadUsers();
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se zamknout uživatele';
 		}
 	}
 
-	async function handleDeleteUser(user: UserBasicDTO) {
+	async function handleDeleteUser(user: UserDTO) {
 		selectedUser = user;
 		deleteUserOpen = true;
 	}
 
-	function openEditDialog(user: UserBasicDTO) {
+	function openEditDialog(user: UserDTO) {
 		selectedUser = user;
 		editUserOpen = true;
 	}
 
-	function openChangeRoleDialog(user: UserBasicDTO) {
+	function openChangeRoleDialog(user: UserDTO) {
 		selectedUser = user;
 		changeRoleOpen = true;
 	}
 
-	function openSessionsDialog(user: UserBasicDTO) {
+	function openSessionsDialog(user: UserDTO) {
 		selectedUser = user;
 		sessionsOpen = true;
 	}
@@ -205,12 +205,12 @@
 
 		const headers = ['UUID', 'Username', 'Email', 'Jméno', 'Příjmení', 'Role', 'Status'];
 		const rows = users.map((u) => [
-			u.uuid,
+			u.id,
 			u.username,
 			u.email,
 			u.firstName,
 			u.lastName,
-			u.userRole,
+			u.role,
 			u.status
 		]);
 
@@ -345,7 +345,7 @@
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-gray-200 bg-white">
-					{#each filteredUsers() as user, i (user.uuid)}
+					{#each filteredUsers() as user, i (user.id)}
 						<tr class={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex flex-col">
@@ -365,10 +365,10 @@
 							<td class="px-6 py-4 whitespace-nowrap">
 								<span
 									class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {getRoleColor(
-										user.userRole
+										user.role
 									)}"
 								>
-									{getRoleLabel(user.userRole)}
+									{getRoleLabel(user.role)}
 								</span>
 							</td>
 							<td class="px-6 py-4 whitespace-nowrap">

@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { setUserRole } from '$lib/api/user-management';
-	import { UserRole, type UserBasicDTO } from '$lib/types/api.types';
+	import { UserRole, type UserDTO } from '$lib/types/api.types';
 
 	let {
 		open = $bindable(false),
@@ -9,7 +9,7 @@
 		onSuccess
 	}: {
 		open?: boolean;
-		user: UserBasicDTO | null;
+		user: UserDTO | null;
 		onSuccess?: () => void;
 	} = $props();
 
@@ -19,7 +19,7 @@
 
 	$effect(() => {
 		if (user && open) {
-			selectedRole = user.userRole;
+			selectedRole = user.role;
 			error = '';
 		}
 	});
@@ -28,14 +28,14 @@
 		if (!user) return;
 		error = '';
 
-		if (selectedRole === user.userRole) {
+		if (selectedRole === user.role) {
 			open = false;
 			return;
 		}
 
 		isSubmitting = true;
 		try {
-			await setUserRole(user.uuid, selectedRole);
+			await setUserRole(user.id, selectedRole);
 			open = false;
 			onSuccess?.();
 		} catch (err) {
@@ -74,7 +74,7 @@
 		<div class="space-y-4 py-4">
 			<div class="space-y-2">
 				<label for="roleSelect" class="text-sm font-medium text-gray-700">Současná role:</label>
-				<p class="text-sm text-gray-600">{user ? getRoleName(user.userRole) : '-'}</p>
+				<p class="text-sm text-gray-600">{user ? getRoleName(user.role) : '-'}</p>
 			</div>
 
 			<div class="space-y-2">

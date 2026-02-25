@@ -1,5 +1,5 @@
 ﻿import { apiClient } from './client';
-import type { LoginRequest, LoginResponse, RegisterRequest, UserDTO, UserBasicDTO } from '$lib/types/api.types';
+import type { LoginRequest, LoginResponse, RegisterRequest, UserDTO } from '$lib/types/api.types';
 import { setAuthSession, clearAuthSession, authSession } from '$lib/stores/auth';
 import { get } from 'svelte/store';
 
