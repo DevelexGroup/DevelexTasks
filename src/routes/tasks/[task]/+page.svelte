@@ -1,9 +1,16 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import type { PageProps } from './$types';
 	import { resolve } from '$app/paths';
+	import { validateAuthStatus } from '$lib/api/auth';
 
 	let { data }: PageProps = $props();
+
+	onMount(() => {
+		// Sanity check: validate auth status with the server
+		validateAuthStatus();
+	});
 </script>
 
 <section class="mt-8 flex flex-col items-center justify-center">

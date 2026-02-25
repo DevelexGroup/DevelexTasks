@@ -1,12 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import type { PageProps } from './$types';
 	import { resolve } from '$app/paths';
 	import UserSelect from '$lib/components/UserSelect.svelte';
 	import RoleGuard from '$lib/components/RoleGuard.svelte';
 	import { RoleGuards } from '$lib/utils/roleGuard';
+	import { validateAuthStatus } from '$lib/api/auth';
 
 	let { data }: PageProps = $props();
+
+	onMount(() => {
+		// Sanity check: validate auth status with the server
+		validateAuthStatus();
+	});
 </script>
 
 <svelte:head>

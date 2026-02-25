@@ -1,6 +1,7 @@
 ﻿import { apiClient } from './client';
-import type { LoginRequest, LoginResponse, RegisterRequest, UserDTO } from '$lib/types/api.types';
-import { setAuthSession, clearAuthSession } from '$lib/stores/auth';
+import type { LoginRequest, LoginResponse, RegisterRequest, UserDTO, UserBasicDTO } from '$lib/types/api.types';
+import { setAuthSession, clearAuthSession, authSession } from '$lib/stores/auth';
+import { get } from 'svelte/store';
 
 export async function login(credentials: LoginRequest): Promise<LoginResponse> {
 	const response = await apiClient<LoginResponse>('/auth/login', {
@@ -56,3 +57,29 @@ export async function register(data: RegisterRequest): Promise<UserDTO> {
 
 	return response;
 }
+
+/**
+ * Validate the current auth session by making a lightweight API call.
+ * This performs a server-side sanity check to ensure the token is still valid.
+ * If the token is invalid, the apiClient will automatically handle the 401 response
+ * and redirect to the login page.
+ * @returns true if the session is valid, false if there's no session or validation fails
+ */
+export async function validateAuthStatus(): Promise<boolean> {
+	// Check if there's a session first
+	const session = get(authSession);
+	if (!session) {
+		return false;
+	}
+
+	try {
+		// Make a lightweight API call to validate the token on the server
+		await apiClient<UserDTO>('/auth/me');
+		return true;
+	} catch {
+		// If the call fails (including 401), the apiClient handles the redirect
+		// We just return false here
+		return false;
+	}
+}
+

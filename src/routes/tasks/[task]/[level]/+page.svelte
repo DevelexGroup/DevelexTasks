@@ -7,6 +7,7 @@
 	import { currentTask } from '$lib/stores/task';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
+	import { validateAuthStatus } from '$lib/api/auth';
 
 	let { data }: PageProps = $props();
 
@@ -26,6 +27,9 @@
 		modules[getComponentPath('Instructions')]?.()?.then((mod) => mod.default) || null;
 
 	onMount(() => {
+		// Sanity check: validate auth status with the server before entering task
+		validateAuthStatus();
+
 		$currentTask = {
 			slug: data.task,
 			level: data.level,
