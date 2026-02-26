@@ -55,6 +55,8 @@
 	let innerHeight = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
 	const aspectRatio = $derived(innerWidth / innerHeight);
 
+	const symbolSize = $derived(innerHeight < 720 ? 20 : innerHeight < 900 ? 30 : 40);
+
 	// Calculate optimal columns to fill out the screen area with symbols in showcase
 	const showcaseSymbolCount = $derived(
 		showcaseData?.[0]?.sequence
@@ -82,7 +84,7 @@
 {#if showcaseData && symbolsShowcase}
 	<div class="symbols-showcase" style="--optimal-columns: {optimalColumns}" transition:fade>
 		<TrackLevel
-			id={`${id}-showcase`}
+  		id={`${id}-showcase`}
 			data={showcaseData}
 			validateSymbol={() => true}
 			validateStage={allSymbolsClicked}
@@ -102,7 +104,8 @@
 							basePath="/images/tasks/fonologie"
 							extension="webp"
 							wordToRead={symbol}
-							width={40}
+							width={symbolSize}
+							height={symbolSize}
 						/>
 					{/snippet}
 				</SymbolTrack>
@@ -148,7 +151,7 @@
 							{validateSymbolClick}
 							basePath="/images/tasks/fonologie"
 							extension="webp"
-							width={40}
+							width={symbolSize}
 						/>
 					{/snippet}
 				</SymbolTrack>
