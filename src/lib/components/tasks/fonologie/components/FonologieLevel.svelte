@@ -133,17 +133,29 @@
 			}}
 		>
 			{#snippet hintComponent({ state })}
-				{#if state.dataEntry.sound}
-					<AudioHint
-						audioSrc={resolveAny(`/sound/fonologie/${id}/${state.dataEntry.sound}`)}
-						playOnStart
-						playOnStartDelay={750}
-						ttsFallback={state.dataEntry.sound}
-					/>
-				{/if}
+				<div class="flex items-center justify-center gap-16">
+					{#if state.dataEntry.sound}
+						<AudioHint
+							audioSrc={resolveAny(`/sound/fonologie/${id}/${state.dataEntry.sound}`)}
+							playOnStart
+							playOnStartDelay={750}
+							ttsFallback={state.dataEntry.sound}
+						/>
+					{/if}
+
+					{#if state.dataEntry.model}
+						<ImageSymbolElement
+							symbol={state.dataEntry.model[0]}
+							basePath="/images/tasks/fonologie"
+							extension="webp"
+							width={symbolSize}
+							interactable={false}
+						/>
+					{/if}
+				</div>
 			{/snippet}
 			{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
-				<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16}>
+				<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={48}>
 					{#snippet symbolSnippet({ symbol, index })}
 						<ImageSymbolElement
 							{symbol}

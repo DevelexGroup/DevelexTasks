@@ -156,13 +156,23 @@ export function fonologieStageValidation(state: TrackTaskState): TaskMistake[] |
 export function formatFonologieRawData(rawData: FonologieTaskRawDataEntry): TrackTaskDataEntry {
 	const correct = rawData.correct_indices.map((index) => rawData.sequence[index]);
 	const correctCount = rawData.sequence.filter((item) => correct?.includes(item)).length;
-	return {
+	const dataEntry: TrackTaskDataEntry = {
 		id: rawData.id.toString(),
 		sequence: rawData.sequence,
 		correct,
 		sound: `${rawData.sound}.ogg`,
 		correctCount
 	};
+
+	// Add model if it's a manipulation task
+	if ('model' in rawData) {
+		return {
+			...dataEntry,
+			model: rawData.model
+		};
+	}
+
+	return dataEntry;
 }
 // #endregion
 

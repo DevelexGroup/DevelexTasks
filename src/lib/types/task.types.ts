@@ -81,6 +81,7 @@ export interface TrackTaskDataEntry<TElement = string> {
 	correctCount?: number;
 	font?: string;
 	size?: number;
+	model?: TElement[];
 }
 
 export type TrackTaskData = TaskData<TrackTaskDataEntry>;
