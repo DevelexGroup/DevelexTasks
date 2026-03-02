@@ -36,12 +36,12 @@
 	// Select one random topic (only used when useCategories is true)
 	const randomCategory = $derived(
 		useCategories
-			? (rawData[Math.floor(Math.random() * rawData.length)] as FonologieAudioRawDataEntry).topic
+			? (rawData[Math.floor(Math.random() * rawData.length)] as FonologieAudioRawDataEntry).set
 			: null
 	);
 	const filteredRawData = $derived(
 		useCategories
-			? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).topic === randomCategory)
+			? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).set === randomCategory)
 			: rawData
 	);
 

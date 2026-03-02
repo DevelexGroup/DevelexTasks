@@ -154,11 +154,15 @@ export function fonologieStageValidation(state: TrackTaskState): TaskMistake[] |
 
 // #region Data formatting
 export function formatFonologieRawData(rawData: FonologieTaskRawDataEntry): TrackTaskDataEntry {
-	const correct = rawData.correct_indices.map((index) => rawData.sequence[index]);
-	const correctCount = rawData.sequence.filter((item) => correct?.includes(item)).length;
+	let sequencePath = rawData.sequence;
+	if ('set' in rawData) {
+		sequencePath = rawData.sequence.map((item) => `${rawData.set}/${item}`);
+	}
+	const correct = rawData.correct_indices.map((index) => sequencePath[index]);
+	const correctCount = sequencePath.filter((item) => correct?.includes(item)).length;
 	const dataEntry: TrackTaskDataEntry = {
 		id: rawData.id.toString(),
-		sequence: rawData.sequence,
+		sequence: sequencePath,
 		correct,
 		sound: `${rawData.sound}.ogg`,
 		correctCount
