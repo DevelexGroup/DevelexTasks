@@ -6,6 +6,7 @@ import type {
 } from '$lib/types/task.types';
 import { CibuleDataType, type CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 import type { SessionScoreMetrics } from '$lib/database/db.types';
+import { splitSequence } from '$lib/utils/trackLevelUtils';
 
 export const addToList = true;
 export const label = 'Cibule';
@@ -225,21 +226,6 @@ export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackTaskDataE
 		sound: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase(),
 		correctCount
 	};
-}
-
-function splitSequence(sequence: string, targets: string[]): string[] {
-	const regions = sequence.trim().match(/[^ ]+ *| +/g) || [];
-
-	const pattern = new RegExp(`(${targets.join('|')})`, 'g');
-
-	const result: string[] = [];
-
-	for (const region of regions) {
-		const parts = region.split(pattern).filter((part) => part !== '');
-		result.push(...parts);
-	}
-
-	return result;
 }
 // #endregion
 

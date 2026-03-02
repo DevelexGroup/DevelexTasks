@@ -1,18 +1,20 @@
 ﻿<script lang="ts">
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
-	import { slabikyTestData } from '$lib/components/tasks/slabiky/slabiky.data';
-	import { id } from '$lib/components/tasks/slabiky/levels/2/index';
+	import { id, rawData } from '$lib/components/tasks/slabiky/levels/2/index';
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
 	import {
 		defaultValidateStage,
-		defaultValidateSymbol,
+		defaultValidateSymbol, getLevelData,
 		getWordAudioSource
 	} from '$lib/utils/trackLevelUtils';
+	import { formatSlabikyRawData, slabikyLevelPreset } from '$lib/components/tasks/slabiky';
+	import type { SlabikyRawDataEntry } from '$lib/components/tasks/slabiky/slabiky.types';
 
-	const data = slabikyTestData.find((level) => level.levelID === id)?.practiceContent;
+	const preset = slabikyLevelPreset.find((level) => level.levelID === id)?.practiceContent;
+	const data = preset ? getLevelData<SlabikyRawDataEntry>(preset, rawData, formatSlabikyRawData) : null;
 </script>
 
 {#if data}

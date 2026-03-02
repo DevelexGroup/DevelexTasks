@@ -250,7 +250,7 @@
 							</GazeArea>
 						</div>
 						{#if trackComponent}
-							<div class="track-component">
+							<div class="track-component flex items-center">
 								<GazeArea id="track" bufferSize={50}>
 									<div
 										class="flex items-center justify-center"
@@ -269,7 +269,7 @@
 						{/if}
 					</div>
 				{:else if trackComponent}
-					<div class="track-component">
+					<div class="track-component flex items-center">
 						<GazeArea id="track" bufferSize={50}>
 							<div
 								class="flex items-center justify-center"

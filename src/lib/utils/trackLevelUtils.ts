@@ -129,7 +129,12 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 		if (item.generate !== null) {
 			// Generator
 			const generator = item as TrackTaskPresetEntryGenerator<TRawDataEntry>;
-			const generatedEntry = generateDataEntry<TRawDataEntry>(generator, rawData, formatRawData, usedIds);
+			const generatedEntry = generateDataEntry<TRawDataEntry>(
+				generator,
+				rawData,
+				formatRawData,
+				usedIds
+			);
 			usedIds.add(generatedEntry.id);
 			content.push(generatedEntry);
 		} else {
@@ -143,4 +148,19 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 		}
 	}
 	return content;
+}
+
+export function splitSequence(sequence: string, targets: string[], trimSpaces = false): string[] {
+	const regions = sequence.trim().match(trimSpaces ? /[^ ]+/g : /[^ ]+ *| +/g) || [];
+
+	const pattern = new RegExp(`(${targets.join('|')})`, 'g');
+
+	const result: string[] = [];
+
+	for (const region of regions) {
+		const parts = region.split(pattern).filter((part) => part !== '');
+		result.push(...parts);
+	}
+
+	return result;
 }
