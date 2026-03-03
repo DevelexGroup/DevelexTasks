@@ -83,6 +83,9 @@
 		&.selected {
 			&.correct-symbol {
 				color: #15803d;
+				img {
+					filter: drop-shadow(0 0 1px #15803d) drop-shadow(0 0 2px #15803d);
+				}
 				&::before {
 					animation: correct-flash-bg 1000ms ease-in-out;
 				}
@@ -111,6 +114,7 @@
 		img {
 			position: relative;
 			z-index: 1;
+			transition: filter 200ms ease-in;
 		}
 	}
 
