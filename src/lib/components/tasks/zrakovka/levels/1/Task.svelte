@@ -14,6 +14,7 @@
 	import { formatZrakovkaRawData, zrakovkaLevelPreset } from '../..';
 	import type { ZrakovkaRawDataEntry } from '../../zrakovka.types';
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
+	import { getSize } from '../../zrakovka.utils';
 
 	const preset = zrakovkaLevelPreset.find((level) => level.levelID === id)?.content;
 	const data = preset
@@ -35,20 +36,20 @@
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
 				{#if state.dataEntry.font !== 'PowerPoint'}
-					<div style:font-size={`${state.dataEntry.size}px`}>
+					<div style:font-size={`${getSize(state.dataEntry.size)}px`}>
 						<SymbolElement
 							symbol={state.dataEntry.correct[0]}
 							interactable={false}
 							fontFamily={state.dataEntry.font}
-							fontSize={`${state.dataEntry.size}px`}
+							fontSize={`${getSize(state.dataEntry.size)}px`}
 						/>
 					</div>
 				{:else}
 					<ImageSymbolElement
 						symbol={state.dataEntry.correct[0]}
 						basePath="/images/tasks/zrakovka"
-						height={(state.dataEntry.size ?? 0) / 6}
-						width={(state.dataEntry.size ?? 0) / 6}
+						height={getSize(state.dataEntry.size) / 6}
+						width={getSize(state.dataEntry.size) / 6}
 					/>
 				{/if}
 			{/if}
@@ -62,7 +63,7 @@
 							{index}
 							{validateSymbolClick}
 							fontFamily={dataEntry?.font}
-							fontSize={`${dataEntry?.size}px`}
+							fontSize={`${getSize(dataEntry?.size ?? 0)}px`}
 						/>
 					{:else}
 						<ImageSymbolElement
@@ -70,8 +71,8 @@
 							{index}
 							{validateSymbolClick}
 							basePath="/images/tasks/zrakovka"
-							height={(dataEntry?.size ?? 0) / 6}
-							width={(dataEntry?.size ?? 0) / 6}
+							height={getSize(dataEntry?.size) / 6}
+							width={getSize(dataEntry?.size) / 6}
 						/>
 					{/if}
 				{/snippet}
