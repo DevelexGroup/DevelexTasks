@@ -20,6 +20,8 @@
 	let role = $state<UserRole>(UserRole.Student);
 	let isSubmitting = $state(false);
 	let error = $state('');
+	let showPassword = $state(false);
+	let showConfirmPassword = $state(false);
 
 	function resetForm() {
 		username = '';
@@ -76,6 +78,7 @@
 		}
 		open = newOpen;
 	}
+
 </script>
 
 <Dialog.Root bind:open onOpenChange={handleOpenChange}>
@@ -148,24 +151,64 @@
 
 			<div class="space-y-2">
 				<label for="password" class="text-sm font-medium text-gray-700">Heslo:</label>
-				<input
-					id="password"
-					type="password"
-					bind:value={password}
-					class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800"
-					placeholder="••••••••"
-				/>
+				<div class="relative">
+					<input
+						id="password"
+						type={showPassword ? 'text' : 'password'}
+						bind:value={password}
+						class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 pr-10 text-gray-800"
+						placeholder="••••••••"
+					/>
+					<button
+						type="button"
+						onclick={() => (showPassword = !showPassword)}
+						class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+						aria-label={showPassword ? 'Skrýt heslo' : 'Zobrazit heslo'}
+					>
+						{#if showPassword}
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+								<line x1="1" y1="1" x2="23" y2="23"/>
+							</svg>
+						{:else}
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+								<circle cx="12" cy="12" r="3"/>
+							</svg>
+						{/if}
+					</button>
+				</div>
 			</div>
 
 			<div class="space-y-2">
 				<label for="confirmPassword" class="text-sm font-medium text-gray-700">Potvrzení hesla:</label>
-				<input
-					id="confirmPassword"
-					type="password"
-					bind:value={confirmPassword}
-					class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800"
-					placeholder="••••••••"
-				/>
+				<div class="relative">
+					<input
+						id="confirmPassword"
+						type={showConfirmPassword ? 'text' : 'password'}
+						bind:value={confirmPassword}
+						class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 pr-10 text-gray-800"
+						placeholder="••••••••"
+					/>
+					<button
+						type="button"
+						onclick={() => (showConfirmPassword = !showConfirmPassword)}
+						class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+						aria-label={showConfirmPassword ? 'Skrýt heslo' : 'Zobrazit heslo'}
+					>
+						{#if showConfirmPassword}
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+								<line x1="1" y1="1" x2="23" y2="23"/>
+							</svg>
+						{:else}
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+								<circle cx="12" cy="12" r="3"/>
+							</svg>
+						{/if}
+					</button>
+				</div>
 			</div>
 
 			{#if error}
