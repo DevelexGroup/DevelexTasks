@@ -5,18 +5,28 @@
 	import type {
 		GazeSampleDataEntry,
 		FixationDataEntry,
-		SessionScoreDataEntry
+		SessionScoreDataEntry,
+		DyslexVissDiffClicksDataEntry
 	} from '$lib/database/db.types';
 	import { untrack } from 'svelte';
 	import ExportWindow from './components/ExportWindow.svelte';
 
-	let selectedTable = $state<'gazeSamples' | 'fixationData' | 'sessionScores' | ''>('');
+	type TableNames = 'gazeSamples' | 'fixationData' | 'sessionScores' | 'dyslexVissDiffClicks';
+
+	let selectedTable = $state<TableNames | ''>('');
 	let childIds = $state<string[]>([]);
 	let sessionIds = $state<{ sessionId: string; taskName: string }[]>([]);
 	let selectedChildId = $state<string>('');
 	let selectedSessionId = $state<string>('');
 
-	let tableData = $state<(GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry)[]>([]);
+	let tableData = $state<
+		(
+			| GazeSampleDataEntry
+			| FixationDataEntry
+			| SessionScoreDataEntry
+			| DyslexVissDiffClicksDataEntry
+		)[]
+	>([]);
 	let loadedCount = $state(0);
 	const LOAD_SIZE = 250;
 	let isLoading = $state(false);
@@ -162,13 +172,19 @@
 	}
 
 	async function getTotalCount(): Promise<number> {
-		if (!selectedTable || !selectedChildId || !selectedSessionId) return 0;
+		if (!selectedTable || !selectedChildId) return 0;
 
 		const table = db[selectedTable];
+
+		if (selectedTable === 'sessionScores') {
+			return await table.where('child_id').equals(selectedChildId).count();
+		}
+
+		if (!selectedSessionId) return 0;
+
 		const count = await table
-			.where('child_id')
-			.equals(selectedChildId)
-			.and((entry) => entry.session_id === selectedSessionId)
+			.where('[child_id+session_id]')
+			.equals([selectedChildId, selectedSessionId])
 			.count();
 		return count;
 	}
@@ -226,6 +242,18 @@
 				'AOI Field Fix',
 				'Regression Count'
 			];
+		} else if (selectedTable === 'dyslexVissDiffClicks') {
+			return [
+				null,
+				null,
+				'Session ID',
+				null,
+				'Slide Index',
+				'Stimulus ID',
+				'Timestamp',
+				'Is Correct',
+				'AOI'
+			];
 		}
 		return [];
 	}
@@ -270,7 +298,11 @@
 	}
 
 	function getCellValue(
-		entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry,
+		entry:
+			| GazeSampleDataEntry
+			| FixationDataEntry
+			| SessionScoreDataEntry
+			| DyslexVissDiffClicksDataEntry,
 		index: number
 	): unknown {
 		if (selectedTable) {
@@ -280,9 +312,13 @@
 	}
 
 	function getCellValueForTable(
-		entry: GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry,
+		entry:
+			| GazeSampleDataEntry
+			| FixationDataEntry
+			| SessionScoreDataEntry
+			| DyslexVissDiffClicksDataEntry,
 		index: number,
-		table: 'gazeSamples' | 'fixationData' | 'sessionScores'
+		table: TableNames
 	): unknown {
 		if (table === 'gazeSamples') {
 			const data = entry as GazeSampleDataEntry;
@@ -322,7 +358,7 @@
 				data.fixation_index
 			];
 			return values[index];
-		} else {
+		} else if (table === 'sessionScores') {
 			const data = entry as SessionScoreDataEntry;
 			const values = [
 				data.id,
@@ -342,7 +378,23 @@
 				data.regression_count
 			];
 			return values[index];
+		} else if (table === 'dyslexVissDiffClicks') {
+			const data = entry as DyslexVissDiffClicksDataEntry;
+			const values = [
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.slide_index,
+				data.stimulus_id,
+				data.timestamp,
+				data.is_correct,
+				data.aoi
+			];
+			return values[index];
 		}
+
+		return null;
 	}
 </script>
 
@@ -363,6 +415,7 @@
 			<option value="gazeSamples">gazeSamples</option>
 			<option value="fixationData">fixationData</option>
 			<option value="sessionScores">sessionScores</option>
+			<option value="dyslexVissDiffClicks">dyslexVissDiffClicks</option>
 		</select>
 	</div>
 
@@ -517,7 +570,7 @@
 </div>
 
 <div class="fixed right-4 bottom-4 flex gap-1">
-	{#if selectedTable && selectedChildId && selectedSessionId}
+	{#if selectedTable && selectedChildId && (selectedTable === 'sessionScores' || selectedSessionId)}
 		<span class="text-gray-700"
 			>Zobrazeno záznamů: {tableData.length} (z celkem {#await getTotalCount() then totalCount}{totalCount}{/await})</span
 		>

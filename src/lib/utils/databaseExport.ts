@@ -2,13 +2,18 @@ import { db } from '$lib/database/db';
 import type {
 	GazeSampleDataEntry,
 	FixationDataEntry,
-	SessionScoreDataEntry
+	SessionScoreDataEntry,
+	DyslexVissDiffClicksDataEntry
 } from '$lib/database/db.types';
 import JSZip from 'jszip';
 
 export type ExportMode = 'all' | 'child' | 'session';
-export type TableName = 'gazeSamples' | 'fixationData' | 'sessionScores';
-export type DataEntry = GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry;
+export type TableName = 'gazeSamples' | 'fixationData' | 'sessionScores' | 'dyslexVissDiffClicks';
+export type DataEntry =
+	| GazeSampleDataEntry
+	| FixationDataEntry
+	| SessionScoreDataEntry
+	| DyslexVissDiffClicksDataEntry;
 
 export interface ExportOptions {
 	mode: ExportMode;
@@ -55,13 +60,20 @@ export class DatabaseExporter {
 	 * Get all unique child IDs from all tables
 	 */
 	static async getChildIds(): Promise<string[]> {
-		const [gazeChildIds, fixationChildIds, sessionChildIds] = await Promise.all([
-			db.gazeSamples.orderBy('child_id').uniqueKeys() as Promise<string[]>,
-			db.fixationData.orderBy('child_id').uniqueKeys() as Promise<string[]>,
-			db.sessionScores.orderBy('child_id').uniqueKeys() as Promise<string[]>
-		]);
+		const [gazeChildIds, fixationChildIds, sessionChildIds, visDiffClickChildIds] =
+			await Promise.all([
+				db.gazeSamples.orderBy('child_id').uniqueKeys() as Promise<string[]>,
+				db.fixationData.orderBy('child_id').uniqueKeys() as Promise<string[]>,
+				db.sessionScores.orderBy('child_id').uniqueKeys() as Promise<string[]>,
+				db.dyslexVissDiffClicks.orderBy('child_id').uniqueKeys() as Promise<string[]>
+			]);
 
-		const allChildIds = new Set([...gazeChildIds, ...fixationChildIds, ...sessionChildIds]);
+		const allChildIds = new Set([
+			...gazeChildIds,
+			...fixationChildIds,
+			...sessionChildIds,
+			...visDiffClickChildIds
+		]);
 		return Array.from(allChildIds).sort();
 	}
 
@@ -71,7 +83,21 @@ export class DatabaseExporter {
 	static async getSessionIds(childId: string): Promise<SessionInfo[]> {
 		if (!childId) return [];
 
-		const filtered = await db.gazeSamples.where('child_id').equals(childId).toArray();
+		const [gazeSessions, fixationSessions, scoreSessions, visDiffClickSessions] = await Promise.all(
+			[
+				db.gazeSamples.where('child_id').equals(childId).toArray(),
+				db.fixationData.where('child_id').equals(childId).toArray(),
+				db.sessionScores.where('child_id').equals(childId).toArray(),
+				db.dyslexVissDiffClicks.where('child_id').equals(childId).toArray()
+			]
+		);
+
+		const filtered: DataEntry[] = [
+			...gazeSessions,
+			...fixationSessions,
+			...scoreSessions,
+			...visDiffClickSessions
+		];
 
 		const sessionMap = new Map<string, string>();
 		for (const entry of filtered) {
@@ -123,7 +149,7 @@ export class DatabaseExporter {
 				'AOI',
 				'Fixation Index'
 			];
-		} else {
+		} else if (table === 'sessionScores') {
 			return [
 				'ID',
 				'Child ID',
@@ -140,6 +166,18 @@ export class DatabaseExporter {
 				'AOI Target Fixations',
 				'AOI Field Fixations',
 				'Regression Count'
+			];
+		} else {
+			return [
+				'ID',
+				'Child ID',
+				'Session ID',
+				'Task',
+				'Slide Index',
+				'Stimulus ID',
+				'Timestamp',
+				'Is Correct',
+				'AOI'
 			];
 		}
 	}
@@ -199,7 +237,7 @@ export class DatabaseExporter {
 				data.fixation_index
 			];
 			return values[index];
-		} else {
+		} else if (table === 'sessionScores') {
 			const data = entry as SessionScoreDataEntry;
 			const values = [
 				data.id,
@@ -217,6 +255,20 @@ export class DatabaseExporter {
 				data.aoi_target_fix,
 				data.aoi_field_fix,
 				data.regression_count
+			];
+			return values[index];
+		} else {
+			const data = entry as DyslexVissDiffClicksDataEntry;
+			const values = [
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.slide_index,
+				data.stimulus_id,
+				data.timestamp,
+				data.is_correct,
+				data.aoi
 			];
 			return values[index];
 		}
@@ -276,7 +328,12 @@ export class DatabaseExporter {
 	 */
 	static async exportToZip(options: ExportOptions): Promise<Blob> {
 		const zip = new JSZip();
-		const tables: TableName[] = ['gazeSamples', 'fixationData', 'sessionScores'];
+		const tables: TableName[] = [
+			'gazeSamples',
+			'fixationData',
+			'sessionScores',
+			'dyslexVissDiffClicks'
+		];
 
 		const filterBySlideIndex = (data: DataEntry[]): DataEntry[] => {
 			if (options.slideIndex === undefined) return data;
@@ -381,7 +438,12 @@ export class DatabaseExporter {
 			throw new Error('Invalid export options');
 		}
 
-		const tables: TableName[] = ['gazeSamples', 'fixationData', 'sessionScores'];
+		const tables: TableName[] = [
+			'gazeSamples',
+			'fixationData',
+			'sessionScores',
+			'dyslexVissDiffClicks'
+		];
 		const files: File[] = [];
 
 		const filterBySlideIndex = (data: DataEntry[]): DataEntry[] => {
@@ -436,4 +498,3 @@ export class DatabaseExporter {
 		URL.revokeObjectURL(url);
 	}
 }
-
