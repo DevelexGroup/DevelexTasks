@@ -19,12 +19,18 @@ export const slabikyLevelPreset: TrackTaskPreset<SlabikyRawDataEntry> = [
 		label: 'Úroveň 1',
 		practiceContent: [{ generate: { type: 'practice' } }],
 		content: [
-			{ generate: { type: ['slabiky_1a', 'slabiky_1b'] } },
-			{ generate: { type: ['slabiky_2a', 'slabiky_2b'] } },
-			{ generate: { type: 'slabiky_3' } },
-			{ generate: { type: ['slabiky_4a', 'slabiky_4b'] } },
-			{ generate: { type: ['slabiky_5a', 'slabiky_5b'] } },
-			{ generate: { type: 'slabiky_6' } }
+			{ generate: { type: ['slabiky_1'] } },
+			{ generate: { type: ['slabiky_4'] } },
+			{ generate: { type: ['slabiky_7'] } },
+			{ generate: { type: ['slabiky_7'] } },
+			{ generate: { type: ['slabiky_2'] } },
+			{ generate: { type: ['slabiky_5'] } },
+			{ generate: { type: ['slabiky_8'] } },
+			{ generate: { type: ['slabiky_8'] } },
+			{ generate: { type: ['slabiky_3'] } },
+			{ generate: { type: ['slabiky_6'] } },
+			{ generate: { type: ['slabiky_9'] } },
+			{ generate: { type: ['slabiky_9'] } }
 		]
 	},
 	{
@@ -32,12 +38,18 @@ export const slabikyLevelPreset: TrackTaskPreset<SlabikyRawDataEntry> = [
 		label: 'Úroveň 2',
 		practiceContent: [{ generate: { type: 'practice' } }],
 		content: [
-			{ generate: { type: ['slabiky_1a', 'slabiky_1b'] } },
-			{ generate: { type: ['slabiky_2a', 'slabiky_2b'] } },
-			{ generate: { type: 'slabiky_3' } },
-			{ generate: { type: ['slabiky_4a', 'slabiky_4b'] } },
-			{ generate: { type: ['slabiky_5a', 'slabiky_5b'] } },
-			{ generate: { type: 'slabiky_6' } }
+			{ generate: { type: ['slabiky_1'] } },
+			{ generate: { type: ['slabiky_4'] } },
+			{ generate: { type: ['slabiky_7'] } },
+			{ generate: { type: ['slabiky_7'] } },
+			{ generate: { type: ['slabiky_2'] } },
+			{ generate: { type: ['slabiky_5'] } },
+			{ generate: { type: ['slabiky_8'] } },
+			{ generate: { type: ['slabiky_8'] } },
+			{ generate: { type: ['slabiky_3'] } },
+			{ generate: { type: ['slabiky_6'] } },
+			{ generate: { type: ['slabiky_9'] } },
+			{ generate: { type: ['slabiky_9'] } }
 		]
 	}
 ];
@@ -111,8 +123,30 @@ export function formatSlabikyRawData(rawData: SlabikyRawDataEntry): TrackTaskDat
 	const correct = rawData.target_letter
 		? rawData.target_letter.split('-').map((item) => item.trim())
 		: undefined;
-	const sequence = splitSequence(rawData.search_string, correct || [], true);
-	const correctCount = sequence.filter((item) => correct?.includes(item)).length;
+
+	let sequence: string[] | string[][];
+
+	if (rawData.is_multirow) {
+		// Split search_string into 5 equal-sized arrays
+		const fullSequence = splitSequence(rawData.search_string, correct || [], true);
+		const rowCount = 5;
+		const itemsPerRow = Math.ceil(fullSequence.length / rowCount);
+
+		sequence = [];
+		for (let i = 0; i < rowCount; i++) {
+			const start = i * itemsPerRow;
+			const end = start + itemsPerRow;
+			sequence.push(fullSequence.slice(start, end));
+		}
+	} else {
+		sequence = splitSequence(rawData.search_string, correct || [], true);
+	}
+
+	const flatSequence = Array.isArray(sequence[0])
+		? (sequence as string[][]).flat()
+		: sequence as string[];
+	const correctCount = flatSequence.filter((item) => correct?.includes(item)).length;
+
 	return {
 		id: rawData.id.toString(),
 		sequence,

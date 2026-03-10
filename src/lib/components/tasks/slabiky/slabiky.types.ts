@@ -8,9 +8,14 @@ export interface SlabikyRawDataEntry extends RawDataEntry {
 	string_length: number;
 	similarity_level?: number;
 	font: string;
+	is_multirow: boolean;
 	include_spaces: boolean;
 	max_word_length?: number;
 	n_background: number;
 	search_string: string;
 	target_positions: number[];
 }
+
+const yep = [
+
+];
