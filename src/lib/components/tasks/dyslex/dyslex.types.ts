@@ -23,6 +23,7 @@ export interface VisDiffItem {
 	cols: number;
 	start: number;
 	end: number;
+	correct: number[];
 }
 
 export type VisDiffData = DyslexDataset<VisDiffItem[]>;

@@ -1,5 +1,6 @@
 ﻿import Dexie, { type EntityTable } from 'dexie';
 import type {
+	DyslexVissDiffClicksDataEntry,
 	FixationDataEntry,
 	GazeSampleDataEntry,
 	SessionScoreDataEntry
@@ -9,6 +10,7 @@ const db = new Dexie('DevelexDatabase') as Dexie & {
 	gazeSamples: EntityTable<GazeSampleDataEntry, 'id'>;
 	fixationData: EntityTable<FixationDataEntry, 'id'>;
 	sessionScores: EntityTable<SessionScoreDataEntry, 'id'>;
+	dyslexVissDiffClicks: EntityTable<DyslexVissDiffClicksDataEntry, 'id'>;
 };
 
 db.version(1).stores({
@@ -17,7 +19,9 @@ db.version(1).stores({
 	fixationData:
 		'++id, child_id, session_id, [child_id+session_id], task_name, slide_index, stimulus_id, timestamp, eyetracker_x, eyetracker_y, duration, aoi, fixation_index',
 	sessionScores:
-		'++id, child_id, session_id, [child_id+session_id], task_name, slide_index, stimulus_id, timestamp, fluency_score, error_rate, response_time, mean_fix_dur, fix_count, aoi_target_fix, aoi_field_fix, regression_count'
+		'++id, child_id, session_id, [child_id+session_id], task_name, slide_index, stimulus_id, timestamp, fluency_score, error_rate, response_time, mean_fix_dur, fix_count, aoi_target_fix, aoi_field_fix, regression_count',
+	dyslexVissDiffClicks:
+		'++id, child_id, session_id, [child_id+session_id], task_name, slide_index, stimulus_id, timestamp, is_correct, aoi'
 });
 
 export { db };

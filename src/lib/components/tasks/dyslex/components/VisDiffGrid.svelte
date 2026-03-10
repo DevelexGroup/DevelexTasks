@@ -13,7 +13,7 @@
 			outer: number;
 			inner: number;
 		};
-		onClick: (item: number) => void;
+		onClick: (item: number, aoi: string, isCorrect: boolean) => void;
 	}
 
 	let { data, elementBufferSize = 0, slide, isPractice, border, onClick }: Props = $props();
@@ -23,9 +23,13 @@
 	class="divide-2 grid border-solid border-black"
 	style={`grid-template-columns: repeat(${data.cols}, minmax(0, 1fr)); border-width: ${border.outer}px;`}
 >
-	{#each Array.from({ length: data.end - data.start + 1 }, (_, i) => data.start + i) as item}
-		<GazeArea id={`visdiff-${slide}-${item}`} bufferSize={elementBufferSize}>
-			<button class="cursor-pointer" onclick={() => onClick(item)}>
+	{#each Array.from({ length: data.end - data.start + 1 }, (_, i) => data.start + i) as item (item)}
+		{@const aoi = `visdiff-${slide + 1}-${item}`}
+		<GazeArea id={aoi} bufferSize={elementBufferSize}>
+			<button
+				class="cursor-pointer"
+				onclick={() => onClick(item, aoi, data.correct.includes(item))}
+			>
 				<img
 					class={cn(
 						'border-solid border-black',

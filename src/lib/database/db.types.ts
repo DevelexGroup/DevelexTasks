@@ -45,3 +45,9 @@ export interface SessionScoreDataEntry extends BaseDataEntry, SessionScoreMetric
 	id?: number;
 	fluency_score: number;
 }
+
+export interface DyslexVissDiffClicksDataEntry extends BaseDataEntry {
+	id?: number;
+	is_correct: boolean;
+	aoi: string;
+}
