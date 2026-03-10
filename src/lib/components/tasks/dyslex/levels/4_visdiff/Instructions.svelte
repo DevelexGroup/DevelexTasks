@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
-	import { instructionVideo } from '$lib/components/tasks/cibule/levels/1/index';
+	import { instructionVideo } from '$lib/components/tasks/dyslex/levels/4_visdiff/index';
 </script>
 
 <div class="flex h-screen w-full items-center justify-center">
@@ -10,7 +10,7 @@
 		<div class="mx-auto max-w-4xl">
 			{#if instructionVideo}
 				<video class="w-full rounded" controls>
-					<source src={instructionVideo} type="video/webm" />
+					<source src={instructionVideo} type="video/mp4" />
 					<track kind="captions" />
 					Váš prohlížeč nepodporuje přehrávání videa.
 				</video>

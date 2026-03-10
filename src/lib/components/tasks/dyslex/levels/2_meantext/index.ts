@@ -2,4 +2,4 @@ import { resolveAny } from '$lib/utils/resolveAny';
 
 export const id = 'meantext';
 
-export const instructionVideo = resolveAny('/video/cibule-instrukce-01.webm');
+export const instructionVideo = resolveAny('/video/tasks/dyslex/meantext.mp4');
