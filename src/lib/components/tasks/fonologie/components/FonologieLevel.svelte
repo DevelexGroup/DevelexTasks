@@ -34,11 +34,9 @@
 	const preset = isPractice ? levelPreset?.practiceContent : levelPreset?.content;
 
 	// Select one random topic (only used when useCategories is true)
-	const randomCategory = $derived(
-		useCategories
-			? (rawData[Math.floor(Math.random() * rawData.length)] as FonologieAudioRawDataEntry).set
-			: null
-	);
+	const randomData = rawData[Math.floor(Math.random() * rawData.length)] as FonologieAudioRawDataEntry;
+	const randomCategory = $derived(useCategories ? randomData.set : null);
+	const randomTopicName = $derived((useCategories && randomCategory) ? randomData.topic : null);
 	const filteredRawData = $derived(
 		useCategories
 			? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).set === randomCategory)
@@ -110,13 +108,13 @@
 					{/snippet}
 				</SymbolTrack>
 			{/snippet}
-			{#if useCategories && randomCategory}
-				{#snippet extraComponent()}
+			{#snippet extraComponent()}
+				{#if useCategories && randomTopicName}
 					<div class="text-5xl font-semibold text-center text-gray-700">
-						<h2>{randomCategory.charAt(0).toUpperCase() + randomCategory.slice(1).toLowerCase()}</h2>
+						<h2>{randomTopicName.charAt(0).toUpperCase() + randomTopicName.slice(1).toLowerCase()}</h2>
 					</div>
-				{/snippet}
-			{/if}
+				{/if}
+			{/snippet}
 		</TrackLevel>
 	</div>
 {/if}
