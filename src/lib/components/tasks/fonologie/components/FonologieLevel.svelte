@@ -34,9 +34,11 @@
 	const preset = isPractice ? levelPreset?.practiceContent : levelPreset?.content;
 
 	// Select one random topic (only used when useCategories is true)
-	const randomData = rawData[Math.floor(Math.random() * rawData.length)] as FonologieAudioRawDataEntry;
+	const randomData = rawData[
+		Math.floor(Math.random() * rawData.length)
+	] as FonologieAudioRawDataEntry;
 	const randomCategory = $derived(useCategories ? randomData.set : null);
-	const randomTopicName = $derived((useCategories && randomCategory) ? randomData.topic : null);
+	const randomTopicName = $derived(useCategories && randomCategory ? randomData.topic : null);
 	const filteredRawData = $derived(
 		useCategories
 			? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).set === randomCategory)
@@ -82,7 +84,7 @@
 {#if showcaseData && symbolsShowcase}
 	<div class="symbols-showcase" style="--optimal-columns: {optimalColumns}" transition:fade>
 		<TrackLevel
-  		id={`${id}-showcase`}
+			id={`${id}-showcase`}
 			data={showcaseData}
 			validateSymbol={() => true}
 			validateStage={allSymbolsClicked}
@@ -95,13 +97,19 @@
 			{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 				<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16}>
 					{#snippet symbolSnippet({ symbol, index })}
+						{@const wordToRead = `fono/${symbol
+							?.split('/')
+							.at(-1)
+							?.replace(/[0-9]+/g, '')
+							.replace(/[A-Z]+/g, '')}.wav`}
+
 						<ImageSymbolElement
 							{symbol}
 							{index}
 							{validateSymbolClick}
 							basePath="/images/tasks/fonologie"
 							extension="webp"
-							wordToRead={symbol}
+							{wordToRead}
 							width={symbolSize}
 							height={symbolSize}
 						/>
@@ -110,8 +118,10 @@
 			{/snippet}
 			{#snippet extraComponent()}
 				{#if useCategories && randomTopicName}
-					<div class="text-5xl font-semibold text-center text-gray-700">
-						<h2>{randomTopicName.charAt(0).toUpperCase() + randomTopicName.slice(1).toLowerCase()}</h2>
+					<div class="text-center text-5xl font-semibold text-gray-700">
+						<h2>
+							{randomTopicName.charAt(0).toUpperCase() + randomTopicName.slice(1).toLowerCase()}
+						</h2>
 					</div>
 				{/if}
 			{/snippet}
@@ -171,34 +181,35 @@
 {/if}
 
 <style>
-  .symbols-showcase :global(.symbol--image.selected) {
-    border-radius: 0.75rem;
-    background: rgba(0, 0, 0, 0.05);
-    transition: background 0.3s ease;
-  }
+	.symbols-showcase :global(.symbol--image.selected) {
+		border-radius: 0.75rem;
+		background: rgba(0, 0, 0, 0.05);
+		transition: background 0.3s ease;
+	}
 
-  .symbols-showcase :global(.symbols-wrapper__row) {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0 1rem;
-    /* Width = columns * item-width + (columns - 1) * gap */
-    --item-width: 160px;
-    --gap: 64px;
-    gap: var(--gap) !important;
-    width: calc(var(--optimal-columns, 4) * var(--item-width) + (var(--optimal-columns, 4) - 1) * var(--gap));
-    max-width: 100%;
-    margin: 0 auto;
-  }
+	.symbols-showcase :global(.symbols-wrapper__row) {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		padding: 0 1rem;
+		/* Width = columns * item-width + (columns - 1) * gap */
+		--item-width: 160px;
+		--gap: 64px;
+		gap: var(--gap) !important;
+		width: calc(
+			var(--optimal-columns, 4) * var(--item-width) + (var(--optimal-columns, 4) - 1) * var(--gap)
+		);
+		max-width: 100%;
+		margin: 0 auto;
+	}
 
-  :global(.symbol--image img) {
-    pointer-events: none;
-  }
+	:global(.symbol--image img) {
+		pointer-events: none;
+	}
 
-  .symbols-showcase :global(.extra-component) {
-    order: -1;
-    margin-bottom: 2rem;
-    margin-top: -2rem;
-  }
+	.symbols-showcase :global(.extra-component) {
+		order: -1;
+		margin-bottom: 2rem;
+		margin-top: -2rem;
+	}
 </style>
-

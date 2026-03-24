@@ -29,7 +29,9 @@ export function tryReadWordFromState(state: TrackTaskState, analyticsManager?: A
 }
 
 export function getWordAudioSource(word: string): string {
-	return resolveAny(`/sound/syllables/${word.toLowerCase()}.ogg`);
+	const fileName = word.endsWith('.ogg') || word.endsWith('.wav') ? word : `${word}.ogg`;
+
+	return resolveAny(`/sound/syllables/${fileName}`);
 }
 
 export function getFlattenedSymbols(state: TrackTaskState): string[] {

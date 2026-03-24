@@ -1,7 +1,8 @@
 import type {
 	TaskMetadata,
 	TaskMistake,
-	TrackTaskDataEntry, TrackTaskPreset,
+	TrackTaskDataEntry,
+	TrackTaskPreset,
 	TrackTaskState
 } from '$lib/types/task.types';
 import { MistakeMisclick, MistakeUnfinished } from '$lib/types/mistakes.types';
@@ -17,71 +18,61 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 	{
 		levelID: 'level1',
 		label: 'Úroveň 1',
-		practiceContent: [
-			{ generate: { level: 'level1'	} }
-		],
+		practiceContent: [{ generate: { level: 'level1' } }],
 		content: [
-			{ generate: { level: 'level1'	} },
-			{ generate: { level: 'level1'	} },
-			{ generate: { level: 'level1'	} },
-			{ generate: { level: 'level1'	} },
-			{ generate: { level: 'level1'	} }
+			{ generate: { level: 'level1' } },
+			{ generate: { level: 'level1' } },
+			{ generate: { level: 'level1' } },
+			{ generate: { level: 'level1' } },
+			{ generate: { level: 'level1' } }
 		]
 	},
 	{
 		levelID: 'level2',
 		label: 'Úroveň 2',
-		practiceContent: [
-			{ generate: { level: 'level2'	} }
-		],
+		practiceContent: [{ generate: { level: 'level2' } }],
 		content: [
-			{ generate: { level: 'level2'	} },
-			{ generate: { level: 'level2'	} },
-			{ generate: { level: 'level2'	} },
-			{ generate: { level: 'level2'	} },
-			{ generate: { level: 'level2'	} }
+			{ generate: { level: 'level2' } },
+			{ generate: { level: 'level2' } },
+			{ generate: { level: 'level2' } },
+			{ generate: { level: 'level2' } },
+			{ generate: { level: 'level2' } }
 		]
 	},
 	{
 		levelID: 'level3',
 		label: 'Úroveň 3',
-		practiceContent: [
-			{ generate: { level: 'level3'	} }
-		],
+		practiceContent: [{ generate: { level: 'level3' } }],
 		content: [
-			{ generate: { level: 'level3'	} },
-			{ generate: { level: 'level3'	} },
-			{ generate: { level: 'level3'	} },
-			{ generate: { level: 'level3'	} },
-			{ generate: { level: 'level3'	} }
+			{ generate: { level: 'level3' } },
+			{ generate: { level: 'level3' } },
+			{ generate: { level: 'level3' } },
+			{ generate: { level: 'level3' } },
+			{ generate: { level: 'level3' } }
 		]
 	},
 	{
 		levelID: 'level4',
 		label: 'Úroveň 4',
-		practiceContent: [
-			{ generate: { level: 'level4'	} }
-		],
+		practiceContent: [{ generate: { level: 'level4' } }],
 		content: [
-			{ generate: { level: 'level4'	} },
-			{ generate: { level: 'level4'	} },
-			{ generate: { level: 'level4'	} },
-			{ generate: { level: 'level4'	} },
-			{ generate: { level: 'level4'	} }
+			{ generate: { level: 'level4' } },
+			{ generate: { level: 'level4' } },
+			{ generate: { level: 'level4' } },
+			{ generate: { level: 'level4' } },
+			{ generate: { level: 'level4' } }
 		]
 	},
 	{
 		levelID: 'level5',
 		label: 'Úroveň 5',
-		practiceContent: [
-			{ generate: { level: 'level5'	} }
-		],
+		practiceContent: [{ generate: { level: 'level5' } }],
 		content: [
-			{ generate: { level: 'level5'	} },
-			{ generate: { level: 'level5'	} },
-			{ generate: { level: 'level5'	} },
-			{ generate: { level: 'level5'	} },
-			{ generate: { level: 'level5'	} }
+			{ generate: { level: 'level5' } },
+			{ generate: { level: 'level5' } },
+			{ generate: { level: 'level5' } },
+			{ generate: { level: 'level5' } },
+			{ generate: { level: 'level5' } }
 		]
 	}
 ];
