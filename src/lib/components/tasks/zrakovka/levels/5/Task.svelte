@@ -15,12 +15,38 @@
 	import type { ZrakovkaRawDataEntry } from '../../zrakovka.types';
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import { getSize } from '../../zrakovka.utils';
+	import { getBreakpointValue, scaleResponsiveSize } from '$lib/utils/responsive';
 
 	const preset = zrakovkaLevelPreset.find((level) => level.levelID === id)?.content;
 	const data = preset
 		? getLevelData<ZrakovkaRawDataEntry>(preset, zrakovkaLevel5Data, formatZrakovkaRawData)
 		: null;
+
+	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
+	let innerHeight = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
+
+	const sizeMultiplier = $derived(
+		getBreakpointValue(innerWidth, {
+			base: 0.5,
+			sm: 0.7,
+			md: 0.8,
+			lg: 0.9,
+			xl: 1,
+			'2xl': 1.05
+		})
+	);
+
+	function getScaledSize(
+		baseSize: number,
+		multiplier: number,
+		viewportWidth: number,
+		viewportHeight: number
+	): number {
+		return scaleResponsiveSize(baseSize * multiplier, viewportWidth, viewportHeight);
+	}
 </script>
+
+<svelte:window bind:innerWidth bind:innerHeight />
 
 {#if data}
 	<TrackLevel
@@ -35,20 +61,32 @@
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
 				{#if state.dataEntry.font !== 'PowerPoint'}
-					<div style:font-size={`${getSize(state.dataEntry.size)}px`}>
+					<div
+						style:font-size={`${getScaledSize(getSize(state.dataEntry.size), sizeMultiplier, innerWidth, innerHeight)}px`}
+					>
 						<SymbolElement
 							symbol={state.dataEntry.correct[0]}
 							interactable={false}
 							fontFamily={state.dataEntry.font}
-							fontSize={`${getSize(state.dataEntry.size)}px`}
+							fontSize={`${getScaledSize(getSize(state.dataEntry.size), sizeMultiplier, innerWidth, innerHeight)}px`}
 						/>
 					</div>
 				{:else}
 					<ImageSymbolElement
 						symbol={state.dataEntry.correct[0]}
 						basePath="/images/tasks/zrakovka"
-						height={getSize(state.dataEntry.size) / 3}
-						width={getSize(state.dataEntry.size) / 3}
+						height={getScaledSize(
+							getSize(state.dataEntry.size) / 6,
+							sizeMultiplier,
+							innerWidth,
+							innerHeight
+						)}
+						width={getScaledSize(
+							getSize(state.dataEntry.size) / 6,
+							sizeMultiplier,
+							innerWidth,
+							innerHeight
+						)}
 					/>
 				{/if}
 			{/if}
@@ -62,7 +100,7 @@
 							{index}
 							{validateSymbolClick}
 							fontFamily={dataEntry?.font}
-							fontSize={`${getSize(dataEntry?.size)}px`}
+							fontSize={`${getScaledSize(getSize(dataEntry?.size), sizeMultiplier, innerWidth, innerHeight)}px`}
 						/>
 					{:else}
 						<ImageSymbolElement
@@ -70,8 +108,18 @@
 							{index}
 							{validateSymbolClick}
 							basePath="/images/tasks/zrakovka"
-							height={getSize(dataEntry?.size) / 3}
-							width={getSize(dataEntry?.size) / 3}
+							height={getScaledSize(
+								getSize(dataEntry?.size) / 6,
+								sizeMultiplier,
+								innerWidth,
+								innerHeight
+							)}
+							width={getScaledSize(
+								getSize(dataEntry?.size) / 6,
+								sizeMultiplier,
+								innerWidth,
+								innerHeight
+							)}
 						/>
 					{/if}
 				{/snippet}

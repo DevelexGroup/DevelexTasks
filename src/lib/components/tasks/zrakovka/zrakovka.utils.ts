@@ -1,6 +1,6 @@
 export const getSize = (size: string | number | undefined) => {
 	if (!size) {
-		return 32;
+		return 80;
 	}
 
 	if (typeof size === 'number') {
@@ -9,5 +9,5 @@ export const getSize = (size: string | number | undefined) => {
 
 	const parsedSize = parseInt(size);
 
-	return isNaN(parsedSize) ? 32 : parsedSize;
+	return isNaN(parsedSize) ? 80 : parsedSize;
 };

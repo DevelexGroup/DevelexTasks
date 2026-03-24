@@ -14,12 +14,33 @@
 	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
 	import { formatZrakovkaRawData, zrakovkaLevelPreset } from '../..';
 	import { type ZrakovkaRawDataEntry } from '../../zrakovka.types';
+	import { getBreakpointValue, scaleResponsiveSize } from '$lib/utils/responsive';
 
 	const preset = zrakovkaLevelPreset.find((level) => level.levelID === id)?.practiceContent;
 	const data = preset
 		? getLevelData<ZrakovkaRawDataEntry>(preset, zrakovkaZacvikData, formatZrakovkaRawData)
 		: null;
+
+	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
+	let innerHeight = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
+
+	const sizeMultiplier = $derived(
+		getBreakpointValue(innerWidth, {
+			base: 0.5,
+			sm: 0.7,
+			md: 0.8,
+			lg: 0.9,
+			xl: 1,
+			'2xl': 1.05
+		})
+	);
+
+	function getScaledSize(baseSize: number): number {
+		return scaleResponsiveSize(baseSize * sizeMultiplier, innerWidth, innerHeight);
+	}
 </script>
+
+<svelte:window bind:innerWidth bind:innerHeight />
 
 {#if data}
 	<TrackLevel
@@ -33,7 +54,7 @@
 	>
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
-				<div class="h-12 w-12">
+				<div style="width: {getScaledSize(12) * 0.25}rem; height: {getScaledSize(12) * 0.25}rem;">
 					<img
 						class="h-full w-full object-contain"
 						src={resolveAny(`/images/tasks/zrakovka/${state.dataEntry.correct[0]}.png`)}
@@ -49,7 +70,7 @@
 						{symbol}
 						{index}
 						{validateSymbolClick}
-						width={12}
+						width={getScaledSize(12)}
 						basePath="/images/tasks/zrakovka"
 					/>
 				{/snippet}
