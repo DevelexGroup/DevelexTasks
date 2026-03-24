@@ -20,6 +20,7 @@
 		FonologieTaskRawDataEntry
 	} from '$lib/components/tasks/fonologie/fonologie.types';
 	import { resolveAny } from '$lib/utils/resolveAny';
+	import { scaleResponsiveSize } from '$lib/utils/responsive';
 
 	interface Props {
 		isPractice?: boolean;
@@ -55,7 +56,12 @@
 	let innerHeight = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
 	const aspectRatio = $derived(innerWidth / innerHeight);
 
-	const symbolSize = $derived(innerHeight < 720 ? 20 : innerHeight < 900 ? 30 : 40);
+	const symbolSize = $derived(
+		scaleResponsiveSize(36, innerWidth, innerHeight, {
+			maxMultiplier: 1.05,
+			exponent: 1.35
+		})
+	);
 
 	// Calculate optimal columns to fill out the screen area with symbols in showcase
 	const showcaseSymbolCount = $derived(
