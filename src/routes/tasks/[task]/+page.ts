@@ -1,6 +1,10 @@
 import type { TaskMetadata } from '$lib/types/task.types';
 import type { PageLoad } from './$types';
 
+type LevelMetadata = {
+	label?: string;
+};
+
 export const load: PageLoad = async ({ params }) => {
 	const { task: taskSlug } = params;
 
@@ -20,11 +24,31 @@ export const load: PageLoad = async ({ params }) => {
 	const levelModules = import.meta.glob(`/src/lib/components/tasks/*/levels/*/Task.svelte`, {
 		eager: true
 	});
+	const levelMetadataModules = import.meta.glob<LevelMetadata>(
+		`/src/lib/components/tasks/*/levels/*/index.ts`,
+		{
+			eager: true
+		}
+	);
 
 	const levels = Object.keys(levelModules)
 		.filter((path) => path.includes(`/tasks/${taskSlug}/levels/`))
-		.map((path) => path.split('/').at(-2))
-		.sort((a, b) => Number(a) - Number(b));
+		.map((path) => {
+			const slug = path.split('/').at(-2);
+			if (!slug) {
+				return null;
+			}
+
+			const levelMetadataPath = path.replace('/Task.svelte', '/index.ts');
+			const levelMetadata = levelMetadataModules[levelMetadataPath];
+
+			return {
+				slug,
+				label: levelMetadata?.label ?? slug
+			};
+		})
+		.filter((level): level is { slug: string; label: string } => level !== null)
+		.sort((a, b) => a.slug.localeCompare(b.slug, undefined, { numeric: true }));
 
 	return {
 		levels,
