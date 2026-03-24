@@ -44,7 +44,7 @@ export const load: PageLoad = async ({ params }) => {
 
 			return {
 				slug,
-				label: levelMetadata?.label ?? slug
+				label: levelMetadata?.label ?? `Level: ${slug}`
 			};
 		})
 		.filter((level): level is { slug: string; label: string } => level !== null)
