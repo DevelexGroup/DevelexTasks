@@ -10,7 +10,7 @@ import { getFlattenedSymbols } from '$lib/utils/trackLevelUtils';
 import type { FonologieTaskRawDataEntry } from '$lib/components/tasks/fonologie/fonologie.types';
 
 export const addToList = true;
-export const label = 'Fonologie';
+export const label = 'Zvuková skládačka';
 export const description = 'Example description';
 
 // #region Presets

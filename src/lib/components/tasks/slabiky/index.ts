@@ -9,7 +9,7 @@ import type { SessionScoreMetrics } from '$lib/database/db.types';
 import { splitSequence } from '$lib/utils/trackLevelUtils';
 
 export const addToList = true;
-export const label = 'Slabiky';
+export const label = 'Slabiková stopa';
 export const description = 'Example description';
 
 // #region Presets
@@ -144,7 +144,7 @@ export function formatSlabikyRawData(rawData: SlabikyRawDataEntry): TrackTaskDat
 
 	const flatSequence = Array.isArray(sequence[0])
 		? (sequence as string[][]).flat()
-		: sequence as string[];
+		: (sequence as string[]);
 	const correctCount = flatSequence.filter((item) => correct?.includes(item)).length;
 
 	return {

@@ -9,7 +9,7 @@ import type { SessionScoreMetrics } from '$lib/database/db.types';
 import { splitSequence } from '$lib/utils/trackLevelUtils';
 
 export const addToList = true;
-export const label = 'Cibule';
+export const label = 'Řádkový lov';
 export const description = 'Example description';
 
 // #region Presets

@@ -2,7 +2,7 @@ import type { TaskMetadata, TrackTaskDataEntry, TrackTaskPreset } from '$lib/typ
 import type { ZrakovkaRawDataEntry } from './zrakovka.types';
 
 export const addToList = true;
-export const label = 'Zraková diferenciace';
+export const label = 'Zrakový detektiv';
 export const description = 'Example description';
 
 export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
