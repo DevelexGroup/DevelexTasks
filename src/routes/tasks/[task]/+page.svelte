@@ -13,12 +13,10 @@
 	});
 </script>
 
-<section class="mt-8 flex flex-col items-center justify-center">
-	<h1 class="text-5xl font-bold text-red-400">Develex Tasks</h1>
+<section class="flex h-screen flex-col items-center justify-center pb-8">
+	<h1 class="text-5xl font-bold text-red-400">{data.task.label}</h1>
 
 	<div class="mt-12 flex flex-col gap-2">
-		<h2>{data.task.label}</h2>
-
 		{#each data.levels as level (level)}
 			<button
 				class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
@@ -32,7 +30,7 @@
 	<div class="absolute bottom-4 left-4">
 		<button
 			class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
-			onclick={() => goto(resolve(`/`))}
+			onclick={() => goto(resolve(data.task.slug == 'dyslex' ? `/` : '/reeducation'))}
 		>
 			Zpět
 		</button>
