@@ -12,11 +12,11 @@
 <DefaultLayout>
 	<h1 class="text-2xl font-black text-gray-800">Úlohy</h1>
 
-	<div class="grid grid-cols-3 gap-6">
+	<div class="grid grid-cols-2 gap-6">
 		<div
 			class="relative flex flex-col overflow-hidden rounded-xl bg-white px-6 py-6 shadow-xl shadow-gray-300/50"
 		>
-			<div class="absolute -top-5 -right-5 h-16 w-16 rounded-full bg-indigo-100/40"></div>
+			<div class="absolute -top-6 -right-6 h-22 w-22 rounded-full bg-indigo-100/40"></div>
 
 			<div class="inline-flex h-14 w-14 items-center justify-center rounded-md bg-indigo-100">
 				<Icon icon="material-symbols:eyeglasses" class="h-7 w-7 text-blue-700" />
@@ -37,7 +37,7 @@
 		<div
 			class="relative flex flex-col overflow-hidden rounded-xl bg-white px-6 py-6 shadow-xl shadow-gray-300/50"
 		>
-			<div class="absolute -top-5 -right-5 h-16 w-16 rounded-full bg-emerald-100/40"></div>
+			<div class="absolute -top-6 -right-6 h-22 w-22 rounded-full bg-emerald-100/40"></div>
 
 			<div class="inline-flex h-14 w-14 items-center justify-center rounded-md bg-emerald-100">
 				<Icon
