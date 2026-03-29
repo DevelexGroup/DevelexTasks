@@ -1,16 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
-	import UserSelect from '$lib/components/UserSelect.svelte';
-	import RoleGuard from '$lib/components/RoleGuard.svelte';
-	import { RoleGuards } from '$lib/utils/roleGuard';
-	import { validateAuthStatus } from '$lib/api/auth';
-
-	onMount(() => {
-		// Sanity check: validate auth status with the server
-		validateAuthStatus();
-	});
+	import Icon from '@iconify/svelte';
+	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
 </script>
 
 <svelte:head>
@@ -18,44 +9,53 @@
 	<meta name="description" content="Various develex tasks" />
 </svelte:head>
 
-<section class="flex h-screen flex-col items-center justify-center pb-8">
-	<h1 class="text-5xl font-bold text-red-400">Develex úlohy</h1>
+<DefaultLayout>
+	<h1 class="text-2xl font-black text-gray-800">Úlohy</h1>
 
-	<div class="mt-12 flex flex-col gap-2">
-		<button
-			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-			onclick={() => goto(resolve(`/reeducation`))}
+	<div class="grid grid-cols-3 gap-6">
+		<div
+			class="relative flex flex-col overflow-hidden rounded-xl bg-white px-6 py-6 shadow-xl shadow-gray-300/50"
 		>
-			Reedukace dyslexie
-		</button>
+			<div class="absolute -top-5 -right-5 h-16 w-16 rounded-full bg-indigo-100/40"></div>
 
-		<button
-			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-			onclick={() => goto(resolve(`/tasks/dyslex`))}
+			<div class="inline-flex h-14 w-14 items-center justify-center rounded-md bg-indigo-100">
+				<Icon icon="material-symbols:eyeglasses" class="h-7 w-7 text-blue-700" />
+			</div>
+
+			<span class="mt-5 text-xl font-bold text-gray-800">Reedukace dyslexie</span>
+
+			<a
+				href={resolve('/reeducation')}
+				class="group mt-8 inline-flex items-center space-x-2 rounded-md font-bold text-blue-600"
+			>
+				<span class="group-hover:underline">Hrát nyní</span>
+
+				<Icon icon="mdi:arrow-right" class="h-5 w-5 transition-all group-hover:ml-2" />
+			</a>
+		</div>
+
+		<div
+			class="relative flex flex-col overflow-hidden rounded-xl bg-white px-6 py-6 shadow-xl shadow-gray-300/50"
 		>
-			Detekce dyslexie
-		</button>
+			<div class="absolute -top-5 -right-5 h-16 w-16 rounded-full bg-emerald-100/40"></div>
+
+			<div class="inline-flex h-14 w-14 items-center justify-center rounded-md bg-emerald-100">
+				<Icon
+					icon="material-symbols:eye-tracking-outline-rounded"
+					class="h-7 w-7 text-emerald-700"
+				/>
+			</div>
+
+			<span class="mt-5 text-xl font-bold text-gray-800">Diagnostika dyslexie</span>
+
+			<a
+				href={resolve('/tasks/dyslex')}
+				class="group mt-8 inline-flex items-center space-x-2 rounded-md font-bold text-emerald-600"
+			>
+				<span class="group-hover:underline">Hrát nyní</span>
+
+				<Icon icon="mdi:arrow-right" class="h-5 w-5 transition-all group-hover:ml-2" />
+			</a>
+		</div>
 	</div>
-
-	<div class="mt-12 flex flex-col gap-2">
-		<button
-			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-			onclick={() => goto(resolve('/settings'))}
-		>
-			Nastavení
-		</button>
-	</div>
-
-	<RoleGuard config={RoleGuards.garantOnly}>
-		<button
-			class="fixed right-4 bottom-4 rounded-md bg-purple-500 px-3 py-1.5 text-gray-50 hover:bg-purple-600"
-			onclick={() => goto(resolve('/admin'))}
-		>
-			Administrace
-		</button>
-	</RoleGuard>
-
-	<div class="mt-3">
-		<UserSelect />
-	</div>
-</section>
+</DefaultLayout>

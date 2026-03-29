@@ -3,7 +3,6 @@
 	import { resolve } from '$app/paths';
 	import { authUser } from '$lib/stores/auth';
 	import { logout } from '$lib/api/auth';
-	import { Button } from '$lib/components/ui/button';
 
 	const isLoggedIn = $derived($authUser !== null);
 	const userName = $derived(
@@ -58,6 +57,14 @@
 </script>
 
 {#if isLoggedIn}
+	<button
+		class="inline-flex cursor-pointer items-center rounded-md bg-blue-600 px-5 py-3 text-sm font-semibold text-gray-200 hover:bg-blue-500 disabled:cursor-not-allowed"
+		onclick={handleLogout}
+		disabled={loggingOut}
+	>
+		{loggingOut ? 'Odhlašuji...' : 'Odhlásit se'}
+	</button>
+
 	<div class="flex flex-col items-center gap-3">
 		<div class="flex items-center gap-4 rounded-lg px-4 py-3">
 			<span
@@ -67,20 +74,12 @@
 			</span>
 			<span class="text-base font-semibold text-foreground">{userName}</span>
 		</div>
-		<Button
-			variant="outline"
-			class="rounded-md px-3 py-1.5"
-			onclick={handleLogout}
-			disabled={loggingOut}
-		>
-			{loggingOut ? 'Odhlašuji...' : 'Odhlásit se'}
-		</Button>
 	</div>
 {:else}
-	<Button
-		class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
+	<button
+		class="inline-flex cursor-pointer items-center rounded-md bg-blue-600 px-5 py-3 text-sm font-semibold text-gray-200 hover:bg-blue-500"
 		onclick={() => goto(resolve('/login'))}
 	>
 		Přihlásit se
-	</Button>
+	</button>
 {/if}
