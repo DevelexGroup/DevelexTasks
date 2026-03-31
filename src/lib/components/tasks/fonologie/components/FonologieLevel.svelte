@@ -143,7 +143,7 @@
 			validateStage={fonologieStageValidation}
 			{isPractice}
 			onCompleted={() => {
-				taskStage.set(TaskStage.Instructions);
+				taskStage.set(isPractice ? TaskStage.Instructions : TaskStage.End);
 			}}
 		>
 			{#snippet hintComponent({ state })}
