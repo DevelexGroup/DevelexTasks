@@ -32,7 +32,7 @@
 		<div class="grid grid-cols-1 gap-5">
 			{#each data.tasks as task (task.slug)}
 				<div
-					class="flex items-center justify-between rounded-md border border-transparent bg-indigo-50 px-6 py-4 transition-colors hover:border-blue-600/20"
+					class="flex items-center justify-between rounded-md border border-transparent bg-amber-50 px-6 py-4 transition-colors hover:border-amber-600/20"
 				>
 					<div class="inline-flex items-center space-x-4">
 						<div class="inline-flex h-13 w-13 items-center justify-center rounded-md bg-amber-200">
@@ -46,7 +46,7 @@
 					</div>
 
 					<button
-						class="cursor-pointer rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-gray-50 hover:bg-blue-700"
+						class="cursor-pointer rounded-md bg-amber-600 px-5 py-2.5 text-sm font-semibold text-gray-50 hover:bg-orange-700"
 						onclick={() => goto(resolve(`/tasks/${task.slug}?mode=evaluation`))}
 					>
 						Start

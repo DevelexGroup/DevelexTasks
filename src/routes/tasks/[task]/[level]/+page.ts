@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-import evaluationTaskPresets from '../../../evaluation/task-presets.json';
+import evaluationTaskPresets from '$lib/data/evaluation-task-presets.json';
 
 type RouteMode = 'evaluation' | 'reeducation';
 
