@@ -762,7 +762,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'food2',
 		level: 'level1',
 		sound: 'P_zac',
-		sequence: ['palacinky', 'babovka', 'syr', 'spagety', 'pizza'],
+		sequence: ['palacinky', 'babovka', 'syr2', 'spagety', 'pizza'],
 		correct_indices: [0, 4]
 	},
 	{
@@ -772,7 +772,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'food2',
 		level: 'level1',
 		sound: 'S_zac',
-		sequence: ['syr', 'houska', 'zmrzlina', 'salat', 'susenky'],
+		sequence: ['syr2', 'houska', 'vafle', 'salat', 'susenky'],
 		correct_indices: [0, 3, 4]
 	},
 	{
@@ -802,7 +802,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'food2',
 		level: 'level1',
 		sound: 'R_zac',
-		sequence: ['syr', 'rolada', 'pohar', 'rizoto', 'parek'],
+		sequence: ['syr2', 'rolada', 'pohar', 'rizoto', 'parek'],
 		correct_indices: [1, 3]
 	},
 	{
@@ -1072,7 +1072,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'vehicles1',
 		level: 'level1',
 		sound: 'S_zac',
-		sequence: ['semafor', 'tramvaj', 'autobus', 'zastavka', 'trolejbus'],
+		sequence: ['semafor', 'tramvaj', 'auto', 'zastavka', 'trolejbus'],
 		correct_indices: [0]
 	},
 	{
@@ -1104,16 +1104,6 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		sound: 'P_zac',
 		sequence: ['policista', 'baletka', 'pilot', 'pekarka', 'reporterka'],
 		correct_indices: [0, 2, 3]
-	},
-	{
-		task_id: 'fonologie',
-		id: 'FOC104',
-		topic: 'povolání',
-		set: 'occupation',
-		level: 'level1',
-		sound: 'M_zac',
-		sequence: ['lekarka', 'malirka', 'ucitelka', 'muzikantka', 'kosmonaut'],
-		correct_indices: [1, 3]
 	},
 	{
 		task_id: 'fonologie',
@@ -1152,7 +1142,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'occupation',
 		level: 'level1',
 		sound: 'F_zac',
-		sequence: ['fotbalista', 'policista', 'hudebnice', 'cisnik', 'fotograf'],
+		sequence: ['fotbalista', 'policista', 'houslistka', 'cisnik', 'fotograf'],
 		correct_indices: [0, 4]
 	},
 	{
@@ -1192,7 +1182,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fairytales1',
 		level: 'level1',
 		sound: 'J_zac',
-		sequence: ['jednorozec', 'jeskyne', 'kralovna', 'carodejka', 'rytir'],
+		sequence: ['jednorozec', 'jeskyne2', 'kralovna', 'carodejka', 'rytir'],
 		correct_indices: [0, 1]
 	},
 	{
@@ -1782,7 +1772,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'sports1',
 		level: 'level1',
 		sound: 'M_zac',
-		sequence: ['puk', 'helma', 'mic', 'box', 'medaile'],
+		sequence: ['puk', 'helma', 'mice', 'box', 'medaile'],
 		correct_indices: [2, 4]
 	},
 	{
@@ -1872,7 +1862,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'weather',
 		level: 'level1',
 		sound: 'V_zac',
-		sequence: ['vitr', 'Vanoce', 'duha', 'Velikonoce', 'hvezdy'],
+		sequence: ['vitr', 'vanoce', 'duha', 'velikonoce', 'hvezdy'],
 		correct_indices: [0, 1, 3]
 	},
 	{
@@ -2742,7 +2732,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'animals4',
 		level: 'level2',
 		sound: 'A_kon',
-		sequence: ['tucnak4', 'moucha', 'krava4', 'sova4', 'vazka4'],
+		sequence: ['tucnak4', 'moucha4', 'krava4', 'sova4', 'vazka4'],
 		correct_indices: [1, 2, 3, 4]
 	},
 	{
@@ -2932,7 +2922,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'food2',
 		level: 'level2',
 		sound: 'R_kon',
-		sequence: ['olej2', 'parek', 'hamburger', 'pohar', 'syr'],
+		sequence: ['olej2', 'parek', 'hamburger', 'pohar', 'syr2'],
 		correct_indices: [2, 3, 4]
 	},
 	{
@@ -2942,7 +2932,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'food2',
 		level: 'level2',
 		sound: 'Y_kon',
-		sequence: ['nanuk', 'syr', 'susenky', 'spagety', 'nudle'],
+		sequence: ['nanuk', 'syr2', 'susenky', 'spagety', 'nudle'],
 		correct_indices: [2, 3]
 	},
 	{
@@ -2982,7 +2972,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fruitandvegetables',
 		level: 'level2',
 		sound: 'T_kon',
-		sequence: ['salat', 'angrest', 'svestka', 'grapefruit', 'kvetak'],
+		sequence: ['salat2', 'angrest', 'svestka', 'grapefruit', 'kvetak'],
 		correct_indices: [0, 1, 3]
 	},
 	{
@@ -3082,7 +3072,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fruitandvegetables',
 		level: 'level2',
 		sound: 'O_kon',
-		sequence: ['brokolice', 'jablko', 'hrozno', 'citron', 'mango'],
+		sequence: ['brokolice', 'jablko', 'hrozno', 'citron2', 'mango'],
 		correct_indices: [1, 2, 4]
 	},
 	{
@@ -3249,7 +3239,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		task_id: 'fonologie',
 		id: 'FFA201',
 		topic: 'pohádky',
-		set: 'fairytales',
+		set: 'fairytales1',
 		level: 'level2',
 		sound: 'T_kon',
 		sequence: ['hrad', 'cert1', 'trol', 'poklad', 'pirat1'],
@@ -3259,7 +3249,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		task_id: 'fonologie',
 		id: 'FFA202',
 		topic: 'pohádky',
-		set: 'fairytales',
+		set: 'fairytales1',
 		level: 'level2',
 		sound: 'K_kon',
 		sequence: ['kouzelnik2', 'upir1', 'cert1', 'drak', 'hrad'],
@@ -3269,7 +3259,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		task_id: 'fonologie',
 		id: 'FFA203',
 		topic: 'pohádky',
-		set: 'fairytales',
+		set: 'fairytales1',
 		level: 'level2',
 		sound: 'K_kon',
 		sequence: ['trpaslik', 'viking', 'sasek', 'kral', 'carodejka'],
@@ -3279,17 +3269,17 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		task_id: 'fonologie',
 		id: 'FFA204',
 		topic: 'pohádky',
-		set: 'fairytales',
+		set: 'fairytales1',
 		level: 'level2',
 		sound: 'A_kon',
-		sequence: ['prinzcena', 'kral', 'carodejka', 'vila', 'kralovna'],
+		sequence: ['princezna', 'kral', 'carodejka', 'vila', 'kralovna'],
 		correct_indices: [0, 2, 3, 4]
 	},
 	{
 		task_id: 'fonologie',
 		id: 'FFA205',
 		topic: 'pohádky',
-		set: 'fairytales',
+		set: 'fairytales1',
 		level: 'level2',
 		sound: 'R_kon',
 		sequence: ['cert1', 'kocar', 'rytir', 'upir1', 'trol'],
@@ -3299,7 +3289,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		task_id: 'fonologie',
 		id: 'FFA206',
 		topic: 'pohádky',
-		set: 'fairytales',
+		set: 'fairytales1',
 		level: 'level2',
 		sound: 'Č_kon',
 		sequence: ['rytir', 'kocar', 'cert1', 'vez', 'mec'],
@@ -3309,7 +3299,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		task_id: 'fonologie',
 		id: 'FFA207',
 		topic: 'pohádky',
-		set: 'fairytales',
+		set: 'fairytales1',
 		level: 'level2',
 		sound: 'D_kon',
 		sequence: ['pirat1', 'poklad', 'hrad', 'drak', 'cert1'],
@@ -3319,7 +3309,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		task_id: 'fonologie',
 		id: 'FFA208',
 		topic: 'pohádky',
-		set: 'fairytales',
+		set: 'fairytales1',
 		level: 'level2',
 		sound: 'C_kon',
 		sequence: ['mec', 'vez', 'myslivec', 'rozcesti', 'jednorozec'],
@@ -3472,7 +3462,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'sports1',
 		level: 'level2',
 		sound: 'E_kon',
-		sequence: ['hřiště', 'skore', 'golf', 'karate', 'brusle'],
+		sequence: ['hriste', 'skore', 'golf', 'karate', 'brusle'],
 		correct_indices: [1, 3, 4]
 	},
 	{
@@ -3552,7 +3542,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'weather',
 		level: 'level2',
 		sound: 'Í_kon',
-		sequence: ['zatmeni', 'prazdniny', 'tsunami', 'hvezdy2', 'zemetreseni'],
+		sequence: ['zatmeni', 'prazdniny', 'tsunami', 'hvezdy', 'zemetreseni'],
 		correct_indices: [0, 4]
 	},
 	{
@@ -3602,7 +3592,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'weather',
 		level: 'level2',
 		sound: 'Y_kon',
-		sequence: ['jeskyne2', 'zemetreseni', 'prazdniny', 'zima', 'hvezdy2'],
+		sequence: ['tornado', 'zemetreseni', 'prazdniny', 'zima', 'hvezdy'],
 		correct_indices: [2, 4]
 	},
 	{
@@ -3912,7 +3902,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'objects',
 		level: 'level2',
 		sound: 'S_kon',
-		sequence: ['retez', 'kaktus', 'slza', 'cirkus', 'globus'],
+		sequence: ['retez', 'kaktus', 'slzy', 'cirkus', 'globus'],
 		correct_indices: [1, 3, 4]
 	},
 	{
@@ -3962,7 +3952,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'objects',
 		level: 'level2',
 		sound: 'Č_kon',
-		sequence: ['mic', 'klic', 'pocitac', 'slunecnik', 'rucnik'],
+		sequence: ['mic2', 'klic', 'pocitac', 'slunecnik', 'rucnik'],
 		correct_indices: [0, 1, 2]
 	},
 	{
@@ -4032,7 +4022,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'objects',
 		level: 'level2',
 		sound: 'A_kon',
-		sequence: ['vytah', 'vystava', 'kytara', 'banka', 'zinka'],
+		sequence: ['vytah', 'vystava', 'kytara', 'bankaX', 'zinka'],
 		correct_indices: [1, 2, 3, 4]
 	},
 	{
@@ -4132,7 +4122,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'places',
 		level: 'level2',
 		sound: 'Í_kon',
-		sequence: ['nemocnice', 'hristeX', 'vezeni', 'krejovstvi', 'kadernictvi'],
+		sequence: ['nemocnice', 'hristeX', 'vezeni', 'krejcovstvi', 'kadernictvi'],
 		correct_indices: [2, 3, 4]
 	},
 	{
@@ -4452,7 +4442,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'animals2',
 		level: 'level3',
 		sound: 'P_upr',
-		sequence: ['pstros2', 'slepice2', 'papousek1', 'lemur2', 'kosatka2'],
+		sequence: ['pstros2', 'slepice2', 'papousek2', 'lemur2', 'kosatka2'],
 		correct_indices: [1, 2]
 	},
 	{
@@ -5002,7 +4992,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fruitandvegetables',
 		level: 'level3',
 		sound: 'U_upr',
-		sequence: ['pomeranc', 'cibule', 'kukurice', 'okurka2', 'ostruzina'],
+		sequence: ['pomeranc', 'cibule2', 'kukurice', 'okurka2', 'ostruzina'],
 		correct_indices: [1, 2, 3, 4]
 	},
 	{
@@ -5022,7 +5012,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fruitandvegetables',
 		level: 'level3',
 		sound: 'B_upr',
-		sequence: ['jablko', 'rybiz', 'brambory', 'cibule', 'repa'],
+		sequence: ['jablko', 'rybiz', 'brambory', 'cibule2', 'repa'],
 		correct_indices: [0, 2, 3, 4]
 	},
 	{
@@ -5052,7 +5042,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fruitandvegetables',
 		level: 'level3',
 		sound: 'T_upr',
-		sequence: ['brokolice', 'petrzel', 'svestka', 'kvetak', 'jahoda'],
+		sequence: ['brokolice', 'petrzel', 'svestka', 'kvetak', 'jahoda2'],
 		correct_indices: [1, 2, 3]
 	},
 	{
@@ -5142,7 +5132,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'vehicles1',
 		level: 'level3',
 		sound: 'O_upr',
-		sequence: ['vztulnik', 'zastavka', 'kolo', 'lod', 'motorka'],
+		sequence: ['vrtulnik', 'zastavka', 'kolo', 'lod', 'motorka'],
 		correct_indices: [2, 3, 4]
 	},
 	{
@@ -5652,7 +5642,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fairytales1',
 		level: 'level3',
 		sound: 'R_upr',
-		sequence: ['hrad', 'cert', 'drak', 'poklad', 'kouzelnik2'],
+		sequence: ['hrad', 'cert1', 'drak', 'poklad', 'kouzelnik2'],
 		correct_indices: [0, 1, 2]
 	},
 	{
@@ -5672,7 +5662,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fairytales1',
 		level: 'level3',
 		sound: 'E_upr',
-		sequence: ['cert', 'kouzelnik2', 'poklad', 'upir1', 'koruna'],
+		sequence: ['cert1', 'kouzelnik2', 'poklad', 'upir1', 'koruna'],
 		correct_indices: [1, 2]
 	},
 	{
@@ -5722,7 +5712,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'fairytales2',
 		level: 'level3',
 		sound: 'E_upr',
-		sequence: ['cert', 'lucerna', 'carodejnice', 'kocka5', 'dyne3'],
+		sequence: ['cert2', 'lucerna', 'carodejnice', 'kocka5', 'dyne3'],
 		correct_indices: [0, 1]
 	},
 	{
@@ -6042,7 +6032,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'weather',
 		level: 'level3',
 		sound: 'S_upr',
-		sequence: ['soustava', 'hvezdy2', 'velikonoce', 'sucho', 'ohnostroj'],
+		sequence: ['soustava', 'hvezdy', 'velikonoce', 'sucho', 'ohnostroj'],
 		correct_indices: [0, 4]
 	},
 	{
@@ -6092,7 +6082,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'weather',
 		level: 'level3',
 		sound: 'U_upr',
-		sequence: ['duha', 'bsucho', 'uplnek', 'slunce', 'bourka'],
+		sequence: ['duha', 'sucho', 'uplnek', 'slunce', 'bourka'],
 		correct_indices: [0, 1, 3, 4]
 	},
 	{
@@ -6192,7 +6182,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'objects',
 		level: 'level3',
 		sound: 'T_upr',
-		sequence: ['budka', 'kytara', 'chobot', 'destnik', 'kaktus2'],
+		sequence: ['budka', 'kytara', 'chobot', 'destnik', 'kaktus'],
 		correct_indices: [1, 3, 4]
 	},
 	{
@@ -6252,7 +6242,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'objects',
 		level: 'level3',
 		sound: 'K_upr',
-		sequence: ['dalekohled', 'nehet2', 'kaktus2', 'balkon', 'nakup'],
+		sequence: ['dalekohled', 'nehet2', 'kaktus', 'balkon', 'nakup'],
 		correct_indices: [0, 2, 3, 4]
 	},
 	{
@@ -6302,7 +6292,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'objects',
 		level: 'level3',
 		sound: 'Č_upr',
-		sequence: ['mic', 'pocitac', 'kocarek', 'nocnik', 'musle'],
+		sequence: ['mic2', 'pocitac', 'kocarek', 'nocnik', 'musle'],
 		correct_indices: [1, 2]
 	},
 	{
@@ -6322,7 +6312,7 @@ export const fonologieL1Data: FonologieAudioRawDataEntry[] = [
 		set: 'objects',
 		level: 'level3',
 		sound: 'S_upr',
-		sequence: ['kaktus2', 'ohryzek', 'pisek', 'dinosaurus', 'vystava'],
+		sequence: ['kaktus', 'ohryzek', 'pisek', 'dinosaurus', 'vystava'],
 		correct_indices: [2, 3, 4]
 	},
 	{
@@ -6502,7 +6492,7 @@ export const fonologieL4Data : FonologieManipulationRawDataEntry[] = [
 		id: 'FL4002',
 		level: 'level4',
 		sound: "4002",
-		model: ['krava'],
+		model: ['krava5'],
 		sequence: ['taska', 'hlava2', 'trava', 'triko'],
 		correct_indices: [2]
 	},
@@ -6574,7 +6564,7 @@ export const fonologieL4Data : FonologieManipulationRawDataEntry[] = [
 		id: 'FL4010',
 		level: 'level4',
 		sound: "4010",
-		model: ['brana2'],
+		model: ['brana'],
 		sequence: ['vana', 'banan', 'vrana', 'farma'],
 		correct_indices: [2]
 	},
@@ -6619,7 +6609,7 @@ export const fonologieL4Data : FonologieManipulationRawDataEntry[] = [
 		id: 'FL5007',
 		level: 'level5',
 		sound: "5007",
-		model: ['jmeli'],
+		model: ['jmeli3'],
 		sequence: ['zima', 'zrni', 'zeli', 'zamek2'],
 		correct_indices: [2]
 	},
