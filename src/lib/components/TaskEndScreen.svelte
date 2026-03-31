@@ -3,6 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import { TaskResult } from '$lib/types/task.types';
 	import { currentTask } from '$lib/stores/task';
 
@@ -12,16 +13,25 @@
 
 	let { exitType }: Props = $props();
 
+	const modeQuery = $derived(page.url.searchParams.get('mode') === 'evaluation' ? '?mode=evaluation' : '');
+
 	$effect(() => {
 		console.log('Task ended with exit type:', exitType);
 	});
 
-	function retryTask() {
-		if ($currentTask) {
-			goto(resolve(`/tasks/${$currentTask.slug}`));
-		} else {
-			goto(resolve(`/`));
+	function navigateToTaskList() {
+		const taskSlug = page.params.task || $currentTask?.slug;
+
+		if (taskSlug) {
+			goto(resolve(`/tasks/${taskSlug}${modeQuery}`));
+			return;
 		}
+
+		goto(resolve(page.url.searchParams.get('mode') === 'evaluation' ? '/evaluation' : '/reeducation'));
+	}
+
+	function retryTask() {
+		navigateToTaskList();
 	}
 </script>
 
@@ -49,7 +59,7 @@
 	<div class="mt-6 flex gap-2">
 		<button
 			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-			onclick={() => goto(resolve(`/`))}
+			onclick={navigateToTaskList}
 		>
 			Zpátky na výběr lekcí
 		</button>
