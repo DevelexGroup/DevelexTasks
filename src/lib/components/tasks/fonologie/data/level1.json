@@ -1,0 +1,6472 @@
+﻿[
+	{
+		"task_id": "fonologie",
+		"id": "FHM101",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["palec", "brada", "bricho", "zub", "plice"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM102",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "J_zac",
+		"sequence": ["plice", "rty", "hlava", "jizva", "jazyk"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM103",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["chodidlo", "krk", "brada", "koleno", "jazyk"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM104",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["knir", "dlan", "kostra", "bricho", "kotnik"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM105",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "N_zac",
+		"sequence": ["nos", "mozek", "nehet", "noha", "palec"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM106",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "O_zac",
+		"sequence": ["nos", "tetovani", "oboci", "rameno", "oko"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM107",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["palec", "pest", "bricho", "prso", "plice"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM108",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["vrasky", "rameno", "prso", "rty", "ruka"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM109",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "U_zac",
+		"sequence": ["vousy", "ukazovacek", "hlava", "zub", "ucho"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM110",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["ukazovacek", "vousy", "vrasky", "vlasy", "dlan"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM111",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["rty", "zadek", "zub", "dlan", "zada"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM112",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["mozek", "brada", "chodidlo", "nehet", "knir"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1101",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level1",
+		"sound": "J_zac",
+		"sequence": ["lev1", "jelen1", "zajic1", "jezevec1", "liska1"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1102",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["vlk1", "ovce1", "velbloud1", "veverka1", "bobr1"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1103",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kun1", "veverka1", "koza1", "krava1", "liska1"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1104",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["liska1", "los1", "slon1", "lev1", "velbloud1"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1105",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["zajic1", "zirafa1", "nosorozec1", "zebra1", "slon1"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1106",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["medved1", "kun1", "bobr1", "nosorozec1", "jelen1"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1107",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["vlk1", "kun1", "tygr1", "hroch1", "prase1"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1108",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level1",
+		"sound": "O_zac",
+		"sequence": ["bobr1", "hroch1", "ovce1", "koza1", "los1"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2101",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level1",
+		"sound": "Ž_zac",
+		"sequence": ["slepice2", "zralok2", "zelva2", "zirafa2", "slepice2"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2102",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kure2", "kocka2", "lemur2", "kralik2", "kun2"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2103",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["motyl2", "kocka2", "mys2", "meduza2", "pes2"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2104",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["sova2", "meduza2", "slepice2", "zelva2", "zralok2"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2105",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["papousek2", "lemur2", "kure2", "sova2", "pes2"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2106",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["lev2", "lemur2", "slepice2", "zralok2", "motyl2"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3101",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "Ž_zac",
+		"sequence": ["zelva3", "zirafa3", "vydra3", "zaba3", "snek3"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3102",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "Ž_zac",
+		"sequence": ["lachtan3", "vazka3", "zralok3", "mroz3", "zizala3"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3103",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["pav3", "vazka3", "vydra3", "veverka3", "brouk3"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3104",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["racek3", "pes3", "pav3", "brouk3", "vydra3"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3105",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["medved3", "mroz3", "lachtan3", "koala3", "mys3"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3106",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["lev3", "lachtan3", "koala3", "zizala3", "krokodyl3"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3107",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["krokodyl3", "snek3", "kocka3", "zralok3", "lev3"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3108",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["racek3", "kohout3", "veverka3", "koala3", "zaba3"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3109",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["pes3", "vydra3", "brouk3", "zaba3", "pav3"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3110",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["pes3", "zaba3", "zelva3", "zralok3", "snek3"],
+		"correct_indices": [4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3111",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["koala3", "lachtan3", "brouk3", "racek3", "vydra3"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4101",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "Ž_zac",
+		"sequence": ["zelva4", "zebra4", "cap4", "zralok4", "snek4"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4102",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "Ž_zac",
+		"sequence": ["simpanz4", "zirafa4", "zaba4", "tucnak4", "snek4"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4103",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["slepice4", "tygr4", "had4", "velbloud4", "veverka4"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4104",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["vlk4", "sova4", "veverka4", "delfin4", "vazka4"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4105",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["tygr4", "delfin4", "mys4", "had4", "tucnak4"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4106",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["snek4", "simpanz4", "tucnak4", "mys4", "cap4"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4107",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["zebra4", "slon4", "slepice4", "sova4", "nosorozec4"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4108",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["prase4", "pstros4", "husa4", "pes4", "labut4"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4109",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "O_zac",
+		"sequence": ["koala4", "orel4", "ovce4", "slon4", "osel4"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4110",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "N_zac",
+		"sequence": ["mravenec4", "netopyr4", "snek4", "nosorozec4", "medved4"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4111",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["motyl4", "mravenec4", "medved4", "nosorozec4", "tygr4"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4112",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["zaba4", "moucha4", "veverka4", "motyl4", "netopyr4"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4113",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["labut4", "velbloud4", "lev4", "liska4", "kralik4"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4114",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["krab4", "kralik4", "labut4", "kun4", "krokodyl4"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4115",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kachna4", "tucnak4", "koza4", "krava4", "liska4"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4116",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["jezek4", "klokan4", "pstros4", "kohout4", "delfin4"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4117",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kocka4", "koala4", "orel4", "netopyr4", "housenka4"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4118",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "J_zac",
+		"sequence": ["jelen4", "krab4", "jezek4", "jesterka4", "ryba4"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4119",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "CH_zac",
+		"sequence": ["chameleon4", "delfin4", "housenka4", "chobotnice4", "husa4"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4120",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["krokodyl4", "had4", "labut4", "chobotnice4", "koza4"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4121",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["housenka4", "krokodyl4", "hroch4", "husa4", "chameleon4"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4122",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "D_zac",
+		"sequence": ["labut4", "jelen4", "delfin4", "tygr4", "tucnak4"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4123",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "Č_zac",
+		"sequence": ["simpanz4", "jezek4", "pstros4", "zelva4", "cap4"],
+		"correct_indices": [4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1101",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "C_zac",
+		"sequence": ["cibule", "dyne", "bonbony", "zmrzlina", "syr"],
+		"correct_indices": []
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1102",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "D_zac",
+		"sequence": ["tresne", "paprika", "dort", "dyne", "bylinky"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1103",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kiwi", "jahoda", "kava", "cibule", "dort"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1104",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["polevka", "paprika", "bylinky", "olej", "bonbony"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1105",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["ryba5", "rohlik", "zmrzlina", "rajcata", "dort"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1106",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["bonbony", "voda", "vejce", "vino", "kava"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1107",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["dyne", "cibule", "tresne", "kava", "dort"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1108",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "O_zac",
+		"sequence": ["olej", "polevka", "meloun", "jahoda", "okurka"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1109",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "A_zac",
+		"sequence": ["limonada", "zmrzlina", "ananas", "avokado", "jahoda"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1110",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["sendvic", "zmrzlina", "citron", "syr", "cibule"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1111",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "J_zac",
+		"sequence": ["limetka", "jahoda", "olej", "limonada", "jednohubky"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1112",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["olivy", "limetka", "rohlik", "limonada", "jahoda"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2101",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["babovka", "salat", "bramburky", "pohar", "kureX"],
+		"correct_indices": []
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2102",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["kureX", "houska", "hamburger", "hranolky", "chleba"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2103",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["vafle", "pohar", "parek", "spagety", "bramburky"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2104",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["palacinky", "babovka", "syr2", "spagety", "pizza"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2105",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["syr2", "houska", "vafle", "salat", "susenky"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2106",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["susenky", "spagety", "salat", "kureX", "sunka"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2107",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["babovka", "houska", "vejce2", "salat", "vafle"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2108",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["syr2", "rolada", "pohar", "rizoto", "parek"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2109",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "N_zac",
+		"sequence": ["hranolky", "med", "nanuk", "nudle", "susenky"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2110",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["chleba", "kolac", "houska", "kureX", "hranolky"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2111",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["med", "hamburger", "med", "nanuk", "bramburky"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE101",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "C_zac",
+		"sequence": ["cibule2", "cesnek2", "salat2", "cuketa", "citron2"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE102",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["paprika2", "banan", "dyne2", "brambory", "cibule2"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE103",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kiwi2", "kvetak", "lilek", "rukola", "kukurice"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE104",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["petrzel", "brambory", "porek", "pomeranc", "paprika2"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE105",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "Ř_zac",
+		"sequence": ["rajce", "zampion2", "repa", "redkvicky", "cesnek2"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE106",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["rukola", "rajce", "rybiz", "mrkev", "lilek"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE107",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["okurka2", "mango", "salat2", "mrkev", "zampion2"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE108",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "A_zac",
+		"sequence": ["angrest", "ananas2", "jahoda2", "hruska", "mango"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE109",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["dyne2", "broskev", "paprika2", "boruvky", "brambory"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE110",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["hrozno", "hruska", "kvetak", "jahoda2", "hrasek"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE111",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "J_zac",
+		"sequence": ["lilek", "rajce", "jahoda2", "kukurice", "jablko"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE112",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["meloun2", "zampion2", "mandarinka", "broskev", "maliny"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE113",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "O_zac",
+		"sequence": ["porek", "ostruzina", "banan", "okurka2", "mango"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE114",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["salat2", "tresne2", "zampion2", "svestka", "cesnek2"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE101",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kolo", "kamion", "lod", "kabriolet", "kuzel"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE102",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["balon", "lod", "kolo", "limuzina", "letadlo"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE103",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["balon", "trolejbus", "policie", "nakladak", "parkoviste"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE104",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "A_zac",
+		"sequence": ["tank", "ambulance", "vlak", "auto", "kamion"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE105",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["volant", "balon", "tramvaj", "taxi", "vrtulnik"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE106",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["tank", "zastavka", "trolejbus", "auto", "tramvaj"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE107",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["volant", "vlak", "kabriolet", "vrtulnik", "balon"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE108",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["motorka", "vzducholod", "znaceni", "limuzina", "vrtulnik"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE109",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["semafor", "auto", "vzducholod", "znaceni", "zastavka"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE110",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["semafor", "tramvaj", "auto", "zastavka", "trolejbus"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC101",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["uklizecka", "soudkyne", "zlodej", "zahradnik", "reporterka"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC102",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "U_zac",
+		"sequence": ["knez", "ucitelka", "pilot", "lekarka", "uklizecka"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC103",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["policista", "baletka", "pilot", "pekarka", "reporterka"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC105",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["letuska", "pilot", "reporterka", "lekarka", "malirka"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC106",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["knez", "kosmonaut", "reporterka", "pekarka", "policista"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC107",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["ucitelka", "delnik", "kuchar", "kouzelnik", "pekarka"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC108",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "F_zac",
+		"sequence": ["fotbalista", "policista", "houslistka", "cisnik", "fotograf"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC109",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["delnik", "hasic", "zlodej", "policista", "houslistka"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC110",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["reporterka", "zahradnik", "baletka", "pilot", "kuryr"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC111",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level1",
+		"sound": "Č_zac",
+		"sequence": ["knez", "cisnik", "lekarka", "malirka", "pekarka"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA101",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "J_zac",
+		"sequence": ["jednorozec", "jeskyne2", "kralovna", "carodejka", "rytir"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA102",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["koruna", "trpaslik", "kralovna", "hrad", "kouzelnik2"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA103",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["carodejka", "kral", "sasek", "kocar", "trol"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA104",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["upir1", "princezna", "poklad", "pirat1", "drak"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA105",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "Č_zac",
+		"sequence": ["vila", "kocar", "mec", "carodejka", "cert1"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA106",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["drak", "trpaslik", "trol", "hrad", "poklad"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA107",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["cert1", "rytir", "kocar", "sasek", "carodejka"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA108",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["pirat1", "rozcesti", "upir1", "jednorozec", "rytir"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA109",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["myslivec", "koruna", "princezna", "viking", "mec"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA110",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["upir1", "vez", "vila", "viking", "kralovna"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA111",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["smrtka", "maska", "superhrdinove", "zombie", "strasak"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA112",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["duch", "pirat2", "lebka", "pavouk", "dyne3"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA113",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kocka5", "kotel", "hrob", "kriz", "kostra2"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA114",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "D_zac",
+		"sequence": ["dyne3", "havran", "vlkodlak", "duch", "rakev"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA115",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "Č_zac",
+		"sequence": ["kocka5", "kriz", "carodejnice", "upir2", "cert2"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA116",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["havran", "mumie", "lucerna", "netopyr5", "maska"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA117",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["zombie", "duch", "superhrdinove", "hrob", "smrtka"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA118",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["kriz", "lucerna", "lektvar", "lebka", "kotel"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA119",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["havran", "rakev", "dyne3", "kostra2", "hrob"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA120",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level1",
+		"sound": "U_zac",
+		"sequence": ["vlkodlak", "upir2", "mumie", "lucerna", "duch"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI101",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["chnapka", "hrnec", "dzban", "hrnek", "struhadlo"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI102",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["konvice", "kavovar", "prkynko", "skrabka", "struhadlo"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI103",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["mixer", "sklenice", "miska", "nuzky", "naberacka"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI104",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "N_zac",
+		"sequence": ["miska", "nuzky", "naberacka", "nuz", "prkynko"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI105",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["talir", "prkynko", "chnapka", "pribor", "panev"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI106",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["struhadlo", "sklenice", "salek", "sekacek", "zastera"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI107",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["varecka", "hrnek", "valecek", "konvice", "vaha"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI108",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["miska", "struhadlo", "zastera", "sekacek", "skrabka"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI109",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["toastovac", "skrabka", "sekacek", "sklenice", "salek"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI110",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["zastera", "talir", "toastovac", "hrnek", "struhadlo"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU101",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kavovar2", "kreslo", "knihovna", "hracky", "koberec"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU102",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["lampa", "budik", "police", "lednice", "lustr"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU103",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["umyvadlo", "pohovka", "postel", "budik", "lampa"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU104",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["palanda", "obraz", "pracka", "polstar", "postel"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU105",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["stul", "zrcadlo", "skrin", "televize", "stul"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU106",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["vesak", "lednice", "televize", "vaza", "vana"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU107",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["zaclona", "kreslo", "zachod", "zrcadlo", "zidle"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU108",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["zidle", "pracka", "umyvadlo", "mikrovlnka", "reproduktor"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU109",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["hracky", "kreslo", "hodiny", "gramofon", "budik"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU110",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["vaza", "gramofon", "televize", "tabule", "vesak"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU111",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["zidle", "zaclona", "zrcadlo", "sprcha", "zachod"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL101",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["triko", "tenisky", "batoh", "taska", "kabat"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL102",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["sala", "nausnice", "sortky", "saty", "svetr"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL103",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["saty", "rukavice", "sukne", "svetr", "vesta"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL104",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["rukavice", "triko", "lodicky", "kravata", "rolak"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL105",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kufr", "triko", "klobouk", "kalhoty", "kabelka"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL106",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kravata", "kosile", "lodicky", "kabat", "naramek"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL107",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["pantofle", "hodinky", "holinky", "triko", "kosile"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL108",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["batoh", "baret", "pantofle", "oblek", "vesta"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL109",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["lodicky", "rolak", "rukavice", "triko", "kufr"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL110",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["nausnice", "hodinky", "motylek", "mikina", "naramek"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL111",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["batoh", "vesta", "baret", "prsten", "pantofle"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL112",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level1",
+		"sound": "N_zac",
+		"sequence": ["nausnice", "tenisky", "nahrdelnik", "mikina", "naramek"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP101",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["beh", "palka", "plavani", "pistalka", "brusle"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP102",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["puk", "brana", "plavani", "fotbal", "pohar2"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP103",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["lyzovani", "krasobrusleni", "karate", "kos", "puk"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP104",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["kos", "helma", "raketa", "gol", "hokej"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP105",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["brusle", "beh", "raketa", "brana", "lukostrelba"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP106",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["balet", "pohar2", "plavani", "box", "basketbal"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP107",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["puk", "helma", "mice", "box", "medaile"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP108",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "F_zac",
+		"sequence": ["fotbal", "fanousek", "golf", "helma", "vitez"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP109",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["rukavice2", "raketa", "skore", "rozhodci", "pohar2"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP110",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "G_zac",
+		"sequence": ["joga", "gymnastika", "golf", "gol", "hriste"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP111",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["stadion", "serm", "skore", "snowboard", "cyklistika"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP112",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["lukostrelba", "lanovka", "krasobrusleni", "rozhodci", "lyzovani"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP113",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["volejbal", "balet", "vzpirani", "vybaveni", "vitez"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP114",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["stadion", "cinka", "hriste", "serm", "svihadlo"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP115",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["brusle", "hokej", "tenis", "trener", "fotbal"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE101",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["vitr", "vanoce", "duha", "velikonoce", "hvezdy"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE102",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["zemetreseni", "zatmeni", "slunce", "tsunami", "sucho"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE103",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["meteorit", "rampouch", "mrak", "mlha", "mesic"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE104",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "D_zac",
+		"sequence": ["hvezdy", "duha", "dest", "vitr", "prazdniny"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE105",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["bourka", "povoden", "duha", "podzim", "blesk"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE106",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["mlha", "ohnostroj", "hvezdy", "halloween", "snehulak"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE107",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["dest", "tornado", "vitr", "tsunami", "pozar"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE108",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["zima", "sucho", "zemetreseni", "soustava", "zatmeni"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE109",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["snehulak", "zima", "soustava", "snih", "mesic"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE110",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["uplnek", "podzim", "pozar", "povoden", "prazdniny"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB101",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["budka", "bomba", "darek", "globus", "drakX"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB102",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["hrabe", "balkon", "delo", "bryle", "bankaX"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB103",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "D_zac",
+		"sequence": ["dinosaurus", "drakX", "globus", "darek", "delo"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB104",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kytice", "kniha", "kava2", "darek", "hrabe"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB105",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kocarek", "kytara", "koste", "led", "kolej"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB106",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["kaktus", "lak", "drak", "drak", "konev"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB107",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["kolej", "lak", "led", "robot", "luk"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB108",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["nakup", "musle", "mic2", "moped", "zamek2"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB109",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "M_zac",
+		"sequence": ["naboj", "bomba", "origami", "mydlo", "masle"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB110",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "N_zac",
+		"sequence": ["nakup", "mic2", "bryle", "nehet2", "naboj"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB111",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "O_zac",
+		"sequence": ["mydlo", "ohryzek", "obchod", "kolej", "sedlo"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB112",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "O_zac",
+		"sequence": ["origami", "zavoj", "okap", "orezavatko", "pila"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB113",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["pradlo", "bryle", "popel", "pisek", "pila"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB114",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["bomba", "pravitko", "pytel", "penize", "popel"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB115",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["dinosaurus", "pocitac", "budka", "pastelky", "pohar3"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB116",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "R_zac",
+		"sequence": ["robot", "luk", "drak", "rucnik", "retez"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB117",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["slzy", "slunecnik", "zapalky", "vystava", "cirkus"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB118",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["zahon", "susak", "sedlo", "zamek2", "sesit"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB119",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "T_zac",
+		"sequence": ["darek", "vidle", "tuzka", "delo", "telefon"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB120",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["vystava", "viko", "fotak", "drak", "vytah"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB121",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["vychod", "vidle", "darek", "budka", "fotak"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB122",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "Z_zac",
+		"sequence": ["zamek2", "zapalky", "zavoj", "zinka", "zahon"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB123",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "Ž_zac",
+		"sequence": ["zebrik", "zezlo", "zahon", "retez", "zinka"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB124",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "J_zac",
+		"sequence": ["lak", "naboj", "luk", "kolej", "jed"],
+		"correct_indices": [4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB125",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "G_zac",
+		"sequence": ["klic", "drakX", "globus", "bryle", "kytara"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB126",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["hadice", "destnik", "kladivo", "klic", "chobot"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL101",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "B_zac",
+		"sequence": ["pekarna", "bazen", "banka", "ucebna", "posilovna"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL102",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "V_zac",
+		"sequence": ["vezeni", "farma", "divadlo", "kavarna", "veterina"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL103",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "S_zac",
+		"sequence": ["sklad", "stavba", "posilovna", "konzert", "atelier"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL104",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["krejcovstvi", "kuchyne", "letiste", "kancelar", "kadernictvi"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL105",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "Š_zac",
+		"sequence": ["letiste", "stavba", "hristeX", "skola", "satna"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL106",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["knihovna2", "hotel1", "kluziste", "tovarna", "klub"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL107",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "P_zac",
+		"sequence": ["banka", "posilovna", "pradelna", "pekarna", "park"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL108",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["konzert", "kavarna", "kino", "skola", "farma"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL109",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["hotel1", "obchod2", "divadlo", "hvezdarna", "hristeX"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL110",
+		"topic": "místa",
+		"set": "places",
+		"level": "level1",
+		"sound": "L_zac",
+		"sequence": ["jidelna", "farma", "nemocnice", "letiste", "sklad"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM201",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["zada", "brada", "palec", "hlava", "rameno"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM202",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["prso", "rameno", "chodidlo", "oko", "ruka"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM203",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["krk", "vrasky", "zub", "kotnik", "jazyk"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM204",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["chodidlo", "mozek", "loket", "nehet", "kostra"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM205",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["ruka", "vousy", "chodidlo", "bricho", "vousy"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM206",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["zub", "hlava", "rty", "ucho", "jazyk"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM207",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["bricho", "plice", "vrasky", "vlasy", "vousy"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM208",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["mozek", "koleno", "ukazovacek", "nehet", "zadek"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM209",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["dlan", "jizva", "noha", "ruka", "knir"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM210",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "Í_kon",
+		"sequence": ["oboci", "brada", "chodidlo", "nehet", "tetovani"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM211",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["zub", "pest", "zada", "nehet", "mozek"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM212",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["ukazovacek", "plice", "mozek", "palec", "rameno"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1201",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["los1", "koza1", "zirafa1", "liska1", "krava1"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1202",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["velbloud1", "veverka1", "zebra1", "nosorozec1", "ovce1"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1203",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["prase1", "zajic1", "jezevec1", "nosorozec1", "ovce1"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1204",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level2",
+		"sound": "C_kon",
+		"sequence": ["ovce1", "jezevec1", "los1", "nosorozec1", "zajic1"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1205",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level2",
+		"sound": "N_kon",
+		"sequence": ["bobr1", "kun1", "jelen1", "slon1", "medved1"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1206",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level2",
+		"sound": "D_kon",
+		"sequence": ["vlk1", "lemur1", "papousek1", "medved1", "velbloud1"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1207",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["prase1", "bobr1", "krava1", "tygr1", "zralok1"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1208",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level2",
+		"sound": "CH_kon",
+		"sequence": ["los1", "medved1", "hroch1", "zirafa1", "velbloud1"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2201",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["kun2", "zralok2", "papousek2", "kralik2", "mys2"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2202",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["meduza2", "kure2", "sova2", "kocka2", "zralok2"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2203",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["zelva2", "kosatka2", "slepice2", "kralik2", "zirafa2"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2204",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["slepice2", "kure2", "pes2", "meduza2", "zelva2"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2205",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level2",
+		"sound": "L_kon",
+		"sequence": ["zelva2", "zralok2", "motyl2", "buvol2", "lev2"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2206",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level2",
+		"sound": "S_kon",
+		"sequence": ["sova2", "pstros2", "meduza2", "kosatka2", "pes2"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3201",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["zelva3", "lachtan3", "zizala3", "pav3", "zaba3"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3202",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["zirafa3", "vazka3", "snek3", "veverka3", "zralok3"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3203",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["kocka3", "krokodyl3", "racek3", "vydra3", "mroz3"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3204",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["racek3", "snek3", "brouk3", "veverka3", "zralok3"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3205",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level2",
+		"sound": "V_kon",
+		"sequence": ["kohout3", "medved3", "lev3", "pav3", "zelva3"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3206",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level2",
+		"sound": "Ž_kon",
+		"sequence": ["zralok3", "mroz3", "kohout3", "zaba3", "zizala3"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3207",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["racek3", "kocka3", "pav3", "koala3", "mroz3"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4201",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["jesterka4", "husa4", "had4", "housenka4", "hroch4"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4202",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "N_kon",
+		"sequence": ["kun4", "krokodyl4", "jelen4", "krab4", "klokan4"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4203",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["labut4", "koza4", "koala4", "kachna4", "prase4"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4204",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["netopyr4", "pstros4", "ryba4", "osel4", "tygr4"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4205",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["zralok4", "veverka4", "vlk4", "jezek4", "kohout4"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4206",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["velbloud4", "tucnak4", "kralik4", "osel4", "snek4"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4207",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "S_kon",
+		"sequence": ["pes4", "mys4", "pstros4", "husa4", "simpanz4"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4208",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "C_kon",
+		"sequence": ["simpanz4", "nosorozec4", "pes4", "mravenec4", "slepice4"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4209",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["tucnak4", "moucha4", "krava4", "sova4", "vazka4"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4210",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "L_kon",
+		"sequence": ["orel4", "netopyr4", "motyl4", "osel4", "krokodyl4"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4211",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["jezek4", "chameleon4", "jelen4", "prase4", "ovce4"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4212",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "N_kon",
+		"sequence": ["chameleon4", "delfin4", "kachna4", "ryba4", "slon4"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4213",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level2",
+		"sound": "D_kon",
+		"sequence": ["cap4", "had4", "velbloud4", "medved4", "krab4"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1201",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["zmrzlina", "okurka", "limetka", "avokado", "limonada"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1202",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "N_kon",
+		"sequence": ["dyne", "citron", "sendvic", "meloun", "tresne"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1203",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["kava", "meloun", "rajcata", "polevka", "voda"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1204",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["tresne", "dyne", "rajcata", "cibule", "vejce"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1205",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["paprika", "rohlik", "ryba5", "ananas", "jahoda"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1206",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["tresne", "dort", "voda", "limetka", "syr"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1207",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["olivy", "bonbony", "syr", "jednohubky", "bylinky"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1208",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "J_kon",
+		"sequence": ["jahoda", "jednohubky", "rajcata", "olej", "vejce"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1209",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["voda", "vino", "avokado", "rohlik", "olivy"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1210",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["dort", "syr", "paprika", "rohlik", "cesnek"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2201",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["vejce2", "hranolky", "rizoto", "palacinky", "bramburky"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2202",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["houska", "svacina", "sunka", "vafle", "nanuk"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2203",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["babovka", "parek", "salat", "rolada", "pizza"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2204",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["nudle", "kureX", "vejce2", "vafle", "olej2"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2205",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["olej2", "parek", "hamburger", "pohar", "syr2"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2206",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["nanuk", "syr2", "susenky", "spagety", "nudle"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2207",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["kolac", "mleko", "hranolky", "pohar", "rizoto"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2208",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["parek", "palacinky", "nanuk", "kolac", "sunka"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE201",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "N_kon",
+		"sequence": ["hrozno", "meloun2", "banan", "zampion2", "citron2"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE202",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["salat2", "angrest", "svestka", "grapefruit", "kvetak"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE203",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["mango", "banan", "jahoda2", "ananas2", "mandarinka"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE204",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["cuketa", "pomeranc", "redkvicky", "hruska", "salat2"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE205",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["okurka2", "ostruzina", "rukola", "petrzel", "paprika2"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE206",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["mango", "svestka", "repa", "hrasek", "tresne2"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE207",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["brokolice", "cibule2", "kukurice", "rajce", "zeli"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE208",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["maliny", "kiwi2", "brokolice", "brambory", "boruvky"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE209",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "V_kon",
+		"sequence": ["kvetak", "mrkev", "broskev", "redkvicky", "citron2"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE210",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["svestka", "cuketa", "cesnek2", "hrasek", "broskev"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE211",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["kvetak", "petrzel", "lilek", "porek", "angrest"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE212",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["brokolice", "jablko", "hrozno", "citron2", "mango"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE201",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["lod", "letadlo", "kolo", "balon", "auto"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE202",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["ambulance", "znaceni", "kabriolet", "policie", "limuzina"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE203",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "N_kon",
+		"sequence": ["limuzina", "kamion", "volant", "balon", "tank"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE204",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["vzducholod", "kabriolet", "volant", "lod", "letadlo"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE205",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["limuzina", "vlak", "zastavka", "lod", "motorka"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE206",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "Ď_kon",
+		"sequence": ["nakladak", "semafor", "kuzel", "vzducholod", "lod"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE207",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["vlak", "nakladak", "vrtulnik", "motorka", "tank"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE208",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["kuzel", "kabriolet", "parkoviste", "semafor", "tramvaj"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE209",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level2",
+		"sound": "S_kon",
+		"sequence": ["taxi", "znaceni", "trolejbus", "semafor", "zastavka"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC201",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["kouzelnik", "cisnik", "kuryr", "delnik", "zahradnik"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC202",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["fotograf", "kosmonaut", "baletka", "pilot", "ucitelka"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC203",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level2",
+		"sound": "Ř_kon",
+		"sequence": ["kuchar", "pekarka", "hasic", "knez", "malirka"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC204",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level2",
+		"sound": "J_kon",
+		"sequence": ["pilot", "zlodej", "kuryr", "baletka", "delnik"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC205",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["knez", "letuska", "malirka", "lekarka", "kuchar"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC206",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["policista", "pekarka", "houslistka", "fotbalista", "soudkyne"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC207",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["ucitelka", "kosmonaut", "uklizecka", "fotbalista", "pekarka"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA201",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["hrad", "cert1", "trol", "poklad", "pirat1"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA202",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["kouzelnik2", "upir1", "cert1", "drak", "hrad"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA203",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["trpaslik", "viking", "sasek", "kral", "carodejka"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA204",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["princezna", "kral", "carodejka", "vila", "kralovna"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA205",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["cert1", "kocar", "rytir", "upir1", "trol"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA206",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level2",
+		"sound": "Č_kon",
+		"sequence": ["rytir", "kocar", "cert1", "vez", "mec"],
+		"correct_indices": [4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA207",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level2",
+		"sound": "D_kon",
+		"sequence": ["pirat1", "poklad", "hrad", "drak", "cert1"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA208",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level2",
+		"sound": "C_kon",
+		"sequence": ["mec", "vez", "myslivec", "rozcesti", "jednorozec"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA209",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["pavouk", "cert2", "kocka5", "vlkodlak", "strasak"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA210",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["netopyr5", "upir2", "cert2", "lektvar", "kotel"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA211",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["superhrdinove", "zombie", "mumie", "dyne3", "carodejnice"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA212",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level2",
+		"sound": "L_kon",
+		"sequence": ["pirat2", "netopyr5", "havran", "kotel", "cert2"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA213",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["maska", "lucerna", "smrtka", "lebka", "dyne3"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA214",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["hrob", "duch", "cert2", "pirat2", "rakev"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA215",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level2",
+		"sound": "B_kon",
+		"sequence": ["lebka", "havran", "hrob", "zombie", "carodejnice"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA216",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["kocka5", "havran", "superhrdinove", "kriz", "kostra2"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP201",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["gol", "brana", "pohar2", "fotbal", "trener"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP202",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["plavani", "gymnastika", "cyklistika", "raketa", "karate"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP203",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["lanovka", "volejbal", "palka", "joga", "brana"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP204",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "Š_kon",
+		"sequence": ["kos", "hriste", "serm", "rozhodci", "cinka"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP205",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "J_kon",
+		"sequence": ["gol", "joga", "hokej", "volejbal", "kuzelky"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP206",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "Í_kon",
+		"sequence": ["vitez", "lyzovani", "krasobrusleni", "plavani", "vybaveni"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP207",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["hriste", "skore", "golf", "karate", "brusle"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP208",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "L_kon",
+		"sequence": ["gol", "basketbal", "volejbal", "fotbal", "kuzelky"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP209",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["tenis", "fanousek", "gymnastika", "puk", "stadion"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP210",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["cinka", "helma", "pistalka", "svihadlo", "lukostrelba"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE201",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["tornado", "duha", "jaro", "sucho", "zima"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE202",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["velikonoce", "zima", "kometa", "bourka", "slunce"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE203",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["snehulak", "uplnek", "blesk", "meteorit", "mrak"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE204",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["kometa", "velikonoce", "slunce", "jaro", "vanoce"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE205",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "Í_kon",
+		"sequence": ["zatmeni", "prazdniny", "tsunami", "hvezdy", "zemetreseni"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE206",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "C_kon",
+		"sequence": ["blesk", "mesic", "zima", "ledovec", "slunce"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE207",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["mlha", "duha", "sucho", "soustava", "jaro"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE208",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["pozar", "vitr", "ohnostroj", "jaro", "mrak"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE209",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "H_kon",
+		"sequence": ["rampouch", "uplnek", "blesk", "snih", "duha"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE210",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["tornado", "zemetreseni", "prazdniny", "zima", "hvezdy"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU202",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["zaclona", "kreslo", "lednice", "vaza", "pracka"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU203",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["tabule", "vana", "pohovka", "palanda", "sprcha"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU204",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["umyvadlo", "police", "okno", "kreslo", "gramofon"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU205",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["koberec", "zidle", "vaza", "televize", "zrcadlo"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU206",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["zaclona", "tabule", "lednice", "postel", "police"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU207",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["reproduktor", "vesak", "budik", "zachod", "kavovar2"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU208",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["mikrovlnka", "stolicka", "knihovna", "lampa", "umyvadlo"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU209",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["hracky", "police", "knihovna", "lednice", "hodiny"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU210",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["polstar", "stul", "lustr", "reproduktor", "postel"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU211",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level2",
+		"sound": "L_kon",
+		"sequence": ["stul", "postel", "tabule", "obraz", "lustr"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI201",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["struhadlo", "chnapka", "miska", "varecka", "konvice"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI202",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["naberacka", "vaha", "salek", "zastera", "skrabka"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI203",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["pribor", "hrnek", "valecek", "sekacek", "salek"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI204",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["talir", "zastera", "pribor", "mixer", "kavovar"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI205",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["hrnek", "prkynko", "pribor", "struhadlo", "kavovar"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI206",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level2",
+		"sound": "Ž_kon",
+		"sequence": ["talir", "nuz", "toastovac", "nuzky", "dzban"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL201",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["nahrdelnik", "kufr", "rolak", "tenisky", "motylek"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL202",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["sukne", "pantofle", "kosile", "nausnice", "rukavice"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL203",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["triko", "motylek", "kufr", "prsten", "svetr"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL204",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["kalhoty", "holinky", "kosile", "saty", "tenisky"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL205",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["vesta", "kravata", "kabat", "mikina", "naramek"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL206",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["kabat", "taska", "sala", "oblek", "kabelka"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL207",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["sortky", "batoh", "triko", "klobouk", "oblek"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL208",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["oblek", "tenisky", "naramek", "klobouk", "sortky"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL209",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["lodicky", "sortky", "nausnice", "motylek", "hodinky"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL210",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["oblek", "baret", "vesta", "kabat", "batoh"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB201",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["bryle", "vidle", "penize", "kytice", "zezlo"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB202",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "Ě_kon",
+		"sequence": ["retez", "hrabe", "koste", "kytice", "penize"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB203",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["rucnik", "darek", "lek", "obchod", "lak"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB204",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["budka", "ohryzek", "nakup", "kocarek", "nocnik"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB205",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "S_kon",
+		"sequence": ["retez", "kaktus", "slzy", "cirkus", "globus"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB206",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["pila", "susak", "kava2", "pravitko", "lopata"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB207",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["budka", "bomba", "origami", "naboj", "tuzka"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB208",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "Y_kon",
+		"sequence": ["pastelky", "zapalky", "ohryzek", "slzy", "pytel"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB209",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["delo", "obal", "mydlo", "pravitko", "robot"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB210",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "Č_kon",
+		"sequence": ["mic2", "klic", "pocitac", "slunecnik", "rucnik"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB211",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "N_kon",
+		"sequence": ["konev", "telefon", "zahon", "zamek2", "balkon"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB212",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["nehet2", "chobot", "robot", "sesit", "vychod"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB213",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["pohar3", "pytel", "drak", "popel", "kocarek"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB214",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "L_kon",
+		"sequence": ["popel", "zavoj", "klic", "obal", "vidle"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB215",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "J_kon",
+		"sequence": ["pohar3", "kolej", "zavoj", "naboj", "moped"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB216",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "D_kon",
+		"sequence": ["obchod", "jed", "robot", "okap", "dalekohled"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB217",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["vytah", "vystava", "kytara", "bankaX", "zinka"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB218",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["fotak", "led", "pisek", "drakX", "kava2"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB219",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["kladivo", "moped", "zezlo", "viko", "sedlo"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB220",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["sluchatka", "viko", "kniha", "mydlo", "susak"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB221",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["slunecnik", "susak", "moped", "destnik", "jed"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB222",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["zamek2", "chobot", "zebrik", "luk", "dalekohled"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB223",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["popel", "orezavatko", "pradlo", "dalekohled", "telefon"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB224",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "E_kon",
+		"sequence": ["masle", "delo", "musle", "sedlo", "hadice"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB225",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "D_kon",
+		"sequence": ["moped", "vychod", "led", "chobot", "destnik"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL201",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["tovarna", "ucebna", "pradelna", "atelier", "kino"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL202",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "Í_kon",
+		"sequence": ["nemocnice", "hristeX", "vezeni", "krejcovstvi", "kadernictvi"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL203",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "D_kon",
+		"sequence": ["obchod2", "letiste", "divadlo", "atelier", "sklad"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL204",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["kavarna", "knihovna2", "satna", "hvezdarna", "divadlo"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL205",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "Ě_kon",
+		"sequence": ["letiste", "hristeX", "nemocnice", "kluziste", "kuchyne"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL206",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["banka", "park", "veterina", "stavba", "pekarna"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL207",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["nemocnice", "obchod2", "kino", "skola", "divadlo"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL208",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "R_kon",
+		"sequence": ["hotel1", "kancelar", "farma", "atelier", "park"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL209",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "L_kon",
+		"sequence": ["divadlo", "atelier", "letiste", "skola", "hotel1"],
+		"correct_indices": [4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL210",
+		"topic": "místa",
+		"set": "places",
+		"level": "level2",
+		"sound": "A_kon",
+		"sequence": ["vezeni", "posilovna", "jidelna", "skola", "obchod2"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM301",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "Á_upr",
+		"sequence": ["zada", "vrasky", "jizva", "oboci", "kostra"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM302",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "D_upr",
+		"sequence": ["rty", "kotnik", "chodidlo", "oboci", "zadek"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM303",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["dlan", "brada", "noha", "ruka", "hlava"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM304",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "Z_upr",
+		"sequence": ["vlasy", "zada", "jizva", "jazyk", "ukazovacek"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM305",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["ucho", "oboci", "tetovani", "prso", "nos"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM306",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["mozek", "kostra", "vlasy", "vousy", "jazyk"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM307",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["rty", "brada", "kostra", "chodidlo", "kotnik"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM308",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["krk", "loket", "jazyk", "nehet", "kotnik"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM309",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "H_upr",
+		"sequence": ["ucho", "noha", "zada", "rty", "nehet"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM310",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["ruka", "nos", "vlasy", "zub", "hlava"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM311",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["vousy", "chodidlo", "ruka", "zub", "tetovani"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FHM312",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["vrasky", "plice", "koleno", "kostra", "palec"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1301",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["veverka1", "zirafa1", "slon1", "prase1", "vlk1"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1302",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["zebra1", "medved1", "velbloud1", "bobr1", "zajic1"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1303",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["jezevec1", "krava1", "hroch1", "zirafa1", "los1"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1304",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["velbloud1", "slon1", "prase1", "koza1", "nosorozec1"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1305",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["zirafa1", "kun1", "koza1", "nosorozec1", "bobr1"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1306",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["jelen1", "hroch1", "zebra1", "lev1", "prase1"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1307",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["ovce1", "veverka1", "lev1", "jezevec1", "zirafa1"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1308",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["prase1", "los1", "koza1", "jezevec1", "nosorozec1"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1309",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["velbloud1", "veverka1", "medved1", "lev1", "jezevec1"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA1310",
+		"topic": "zvířata",
+		"set": "animals1",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["velbloud1", "vlk1", "zajic1", "jelen1", "lev1"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2301",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["papousek2", "zirafa2", "pstros2", "pes2", "sova2"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2302",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level3",
+		"sound": "P_upr",
+		"sequence": ["pstros2", "slepice2", "papousek2", "lemur2", "kosatka2"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2303",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["lev2", "kralik2", "buvol2", "zelva2", "sova2"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2304",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["rejnok2", "kralik2", "zelva2", "zirafa2", "zralok2"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2305",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["kocka2", "zralok2", "zirafa2", "kosatka2", "buvol2"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2306",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["motyl2", "lev2", "mys2", "pes2", "buvol2"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA2307",
+		"topic": "zvířata",
+		"set": "animals2",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["motyl2", "kosatka2", "pstros2", "meduza2", "kralik2"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3301",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["snek3", "zizala3", "pes3", "lev3", "veverka3"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3302",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "Á_upr",
+		"sequence": ["zaba3", "brouk3", "pav3", "kohout3", "vazka3"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3303",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["koala3", "zizala3", "zirafa3", "zralok3", "vydra3"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3304",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "D_upr",
+		"sequence": ["medved3", "zaba3", "kohout3", "vydra3", "lachtan3"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3305",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["kohout3", "krokodyl3", "vazka3", "mroz3", "zralok3"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3306",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["kocka3", "racek3", "mroz3", "zirafa3", "koala3"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3307",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["zelva3", "brouk3", "zaba3", "veverka3", "pav3"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3308",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["zelva3", "brouk3", "mroz3", "vydra3", "zralok3"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3309",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["medved3", "krokodyl3", "brouk3", "veverka3", "kohout3"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA3310",
+		"topic": "zvířata",
+		"set": "animals3",
+		"level": "level3",
+		"sound": "CH_upr",
+		"sequence": ["krokodyl3", "kohout3", "lachtan3", "vydra3", "zaba3"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4301",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "Á_upr",
+		"sequence": ["zebra4", "krava4", "kralik4", "zaba4", "tucnak4"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4302",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "CH_upr",
+		"sequence": ["moucha4", "chameleon4", "kachna4", "kohout4", "motyl4"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4303",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "Š_upr",
+		"sequence": ["nosorozec4", "snek4", "liska4", "pstros4", "jesterka4"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4304",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "Ž _upr",
+		"sequence": ["vazka4", "tucnak4", "jezek4", "nosorozec4", "zaba4"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4305",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["ryba4", "velbloud4", "labut4", "zebra4", "krab4"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4306",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["velbloud4", "orel4", "nosorozec4", "slon4", "pstros4"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4307",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["moucha4", "husa4", "delfin4", "housenka4", "chobotnice4"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4308",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["chobotnice4", "pstros4", "medved4", "motyl4", "netopyr4"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4309",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "P_upr",
+		"sequence": ["ryba4", "simpanz4", "slepice4", "cap4", "chobotnice4"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4310",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["lev4", "snek4", "osel4", "labut4", "veverka4"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4311",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["klokan4", "tygr4", "pstros4", "liska4", "vlk4"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4312",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["krokodyl4", "delfin4", "jesterka4", "jelen4", "chameleon4"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4313",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "F_upr",
+		"sequence": ["krava4", "ovce4", "zirafa4", "delfin4", "medved4"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4314",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["prase4", "zralok4", "jesterka4", "had4", "koala4"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4315",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["slon4", "kohout4", "hroch4", "zelva4", "krokodyl4"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4316",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["housenka4", "koza4", "husa4", "osel4", "zebra4"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4317",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "Č_upr",
+		"sequence": ["vazka4", "tucnak4", "cap4", "liska4", "kocka4"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FA4318",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level3",
+		"sound": "H_upr",
+		"sequence": ["moucha4", "tygr4", "hroch4", "kohout4", "medved4"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1301",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["dort", "voda", "limonada", "vino", "okurka"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1302",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["voda", "bonbony", "paprika", "cibule", "ryba5"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1303",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "Á_upr",
+		"sequence": ["dyne", "kava", "avokado", "limetka", "paprika"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1304",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "N_upr",
+		"sequence": ["limonada", "sendvic", "limetka", "bylinky", "cesnek"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1305",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["meloun", "vejce", "olej", "bonbony", "bylinky"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1306",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["bylinky", "citron", "dort", "cibule", "okurka"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1307",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["zmrzlina", "syr", "polevka", "paprika", "kava"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1308",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "J_upr",
+		"sequence": ["rohlik", "jahoda", "rajcata", "vejce", "olivy"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1309",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "H_upr",
+		"sequence": ["rohlik", "okurka", "jednohubky", "avokado", "dort"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1310",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["cesnek", "avokado", "zmrzlina", "rohlik", "olej"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF1311",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level3",
+		"sound": "N_upr",
+		"sequence": ["ananas", "meloun", "citron", "cibule", "bonbony"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2301",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["nudle", "bramburky", "palacinky", "babovka", "rolada"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2302",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["kolac", "olej2", "rizoto", "salat", "rolada"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2303",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["hranolky", "susenky", "parek", "med", "nudle"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2304",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["olej2", "kureX", "rizoto", "babovka", "mleko"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2305",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level3",
+		"sound": "Č_upr",
+		"sequence": ["kolac", "palacinky", "susenky", "kureX", "svacina"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2306",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level3",
+		"sound": "N_upr",
+		"sequence": ["hranolky", "sunka", "vejce2", "nanuk", "hamburger"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FF2307",
+		"topic": "jídlo",
+		"set": "food2",
+		"level": "level3",
+		"sound": "M_upr",
+		"sequence": ["med", "susenky", "nanuk", "hamburger", "bramburky"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE301",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["cuketa", "rukola", "redkvicky", "mrkev", "salat2"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE302",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "M_upr",
+		"sequence": ["ostruzina", "zampion2", "mandarinka", "pomeranc", "brambory"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE303",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["okurka2", "angrest", "porek", "salat2", "meloun2"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE304",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["pomeranc", "cibule2", "kukurice", "okurka2", "ostruzina"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE305",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["mrkev", "jablko", "maliny", "lilek", "meloun2"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE306",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["jablko", "rybiz", "brambory", "cibule2", "repa"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE307",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["zeli", "tresne2", "mandarinka", "ananas2", "svestka"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE308",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "N_upr",
+		"sequence": ["citron2", "zampion2", "banan", "cesnek2", "mango"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE309",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["brokolice", "petrzel", "svestka", "kvetak", "jahoda2"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE310",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "Š_upr",
+		"sequence": ["ostruzina", "hrasek", "hruska", "rajce", "tresne2"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE311",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["pomeranc", "cuketa", "okurka2", "maliny", "kukurice"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE312",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["ananas2", "tresne2", "cesnek2", "svestka", "broskev"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE313",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["mrkev", "kvetak", "cuketa", "rukola", "cibule2"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE314",
+		"topic": "ovoce a zelenina",
+		"set": "fruitandvegetables",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["citron2", "cibule2", "paprika2", "kukurice", "petrzel"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE301",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["ambulance", "vzducholod", "auto", "volant", "zastavka"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE302",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["tramvaj", "vrtulnik", "vlak", "volant", "nakladak"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE303",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "M_upr",
+		"sequence": ["znaceni", "kamion", "tramvaj", "balon", "semafor"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE304",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["vrtulnik", "zastavka", "kolo", "lod", "motorka"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE305",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "I_upr",
+		"sequence": ["policie", "kolo", "kamion", "taxi", "kabriolet"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE306",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["nakladak", "semafor", "vzducholod", "letadlo", "motorka"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE307",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["zastavka", "parkoviste", "kabriolet", "vrtulnik", "limuzina"],
+		"correct_indices": [3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE308",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "J_upr",
+		"sequence": ["tramvaj", "kabriolet", "trolejbus", "parkoviste", "balon"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE309",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["letadlo", "motorka", "policie", "vlak", "kabriolet"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FVE310",
+		"topic": "doprava",
+		"set": "vehicles1",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["tank", "vrtulnik", "volant", "vzducholod", "limuzina"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC301",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["letuska", "kuryr", "zahradnik", "knez", "kosmonaut"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC302",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "I_upr",
+		"sequence": ["malirka", "policista", "hasic", "houslistka", "zlodej"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC303",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["malirka", "soudkyne", "houslistka", "zahradnik", "pilot"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC304",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["soudkyne", "cisnik", "kosmonaut", "pekarka", "delnik"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC305",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["reporterka", "baletka", "pilot", "zlodej", "kouzelnik"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC306",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "Ň_upr",
+		"sequence": ["kosmonaut", "knez", "lekarka", "cisnik", "delnik"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC307",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "D_upr",
+		"sequence": ["uklizecka", "baletka", "zahradnik", "ucitelka", "soudkyne"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC308",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["baletka", "letuska", "zlodej", "policista", "uklizecka"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC309",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["lekarka", "ucitelka", "pekarka", "fotbalista", "kouzelnik"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC310",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "Ř_upr",
+		"sequence": ["lekarka", "ucitelka", "pekarka", "uklizecka", "malirka"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOC311",
+		"topic": "povolání",
+		"set": "occupation",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["uklizecka", "fotograf", "zahradnik", "kosmonaut", "reporterka"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP301",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["vybaveni", "fanousek", "raketa", "lyzovani", "golf"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP302",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["raketa", "basketbal", "hokej", "fanousek", "balet"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP303",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["golf", "cyklistika", "vzpirani", "helma", "palka"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP304",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "I_upr",
+		"sequence": ["gol", "stadion", "brusle", "svihadlo", "krasobrusleni"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP305",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["vybaveni", "rukavice2", "plavani", "volejbal", "lanovka"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP306",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["svihadlo", "gymnastika", "hriste", "stadion", "kuzelky"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP307",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "N_upr",
+		"sequence": ["stadion", "helma", "cinka", "lanovka", "gymnastika"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP308",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "D_upr",
+		"sequence": ["dres", "stadion", "medaile", "basketbal", "karate"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP309",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["balet", "fotbal", "beh", "lukostrelba", "golf"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP310",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["lanovka", "kos", "brana", "puk", "krasobrusleni"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP311",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["pistalka", "rozhodci", "box", "karate", "serm"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP312",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["fanousek", "brusle", "puk", "beh", "krasobrusleni"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP313",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "H_upr",
+		"sequence": ["pohar2", "raketa", "svihadlo", "serm", "hokej"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP314",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["pistalka", "rukavice2", "rozhodci", "lukostrelba", "vybaveni"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FSP315",
+		"topic": "sport",
+		"set": "sports1",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["hriste", "vybaveni", "dres", "trener", "gymnastika"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL301",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["klobouk", "triko", "kabat", "rolak", "kabelka"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL302",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["rukavice", "oblek", "vesta", "motylek", "kravata"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL303",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["oblek", "sukne", "triko", "taska", "prsten"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL304",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["baret", "motylek", "batoh", "saty", "sortky"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL305",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "Š_upr",
+		"sequence": ["kosile", "lodicky", "nausnice", "taska", "sala"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL306",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["kufr", "nausnice", "pantofle", "klobouk", "kalhoty"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL307",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "I_upr",
+		"sequence": ["holinky", "lodicky", "mikina", "prsten", "motylek"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL308",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["sala", "naramek", "rolak", "oblek", "hodinky"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL309",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["kabelka", "nahrdelnik", "svetr", "pantofle", "triko"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL310",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["svetr", "vesta", "nausnice", "holinky", "prsten"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL311",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["vesta", "hodinky", "naramek", "rukavice", "mikina"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FCL312",
+		"topic": "oblečení",
+		"set": "clothes1",
+		"level": "level3",
+		"sound": "I_upr",
+		"sequence": ["batoh", "kosile", "hodinky", "pantofle", "triko"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA301",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["trol", "kralovna", "viking", "jednorozec", "carodejka"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA302",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["koruna", "rozcesti", "princezna", "drak", "mec"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA303",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["pirat1", "vila", "jednorozec", "myslivec", "kouzelnik2"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA304",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "Š_upr",
+		"sequence": ["rytir", "sasek", "vez", "kocar", "carodejka"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA305",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "P_upr",
+		"sequence": ["carodejka", "trpaslik", "hrad", "pirat1", "upir1"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA306",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["myslivec", "drak", "trol", "kralovna", "vila"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA307",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["hrad", "cert1", "drak", "poklad", "kouzelnik2"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA308",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "Č_upr",
+		"sequence": ["carodejka", "sasek", "rytir", "mec", "kocar"],
+		"correct_indices": [4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA309",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["cert1", "kouzelnik2", "poklad", "upir1", "koruna"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA310",
+		"topic": "pohádky",
+		"set": "fairytales1",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["trpaslik", "princezna", "myslivec", "hrad", "drak"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA311",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["hrob", "pirat2", "rakev", "havran", "smrtka"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA312",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["kotel", "pirat2", "lektvar", "smrtka", "kostra2"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA313",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["smrtka", "maska", "lucerna", "kostra2", "strasak"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA314",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["cert2", "lucerna", "carodejnice", "kocka5", "dyne3"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA315",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["pavouk", "vlkodlak", "hrob", "netopyr5", "duch"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA316",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["kostra2", "superhrdinove", "strasak", "upir2", "havran"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA317",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "M_upr",
+		"sequence": ["carodejnice", "lebka", "zombie", "mumie", "lucerna"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA318",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["havran", "lektvar", "lebka", "pavouk", "rakev"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA319",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["carodejnice", "upir2", "duch", "lektvar", "kostra2"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFA320",
+		"topic": "strašidla",
+		"set": "fairytales2",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["lebka", "superhrdinove", "hrob", "pavouk", "kriz"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI301",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level3",
+		"sound": "N_upr",
+		"sequence": ["hrnec", "sklenice", "nuzky", "panev", "struhadlo"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI302",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["kavovar", "toastovac", "prkynko", "valecek", "konvice"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI303",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["chnapka", "skrabka", "pribor", "talir", "dzban"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI304",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["salek", "naberacka", "nuz", "talir", "miska"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI305",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["mixer", "konvice", "miska", "struhadlo", "toastovac"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI306",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["struhadlo", "kavovar", "sekacek", "prkynko", "pribor"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI307",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level3",
+		"sound": "Č_upr",
+		"sequence": ["sekacek", "valecek", "nuzky", "pribor", "varecka"],
+		"correct_indices": [0, 1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FKI308",
+		"topic": "kuchyně",
+		"set": "kitchen",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["talir", "sklenice", "valecek", "varecka", "vaha"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU301",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "I_upr",
+		"sequence": ["hracky", "stolicka", "budik", "police", "hodiny"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU302",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["police", "zaclona", "zidle", "lednice", "sprcha"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU303",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["stolicka", "gramofon", "pohovka", "kreslo", "mikrovlnka"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU304",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["obraz", "police", "kreslo", "koberec", "umyvadlo"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU305",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["hodiny", "umyvadlo", "gramofon", "mikrovlnka", "reproduktor"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU306",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "CH_upr",
+		"sequence": ["sprcha", "pohovka", "knihovna", "hracky", "zachod"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU307",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "D_upr",
+		"sequence": ["tabule", "reproduktor", "zrcadlo", "obraz", "lampa"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU308",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "Ď_upr",
+		"sequence": ["lednice", "knihovna", "hodiny", "palanda", "budik"],
+		"correct_indices": [2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU309",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "M_upr",
+		"sequence": ["palanda", "lampa", "vana", "gramofon", "okno"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU310",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["sprcha", "lustr", "reproduktor", "koberec", "kavovar2"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU311",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["zrcadlo", "palanda", "hracky", "pracka", "televize"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FFU312",
+		"topic": "nábytek",
+		"set": "furniture",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["lustr", "police", "postel", "obraz", "kreslo"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE301",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["duha", "tornado", "slunce", "bourka", "tsunami"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE302",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["jaro", "vitr", "snehulak", "mrak", "rampouch"],
+		"correct_indices": [0, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE303",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "N_upr",
+		"sequence": ["tornado", "slunce", "vanoce", "kometa", "rampouch"],
+		"correct_indices": [0, 1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE304",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["povoden", "ledovec", "rampouch", "ohnostroj", "jaro"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE305",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "Í_upr",
+		"sequence": ["prazdniny", "snih", "mesic", "dest", "meteorit"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE306",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["soustava", "hvezdy", "velikonoce", "sucho", "ohnostroj"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE307",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "H_upr",
+		"sequence": ["snih", "snehulak", "uplnek", "mlha", "rampouch"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE308",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "D_upr",
+		"sequence": ["povoden", "duha", "prazdniny", "ledovec", "podzim"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE309",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["podzim", "meteorit", "vanoce", "mlha", "soustava"],
+		"correct_indices": [1, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE310",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "M_upr",
+		"sequence": ["podzim", "zima", "zatmeni", "zemetreseni", "prazdniny"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE311",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["duha", "sucho", "uplnek", "slunce", "bourka"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE312",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["uplnek", "mlha", "mrak", "ohnostroj", "vitr"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE313",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["blesk", "jaro", "meteorit", "slunce", "kometa"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FWE314",
+		"topic": "počasí",
+		"set": "weather",
+		"level": "level3",
+		"sound": "Ř_upr",
+		"sequence": ["pozar", "dest", "bourka", "zemetreseni", "snehulak"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB301",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "Š_upr",
+		"sequence": ["zebrik", "musle", "koste", "kocarek", "destnik"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB302",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "N_upr",
+		"sequence": ["konev", "bomba", "slunecnik", "telefon", "zinka"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB303",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "Z_upr",
+		"sequence": ["orezavatko", "slzy", "pisek", "ohryzek", "zamek2"],
+		"correct_indices": [0, 1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB304",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "Á_upr",
+		"sequence": ["kocarek", "fotak", "darek", "vytah", "pohar3"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB305",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["robot", "darek", "ohryzek", "dalekohled", "cirkus"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB306",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "Č_upr",
+		"sequence": ["rucnik", "bankaX", "slunecnik", "pocitac", "kocarek"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB307",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["budka", "kytara", "chobot", "destnik", "kaktus"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB308",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "I_upr",
+		"sequence": ["hadice", "jed", "kytice", "kniha", "bryle"],
+		"correct_indices": [0, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB309",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "P_upr",
+		"sequence": ["lopata", "moped", "naboj", "globus", "nakup"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB310",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "B_upr",
+		"sequence": ["globus", "naboj", "obal", "robot", "pradlo"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB311",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["bomba", "tuzka", "zapalky", "lopata", "kytara"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB312",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "D_upr",
+		"sequence": ["pradlo", "sedlo", "budka", "obchod", "mydlo"],
+		"correct_indices": [0, 1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB313",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "K_upr",
+		"sequence": ["dalekohled", "nehet2", "kaktus", "balkon", "nakup"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB314",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["bryle", "jed", "vidle", "slunecnik", "telefon"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB315",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "Š_upr",
+		"sequence": ["sesit", "orezavatko", "zezlo", "susak", "masle"],
+		"correct_indices": [0, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB316",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "CH_upr",
+		"sequence": ["zahon", "sluchatka", "obchod", "kniha", "vychod"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB317",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "Í_upr",
+		"sequence": ["viko", "penize", "lek", "pravitko", "pocitac"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB318",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "Č_upr",
+		"sequence": ["mic2", "pocitac", "kocarek", "nocnik", "musle"],
+		"correct_indices": [1, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB319",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "V_upr",
+		"sequence": ["zavoj", "konev", "naboj", "darek", "pravitko"],
+		"correct_indices": [0, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB320",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "S_upr",
+		"sequence": ["kaktus", "ohryzek", "pisek", "dinosaurus", "vystava"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB321",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["mydlo", "chobot", "orezavatko", "dalekohled", "zezlo"],
+		"correct_indices": [1, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB322",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "M_upr",
+		"sequence": ["zamek2", "bomba", "konev", "masle", "rucnik"],
+		"correct_indices": [0, 1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB323",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "U_upr",
+		"sequence": ["pravitko", "zapalky", "kocarek", "luk", "pila"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB324",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "H_upr",
+		"sequence": ["obchod", "dalekohled", "zahon", "pohar3", "origami"],
+		"correct_indices": [1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB325",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "Z_upr",
+		"sequence": ["zezlo", "globus", "ohryzek", "retez", "orezavatko"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FOB326",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["darek", "pila", "cirkus", "klic", "kolej"],
+		"correct_indices": [1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL301",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "A_upr",
+		"sequence": ["divadlo", "atelier", "park", "ucebna", "stavba"],
+		"correct_indices": [0, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL302",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "Z_upr",
+		"sequence": ["bazen", "kluziste", "vezeni", "konzert", "posilovna"],
+		"correct_indices": [0, 1, 2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL303",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "CH_upr",
+		"sequence": ["knihovna2", "stavba", "kuchyne", "obchod2", "divadlo"],
+		"correct_indices": [2, 3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL304",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "Á_upr",
+		"sequence": ["jidelna", "tovarna", "kavarna", "pradelna", "pekarna"],
+		"correct_indices": [1, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL305",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "E_upr",
+		"sequence": ["pradelna", "divadlo", "jidelna", "ucebna", "veterina"],
+		"correct_indices": [0, 2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL306",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "O_upr",
+		"sequence": ["posilovna", "nemocnice", "satna", "skola", "knihovna2"],
+		"correct_indices": [0, 1, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL307",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "L_upr",
+		"sequence": ["hotel1", "posilovna", "klub", "krejcovstvi", "sklad"],
+		"correct_indices": [1, 2, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL308",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["satna", "pradelna", "hotel1", "hvezdarna", "sklad"],
+		"correct_indices": [0, 2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL309",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "D_upr",
+		"sequence": ["hotel1", "obchod2", "pradelna", "hvezdarna", "divadlo"],
+		"correct_indices": [2, 3, 4]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FPL310",
+		"topic": "místa",
+		"set": "places",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["atelier", "farma", "park", "kancelar", "sklad"],
+		"correct_indices": [1, 2]
+	}
+]
