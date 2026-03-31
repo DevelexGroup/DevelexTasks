@@ -2,8 +2,23 @@
 	import { GAZE_INPUT_CONFIGS, trackerConfig } from '$lib/stores/tracker';
 	import { isDiagnosisMode } from '$lib/stores/diagnosis';
 	import DiagnosisDialog from '$lib/components/DiagnosisDialog.svelte';
+	import { Switch } from '$lib/components/ui/switch';
+	import { Label } from '$lib/components/ui/label';
+	import { Lock } from '@lucide/svelte';
 
 	let showDialog = $state(false);
+	let visualChecked = $state($isDiagnosisMode);
+
+	function onCheckedChange(checked: boolean) {
+		visualChecked = checked;
+		if (checked) {
+			if (!$isDiagnosisMode) {
+				showDialog = true;
+			}
+		} else {
+			$isDiagnosisMode = false;
+		}
+	}
 </script>
 
 <div class="flex h-screen w-full flex-col items-center justify-center">
@@ -29,36 +44,41 @@
 		</select>
 	</div>
 
+	<div class="mt-8 flex items-center space-x-2">
+		<Switch
+			id="diagnosis-mode"
+			bind:checked={visualChecked}
+			onCheckedChange={onCheckedChange}
+		/>
+		<Label for="diagnosis-mode" class="flex items-center gap-2">
+			Diagnostický režim
+			<Lock class="h-4 w-4" />
+		</Label>
+	</div>
+
+	<!-- separator --> <div class="my-8 h-px w-40 bg-gray-300"></div>
+
 	<button
-		class="mt-8 rounded-md bg-blue-500 px-4 py-2 text-white"
+		class="rounded-md bg-blue-500 px-4 py-2 text-white"
 		onclick={() => window.history.back()}
 	>
 		Zpět
 	</button>
-
-	{#if !$isDiagnosisMode}
-		<button
-			class="mt-4 rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-800 hover:bg-gray-100"
-			onclick={() => (showDialog = true)}
-		>
-			Aktivovat diagnostický režim
-		</button>
-	{:else}
-		<div class="mt-4 flex flex-col items-center gap-2">
-			<p class="text-sm font-medium text-green-600">Diagnostický režim aktivní</p>
-			<button
-				class="rounded-md border border-red-300 bg-white px-4 py-2 text-red-600 hover:bg-red-50"
-				onclick={() => ($isDiagnosisMode = false)}
-			>
-				Deaktivovat diagnostický režim
-			</button>
-		</div>
-	{/if}
 </div>
 
 <DiagnosisDialog
 	open={showDialog}
-	onOpenChange={(v) => (showDialog = v)}
-	onClose={() => (showDialog = false)}
+	onOpenChange={(v) => {
+		showDialog = v;
+		if (!v && !$isDiagnosisMode) {
+			visualChecked = false;
+		}
+	}}
+	onClose={() => {
+		showDialog = false;
+		if (!$isDiagnosisMode) {
+			visualChecked = false;
+		}
+	}}
 	cancelText="Zrušit"
-	/>
+/>
