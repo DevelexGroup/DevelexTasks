@@ -49,8 +49,9 @@
 		validateSymbol={defaultValidateSymbol}
 		validateStage={defaultValidateStage}
 		onCompleted={() => {
-			taskStage.set(TaskStage.End);
+			taskStage.set(TaskStage.Instructions);
 		}}
+		isPractice={true}
 	>
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}

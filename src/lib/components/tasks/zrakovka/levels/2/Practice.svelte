@@ -14,6 +14,7 @@
 	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
 	import { formatZrakovkaRawData, zrakovkaLevelPreset } from '../..';
 	import { getBreakpointValue, scaleResponsiveSize } from '$lib/utils/responsive';
+	import type { ZrakovkaRawDataEntry } from '$lib/components/tasks/zrakovka/zrakovka.types';
 
 	const preset = zrakovkaLevelPreset.find((level) => level.levelID === id)?.practiceContent;
 	const data = preset
@@ -48,8 +49,9 @@
 		validateSymbol={defaultValidateSymbol}
 		validateStage={defaultValidateStage}
 		onCompleted={() => {
-			taskStage.set(TaskStage.End);
+			taskStage.set(TaskStage.Instructions);
 		}}
+		isPractice={true}
 	>
 		{#snippet hintComponent({ state })}
 			{#if state.dataEntry.correct?.length}
