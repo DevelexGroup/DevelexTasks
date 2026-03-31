@@ -1,12 +1,10 @@
 <script lang="ts">
 	import TaskWrapper from '$lib/components/TaskWrapper.svelte';
 	import type { PageProps } from './$types';
-	import { type Component, getContext, onDestroy, onMount } from 'svelte';
+	import { type Component, onDestroy, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { currentTask } from '$lib/stores/task';
-	import { AnalyticsManager } from '$lib/utils/analyticsManager';
-	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 	import { validateAuthStatus } from '$lib/api/auth';
 
 	let { data }: PageProps = $props();
@@ -25,6 +23,9 @@
 		modules[getComponentPath('Practice')]?.()?.then((mod) => mod.default) || null;
 	const instructionsComponentPromise =
 		modules[getComponentPath('Instructions')]?.()?.then((mod) => mod.default) || null;
+
+	const taskPresetProps = data.taskPreset ? { taskPreset: data.taskPreset } : {};
+	const taskRouteQuery = data.mode === 'evaluation' ? '?mode=evaluation' : '';
 
 	onMount(() => {
 		// Sanity check: validate auth status with the server before entering task
@@ -49,7 +50,7 @@
 	<svelte:fragment slot="Task">
 		{#if taskComponentPromise}
 			{#await taskComponentPromise then TaskComponent}
-				<TaskComponent />
+				<TaskComponent {...taskPresetProps} />
 			{:catch error}
 				<p>Error loading Task component: {error.message}</p>
 			{/await}
@@ -59,7 +60,7 @@
 	<svelte:fragment slot="Practice">
 		{#if practiceComponentPromise}
 			{#await practiceComponentPromise then PracticeComponent}
-				<PracticeComponent />
+				<PracticeComponent {...taskPresetProps} />
 			{:catch error}
 				<p>Error loading Practice component: {error.message}</p>
 			{/await}
@@ -76,7 +77,7 @@
 			<div class="absolute bottom-4 left-4">
 				<button
 					class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
-					onclick={() => goto(resolve(`/tasks/${data.task}`))}
+					onclick={() => goto(resolve(`/tasks/${data.task}${taskRouteQuery}`))}
 				>
 					Zpět
 				</button>

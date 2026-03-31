@@ -1,0 +1,137 @@
+﻿{
+	"cibule": [
+		{
+			"levelID": "level1",
+			"label": "Uroven 1",
+			"practiceContent": [
+				{
+					"generate": {
+						"type": ["pismena0"]
+					}
+				}
+			],
+			"content": [
+				{
+					"generate": {
+						"id": "CI1120"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI1429"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI1562"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI1694"
+					}
+				}
+			]
+		},
+		{
+			"levelID": "level2",
+			"label": "Uroven 2",
+			"practiceContent": [
+				{
+					"generate": {
+						"type": ["pismena0"]
+					}
+				}
+			],
+			"content": [
+				{
+					"generate": {
+						"id": "CI1120"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI1429"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI1562"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI1694"
+					}
+				}
+			]
+		},
+		{
+			"levelID": "level3a",
+			"label": "Uroven 3A",
+			"practiceContent": [
+				{
+					"generate": {
+						"type": ["slova1_3sl"]
+					}
+				}
+			],
+			"content": [
+				{
+					"generate": {
+						"id": "CI3130"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI3136"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI3158"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI3179"
+					}
+				}
+			]
+		},
+		{
+			"levelID": "level3b",
+			"label": "Uroven 3B",
+			"practiceContent": [
+				{
+					"generate": {
+						"type": ["slova1_3sl"]
+					}
+				}
+			],
+			"content": [
+				{
+					"generate": {
+						"id": "CI3130"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI3136"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI3158"
+					}
+				},
+				{
+					"generate": {
+						"id": "CI3179"
+					}
+				}
+			]
+		}
+	]
+}
+

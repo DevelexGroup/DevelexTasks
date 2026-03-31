@@ -5,8 +5,11 @@ type LevelMetadata = {
 	label?: string;
 };
 
-export const load: PageLoad = async ({ params }) => {
+type RouteMode = 'evaluation' | 'reeducation';
+
+export const load: PageLoad = async ({ params, url }) => {
 	const { task: taskSlug } = params;
+	const mode: RouteMode = url.searchParams.get('mode') === 'evaluation' ? 'evaluation' : 'reeducation';
 
 	const taskModules = import.meta.glob<TaskMetadata>('/src/lib/components/tasks/*/index.ts', {
 		eager: true
@@ -52,6 +55,7 @@ export const load: PageLoad = async ({ params }) => {
 
 	return {
 		levels,
+		mode,
 		task: {
 			slug: taskSlug,
 			...task

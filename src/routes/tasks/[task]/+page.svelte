@@ -39,13 +39,24 @@
 			icon: 'material-symbols-light:military-tech-rounded'
 		}
 	];
+
+	const modeQuery = data.mode === 'evaluation' ? '?mode=evaluation' : '';
 </script>
 
 <DefaultLayout>
 	<div>
 		<button
 			class="inline-flex cursor-pointer items-center space-x-3 rounded-md bg-gray-300 px-4 py-2 text-sm text-gray-800 hover:bg-gray-400"
-			onclick={() => goto(resolve(data.task.slug == 'dyslex' ? `/` : '/reeducation'))}
+			onclick={() =>
+				goto(
+					resolve(
+						data.mode === 'evaluation'
+							? '/evaluation'
+							: data.task.slug == 'dyslex'
+								? '/'
+								: '/reeducation'
+					)
+				)}
 		>
 			<Icon icon="mdi:arrow-left" class="h-5 w-5" />
 
@@ -74,7 +85,7 @@
 
 				<button
 					class="cursor-pointer rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-gray-50 hover:bg-blue-700"
-					onclick={() => goto(resolve(`/tasks/${data.task.slug}/${level.slug}`))}
+					onclick={() => goto(resolve(`/tasks/${data.task.slug}/${level.slug}${modeQuery}`))}
 				>
 					Start
 				</button>

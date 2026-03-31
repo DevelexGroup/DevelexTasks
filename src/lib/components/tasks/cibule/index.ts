@@ -147,6 +147,76 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		]
 	}
 ];
+export const cibuleEvaluationLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
+	{
+		levelID: 'level1',
+		label: 'Úroveň 1',
+		practiceContent: [
+			{
+				generate: {
+					type: [CibuleDataType.Pismena0]
+				}
+			}
+		],
+		content: [
+			{ generate: { id: 'CI1120' } },
+			{ generate: { id: 'CI1429' } },
+			{ generate: { id: 'CI1562' } },
+			{ generate: { id: 'CI1694' } }
+		]
+	},
+	{
+		levelID: 'level2',
+		label: 'Úroveň 2',
+		practiceContent: [
+			{
+				generate: {
+					type: [CibuleDataType.Pismena0]
+				}
+			}
+		],
+		content: [
+			{ generate: { id: 'CI1120' } },
+			{ generate: { id: 'CI1429' } },
+			{ generate: { id: 'CI1562' } },
+			{ generate: { id: 'CI1694' } }
+		]
+	},
+	{
+		levelID: 'level3a',
+		label: 'Úroveň 3A',
+		practiceContent: [
+			{
+				generate: {
+					type: [CibuleDataType.Slova1Sl3]
+				}
+			}
+		],
+		content: [
+			{ generate: { id: 'CI3130' } },
+			{ generate: { id: 'CI3136' } },
+			{ generate: { id: 'CI3158' } },
+			{ generate: { id: 'CI3179' } }
+		]
+	},
+	{
+		levelID: 'level3b',
+		label: 'Úroveň 3B',
+		practiceContent: [
+			{
+				generate: {
+					type: [CibuleDataType.Slova1Sl3]
+				}
+			}
+		],
+		content: [
+			{ generate: { id: 'CI3130' } },
+			{ generate: { id: 'CI3136' } },
+			{ generate: { id: 'CI3158' } },
+			{ generate: { id: 'CI3179' } }
+		]
+	}
+];
 // #endregion
 
 // #region Scoring

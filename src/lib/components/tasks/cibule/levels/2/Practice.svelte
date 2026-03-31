@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
-	import { TaskStage } from '$lib/types/task.types';
+	import { TaskStage, type TrackTaskPreset } from '$lib/types/task.types';
 	import { id, rawData } from '$lib/components/tasks/cibule/levels/2/index';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
 	import {
@@ -10,11 +10,17 @@
 		getWordAudioSource
 	} from '$lib/utils/trackLevelUtils';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import { cibuleLevelPreset, formatCibuleRawData } from '$lib/components/tasks/cibule';
+	import { formatCibuleRawData, cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 
-	const preset = cibuleLevelPreset.find((level) => level.levelID === id)?.practiceContent;
-	const data = preset ? getLevelData<CibuleRawDataEntry>(preset, rawData, formatCibuleRawData) : null;
+	interface Props {
+		taskPreset?: TrackTaskPreset<CibuleRawDataEntry>
+	}
+
+	let { taskPreset = cibuleLevelPreset }: Props = $props();
+
+	const levelContentPreset = taskPreset?.find((level) => level.levelID === id)?.practiceContent;
+	const data = levelContentPreset ? getLevelData<CibuleRawDataEntry>(levelContentPreset, rawData, formatCibuleRawData) : null;
 </script>
 
 {#if data}
