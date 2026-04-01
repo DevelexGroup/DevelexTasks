@@ -4,4 +4,4 @@ export const id = 'pseudotext';
 
 export const label = 'Úloha 3: Čtení pseudotextu';
 
-export const instructionVideo = resolveAny('/video/tasks/dyslex/pseudotext.mp4');
+export const instructionVideo = resolveAny('/video/tasks/dyslex/pseudotext.webm');

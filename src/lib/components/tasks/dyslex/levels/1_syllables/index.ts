@@ -4,4 +4,4 @@ export const id = 'syllables';
 
 export const label = 'Úloha 1: Čtení slabik';
 
-export const instructionVideo = resolveAny('/video/tasks/dyslex/syllables.mp4');
+export const instructionVideo = resolveAny('/video/tasks/dyslex/syllables.webm');

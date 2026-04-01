@@ -4,4 +4,4 @@ export const id = 'meantext';
 
 export const label = 'Úloha 2: Čtení souvislého textu';
 
-export const instructionVideo = resolveAny('/video/tasks/dyslex/meantext.mp4');
+export const instructionVideo = resolveAny('/video/tasks/dyslex/meantext.webm');
