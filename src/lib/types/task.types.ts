@@ -92,6 +92,7 @@ export interface TrackTaskPresetEntryDefinition extends TrackTaskDataEntry {
 }
 export interface TrackTaskPresetEntryGenerator<TRawDataEntry extends RawDataEntry> {
 	generate: PartialArrayable<TRawDataEntry>;
+	excludeTags?: string[];
 }
 
 export type TrackTaskPreset<TRawDataEntry extends RawDataEntry> = TaskData<

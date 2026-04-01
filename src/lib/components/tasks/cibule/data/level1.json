@@ -1805,7 +1805,8 @@
 		"max_word_length": 6,
 		"n_background": 1,
 		"search_string": "dddddd dddddd bddd dbddd bdddbd ddd",
-		"target_positions": [14, 20, 25, 29]
+		"target_positions": [14, 20, 25, 29],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -3885,7 +3886,8 @@
 		"max_word_length": 6,
 		"n_background": 1,
 		"search_string": "nmm mmmm mmmmn mm nm mnmmm mn mm mmmmm",
-		"target_positions": [0, 13, 18, 22, 28]
+		"target_positions": [0, 13, 18, 22, 28],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -5485,7 +5487,8 @@
 		"max_word_length": 6,
 		"n_background": 4,
 		"search_string": "pzaziů iů i pzůů iaůp zpppů ůazzůp ů z",
-		"target_positions": [2, 18, 29]
+		"target_positions": [2, 18, 29],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -7741,7 +7744,8 @@
 		"max_word_length": 6,
 		"n_background": 2,
 		"search_string": "ocoeo o coc coo ec oo e ooooo c ceooc e ",
-		"target_positions": [3, 16, 22, 33, 38]
+		"target_positions": [3, 16, 22, 33, 38],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -9005,7 +9009,8 @@
 		"max_word_length": 3,
 		"n_background": 1,
 		"search_string": "q q q gu q qq qqq qgu qq guq q qgu qq q qq qq ",
-		"target_positions": [21, 12, 3, 16]
+		"target_positions": [21, 12, 3, 16],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -9085,7 +9090,8 @@
 		"max_word_length": 3,
 		"n_background": 1,
 		"search_string": "gu q qqq gu qqq qgu qq qq q qq qqq q qq qq q ",
-		"target_positions": [12, 6, 0]
+		"target_positions": [12, 6, 0],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -10637,7 +10643,8 @@
 		"max_word_length": 3,
 		"n_background": 3,
 		"search_string": "dcd d c ddo cd do dddo dd doc c c d d dcdo d ",
-		"target_positions": [27, 14, 18, 10, 6]
+		"target_positions": [27, 14, 18, 10, 6],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -11069,7 +11076,8 @@
 		"max_word_length": 3,
 		"n_background": 3,
 		"search_string": "bb btah b tah b tah ab ai aa bbb aa btah b ",
-		"target_positions": [3, 26, 11, 7]
+		"target_positions": [3, 26, 11, 7],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",

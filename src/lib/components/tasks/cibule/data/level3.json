@@ -11,7 +11,8 @@
 		"include_spaces": false,
 		"n_background": 1,
 		"search_string": "wwwwlewwwwwwwwwtišwwwtěwwwwwww",
-		"target_positions": [4, 15, 21]
+		"target_positions": [4, 15, 21],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -25,7 +26,8 @@
 		"include_spaces": false,
 		"n_background": 1,
 		"search_string": "yyyyyyyteyyyyleyyyyyyyyyyfonyy",
-		"target_positions": [7, 13, 25]
+		"target_positions": [7, 13, 25],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -39,7 +41,8 @@
 		"include_spaces": false,
 		"n_background": 1,
 		"search_string": "bbbbpříbbbbbrobbbbbbbdabbbbbbb",
-		"target_positions": [4, 12, 21]
+		"target_positions": [4, 12, 21],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -53,7 +56,8 @@
 		"include_spaces": false,
 		"n_background": 1,
 		"search_string": "ttttttradttttttttnittttttttcet",
-		"target_positions": [6, 17, 27]
+		"target_positions": [6, 17, 27],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -1411,7 +1415,8 @@
 		"include_spaces": false,
 		"n_background": 1,
 		"search_string": "wwwwtišwwwwwwwwlewwwwtěwwwwwww",
-		"target_positions": [15, 4, 21]
+		"target_positions": [15, 4, 21],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -1425,7 +1430,8 @@
 		"include_spaces": false,
 		"n_background": 1,
 		"search_string": "gggčičggkagggggggkoggggggggggg",
-		"target_positions": [17, 3, 8]
+		"target_positions": [17, 3, 8],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -1439,7 +1445,8 @@
 		"include_spaces": false,
 		"n_background": 1,
 		"search_string": "ttttttcetttttttttradtttttttnit",
-		"target_positions": [17, 27, 6]
+		"target_positions": [17, 27, 6],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",
@@ -1453,7 +1460,8 @@
 		"include_spaces": false,
 		"n_background": 1,
 		"search_string": "qqqqqqkoqqqqqqqqrecqqqqqqbeqqq",
-		"target_positions": [6, 25, 16]
+		"target_positions": [6, 25, 16],
+		"tags": ["evaluation"]
 	},
 	{
 		"task_id": "cibule",

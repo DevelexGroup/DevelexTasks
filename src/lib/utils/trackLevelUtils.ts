@@ -91,7 +91,8 @@ export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
 	presetEntry: TrackTaskPresetEntryGenerator<TRawDataEntry>,
 	rawData: TRawDataEntry[],
 	formatRawData: (rawData: TRawDataEntry) => TrackTaskDataEntry,
-	excludeIds?: Set<string>
+	excludeIds?: Set<string>,
+	excludeTags?: Set<string>
 ): TrackTaskDataEntry {
 	// For each key in the presetEntry filter out the raw data entries that match the elements in the preset
 	let filteredData = rawData;
@@ -107,6 +108,14 @@ export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
 	// Exclude already used IDs
 	if (excludeIds) {
 		filteredData = filteredData.filter((entry) => !excludeIds.has(entry.id));
+	}
+
+	// Exclude entries with certain tags
+	if (excludeTags) {
+		filteredData = filteredData.filter((entry) => {
+			const entryTags = entry.tags || [];
+			return !entryTags.some(tag => excludeTags.has(tag));
+		});
 	}
 
 	// Randomly select one entry from the filtered data
@@ -127,6 +136,9 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 	const content: TrackTaskDataEntry[] = [];
 	const usedIds = new Set<string>();
 
+	// By default, exclude entries tagged with "evaluation" from being generated, these shouldn't appear in randomly generated content
+	const excludedTags = new Set<string>(["evaluation"]);
+
 	for (const item of preset) {
 		if (item.generate !== undefined) {
 			// Generator
@@ -135,7 +147,8 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 				generator,
 				rawData,
 				formatRawData,
-				usedIds
+				usedIds,
+				excludedTags
 			);
 			usedIds.add(generatedEntry.id);
 			content.push(generatedEntry);
