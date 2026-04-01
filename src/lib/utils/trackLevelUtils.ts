@@ -128,7 +128,7 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 	const usedIds = new Set<string>();
 
 	for (const item of preset) {
-		if (item.generate !== null) {
+		if (item.generate !== undefined) {
 			// Generator
 			const generator = item as TrackTaskPresetEntryGenerator<TRawDataEntry>;
 			const generatedEntry = generateDataEntry<TRawDataEntry>(
@@ -141,7 +141,8 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 			content.push(generatedEntry);
 		} else {
 			// Definition
-			const data = item as TrackTaskDataEntry;
+			// @ts-expect-error item should have structure of TRawDataEntry, but TS can't verify it
+			const data = formatRawData(item as TRawDataEntry);
 			const sequenceFlat = Array.isArray(data.sequence[0])
 				? (data.sequence as string[][]).flat()
 				: (data.sequence as string[]);
