@@ -15,7 +15,7 @@ export const description = 'Example description';
 // #region Presets
 export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 	{
-		levelID: 'level1',
+		levelID: '1',
 		label: 'Úroveň 1',
 		practiceContent: [
 			{
@@ -48,7 +48,7 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level2',
+		levelID: '2',
 		label: 'Úroveň 2',
 		practiceContent: [
 			{
@@ -81,7 +81,7 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level3a',
+		levelID: '3a',
 		label: 'Úroveň 3A',
 		practiceContent: [
 			{
@@ -114,7 +114,7 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level3b',
+		levelID: '3b',
 		label: 'Úroveň 3B',
 		practiceContent: [
 			{
@@ -149,7 +149,7 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 ];
 export const cibuleEvaluationLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 	{
-		levelID: 'level1',
+		levelID: '1',
 		label: 'Úroveň 1',
 		practiceContent: [
 			{
@@ -166,7 +166,7 @@ export const cibuleEvaluationLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = 
 		]
 	},
 	{
-		levelID: 'level2',
+		levelID: '2',
 		label: 'Úroveň 2',
 		practiceContent: [
 			{
@@ -183,7 +183,7 @@ export const cibuleEvaluationLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = 
 		]
 	},
 	{
-		levelID: 'level3a',
+		levelID: '3a',
 		label: 'Úroveň 3A',
 		practiceContent: [
 			{
@@ -200,7 +200,7 @@ export const cibuleEvaluationLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = 
 		]
 	},
 	{
-		levelID: 'level3b',
+		levelID: '3b',
 		label: 'Úroveň 3B',
 		practiceContent: [
 			{

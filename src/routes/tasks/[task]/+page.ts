@@ -1,5 +1,6 @@
-import type { TaskMetadata } from '$lib/types/task.types';
+import type { TaskMetadata, TrackTaskPresetUnknown } from '$lib/types/task.types';
 import type { PageLoad } from './$types';
+import evaluationTaskPresets from '$lib/data/evaluation-task-presets.json';
 
 type LevelMetadata = {
 	label?: string;
@@ -9,7 +10,14 @@ type RouteMode = 'evaluation' | 'reeducation';
 
 export const load: PageLoad = async ({ params, url }) => {
 	const { task: taskSlug } = params;
-	const mode: RouteMode = url.searchParams.get('mode') === 'evaluation' ? 'evaluation' : 'reeducation';
+	const mode: RouteMode =
+		url.searchParams.get('mode') === 'evaluation' ? 'evaluation' : 'reeducation';
+
+	const taskPresetMap = evaluationTaskPresets as Record<string, TrackTaskPresetUnknown>;
+	const evaluationTaskPreset = mode === 'evaluation' ? (taskPresetMap[params.task] ?? null) : null;
+	const evaluationLabelByLevelSlug = new Map(
+		(evaluationTaskPreset ?? []).map((preset) => [preset.levelID, preset.label])
+	);
 
 	const taskModules = import.meta.glob<TaskMetadata>('/src/lib/components/tasks/*/index.ts', {
 		eager: true
@@ -47,10 +55,17 @@ export const load: PageLoad = async ({ params, url }) => {
 
 			return {
 				slug,
-				label: levelMetadata?.label ?? `Level: ${slug}`
+				label:
+					evaluationLabelByLevelSlug.get(slug) ?? levelMetadata?.label ?? `Level: ${slug}`
 			};
 		})
 		.filter((level): level is { slug: string; label: string } => level !== null)
+		.filter((level) => {
+			return (
+				evaluationTaskPreset == null ||
+				evaluationTaskPreset.some((preset) => preset.levelID === level.slug)
+			);
+		})
 		.sort((a, b) => a.slug.localeCompare(b.slug, undefined, { numeric: true }));
 
 	return {

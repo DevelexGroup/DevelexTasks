@@ -98,6 +98,10 @@ export type TrackTaskPreset<TRawDataEntry extends RawDataEntry> = TaskData<
 	TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<TRawDataEntry>
 >;
 
+export type TrackTaskPresetUnknown = TaskData<
+	TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<RawDataEntry>
+>;
+
 // Components
 
 export interface ExtraComponent {

@@ -1,8 +1,8 @@
 ﻿{
 	"cibule": [
 		{
-			"levelID": "level1",
-			"label": "Uroven 1",
+			"levelID": "1",
+			"label": "Úroveň 1",
 			"practiceContent": [
 				{ "generate": { "type": ["pismena0"] } }
 			],
@@ -14,8 +14,8 @@
 			]
 		},
 		{
-			"levelID": "level2",
-			"label": "Uroven 2",
+			"levelID": "2",
+			"label": "Úroveň 2",
 			"practiceContent": [
 				{	"generate": {	"type": ["pismena0"] } }
 			],
@@ -27,21 +27,19 @@
 			]
 		},
 		{
-			"levelID": "level3a",
-			"label": "Uroven 3A",
-			"practiceContent": [
-				{	"generate": {	"type": ["slova1_3sl"] } }
-			],
+			"levelID": "3a",
+			"label": "Úroveň 3A",
+			"practiceContent": [{ "generate": { "type": ["slova1_3sl"] } }],
 			"content": [
-				{	"generate": {	"id": "CI3101" } },
-				{	"generate": {	"id": "CI3102" } },
-				{	"generate": {	"id": "CI3103" } },
-				{	"generate": {	"id": "CI3104" } }
+				{ "generate": { "id": "CI3101" } },
+				{ "generate": { "id": "CI3102" } },
+				{ "generate": { "id": "CI3103" } },
+				{ "generate": { "id": "CI3104" } }
 			]
 		},
 		{
-			"levelID": "level3b",
-			"label": "Uroven 3B",
+			"levelID": "3b",
+			"label": "Úroveň 3B",
 			"practiceContent": [
 				{	"generate": { "type": ["slova1_3sl"] } }
 			],

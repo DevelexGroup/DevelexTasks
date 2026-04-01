@@ -16,7 +16,7 @@ export const description = 'Example description';
 // #region Presets
 export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = [
 	{
-		levelID: 'level1',
+		levelID: '1',
 		label: 'Úroveň 1',
 		practiceContent: [{ generate: { level: 'level1' } }],
 		content: [
@@ -28,7 +28,7 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 		]
 	},
 	{
-		levelID: 'level2',
+		levelID: '2',
 		label: 'Úroveň 2',
 		practiceContent: [{ generate: { level: 'level2' } }],
 		content: [
@@ -40,7 +40,7 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 		]
 	},
 	{
-		levelID: 'level3',
+		levelID: '3',
 		label: 'Úroveň 3',
 		practiceContent: [{ generate: { level: 'level3' } }],
 		content: [
@@ -52,7 +52,7 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 		]
 	},
 	{
-		levelID: 'level4',
+		levelID: '4',
 		label: 'Úroveň 4',
 		practiceContent: [{ generate: { level: 'level4' } }],
 		content: [
@@ -64,7 +64,7 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 		]
 	},
 	{
-		levelID: 'level5',
+		levelID: '5',
 		label: 'Úroveň 5',
 		practiceContent: [{ generate: { level: 'level5' } }],
 		content: [

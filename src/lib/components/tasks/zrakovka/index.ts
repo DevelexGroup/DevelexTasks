@@ -7,7 +7,7 @@ export const description = 'Example description';
 
 export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 	{
-		levelID: 'level1',
+		levelID: '1',
 		label: 'Úroveň 1',
 		practiceContent: [
 			{
@@ -80,7 +80,7 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level2',
+		levelID: '2',
 		label: 'Úroveň 2',
 		practiceContent: [
 			{
@@ -153,7 +153,7 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level3',
+		levelID: '3',
 		label: 'Úroveň 3',
 		practiceContent: [
 			{
@@ -226,7 +226,7 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level4',
+		levelID: '4',
 		label: 'Úroveň 4',
 		practiceContent: [
 			{
@@ -299,7 +299,7 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level5',
+		levelID: '5',
 		label: 'Úroveň 5',
 		practiceContent: [
 			{
@@ -372,7 +372,7 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level6',
+		levelID: '6',
 		label: 'Úroveň 6',
 		practiceContent: [
 			{

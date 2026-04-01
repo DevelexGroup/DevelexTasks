@@ -3,9 +3,7 @@ import evaluationTaskPresets from '$lib/data/evaluation-task-presets.json';
 
 type RouteMode = 'evaluation' | 'reeducation';
 
-type EvaluationTaskPresetMap = Record<string, unknown>;
-
-const taskPresetMap = evaluationTaskPresets as EvaluationTaskPresetMap;
+const taskPresetMap = evaluationTaskPresets as Record<string, unknown>;
 
 export const load: PageLoad = ({ params, url }) => {
 	const mode: RouteMode = url.searchParams.get('mode') === 'evaluation' ? 'evaluation' : 'reeducation';

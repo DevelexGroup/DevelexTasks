@@ -15,7 +15,7 @@ export const description = 'Example description';
 // #region Presets
 export const slabikyLevelPreset: TrackTaskPreset<SlabikyRawDataEntry> = [
 	{
-		levelID: 'level1',
+		levelID: '1',
 		label: 'Úroveň 1',
 		practiceContent: [{ generate: { type: 'practice' } }],
 		content: [
@@ -34,7 +34,7 @@ export const slabikyLevelPreset: TrackTaskPreset<SlabikyRawDataEntry> = [
 		]
 	},
 	{
-		levelID: 'level2',
+		levelID: '2',
 		label: 'Úroveň 2',
 		practiceContent: [{ generate: { type: 'practice' } }],
 		content: [
