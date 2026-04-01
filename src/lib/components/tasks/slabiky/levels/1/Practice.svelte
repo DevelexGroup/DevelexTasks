@@ -1,6 +1,6 @@
 ﻿<script lang="ts">
 	import { taskStage } from '$lib/stores/task';
-	import { TaskStage } from '$lib/types/task.types';
+	import { TaskStage, type TrackTaskPreset } from '$lib/types/task.types';
 	import { id, rawData } from '$lib/components/tasks/slabiky/levels/1';
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
@@ -10,8 +10,14 @@
 	import type { SlabikyRawDataEntry } from '$lib/components/tasks/slabiky/slabiky.types';
 	import { formatSlabikyRawData } from '$lib/components/tasks/slabiky';
 
-	const preset = slabikyLevelPreset.find((level) => level.levelID === id)?.practiceContent;
-	const data = preset ? getLevelData<SlabikyRawDataEntry>(preset, rawData, formatSlabikyRawData) : null;
+	interface Props {
+		taskPreset?: TrackTaskPreset<SlabikyRawDataEntry>
+	}
+
+	let { taskPreset = slabikyLevelPreset }: Props = $props();
+
+	const levelPreset = taskPreset.find((level) => level.levelID === id)?.practiceContent;
+	const data = levelPreset ? getLevelData<SlabikyRawDataEntry>(levelPreset, rawData, formatSlabikyRawData) : null;
 </script>
 
 {#if data}

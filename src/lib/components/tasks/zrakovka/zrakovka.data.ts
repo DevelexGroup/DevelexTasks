@@ -6,10 +6,10 @@ import ZrakovkaLevel4Data from '$lib/components/tasks/zrakovka/data/level4.json'
 import ZrakovkaLevel5Data from '$lib/components/tasks/zrakovka/data/level5.json';
 import ZrakovkaLevel6Data from '$lib/components/tasks/zrakovka/data/level6.json';
 
-export const zrakovkaZacvikData = ZrakovkaZacvikData;
-export const zrakovkaLevel1Data = ZrakovkaLevel1Data;
-export const zrakovkaLevel2Data = ZrakovkaLevel2Data;
-export const zrakovkaLevel3Data = ZrakovkaLevel3Data;
-export const zrakovkaLevel4Data = ZrakovkaLevel4Data;
-export const zrakovkaLevel5Data = ZrakovkaLevel5Data;
-export const zrakovkaLevel6Data = ZrakovkaLevel6Data;
+export const zrakovkaZacvikData: ZrakovkaRawDataEntry[] = ZrakovkaZacvikData;
+export const zrakovkaLevel1Data: ZrakovkaRawDataEntry[] = ZrakovkaLevel1Data;
+export const zrakovkaLevel2Data: ZrakovkaRawDataEntry[] = ZrakovkaLevel2Data;
+export const zrakovkaLevel3Data: ZrakovkaRawDataEntry[] = ZrakovkaLevel3Data;
+export const zrakovkaLevel4Data: ZrakovkaRawDataEntry[] = ZrakovkaLevel4Data;
+export const zrakovkaLevel5Data: ZrakovkaRawDataEntry[] = ZrakovkaLevel5Data;
+export const zrakovkaLevel6Data: ZrakovkaRawDataEntry[] = ZrakovkaLevel6Data;

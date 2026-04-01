@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
-	import { type TaskMistake, TaskStage, type TrackTaskState } from '$lib/types/task.types';
+	import { type TaskMistake, TaskStage, type TrackTaskPreset, type TrackTaskState } from '$lib/types/task.types';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { getLevelData } from '$lib/utils/trackLevelUtils';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
@@ -27,11 +27,12 @@
 		id: string;
 		rawData: FonologieTaskRawDataEntry[];
 		useCategories?: boolean;
+		taskPreset?: TrackTaskPreset<FonologieTaskRawDataEntry>;
 	}
 
-	let { isPractice = false, id, rawData, useCategories = false }: Props = $props();
+	let { isPractice = false, id, rawData, useCategories = false, taskPreset = fonologieLevelPreset }: Props = $props();
 
-	const levelPreset = fonologieLevelPreset.find((level) => level.levelID === id);
+	const levelPreset = taskPreset?.find((level) => level.levelID === id);
 	const preset = isPractice ? levelPreset?.practiceContent : levelPreset?.content;
 
 	// Select one random topic (only used when useCategories is true)

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
-	import { TaskStage } from '$lib/types/task.types';
+	import { TaskStage, type TrackTaskPreset } from '$lib/types/task.types';
 	import { id } from '$lib/components/tasks/zrakovka/levels/2/index';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import { zrakovkaZacvikData } from '$lib/components/tasks/zrakovka/zrakovka.data';
@@ -16,9 +16,15 @@
 	import { getBreakpointValue, scaleResponsiveSize } from '$lib/utils/responsive';
 	import type { ZrakovkaRawDataEntry } from '$lib/components/tasks/zrakovka/zrakovka.types';
 
-	const preset = zrakovkaLevelPreset.find((level) => level.levelID === id)?.practiceContent;
-	const data = preset
-		? getLevelData<ZrakovkaRawDataEntry>(preset, zrakovkaZacvikData, formatZrakovkaRawData)
+	interface Props {
+		taskPreset?: TrackTaskPreset<ZrakovkaRawDataEntry>
+	}
+
+	let { taskPreset = zrakovkaLevelPreset }: Props = $props();
+
+	const levelPreset = taskPreset.find((level) => level.levelID === id)?.practiceContent;
+	const data = levelPreset
+		? getLevelData<ZrakovkaRawDataEntry>(levelPreset, zrakovkaZacvikData, formatZrakovkaRawData)
 		: null;
 
 	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
