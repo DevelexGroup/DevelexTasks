@@ -136,6 +136,7 @@ export function formatSlabikyRawData(rawData: SlabikyRawDataEntry): TrackTaskDat
 		for (let i = 0; i < rowCount; i++) {
 			const start = i * itemsPerRow;
 			const end = start + itemsPerRow;
+			// @ts-expect-error fullSequence is string[]
 			sequence.push(fullSequence.slice(start, end));
 		}
 	} else {
@@ -151,7 +152,7 @@ export function formatSlabikyRawData(rawData: SlabikyRawDataEntry): TrackTaskDat
 		id: rawData.id.toString(),
 		sequence,
 		correct,
-		sound: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase(),
+		sound: correct?.length === 1 ? correct?.[0].toLowerCase() : correct?.join('').toLowerCase(),
 		correctCount
 	};
 }

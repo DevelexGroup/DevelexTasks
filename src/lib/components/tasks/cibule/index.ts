@@ -293,7 +293,7 @@ export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackTaskDataE
 		id: rawData.id.toString(),
 		sequence,
 		correct,
-		sound: correct?.length === 1 ? correct?.[0].toUpperCase() : correct?.join('').toUpperCase(),
+		sound: correct?.length === 1 ? correct?.[0].toLowerCase() : correct?.join('').toLowerCase(),
 		correctCount
 	};
 }
