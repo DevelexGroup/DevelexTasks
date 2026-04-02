@@ -81,8 +81,8 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		]
 	},
 	{
-		levelID: '3a',
-		label: 'Úroveň 3A',
+		levelID: '3',
+		label: 'Úroveň 3',
 		practiceContent: [
 			{
 				generate: {
@@ -114,8 +114,8 @@ export const cibuleLevelPreset: TrackTaskPreset<CibuleRawDataEntry> = [
 		]
 	},
 	{
-		levelID: '3b',
-		label: 'Úroveň 3B',
+		levelID: '4',
+		label: 'Úroveň 4',
 		practiceContent: [
 			{
 				generate: {

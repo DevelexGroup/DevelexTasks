@@ -5,7 +5,7 @@ import { getFlattenedSymbols } from '$lib/utils/trackLevelUtils';
 import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
 import { cibuleL3RawData } from '$lib/components/tasks/cibule/cibule.data';
 
-export const id = '3b';
+export const id = '4';
 export const rawData: CibuleRawDataEntry[] = cibuleL3RawData;
 export const instructionVideo = resolveAny('/video/cibule-instrukce-03b.webm');
 

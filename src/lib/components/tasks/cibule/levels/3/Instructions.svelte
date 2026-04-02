@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import { taskStage } from '$lib/stores/task';
 	import { TaskStage } from '$lib/types/task.types';
-	import { instructionVideo } from '$lib/components/tasks/cibule/levels/3a/index';
+	import { instructionVideo } from '$lib/components/tasks/cibule/levels/3/index';
 </script>
 
 <div class="flex h-screen w-full items-center justify-center">

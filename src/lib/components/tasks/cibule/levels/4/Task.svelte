@@ -8,10 +8,10 @@
 		validateSymbol,
 		validateStage,
 		isSyllableFrameVisible
-	} from '$lib/components/tasks/cibule/levels/3b/index';
+	} from '$lib/components/tasks/cibule/levels/4/index';
 	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import { formatCibuleRawData, cibuleLevelPreset } from '$lib/components/tasks/cibule';
+	import { calculateFluencyScore, formatCibuleRawData, cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import { getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
@@ -32,7 +32,7 @@
 		excludeTags
 	 }: Props = $props();
 
-	const levelContentPreset = taskPreset?.find((level) => level.levelID === id)?.practiceContent;
+	const levelContentPreset = taskPreset?.find((level) => level.levelID === id)?.content;
 	const data = levelContentPreset ? getLevelData<CibuleRawDataEntry>(levelContentPreset, rawData, formatCibuleRawData, excludeTags) : null;
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
@@ -66,9 +66,10 @@
 		{data}
 		{validateSymbol}
 		validateStage={validateStageWithSpace}
-		isPractice={true}
+		stopLoggingValidationCheck={validateStage}
+		{calculateFluencyScore}
 		onCompleted={() => {
-			taskStage.set(TaskStage.Instructions);
+			taskStage.set(TaskStage.End);
 		}}
 		{onSpace}
 		onStageAdvance={resetSpacePressed}
@@ -81,16 +82,16 @@
 						visible={isSyllableFrameVisible(state, syllable, index)}
 					/>
 				{/each}
+				{#if validateStage(state) === true && !spacePressed}
+					<div
+						class="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2"
+						in:fade|global={{ delay: 1000 }}
+						out:fade|global
+					>
+						<MicrophoneHint />
+					</div>
+				{/if}
 			</div>
-			{#if validateStage(state) === true && !spacePressed}
-				<div
-					class="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2"
-					in:fade|global={{ delay: 1000 }}
-					out:fade|global
-				>
-					<MicrophoneHint />
-				</div>
-			{/if}
 		{/snippet}
 		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 			<SymbolTrack

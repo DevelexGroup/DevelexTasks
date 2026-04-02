@@ -6,16 +6,14 @@
 		id,
 		rawData,
 		validateSymbol,
-		validateStage,
-		isSyllableFrameVisible
-	} from '$lib/components/tasks/cibule/levels/3b/index';
-	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
+		validateStage
+	} from '$lib/components/tasks/cibule/levels/3/index';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
-	import { calculateFluencyScore, formatCibuleRawData, cibuleLevelPreset } from '$lib/components/tasks/cibule';
-	import { getContext } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import { formatCibuleRawData, cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
+	import { getContext } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { getLevelData, tryReadWordFromState } from '$lib/utils/trackLevelUtils';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
@@ -32,7 +30,7 @@
 		excludeTags
 	 }: Props = $props();
 
-	const levelContentPreset = taskPreset?.find((level) => level.levelID === id)?.content;
+	const levelContentPreset = taskPreset?.find((level) => level.levelID === id)?.practiceContent;
 	const data = levelContentPreset ? getLevelData<CibuleRawDataEntry>(levelContentPreset, rawData, formatCibuleRawData, excludeTags) : null;
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
@@ -66,33 +64,13 @@
 		{data}
 		{validateSymbol}
 		validateStage={validateStageWithSpace}
-		stopLoggingValidationCheck={validateStage}
-		{calculateFluencyScore}
+		isPractice={true}
 		onCompleted={() => {
-			taskStage.set(TaskStage.End);
+			taskStage.set(TaskStage.Instructions);
 		}}
 		{onSpace}
 		onStageAdvance={resetSpacePressed}
 	>
-		{#snippet extraComponent({ state })}
-			<div class="flex gap-4">
-				{#each state.dataEntry.correct as syllable, index (index)}
-					<CibuleSyllableFrame
-						{syllable}
-						visible={isSyllableFrameVisible(state, syllable, index)}
-					/>
-				{/each}
-				{#if validateStage(state) === true && !spacePressed}
-					<div
-						class="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2"
-						in:fade|global={{ delay: 1000 }}
-						out:fade|global
-					>
-						<MicrophoneHint />
-					</div>
-				{/if}
-			</div>
-		{/snippet}
 		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 			<SymbolTrack
 				{symbols}
@@ -102,6 +80,17 @@
 				flattenRows={true}
 				splitFiller={true}
 			/>
+		{/snippet}
+		{#snippet extraComponent({ state, isPractice })}
+			{#if validateStage(state) === true && !spacePressed}
+				<div
+					class="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2"
+					in:fade|global={{ delay: 1000 }}
+					out:fade|global
+				>
+					<MicrophoneHint />
+				</div>
+			{/if}
 		{/snippet}
 	</TrackLevel>
 {/if}

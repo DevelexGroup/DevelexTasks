@@ -6,14 +6,16 @@
 		id,
 		rawData,
 		validateSymbol,
-		validateStage
-	} from '$lib/components/tasks/cibule/levels/3a/index';
+		validateStage,
+		isSyllableFrameVisible
+	} from '$lib/components/tasks/cibule/levels/4/index';
+	import CibuleSyllableFrame from '$lib/components/tasks/cibule/components/CibuleSyllableFrame.svelte';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { formatCibuleRawData, cibuleLevelPreset } from '$lib/components/tasks/cibule';
-	import { AnalyticsManager } from '$lib/utils/analyticsManager';
-	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 	import { getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { AnalyticsManager } from '$lib/utils/analyticsManager';
+	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
 	import { getLevelData, tryReadWordFromState } from '$lib/utils/trackLevelUtils';
 	import { playSound, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
@@ -71,17 +73,15 @@
 		{onSpace}
 		onStageAdvance={resetSpacePressed}
 	>
-		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
-			<SymbolTrack
-				{symbols}
-				{correctSymbols}
-				{validateSymbolClick}
-				letterSpacing={4}
-				flattenRows={true}
-				splitFiller={true}
-			/>
-		{/snippet}
-		{#snippet extraComponent({ state, isPractice })}
+		{#snippet extraComponent({ state })}
+			<div class="flex gap-4">
+				{#each state.dataEntry.correct as syllable, index (index)}
+					<CibuleSyllableFrame
+						{syllable}
+						visible={isSyllableFrameVisible(state, syllable, index)}
+					/>
+				{/each}
+			</div>
 			{#if validateStage(state) === true && !spacePressed}
 				<div
 					class="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2"
@@ -91,6 +91,16 @@
 					<MicrophoneHint />
 				</div>
 			{/if}
+		{/snippet}
+		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
+			<SymbolTrack
+				{symbols}
+				{correctSymbols}
+				{validateSymbolClick}
+				letterSpacing={4}
+				flattenRows={true}
+				splitFiller={true}
+			/>
 		{/snippet}
 	</TrackLevel>
 {/if}

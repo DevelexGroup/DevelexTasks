@@ -7,7 +7,7 @@
 		validateSymbol,
 		validateStage,
 		rawData
-	} from '$lib/components/tasks/cibule/levels/3a/index';
+	} from '$lib/components/tasks/cibule/levels/3/index';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { calculateFluencyScore, formatCibuleRawData, cibuleLevelPreset } from '$lib/components/tasks/cibule';
 	import { getContext } from 'svelte';
