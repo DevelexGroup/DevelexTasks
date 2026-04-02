@@ -98,22 +98,25 @@ export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
 	let filteredData = rawData;
 	const generate = presetEntry.generate;
 
-	console.log("base", filteredData);
+	// console.log("base", filteredData);
 	if (generate) {
 		for (const [key, value] of Object.entries(generate)) {
 			const valuesArray = Array.isArray(value) ? value : [value];
 			console.log(`filtering by ${key} with values ${valuesArray}`, filteredData);
-			filteredData = filteredData.filter((entry) => valuesArray.includes((entry as never)[key]));
+			filteredData = filteredData.filter((entry) => {
+				const entryValue = (entry as never)[key];
+				return valuesArray.some((v) => String(v) === String(entryValue));
+			});
 		}
 	}
 
-	console.log(`after preset filtering (${JSON.stringify(generate)})`, filteredData);
+	// console.log(`after preset filtering (${JSON.stringify(generate)})`, filteredData);
 	// Exclude already used IDs
 	if (excludeIds) {
 		filteredData = filteredData.filter((entry) => !excludeIds.has(entry.id));
 	}
 
-	console.log("after ID exclusion", filteredData);
+	// console.log("after ID exclusion", filteredData);
 	// Exclude entries with certain tags
 	if (excludeTags) {
 		filteredData = filteredData.filter((entry) => {
@@ -122,7 +125,7 @@ export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
 		});
 	}
 
-	console.log("after tag exclusion", filteredData);
+	// console.log("after tag exclusion", filteredData);
 
 	// Randomly select one entry from the filtered data
 	if (filteredData.length === 0) {
