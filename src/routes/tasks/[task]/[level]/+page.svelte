@@ -24,7 +24,7 @@
 	const instructionsComponentPromise =
 		modules[getComponentPath('Instructions')]?.()?.then((mod) => mod.default) || null;
 
-	const taskPresetProps = data.taskPreset ? { taskPreset: data.taskPreset } : {};
+	const taskPresetProps = data.taskPreset ? { taskPreset: data.taskPreset, excludeTags: data.excludeTags } : {};
 	const taskRouteQuery = data.mode === 'evaluation' ? '?mode=evaluation' : '';
 
 	onMount(() => {

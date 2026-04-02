@@ -28,9 +28,10 @@
 		rawData: FonologieTaskRawDataEntry[];
 		useCategories?: boolean;
 		taskPreset?: TrackTaskPreset<FonologieTaskRawDataEntry>;
+		excludeTags?: string[];
 	}
 
-	let { isPractice = false, id, rawData, useCategories = false, taskPreset = fonologieLevelPreset }: Props = $props();
+	let { isPractice = false, id, rawData, useCategories = false, taskPreset = fonologieLevelPreset, excludeTags }: Props = $props();
 
 	const levelPreset = taskPreset?.find((level) => level.levelID === id);
 	const preset = isPractice ? levelPreset?.practiceContent : levelPreset?.content;
@@ -48,7 +49,7 @@
 	);
 
 	const data = preset
-		? getLevelData<FonologieTaskRawDataEntry>(preset, filteredRawData, formatFonologieRawData)
+		? getLevelData<FonologieTaskRawDataEntry>(preset, filteredRawData, formatFonologieRawData, excludeTags)
 		: null;
 	const showcaseData = data ? getShowcaseData(data, true) : null;
 

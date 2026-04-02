@@ -18,13 +18,17 @@
 
 	interface Props {
 		taskPreset?: TrackTaskPreset<ZrakovkaRawDataEntry>
+		excludeTags?: string[]
 	}
 
-	let { taskPreset = zrakovkaLevelPreset }: Props = $props();
+	let {
+		taskPreset = zrakovkaLevelPreset,
+		excludeTags
+	 }: Props = $props();
 
 	const levelPreset = taskPreset.find((level) => level.levelID === id)?.practiceContent;
 	const data = levelPreset
-		? getLevelData<ZrakovkaRawDataEntry>(levelPreset, zrakovkaZacvikData, formatZrakovkaRawData)
+		? getLevelData<ZrakovkaRawDataEntry>(levelPreset, zrakovkaZacvikData, formatZrakovkaRawData, excludeTags)
 		: null;
 
 	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);

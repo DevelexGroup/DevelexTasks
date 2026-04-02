@@ -7,9 +7,13 @@
 
 	interface Props {
 		taskPreset?: TrackTaskPreset<FonologieTaskRawDataEntry>
+		excludeTags?: string[]
 	}
 
-	let { taskPreset = fonologieLevelPreset }: Props = $props();
+	let {
+		taskPreset = fonologieLevelPreset,
+		excludeTags
+	 }: Props = $props();
 </script>
 
-<FonologieLevel {id} {rawData} {taskPreset} isPractice={true} useCategories={true} />
+<FonologieLevel {id} {rawData} {taskPreset} {excludeTags} isPractice={true} useCategories={true} />

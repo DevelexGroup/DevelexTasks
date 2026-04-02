@@ -22,12 +22,16 @@
 
 	interface Props {
 		taskPreset?: TrackTaskPreset<CibuleRawDataEntry>
+		excludeTags?: string[]
 	}
 
-	let { taskPreset = cibuleLevelPreset }: Props = $props();
+	let {
+		taskPreset = cibuleLevelPreset,
+		excludeTags
+	 }: Props = $props();
 
 	const levelContentPreset = taskPreset?.find((level) => level.levelID === id)?.content;
-	const data = levelContentPreset ? getLevelData<CibuleRawDataEntry>(levelContentPreset, rawData, formatCibuleRawData) : null;
+	const data = levelContentPreset ? getLevelData<CibuleRawDataEntry>(levelContentPreset, rawData, formatCibuleRawData, excludeTags) : null;
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 

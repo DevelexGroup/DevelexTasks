@@ -108,7 +108,7 @@
         "target": "or6",
         "string": [ "or6", "o6", "o6", "o6", "o6", "o6", "or6", "o6", "o6", "or6", "o6", "or6", "o6", "o6", "o6", "o6", "o6", "o6", "or6", "o6" ],
         "position": [ 0, 6, 9, 11, 18 ],
-			"tags": [ "evaulation" ],
+        "tags": [ "evaulation" ]
     },
     {
         "id": 46011,

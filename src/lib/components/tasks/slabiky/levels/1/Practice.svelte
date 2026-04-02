@@ -12,12 +12,16 @@
 
 	interface Props {
 		taskPreset?: TrackTaskPreset<SlabikyRawDataEntry>
+		excludeTags?: string[]
 	}
 
-	let { taskPreset = slabikyLevelPreset }: Props = $props();
+	let {
+		taskPreset = slabikyLevelPreset,
+		excludeTags
+	 }: Props = $props();
 
 	const levelPreset = taskPreset.find((level) => level.levelID === id)?.practiceContent;
-	const data = levelPreset ? getLevelData<SlabikyRawDataEntry>(levelPreset, rawData, formatSlabikyRawData) : null;
+	const data = levelPreset ? getLevelData<SlabikyRawDataEntry>(levelPreset, rawData, formatSlabikyRawData, excludeTags) : null;
 </script>
 
 {#if data}

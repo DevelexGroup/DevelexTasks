@@ -8,11 +8,13 @@ const taskPresetMap = evaluationTaskPresets as Record<string, unknown>;
 export const load: PageLoad = ({ params, url }) => {
 	const mode: RouteMode = url.searchParams.get('mode') === 'evaluation' ? 'evaluation' : 'reeducation';
 	const taskPreset = mode === 'evaluation' ? (taskPresetMap[params.task] ?? null) : null;
+	const excludeTags = mode === 'evaluation' ? [] : ['evaluation'];
 
 	return {
 		task: params.task,
 		level: params.level,
 		mode,
-		taskPreset
+		taskPreset,
+		excludeTags
 	};
 };
