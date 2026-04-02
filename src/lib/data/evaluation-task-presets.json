@@ -157,17 +157,11 @@
 			"practiceContent": [{ "generate": { "type": ["practice"] } }],
 			"content": [
 				{ "generate": { "id": "SL101" } },
-				{ "generate": { "id": "SL429" } },
 				{ "generate": { "id": "SL701" } },
-				{ "generate": { "id": "SL743" } },
 				{ "generate": { "id": "SL215" } },
-				{ "generate": { "id": "SL523" } },
 				{ "generate": { "id": "SL808" } },
-				{ "generate": { "id": "SL887" } },
-				{ "generate": { "id": "SL325" } },
 				{ "generate": { "id": "SL637" } },
-				{ "generate": { "id": "SL919" } },
-				{ "generate": { "id": "SL948" } }
+				{ "generate": { "id": "SL919" } }
 			]
 		},
 		{
@@ -176,17 +170,11 @@
 			"practiceContent": [{ "generate": { "type": ["practice"] } }],
 			"content": [
 				{ "generate": { "id": "SL187" } },
-				{ "generate": { "id": "SL450" } },
 				{ "generate": { "id": "SL775" } },
-				{ "generate": { "id": "SL754" } },
 				{ "generate": { "id": "SL289" } },
-				{ "generate": { "id": "SL554" } },
 				{ "generate": { "id": "SL823" } },
-				{ "generate": { "id": "SL889" } },
-				{ "generate": { "id": "SL387" } },
 				{ "generate": { "id": "SL689" } },
-				{ "generate": { "id": "SL909" } },
-				{ "generate": { "id": "SL941" } }
+				{ "generate": { "id": "SL909" } }
 			]
 		}
 	]

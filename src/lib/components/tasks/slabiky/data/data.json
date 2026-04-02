@@ -5201,8 +5201,7 @@
 		"include_spaces": false,
 		"n_background": 3,
 		"search_string": "plak plak plak fakt plak plat fakt plat brat",
-		"target_positions": [3, 6],
-		"tags": ["evaulation"]
+		"target_positions": [3, 6]
 	},
 	{
 		"task_id": "slabiky",
@@ -6194,8 +6193,7 @@
 		"include_spaces": false,
 		"n_background": 3,
 		"search_string": "plat fakt most most most test most most plat",
-		"target_positions": [0, 8],
-		"tags": ["evaulation"]
+		"target_positions": [0, 8]
 	},
 	{
 		"task_id": "slabiky",
@@ -6867,8 +6865,7 @@
 		"include_spaces": false,
 		"n_background": 3,
 		"search_string": "ob ap ep ep ap ob ep ap ep ob ep ep ep ap ob",
-		"target_positions": [0, 5, 9, 14],
-		"tags": ["evaulation"]
+		"target_positions": [0, 5, 9, 14]
 	},
 	{
 		"task_id": "slabiky",
@@ -7204,8 +7201,7 @@
 		"include_spaces": false,
 		"n_background": 3,
 		"search_string": "ul ul oj uj il ul il ul ul oj oj uj oj oj ul",
-		"target_positions": [4, 6],
-		"tags": ["evaulation"]
+		"target_positions": [4, 6]
 	},
 	{
 		"task_id": "slabiky",
@@ -8373,8 +8369,7 @@
 		"include_spaces": false,
 		"n_background": 3,
 		"search_string": "tet pas tet pas tes tet pas pas pas tet",
-		"target_positions": [0, 2, 5, 9],
-		"tags": ["evaulation"]
+		"target_positions": [0, 2, 5, 9]
 	},
 	{
 		"task_id": "slabiky",
@@ -8870,8 +8865,7 @@
 		"include_spaces": false,
 		"n_background": 3,
 		"search_string": "tru dlu dle dlu dle dlu dle dle tru dlu",
-		"target_positions": [1, 3, 5, 9],
-		"tags": ["evaulation"]
+		"target_positions": [1, 3, 5, 9]
 	},
 	{
 		"task_id": "slabiky",
@@ -11898,8 +11892,7 @@
 		"include_spaces": false,
 		"n_background": 5,
 		"search_string": "du ek du ca du ca ek ek ek du ca du ha ha ak du ek ak du du ek ak ca bo ha bo du ca ha ek du ca du ak ca du ca ek ek ca ek ha ca du ak",
-		"target_positions": [3, 5, 10, 22, 27, 31, 34, 36, 39, 42],
-		"tags": ["evaulation"]
+		"target_positions": [3, 5, 10, 22, 27, 31, 34, 36, 39, 42]
 	},
 	{
 		"task_id": "slabiky",
@@ -12075,8 +12068,7 @@
 		"include_spaces": false,
 		"n_background": 5,
 		"search_string": "ur nu ur um nu ur nu ma im im om um nu ur im nu im im im um nu ma om nu im nu om om im nu ma nu ur im nu um im im ur om um ur um ur om",
-		"target_positions": [1, 4, 6, 12, 15, 20, 23, 25, 29, 31, 34],
-		"tags": ["evaulation"]
+		"target_positions": [1, 4, 6, 12, 15, 20, 23, 25, 29, 31, 34]
 	},
 	{
 		"task_id": "slabiky",
@@ -14207,8 +14199,7 @@
 		"include_spaces": false,
 		"n_background": 4,
 		"search_string": "vru fla vra fru fru vra vro fru vra fru vra vru fla vru vra vru fru vro vru vru vru fla vra fru fla vra fru vra vru vru vra fla vra fla vra fru fla vra vru vra fla vru fru fla vra",
-		"target_positions": [2, 5, 8, 10, 14, 22, 25, 27, 30, 32, 34, 37, 39, 44],
-		"tags": ["evaulation"]
+		"target_positions": [2, 5, 8, 10, 14, 22, 25, 27, 30, 32, 34, 37, 39, 44]
 	},
 	{
 		"task_id": "slabiky",
@@ -14240,8 +14231,7 @@
 		"include_spaces": false,
 		"n_background": 4,
 		"search_string": "bro bro pla bro bra pro pla pro pla bra bro pla ble pla bro pla bro pla bro pro pla ble ble pla bro pla bra bro pla bra pla ble ble pro pro ble pla ble pro pla bro ble bra bra pla",
-		"target_positions": [2, 6, 8, 11, 13, 15, 17, 20, 23, 25, 28, 30, 36, 39, 44],
-		"tags": ["evaulation"]
+		"target_positions": [2, 6, 8, 11, 13, 15, 17, 20, 23, 25, 28, 30, 36, 39, 44]
 	},
 	{
 		"task_id": "slabiky",
@@ -15075,8 +15065,7 @@
 		"include_spaces": false,
 		"n_background": 4,
 		"search_string": "most rest kost most kost most kost kost most rest kost most kost fakt fakt fakt most kost rest kost fakt most kost kost kost most kost kost kost most fakt rest rest most kost",
-		"target_positions": [0, 3, 5, 8, 11, 16, 21, 25, 29, 33],
-		"tags": ["evaulation"]
+		"target_positions": [0, 3, 5, 8, 11, 16, 21, 25, 29, 33]
 	},
 	{
 		"task_id": "slabiky",
@@ -15188,8 +15177,7 @@
 		"include_spaces": false,
 		"n_background": 4,
 		"search_string": "bles bran bles bran bles bran bles klas bran kras bran bles bles bles bran klas kras bles bran klas bles bles bran kras bles bles bran bles bles bles bles bran bles kras bran",
-		"target_positions": [1, 3, 5, 8, 10, 14, 18, 22, 26, 31, 34],
-		"tags": ["evaulation"]
+		"target_positions": [1, 3, 5, 8, 10, 14, 18, 22, 26, 31, 34]
 	},
 	{
 		"task_id": "slabiky",
