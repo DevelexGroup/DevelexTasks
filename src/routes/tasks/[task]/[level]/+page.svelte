@@ -6,6 +6,7 @@
 	import { resolve } from '$app/paths';
 	import { currentTask } from '$lib/stores/task';
 	import { validateAuthStatus } from '$lib/api/auth';
+	import Icon from '@iconify/svelte';
 
 	let { data }: PageProps = $props();
 
@@ -24,7 +25,9 @@
 	const instructionsComponentPromise =
 		modules[getComponentPath('Instructions')]?.()?.then((mod) => mod.default) || null;
 
-	const taskPresetProps = data.taskPreset ? { taskPreset: data.taskPreset, excludeTags: data.excludeTags } : {};
+	const taskPresetProps = data.taskPreset
+		? { taskPreset: data.taskPreset, excludeTags: data.excludeTags }
+		: {};
 	const taskRouteQuery = data.mode === 'evaluation' ? '?mode=evaluation' : '';
 
 	onMount(() => {
@@ -76,10 +79,12 @@
 			{/await}
 			<div class="absolute bottom-4 left-4">
 				<button
-					class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
+					class="inline-flex cursor-pointer items-center space-x-3 rounded-md bg-gray-300 px-4 py-2 text-sm font-semibold text-gray-800 transition-colors hover:bg-gray-400"
 					onclick={() => goto(resolve(`/tasks/${data.task}${taskRouteQuery}`))}
 				>
-					Zpět
+					<Icon icon="mdi:arrow-left" class="h-5 w-5 text-gray-800" />
+
+					<span>Zpět</span>
 				</button>
 			</div>
 		{/if}
