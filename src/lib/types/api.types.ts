@@ -126,6 +126,12 @@ export interface TestSessionPartDTO {
 	startTime: Date;
 	endTime: Date;
 	createdAt: Date;
+	files: TestFileDTO[];
+}
+
+export interface TestSessionDetailDTO extends TestSessionDTO {
+	files: TestFileDTO[];
+	parts: TestSessionPartDTO[];
 }
 
 // org.springframework.data.domain Page<TContent>

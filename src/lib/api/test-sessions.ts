@@ -3,6 +3,7 @@
 	SortBy,
 	SortDirection,
 	type TestSessionDTO,
+	type TestSessionDetailDTO,
 	type TestSessionPartDTO,
 	TestSessionStatus
 } from '$lib/types/api.types';
@@ -17,6 +18,10 @@ export async function createTestSession(testType: string): Promise<TestSessionDT
 
 export async function getTestSession(sessionId: string): Promise<TestSessionDTO> {
 	return apiClient<TestSessionDTO>(`/test-sessions/${sessionId}`);
+}
+
+export async function getTestSessionDetail(sessionId: string): Promise<TestSessionDetailDTO> {
+	return apiClient<TestSessionDetailDTO>(`/test-sessions/${sessionId}/detail`);
 }
 
 export async function deleteTestSession(sessionId: string): Promise<void> {
@@ -107,6 +112,12 @@ export async function downloadTestSessionFile(
 	fileId: string
 ): Promise<Blob> {
 	return apiClient<Blob>(`/test-sessions/${sessionId}/files/${fileId}/download`, {
+		responseType: 'blob'
+	});
+}
+
+export async function downloadSessionAsZip(sessionId: string): Promise<Blob> {
+	return apiClient<Blob>(`/test-sessions/${sessionId}/download`, {
 		responseType: 'blob'
 	});
 }
