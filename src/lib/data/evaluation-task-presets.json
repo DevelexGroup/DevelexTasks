@@ -3,27 +3,23 @@
 		{
 			"levelID": "1",
 			"label": "Úroveň 1",
-			"practiceContent": [
-				{ "generate": { "type": ["pismena0"] } }
-			],
+			"practiceContent": [{ "generate": { "type": ["pismena0"] } }],
 			"content": [
-				{	"generate": {	"id": "CI1243" } },
-				{	"generate": {	"id": "CI1343" } },
-				{	"generate": {	"id": "CI1563" } },
-				{	"generate": {	"id": "CI1692" } }
+				{ "generate": { "id": "CI1243" } },
+				{ "generate": { "id": "CI1343" } },
+				{ "generate": { "id": "CI1563" } },
+				{ "generate": { "id": "CI1692" } }
 			]
 		},
 		{
 			"levelID": "2",
 			"label": "Úroveň 2",
-			"practiceContent": [
-				{	"generate": {	"type": ["pismena0"] } }
-			],
+			"practiceContent": [{ "generate": { "type": ["pismena0"] } }],
 			"content": [
-				{	"generate": {	"id": "CI1113" } },
-				{	"generate": {	"id": "CI1484" } },
-				{	"generate": {	"id": "CI1568" } },
-				{	"generate": { "id": "CI1665" } }
+				{ "generate": { "id": "CI1113" } },
+				{ "generate": { "id": "CI1484" } },
+				{ "generate": { "id": "CI1568" } },
+				{ "generate": { "id": "CI1665" } }
 			]
 		},
 		{
@@ -40,14 +36,12 @@
 		{
 			"levelID": "4",
 			"label": "Úroveň 4",
-			"practiceContent": [
-				{	"generate": { "type": ["slova1_3sl"] } }
-			],
+			"practiceContent": [{ "generate": { "type": ["slova1_3sl"] } }],
 			"content": [
-				{ "generate": {	"id": "CI3201" } },
-				{	"generate": { "id": "CI3202" } },
-				{	"generate": {	"id": "CI3203" } },
-				{	"generate": { "id": "CI3204" } }
+				{ "generate": { "id": "CI3201" } },
+				{ "generate": { "id": "CI3202" } },
+				{ "generate": { "id": "CI3203" } },
+				{ "generate": { "id": "CI3204" } }
 			]
 		}
 	],
@@ -102,7 +96,7 @@
 		{
 			"levelID": "1",
 			"label": "Úroveň 1",
-			"practiceContent": [{ "generate": { "level": ["level1"] } }],
+			"practiceContent": [{ "generate": { "id": "FOB123" } }],
 			"content": [
 				{ "generate": { "id": "FA4112" } },
 				{ "generate": { "id": "FA4116" } },
@@ -112,7 +106,7 @@
 		{
 			"levelID": "2",
 			"label": "Úroveň 2",
-			"practiceContent": [{ "generate": { "level": ["level2"] } }],
+			"practiceContent": [{ "generate": { "id": "FF1210" } }],
 			"content": [
 				{ "generate": { "id": "FOB203" } },
 				{ "generate": { "id": "FOB212" } },
@@ -122,7 +116,7 @@
 		{
 			"levelID": "3",
 			"label": "Úroveň 3",
-			"practiceContent": [{ "generate": { "level": ["level3"] } }],
+			"practiceContent": [{ "generate": { "id": "FNA306" } }],
 			"content": [
 				{ "generate": { "id": "FHM304" } },
 				{ "generate": { "id": "FHM307" } },
@@ -132,7 +126,7 @@
 		{
 			"levelID": "4",
 			"label": "Úroveň 4",
-			"practiceContent": [{ "generate": { "level": ["level4"] } }],
+			"practiceContent": [{ "generate": { "id": "FL4004" } }],
 			"content": [
 				{ "generate": { "id": "FL4001" } },
 				{ "generate": { "id": "FL4002" } },
@@ -142,7 +136,7 @@
 		{
 			"levelID": "5",
 			"label": "Úroveň 5",
-			"practiceContent": [{ "generate": { "level": ["level5"] } }],
+			"practiceContent": [{ "generate": { "id": "FL5004" } }],
 			"content": [
 				{ "generate": { "id": "FL5001" } },
 				{ "generate": { "id": "FL5002" } },
