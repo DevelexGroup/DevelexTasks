@@ -125,12 +125,12 @@
 </script>
 
 <svelte:head>
-	<title>Login - Develex Tasks</title>
-	<meta name="description" content="Login page for Develex Tasks" />
+	<title>Login - DeveLex Tasks</title>
+	<meta name="description" content="Login page for DeveLex Tasks" />
 </svelte:head>
 
 <section class="mt-8 flex flex-col items-center justify-center px-4">
-	<h1 class="text-5xl font-bold text-red-400">Develex Tasks</h1>
+	<h1 class="text-5xl font-bold text-red-400">DeveLex Tasks</h1>
 
 	<div class="mt-12 w-full max-w-md">
 		<Tabs.Root bind:value={activeTab} class="w-full">

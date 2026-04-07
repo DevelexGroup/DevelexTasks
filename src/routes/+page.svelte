@@ -8,7 +8,7 @@
 </script>
 
 <svelte:head>
-	<title>Develex úlohy</title>
+	<title>DeveLex úlohy</title>
 	<meta name="description" content="Various develex tasks" />
 </svelte:head>
 

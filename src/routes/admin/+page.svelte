@@ -5,8 +5,8 @@
 </script>
 
 <svelte:head>
-	<title>Admin - Develex Tasks</title>
-	<meta name="description" content="Admin page for Develex Tasks" />
+	<title>Admin - DeveLex Tasks</title>
+	<meta name="description" content="Admin page for DeveLex Tasks" />
 </svelte:head>
 
 <DefaultLayout>

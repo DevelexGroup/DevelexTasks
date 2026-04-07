@@ -89,7 +89,7 @@
 
 <svelte:head>
 	<title>Heatmap</title>
-	<meta name="description" content="Heatmap admin page for Develex Tasks" />
+	<meta name="description" content="Heatmap admin page for DeveLex Tasks" />
 </svelte:head>
 
 {#if selectedTask}

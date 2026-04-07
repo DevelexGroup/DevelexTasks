@@ -235,7 +235,7 @@
 
 <svelte:head>
 	<title>Správa uživatelů</title>
-	<meta name="description" content="User management admin page for Develex Tasks" />
+	<meta name="description" content="User management admin page for DeveLex Tasks" />
 </svelte:head>
 
 <!-- Header with filters -->

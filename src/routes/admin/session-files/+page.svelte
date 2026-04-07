@@ -227,7 +227,7 @@
 </script>
 
 <svelte:head>
-	<title>Soubory sezení - Develex Tasks</title>
+	<title>Soubory sezení - DeveLex Tasks</title>
 </svelte:head>
 
 <!-- Header selectors -->

@@ -399,8 +399,8 @@
 </script>
 
 <svelte:head>
-	<title>Database - Develex Tasks</title>
-	<meta name="description" content="Database admin page for Develex Tasks" />
+	<title>Database - DeveLex Tasks</title>
+	<meta name="description" content="Database admin page for DeveLex Tasks" />
 </svelte:head>
 
 <section class="absolute top-4 left-4 flex h-16 items-center gap-4">
