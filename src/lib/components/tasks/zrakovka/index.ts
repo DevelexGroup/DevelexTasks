@@ -29,22 +29,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada1.3']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada1.4']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada1.5']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada1.6']
 				}
 			},
 			{
@@ -59,22 +49,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada1.9']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada1.10']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada1.11']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada1.12']
 				}
 			}
 		]
@@ -102,22 +82,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada2.3']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada2.4']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada2.5']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada2.6']
 				}
 			},
 			{
@@ -132,22 +102,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada2.9']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada2.10']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada2.11']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada2.12']
 				}
 			}
 		]
@@ -175,22 +135,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada3.3']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada3.4']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada3.5']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada3.6']
 				}
 			},
 			{
@@ -205,22 +155,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada3.9']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada3.10']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada3.11']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada3.12']
 				}
 			}
 		]
@@ -248,22 +188,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada4.3']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada4.4']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada4.5']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada4.6']
 				}
 			},
 			{
@@ -278,22 +208,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada4.9']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada4.10']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada4.11']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada4.12']
 				}
 			}
 		]
@@ -321,22 +241,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada5.3']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada5.4']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada5.5']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada5.6']
 				}
 			},
 			{
@@ -351,22 +261,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada5.9']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada5.10']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada5.11']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada5.12']
 				}
 			}
 		]
@@ -394,22 +294,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada6.3']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada6.4']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada6.5']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada6.6']
 				}
 			},
 			{
@@ -424,22 +314,12 @@ export const zrakovkaLevelPreset: TrackTaskPreset<ZrakovkaRawDataEntry> = [
 			},
 			{
 				generate: {
-					sada: ['sada6.9']
-				}
-			},
-			{
-				generate: {
 					sada: ['sada6.10']
 				}
 			},
 			{
 				generate: {
 					sada: ['sada6.11']
-				}
-			},
-			{
-				generate: {
-					sada: ['sada6.12']
 				}
 			}
 		]
