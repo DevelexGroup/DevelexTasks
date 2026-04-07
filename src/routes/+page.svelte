@@ -2,6 +2,8 @@
 	import { resolve } from '$app/paths';
 	import Icon from '@iconify/svelte';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
+	import RoleGuard from '$lib/components/RoleGuard.svelte';
+	import { RoleGuards } from '$lib/utils/roleGuard';
 	import { isDiagnosisMode } from '$lib/stores/diagnosis';
 </script>
 
@@ -84,5 +86,57 @@
 				</a>
 			</div>
 		{/if}
+
 	</div>
+
+	<RoleGuard config={RoleGuards.garantOnly}>
+		<h2 class="text-2xl font-black text-gray-800 mt-8">Administrace</h2>
+
+		<div class="flex flex-wrap gap-6">
+			<a
+				href={resolve('/admin/database')}
+				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
+			>
+				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-sky-100/40"></div>
+
+				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-sky-100">
+					<Icon icon="material-symbols:database" class="h-6 w-6 text-sky-700" />
+				</div>
+
+				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+					Lokální databáze
+				</span>
+			</a>
+
+			<a
+				href={resolve('/admin/heatmap')}
+				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
+			>
+				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-orange-100/40"></div>
+
+				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-100">
+					<Icon icon="material-symbols:mode-heat" class="h-6 w-6 text-orange-700" />
+				</div>
+
+				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+					Heatmap
+				</span>
+			</a>
+
+			<a
+				href={resolve('/admin/user-management')}
+				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
+			>
+				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-teal-100/40"></div>
+
+				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-teal-100">
+					<Icon icon="material-symbols:group" class="h-6 w-6 text-teal-700" />
+				</div>
+
+				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+					Správa uživatelů
+				</span>
+			</a>
+		</div>
+	</RoleGuard>
 </DefaultLayout>

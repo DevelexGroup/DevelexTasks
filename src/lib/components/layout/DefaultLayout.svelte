@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { RoleGuards } from '$lib/utils/roleGuard';
 	import Icon from '@iconify/svelte';
-	import RoleGuard from '../RoleGuard.svelte';
 	import UserSelect from '../UserSelect.svelte';
 	import { validateAuthStatus } from '$lib/api/auth';
 	import { onMount } from 'svelte';
@@ -30,14 +28,6 @@
 					Nastavení
 				</button>
 
-				<RoleGuard config={RoleGuards.garantOnly}>
-					<button
-						class="fixed right-4 bottom-4 rounded-md bg-purple-500 px-3 py-1.5 text-gray-50 hover:bg-purple-600"
-						onclick={() => goto(resolve('/admin'))}
-					>
-						Administrace
-					</button>
-				</RoleGuard>
 
 				<UserSelect />
 			</div>

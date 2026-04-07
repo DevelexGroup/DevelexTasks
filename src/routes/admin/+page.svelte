@@ -1,22 +1,7 @@
 ﻿<script lang="ts">
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import { db } from '$lib/database/db';
-
-	let isDeleteDialogOpen = $state(false);
-	let isDeleting = $state(false);
-
-	async function deleteAllData() {
-		isDeleting = true;
-		try {
-			await db.delete();
-			await db.open();
-			isDeleteDialogOpen = false;
-		} finally {
-			isDeleting = false;
-		}
-	}
+	import Icon from '@iconify/svelte';
+	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
 </script>
 
 <svelte:head>
@@ -24,76 +9,53 @@
 	<meta name="description" content="Admin page for Develex Tasks" />
 </svelte:head>
 
-<section class="mt-8 flex flex-col items-center justify-center">
-	<h1 class="text-5xl font-bold text-red-400">Develex Tasks</h1>
+<DefaultLayout>
+	<h1 class="text-2xl font-black text-gray-800">Administrace</h1>
 
-	<div class="mt-12 flex flex-col gap-2">
-		<h2>Admin Panel</h2>
-
-		<button
-			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-			onclick={() => goto(resolve(`/admin/database`))}
+	<div class="flex flex-wrap gap-6">
+		<a
+			href={resolve('/admin/database')}
+			class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
 		>
-			Databáze
-		</button>
+			<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-sky-100/40"></div>
 
-		<button
-			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-			onclick={() => goto(resolve(`/admin/heatmap`))}
+			<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-sky-100">
+				<Icon icon="material-symbols:database" class="h-6 w-6 text-sky-700" />
+			</div>
+
+			<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+				Lokální databáze
+			</span>
+		</a>
+
+		<a
+			href={resolve('/admin/heatmap')}
+			class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
 		>
-			Heatmap
-		</button>
+			<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-orange-100/40"></div>
 
-		<button
-			class="rounded-md bg-blue-500 px-3 py-1.5 text-gray-50 hover:bg-blue-600"
-			onclick={() => goto(resolve(`/admin/user-management`))}
+			<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-100">
+				<Icon icon="material-symbols:mode-heat" class="h-6 w-6 text-orange-700" />
+			</div>
+
+			<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+				Heatmap
+			</span>
+		</a>
+
+		<a
+			href={resolve('/admin/user-management')}
+			class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
 		>
-			User management
-		</button>
+			<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-teal-100/40"></div>
 
-		<hr class="my-4 border-gray-300" />
+			<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-teal-100">
+				<Icon icon="material-symbols:group" class="h-6 w-6 text-teal-700" />
+			</div>
 
-		<button
-			class="rounded-md bg-red-500 px-3 py-1.5 text-gray-50 hover:bg-red-600"
-			onclick={() => (isDeleteDialogOpen = true)}
-		>
-			Smazat všechna data
-		</button>
+			<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+				Správa uživatelů
+			</span>
+		</a>
 	</div>
-
-	<div class="absolute bottom-4 left-4">
-		<button
-			class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
-			onclick={() => goto(resolve(`/`))}
-		>
-			Zpět
-		</button>
-	</div>
-</section>
-
-<Dialog.Root bind:open={isDeleteDialogOpen}>
-	<Dialog.Content>
-		<Dialog.Header>
-			<Dialog.Title>Smazat všechna data</Dialog.Title>
-			<Dialog.Description>
-				Opravdu chcete smazat všechna lokálně uložená data? Tato akce je nevratná.
-			</Dialog.Description>
-		</Dialog.Header>
-		<Dialog.Footer>
-			<button
-				class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800 hover:bg-gray-400"
-				onclick={() => (isDeleteDialogOpen = false)}
-				disabled={isDeleting}
-			>
-				Zrušit
-			</button>
-			<button
-				class="rounded-md bg-red-500 px-3 py-1.5 text-gray-50 hover:bg-red-600 disabled:bg-red-300"
-				onclick={deleteAllData}
-				disabled={isDeleting}
-			>
-				{isDeleting ? 'Mažu...' : 'Smazat'}
-			</button>
-		</Dialog.Footer>
-	</Dialog.Content>
-</Dialog.Root>
+</DefaultLayout>

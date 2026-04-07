@@ -439,7 +439,7 @@
 <div class="fixed bottom-4 left-4 flex gap-1">
 	<button
 		class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
-		onclick={() => goto(resolve(`/admin`))}
+		onclick={() => goto(resolve(`/`))}
 	>
 		Zpět
 	</button>

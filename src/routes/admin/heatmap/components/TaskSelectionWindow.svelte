@@ -191,7 +191,7 @@
 			<button
 				type="button"
 				class="rounded-md bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200"
-				onclick={() => goto(resolve(`/admin`))}
+				onclick={() => goto(resolve(`/`))}
 			>
 				Zpět
 			</button>
