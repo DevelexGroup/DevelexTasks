@@ -36,7 +36,7 @@
 		{
 			"levelID": "4",
 			"label": "Úroveň 4",
-			"practiceContent": [{ "generate": { "type": ["slova1_3sl"] } }],
+			"practiceContent": [{ "generate": { "type": ["slova2_3sl"] } }],
 			"content": [
 				{ "generate": { "id": "CI3201" } },
 				{ "generate": { "id": "CI3202" } },
