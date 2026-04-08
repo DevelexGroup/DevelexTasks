@@ -5,11 +5,12 @@
 	import { fade } from 'svelte/transition';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { TaskResult, TrackSlideStage } from '$lib/types/task.types';
-	import { KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
 	import { currentTask } from '$lib/stores/task';
 	import { AvaiableTracker, trackerConfig } from '$lib/stores/tracker';
 	import DyslexFixCross from './DyslexFixCross.svelte';
 	import { id as visDiffId } from '$lib/components/tasks/dyslex/levels/4_visdiff/index';
+	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 
 	interface Props {
 		id: string;
@@ -36,6 +37,8 @@
 
 	let currentStage = $state<TrackSlideStage>(TrackSlideStage.InitialDwell);
 	let currentRepetition = $state<number>(0);
+
+	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
 	$effect(() => {
 		currentTask.update((task) => {
@@ -102,6 +105,8 @@
 	}
 
 	function advanceStage() {
+		analyticsManager.logCompleteSlide(currentRepetition + 1);
+
 		if (currentRepetition < repetitions - 1) {
 			currentRepetition += 1;
 			currentStage = TrackSlideStage.InitialDwell;
