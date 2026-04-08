@@ -40,7 +40,8 @@
 		isLoadingUsers = true;
 		error = '';
 		try {
-			users = await getAllUsers();
+			const raw = await getAllUsers();
+			users = raw.slice().sort((a, b) => a.username.localeCompare(b.username, 'cs'));
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se načíst uživatele';
 		} finally {
