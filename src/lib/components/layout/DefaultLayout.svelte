@@ -16,7 +16,7 @@
 <main class="flex h-screen flex-col bg-gray-50 font-lexend">
 	<nav class="flex w-full bg-white px-4 py-4 shadow-xl">
 		<div class="mx-auto flex w-full max-w-5xl items-center justify-between">
-			<span class="text-3xl font-black text-blue-600">DeveLex</span>
+			<button class="text-3xl font-black text-blue-600 cursor-pointer" onclick={() => goto(resolve('/'))}>DeveLex</button>
 
 			<div class="inline-flex items-center space-x-3">
 				<button
