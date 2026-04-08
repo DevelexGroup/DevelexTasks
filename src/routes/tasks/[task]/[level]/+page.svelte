@@ -63,7 +63,7 @@
 	<svelte:fragment slot="Practice">
 		{#if practiceComponentPromise}
 			{#await practiceComponentPromise then PracticeComponent}
-				<PracticeComponent {...taskPresetProps} />
+				<PracticeComponent {...taskPresetProps} mode={data.mode} />
 			{:catch error}
 				<p>Error loading Practice component: {error.message}</p>
 			{/await}
