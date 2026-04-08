@@ -18,4 +18,4 @@
 	}: Props = $props();
 </script>
 
-<FonologieLevel {id} {rawData} {taskPreset} {excludeTags} isPractice={true} useCategories={mode !== 'evaluation'} />
+<FonologieLevel {id} {rawData} {taskPreset} {excludeTags} isPractice={true} useCategories={mode !== 'evaluation'} showShowcaseTitle={true} />

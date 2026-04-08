@@ -27,11 +27,12 @@
 		id: string;
 		rawData: FonologieTaskRawDataEntry[];
 		useCategories?: boolean;
+		showShowcaseTitle?: boolean;
 		taskPreset?: TrackTaskPreset<FonologieTaskRawDataEntry>;
 		excludeTags?: string[];
 	}
 
-	let { isPractice = false, id, rawData, useCategories = false, taskPreset = fonologieLevelPreset, excludeTags }: Props = $props();
+	let { isPractice = false, id, rawData, useCategories = false, showShowcaseTitle = false, taskPreset = fonologieLevelPreset, excludeTags }: Props = $props();
 
 	const levelPreset = taskPreset?.find((level) => level.levelID === id);
 	const preset = isPractice ? levelPreset?.practiceContent : levelPreset?.content;
@@ -41,7 +42,6 @@
 		Math.floor(Math.random() * rawData.length)
 	] as FonologieAudioRawDataEntry;
 	const randomCategory = $derived(useCategories ? randomData.set : null);
-	const randomTopicName = $derived(useCategories && randomCategory ? randomData.topic : null);
 	const filteredRawData = $derived(
 		useCategories
 			? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).set === randomCategory)
@@ -52,6 +52,8 @@
 		? getLevelData<FonologieTaskRawDataEntry>(preset, filteredRawData, formatFonologieRawData, excludeTags)
 		: null;
 	const showcaseData = data ? getShowcaseData(data, true) : null;
+
+	const topicName = $derived(data?.length ? data[0].topic : null);
 
 	// Track window dimensions for dynamic aspect ratio
 	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
@@ -125,10 +127,10 @@
 				</SymbolTrack>
 			{/snippet}
 			{#snippet extraComponent()}
-				{#if useCategories && randomTopicName}
+				{#if showShowcaseTitle && topicName}
 					<div class="text-center text-5xl font-semibold text-gray-700">
 						<h2>
-							{randomTopicName.charAt(0).toUpperCase() + randomTopicName.slice(1).toLowerCase()}
+							{topicName.charAt(0).toUpperCase() + topicName.slice(1).toLowerCase()}
 						</h2>
 					</div>
 				{/if}

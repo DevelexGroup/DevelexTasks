@@ -156,7 +156,8 @@ export function formatFonologieRawData(rawData: FonologieTaskRawDataEntry): Trac
 		sequence: sequencePath,
 		correct,
 		sound: `${rawData.sound}.ogg`,
-		correctCount
+		correctCount,
+		topic: rawData.topic
 	};
 
 	// Add model if it's a manipulation task
