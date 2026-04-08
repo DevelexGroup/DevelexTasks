@@ -116,7 +116,19 @@
 		{
 			"levelID": "3",
 			"label": "Úroveň 3",
-			"practiceContent": [{ "generate": { "id": "FNA306" } }],
+			"practiceContent": [
+				{
+					"task_id": "fonologie",
+					"id": "FNA306",
+					"topic": "příroda",
+					"set": "nature",
+					"level": "level3",
+					"sound": "R_upr",
+					"sequence": ["strom", "bahno", "hory", "hnizdo", "ostrov"],
+					"correct_indices": [0, 2, 4],
+					"tags": ["evaulation"]
+				}
+			],
 			"content": [
 				{ "generate": { "id": "FHM304" } },
 				{ "generate": { "id": "FHM307" } },
