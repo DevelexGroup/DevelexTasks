@@ -157,7 +157,7 @@ export function formatFonologieRawData(rawData: FonologieTaskRawDataEntry): Trac
 		correct,
 		sound: `${rawData.sound}.ogg`,
 		correctCount,
-		topic: rawData.topic
+		topic: 'topic' in rawData ? rawData.topic : undefined
 	};
 
 	// Add model if it's a manipulation task
