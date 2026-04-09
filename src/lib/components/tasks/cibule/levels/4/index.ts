@@ -16,7 +16,7 @@ export function validateStage(state: TrackTaskState): TaskMistake[] | true {
 	// Compare syllables at selected indices with correct syllables
 	const selectedSyllables = state.selectedCorrectIndices.map((i) => flattenedSymbols[i]);
 
-	console.log(correctSyllables, selectedSyllables);
+	// console.log(correctSyllables, selectedSyllables);
 
 	if (
 		correctSyllables.length !== selectedSyllables.length ||

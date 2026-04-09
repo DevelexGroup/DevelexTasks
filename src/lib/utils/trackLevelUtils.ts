@@ -102,7 +102,7 @@ export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
 	if (generate) {
 		for (const [key, value] of Object.entries(generate)) {
 			const valuesArray = Array.isArray(value) ? value : [value];
-			console.log(`filtering by ${key} with values ${valuesArray}`, filteredData);
+			// console.log(`filtering by ${key} with values ${valuesArray}`, filteredData);
 			filteredData = filteredData.filter((entry) => {
 				const entryValue = (entry as never)[key];
 				return valuesArray.some((v) => String(v) === String(entryValue));
@@ -146,7 +146,7 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 	const content: TrackTaskDataEntry[] = [];
 	const usedIds = new Set<string>();
 
-	console.log("Exclude tags:", excludeTags);
+	// console.log("Exclude tags:", excludeTags);
 
 	for (const item of preset) {
 		if (item.generate !== undefined) {

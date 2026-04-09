@@ -113,8 +113,8 @@ export function fonologieSymbolValidation(
 		.map((symbol, index) => (state.dataEntry.correct?.includes(symbol) ? index : -1))
 		.filter((index) => index !== -1);
 
-	console.log('Correct indices:', correctIndices);
-	console.log('Clicked index:', clickedIndex);
+	// console.log('Correct indices:', correctIndices);
+	// console.log('Clicked index:', clickedIndex);
 
 	if (correctIndices.includes(clickedIndex)) {
 		return true;

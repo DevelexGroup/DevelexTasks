@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { currentTask, remoteTestSessionId, taskStage, testSessionUploading } from '$lib/stores/task';
+	import { currentTask, remoteTestSessionId, taskStage, testSessionUploading, clientLogUploading } from '$lib/stores/task';
 	import { TaskResult, TaskStage } from '$lib/types/task.types';
 	import { getContext, onDestroy, untrack } from 'svelte';
 	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
@@ -14,6 +14,7 @@
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
 	import { get } from 'svelte/store';
 	import { authUser } from '$lib/stores/auth';
+	import { clientLog } from '$lib/utils/clientLogger';
 
 	const FIRST_SLIDE_INDEX = 1;
 
@@ -31,10 +32,12 @@
 	// Task start
 	$effect(() => {
 		if ($taskStage === TaskStage.Task) {
+			clientLog.start();
 			analyticsManager.startLogging();
 			const task = untrack(() => $currentTask);
 			if (!task) {
 				console.error('No current task found when trying to create test session.');
+				clientLog.error('No current task found when trying to create test session.');
 				return;
 			}
 
@@ -44,11 +47,13 @@
 			operationChain = createTestSession(`${task.slug}-${task.level}`)
 				.then(async (session) => {
 					console.log('Test session created:', session);
+					clientLog.log('Test session created:', session);
 					$remoteTestSessionId = session.id;
 					await createSessionPartForSlide(session.id, FIRST_SLIDE_INDEX);
 				})
 				.catch((err) => {
 					console.error('Failed to create test session:', err);
+					clientLog.error('Failed to create test session:', err);
 				});
 		}
 	});
@@ -60,6 +65,7 @@
 		if (slideIndex !== undefined && slideIndex >= 0 && (stage === TaskStage.Task || stage === TaskStage.End)) {
 			const prevSlideIndex = untrack(() => previousSlideIndex);
 			console.log(`Current slide: ${slideIndex}, Previous slide: ${prevSlideIndex}`);
+			clientLog.log(`Current slide: ${slideIndex}, Previous slide: ${prevSlideIndex}`);
 
 			const isEnd = stage === TaskStage.End;
 
@@ -85,28 +91,47 @@
 					$testSessionUploading = true;
 
 					// Wait for all pending operations (including final file upload) before finalizing
-					operationChain = operationChain.then(() => {
+					operationChain = operationChain.then(async () => {
 						const sessionId = get(remoteTestSessionId);
 						if (!sessionId) return;
 
+						// Upload client logs to the last part
+						const lastPartId = await currentPartCreationPromise;
+						if (lastPartId) {
+							$clientLogUploading = true;
+							try {
+								const logFile = clientLog.exportAsFile();
+								await addFilesToTestSessionPart(sessionId, lastPartId, [logFile]);
+								console.log('Client logs uploaded to last part.');
+								clientLog.log('Client logs uploaded to last part.');
+							} catch (err) {
+								console.error('Failed to upload client logs:', err);
+								clientLog.error('Failed to upload client logs:', err);
+							} finally {
+								$clientLogUploading = false;
+							}
+						}
+
 						if (result === TaskResult.Natural) {
-							return completeTestSession(sessionId)
-								.then(() => {
-									console.log('Test session completed successfully on task end.');
-									$remoteTestSessionId = null;
-								});
+							await completeTestSession(sessionId);
+							console.log('Test session completed successfully on task end.');
+							clientLog.log('Test session completed successfully on task end.');
+							$remoteTestSessionId = null;
 						} else {
-							return abortTestSession(sessionId)
-								.then(() => {
-									console.log('Test session aborted on task end.');
-									$remoteTestSessionId = null;
-								});
+							await abortTestSession(sessionId);
+							console.log('Test session aborted on task end.');
+							clientLog.log('Test session aborted on task end.');
+							$remoteTestSessionId = null;
 						}
 					}).catch((err) => {
 						console.error('Failed to finalize test session on task end:', err);
+						clientLog.error('Failed to finalize test session on task end:', err);
 					}).finally(() => {
+						clientLog.stop();
 						$testSessionUploading = false;
 					});
+				} else {
+					clientLog.stop();
 				}
 			}
 		}
@@ -117,6 +142,7 @@
 		const childId = get(authUser)?.username ?? undefined;
 		if (!sessionId || !childId) {
 			console.error('Missing sessionId or childId for getting files for slide.');
+			clientLog.error('Missing sessionId or childId for getting files for slide.');
 			return [];
 		}
 		// Get from databaseExport
@@ -133,16 +159,19 @@
 		const testFiles = await getFilesForSlide(slideIndex);
 		await addFilesToTestSessionPart(currentRemoteTestSessionId, partId, testFiles);
 		console.log(`Logged file for slide ${slideIndex} to test session.`);
+		clientLog.log(`Logged file for slide ${slideIndex} to test session.`);
 	}
 
 	const createSessionPartForSlide = (currentRemoteTestSessionId: string, slideIndex: number): Promise<string | null> => {
 		const promise = addTestSessionPart(currentRemoteTestSessionId, slideIndex)
 			.then((testSessionPart) => {
 				console.log(`Logged slide ${slideIndex} to test session:`, testSessionPart);
+				clientLog.log(`Logged slide ${slideIndex} to test session:`, testSessionPart);
 				return testSessionPart.id;
 			})
 			.catch((err) => {
 				console.error(`Failed to log slide ${slideIndex} to test session:`, err);
+				clientLog.error(`Failed to log slide ${slideIndex} to test session:`, err);
 				return null;
 			});
 		currentPartCreationPromise = promise;
@@ -159,6 +188,7 @@
 			const partId = await currentPartCreationPromise;
 			if (partId) {
 				console.log(`Processing slide change from ${previousSlideIndex} to ${slideIndex}. Logging file for previous slide.`);
+				clientLog.log(`Processing slide change from ${previousSlideIndex} to ${slideIndex}. Logging file for previous slide.`);
 				await uploadFilesForSlide(currentRemoteTestSessionId, partId, previousSlideIndex);
 			}
 		}
@@ -172,15 +202,18 @@
 	onDestroy(() => {
 		if (!browser) return;
 
+		clientLog.stop();
 		analyticsManager.stopLogging(TaskResult.Terminate);
 		if ($remoteTestSessionId) {
 			abortTestSession($remoteTestSessionId)
 				.then(() => {
 					console.log('Test session aborted successfully.');
+					clientLog.log('Test session aborted successfully.');
 					$remoteTestSessionId = null;
 				})
 				.catch((err) => {
 					console.error('Failed to abort test session:', err);
+					clientLog.error('Failed to abort test session:', err);
 				});
 		}
 	});

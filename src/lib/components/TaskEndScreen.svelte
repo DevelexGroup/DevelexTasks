@@ -4,7 +4,7 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { TaskResult } from '$lib/types/task.types';
-	import { currentTask, testSessionUploading } from '$lib/stores/task';
+	import { currentTask, testSessionUploading, clientLogUploading } from '$lib/stores/task';
 	import Icon from '@iconify/svelte';
 
 	interface Props {
@@ -16,6 +16,7 @@
 	const modeQuery = $derived(
 		page.url.searchParams.get('mode') === 'evaluation' ? '?mode=evaluation' : ''
 	);
+	const isUploading = $derived($testSessionUploading || $clientLogUploading);
 	const isSuccessful = $derived(exitType === TaskResult.Natural);
 	const status = $derived(
 		isSuccessful
@@ -94,12 +95,12 @@
 				</div>
 			</div>
 
-			{#if $testSessionUploading}
+			{#if isUploading}
 				<div class="flex flex-col items-center gap-4 rounded-md border border-blue-200 bg-blue-50 px-5 py-5 text-center">
 					<Icon icon="line-md:loading-twotone-loop" class="h-8 w-8 text-blue-600" />
 					<div class="space-y-1">
 						<p class="text-base font-semibold text-blue-800">
-							Ukládám výsledky…
+							{$clientLogUploading ? 'Ukládám záznamy klienta…' : 'Ukládám výsledky…'}
 						</p>
 						<p class="text-sm text-blue-600">
 							Prosím, nezavírejte aplikaci ani neodcházejte z této stránky.
@@ -114,8 +115,8 @@
 
 			<div class="mt-4 flex flex-col gap-3 sm:flex-row">
 				<button
-					disabled={$testSessionUploading}
-					class={`inline-flex items-center justify-center rounded-md px-5 py-3 text-sm font-semibold text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${status.buttonPrimary} ${$testSessionUploading ? 'cursor-not-allowed opacity-50' : ''}`}
+					disabled={isUploading}
+					class={`inline-flex items-center justify-center rounded-md px-5 py-3 text-sm font-semibold text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${status.buttonPrimary} ${isUploading ? 'cursor-not-allowed opacity-50' : ''}`}
 					onclick={navigateToTaskList}
 				>
 					Zpátky na výběr lekcí
@@ -123,8 +124,8 @@
 
 				{#if exitType === TaskResult.Mistake}
 					<button
-						disabled={$testSessionUploading}
-						class={`inline-flex items-center justify-center rounded-md border px-5 py-3 text-sm font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${status.buttonSecondary} ${$testSessionUploading ? 'cursor-not-allowed opacity-50' : ''}`}
+						disabled={isUploading}
+						class={`inline-flex items-center justify-center rounded-md border px-5 py-3 text-sm font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${status.buttonSecondary} ${isUploading ? 'cursor-not-allowed opacity-50' : ''}`}
 						onclick={retryTask}
 					>
 						Zkusit lekci znovu
