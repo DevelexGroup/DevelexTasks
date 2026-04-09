@@ -14,3 +14,4 @@ export const taskStage = writable<TaskStage>(TaskStage.Loading);
 
 export const remoteTestSessionId = writable<string | null>(null);
 export const remoteTestSessionActivePartId = writable<string | null>(null);
+export const testSessionUploading = writable<boolean>(false);

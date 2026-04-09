@@ -4,7 +4,8 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { TaskResult } from '$lib/types/task.types';
-	import { currentTask } from '$lib/stores/task';
+	import { currentTask, testSessionUploading } from '$lib/stores/task';
+	import Icon from '@iconify/svelte';
 
 	interface Props {
 		exitType: TaskResult;
@@ -93,13 +94,28 @@
 				</div>
 			</div>
 
-			<div class="rounded-md border bg-gray-50 px-4 py-3 text-sm text-gray-600">
-				{status.description}
-			</div>
+			{#if $testSessionUploading}
+				<div class="flex flex-col items-center gap-4 rounded-md border border-blue-200 bg-blue-50 px-5 py-5 text-center">
+					<Icon icon="line-md:loading-twotone-loop" class="h-8 w-8 text-blue-600" />
+					<div class="space-y-1">
+						<p class="text-base font-semibold text-blue-800">
+							Ukládám výsledky…
+						</p>
+						<p class="text-sm text-blue-600">
+							Prosím, nezavírejte aplikaci ani neodcházejte z této stránky.
+						</p>
+					</div>
+				</div>
+			{:else}
+				<div class="rounded-md border bg-gray-50 px-4 py-3 text-sm text-gray-600">
+					{status.description}
+				</div>
+			{/if}
 
 			<div class="mt-4 flex flex-col gap-3 sm:flex-row">
 				<button
-					class={`inline-flex items-center justify-center rounded-md px-5 py-3 text-sm font-semibold text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${status.buttonPrimary}`}
+					disabled={$testSessionUploading}
+					class={`inline-flex items-center justify-center rounded-md px-5 py-3 text-sm font-semibold text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${status.buttonPrimary} ${$testSessionUploading ? 'cursor-not-allowed opacity-50' : ''}`}
 					onclick={navigateToTaskList}
 				>
 					Zpátky na výběr lekcí
@@ -107,7 +123,8 @@
 
 				{#if exitType === TaskResult.Mistake}
 					<button
-						class={`inline-flex items-center justify-center rounded-md border px-5 py-3 text-sm font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${status.buttonSecondary}`}
+						disabled={$testSessionUploading}
+						class={`inline-flex items-center justify-center rounded-md border px-5 py-3 text-sm font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none ${status.buttonSecondary} ${$testSessionUploading ? 'cursor-not-allowed opacity-50' : ''}`}
 						onclick={retryTask}
 					>
 						Zkusit lekci znovu
