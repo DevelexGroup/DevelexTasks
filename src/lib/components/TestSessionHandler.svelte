@@ -85,13 +85,17 @@
 		if ($taskStage === TaskStage.End) {
 			const result = untrack(() => $currentTask?.result);
 			if (result) {
-				analyticsManager.stopLogging(result);
-
 				if ($remoteTestSessionId) {
 					$testSessionUploading = true;
 
-					// Wait for all pending operations (including final file upload) before finalizing
+					// Wait for all pending operations (including final file upload) before finalizing.
+					// IMPORTANT: stopLogging is deferred into the chain so the polling timer stays alive
+					// long enough for tickLogging to resolve any pending slide processing tokens.
+					// Calling it synchronously here would kill the timer and cause waitForSlideProcessing
+					// to hang indefinitely (the dyslex deadlock).
 					operationChain = operationChain.then(async () => {
+						analyticsManager.stopLogging(result);
+
 						const sessionId = get(remoteTestSessionId);
 						if (!sessionId) return;
 
@@ -131,6 +135,7 @@
 						$testSessionUploading = false;
 					});
 				} else {
+					analyticsManager.stopLogging(result);
 					clientLog.stop();
 				}
 			}
