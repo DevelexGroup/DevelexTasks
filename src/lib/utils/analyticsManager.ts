@@ -209,50 +209,54 @@ export class AnalyticsManager {
 			task_result: null
 		};
 
-		// Capture current state before clearing
-		const shouldCalculateScore = this.calculateScoreSlideRequest.includes(baseData.slide_index);
+		// Capture ALL pending score calculation requests before clearing.
+		// We must not use baseData.slide_index to filter, because the store's currentSlideIndex
+		// may have already advanced past the completed slide by the time this tick fires.
+		const pendingScoreSlides = [...this.calculateScoreSlideRequest];
+		const hasPendingScores = pendingScoreSlides.length > 0;
 		const childId = baseData.child_id;
 		const sessionId = baseData.session_id;
-		const slideIndex = baseData.slide_index;
 
 		// Clear buffers immediately (data already captured in gazeSample)
 		this.eventBuffer.events.clear();
 		this.eventBuffer.mistake_type.clear();
 
-		this.calculateScoreSlideRequest = this.calculateScoreSlideRequest.filter(
-			(index) => index !== baseData.slide_index
-		);
+		if (hasPendingScores) {
+			this.calculateScoreSlideRequest = [];
+		}
 
 		// Fire-and-forget but properly chained
 		db.transaction('rw', db.gazeSamples, db.fixationData, db.sessionScores, async () => {
 			await db.gazeSamples.add(gazeSample);
 
-			if (shouldCalculateScore) {
+			if (hasPendingScores) {
 				if (!this.currentTaskState || !this.currentMetricEvaluation) {
 					console.warn(
-						`Cannot calculate score for slide index ${slideIndex}: missing task state or metric evaluation function.`
+						`Cannot calculate score for slide indices ${pendingScoreSlides.join(', ')}: missing task state or metric evaluation function.`
 					);
 					return;
 				}
-				await this.calculateScoreMetrics(
-					this.currentTaskState,
-					this.currentMetricEvaluation,
-					childId,
-					sessionId,
-					slideIndex
-				);
+				for (const slideIndex of pendingScoreSlides) {
+					await this.calculateScoreMetrics(
+						this.currentTaskState,
+						this.currentMetricEvaluation,
+						childId,
+						sessionId,
+						slideIndex
+					);
+				}
 			}
 		})
 			.then(() => {
-				// Resolve the waiting token for this slide after processing completes
-				if (shouldCalculateScore) {
+				// Resolve the waiting tokens for all processed slides
+				for (const slideIndex of pendingScoreSlides) {
 					this.resolveSlideProcessingToken(slideIndex);
 				}
 			})
 			.catch((error) => {
 				console.error('Transaction failed:', error);
-				// Still resolve the token on error to prevent deadlocks
-				if (shouldCalculateScore) {
+				// Still resolve tokens on error to prevent deadlocks
+				for (const slideIndex of pendingScoreSlides) {
 					this.resolveSlideProcessingToken(slideIndex);
 				}
 			});
