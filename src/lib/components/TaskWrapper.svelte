@@ -16,8 +16,9 @@
 	import { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { GazeManager } from 'develex-js-sdk';
 	import TestSessionHandler from '$lib/components/TestSessionHandler.svelte';
+	import { isDiagnosisMode } from '$lib/stores/diagnosis';
 
-	const DEFAULT_TIMEOUT_INTERVAL = 80000; // 80 seconds
+	const DEFAULT_TIMEOUT_INTERVAL = 180000; // 3 minutes in milliseconds
 	const TIMEOUT_EVENT_LOG = 'inactivity_timeout';
 
 	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
@@ -101,6 +102,7 @@
 	});
 
 	const startTimeout = () => {
+		if ($isDiagnosisMode) return;
 		if (timeoutHandle) {
 			clearTimeout(timeoutHandle);
 		}
