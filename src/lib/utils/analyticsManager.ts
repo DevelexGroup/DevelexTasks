@@ -2,6 +2,7 @@
 	type BaseDataEntry,
 	type FixationDataEntry,
 	type GazeSampleDataEntry,
+	type RawGazeDataEntry,
 	type SessionScoreMetrics
 } from '$lib/database/db.types';
 import { get } from 'svelte/store';
@@ -39,6 +40,8 @@ export class AnalyticsManager {
 	private POLLING_RATE_HZ = 120;
 	private POLLING_INTERVAL_MS = 1000 / this.POLLING_RATE_HZ;
 
+	private RAW_GAZE_FLUSH_INTERVAL_MS = 500;
+
 	private REGRESSION_MIN_DIST = 50; // pixels
 	private REGRESSION_MIN_DEGREE = 40; // degrees
 
@@ -49,6 +52,8 @@ export class AnalyticsManager {
 	private RESUME_LOGGING_EVENT = 'resume_logging';
 
 	private pollingTimer: ReturnType<typeof setInterval> | null = null;
+	private rawGazeFlushTimer: ReturnType<typeof setInterval> | null = null;
+	private rawGazeBuffer: RawGazeDataEntry[] = [];
 
 	private eyetrackerPosition: { x: number; y: number } = { x: 0, y: 0 };
 	private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
@@ -193,6 +198,10 @@ export class AnalyticsManager {
 		this.loggingPaused = false;
 
 		this.pollingTimer = setInterval(this.tickLogging.bind(this), this.POLLING_INTERVAL_MS);
+		this.rawGazeFlushTimer = setInterval(
+			this.flushRawGazeBuffer.bind(this),
+			this.RAW_GAZE_FLUSH_INTERVAL_MS
+		);
 	}
 
 	private tickLogging() {
@@ -275,6 +284,14 @@ export class AnalyticsManager {
 
 		clearInterval(this.pollingTimer);
 		this.pollingTimer = null;
+
+		if (this.rawGazeFlushTimer) {
+			clearInterval(this.rawGazeFlushTimer);
+			this.rawGazeFlushTimer = null;
+		}
+
+		// Flush any remaining raw gaze data
+		this.flushRawGazeBuffer();
 
 		const baseData = this.getBaseDataEntry();
 		const finalGazeSample: GazeSampleDataEntry = {
@@ -366,6 +383,30 @@ export class AnalyticsManager {
 		if (inputData.parseValidity) {
 			this.updateEyetrackerPosition(inputData.x, inputData.y);
 		}
+
+		if (!this.isLoggingActive()) return;
+
+		const user = get(authUser);
+		const task = get(currentTask);
+
+		this.rawGazeBuffer.push({
+			child_id: user?.username ?? 'host',
+			session_id: task ? task.sessionId : 'unknown',
+			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
+			timestamp: window.performance.timeOrigin + window.performance.now(),
+			bridgeTimeStamp: inputData.timestamp,
+			deviceTimeStamp: inputData.deviceTimestamp,
+			x: inputData.x,
+			y: inputData.y,
+			xL: inputData.xL,
+			yL: inputData.yL,
+			validityL: inputData.validityL,
+			pupilDiameterL: inputData.pupilDiameterL,
+			xR: inputData.xR,
+			yR: inputData.yR,
+			validityR: inputData.validityR,
+			pupilDiameterR: inputData.pupilDiameterR
+		});
 	};
 
 	private handleFixationStart = (fixationData: FixationDataPoint) => {
@@ -405,6 +446,19 @@ export class AnalyticsManager {
 	private handleIntersection = (intersectionData: GazeInteractionObjectIntersectEvent) => {
 		this.updateActiveAOI(intersectionData.target.map((target) => target.id));
 	};
+
+	/* *************************** *
+	 * 	Raw gaze data buffering
+	 * *************************** */
+
+	private flushRawGazeBuffer() {
+		if (this.rawGazeBuffer.length === 0) return;
+		const batch = this.rawGazeBuffer;
+		this.rawGazeBuffer = [];
+		db.rawGazeData.bulkAdd(batch).catch((error) => {
+			console.error('Error flushing raw gaze buffer:', error);
+		});
+	}
 
 	/* *************************** *
 	 * 	Score calculation based on gaze and fixation data

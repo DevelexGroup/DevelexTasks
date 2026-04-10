@@ -99,18 +99,31 @@
 						const sessionId = get(remoteTestSessionId);
 						if (!sessionId) return;
 
-						// Upload client logs to the last part
+						// Upload client logs and raw gaze data to the last part
 						const lastPartId = await currentPartCreationPromise;
 						if (lastPartId) {
 							$clientLogUploading = true;
 							try {
+								const filesToUpload: File[] = [];
+
 								const logFile = clientLog.exportAsFile();
-								await addFilesToTestSessionPart(sessionId, lastPartId, [logFile]);
-								console.log('Client logs uploaded to last part.');
-								clientLog.log('Client logs uploaded to last part.');
+								filesToUpload.push(logFile);
+
+								const childId = get(authUser)?.username;
+								const localSessionId = $currentTask?.sessionId;
+								if (childId && localSessionId) {
+									const rawGazeFile = await DatabaseExporter.exportRawGazeDataAsFile(childId, localSessionId);
+									if (rawGazeFile) {
+										filesToUpload.push(rawGazeFile);
+									}
+								}
+
+								await addFilesToTestSessionPart(sessionId, lastPartId, filesToUpload);
+								console.log('Client logs and raw gaze data uploaded to last part.');
+								clientLog.log('Client logs and raw gaze data uploaded to last part.');
 							} catch (err) {
-								console.error('Failed to upload client logs:', err);
-								clientLog.error('Failed to upload client logs:', err);
+								console.error('Failed to upload client logs / raw gaze data:', err);
+								clientLog.error('Failed to upload client logs / raw gaze data:', err);
 							} finally {
 								$clientLogUploading = false;
 							}

@@ -51,3 +51,24 @@ export interface DyslexVissDiffClicksDataEntry extends BaseDataEntry {
 	is_correct: boolean;
 	aoi: string;
 }
+
+export interface RawGazeDataEntry {
+	id?: number;
+	child_id: string;
+	session_id: string;
+	task_name: string;
+	timestamp: number;
+	bridgeTimeStamp: string;
+	deviceTimeStamp: string;
+	x: number;
+	y: number;
+	xL: number;
+	yL: number;
+	validityL: boolean;
+	pupilDiameterL: number;
+	xR: number;
+	yR: number;
+	validityR: boolean;
+	pupilDiameterR: number;
+}
+

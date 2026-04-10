@@ -3,17 +3,19 @@ import type {
 	GazeSampleDataEntry,
 	FixationDataEntry,
 	SessionScoreDataEntry,
-	DyslexVissDiffClicksDataEntry
+	DyslexVissDiffClicksDataEntry,
+	RawGazeDataEntry
 } from '$lib/database/db.types';
 import JSZip from 'jszip';
 
 export type ExportMode = 'all' | 'child' | 'session';
-export type TableName = 'gazeSamples' | 'fixationData' | 'sessionScores' | 'dyslexVissDiffClicks';
+export type TableName = 'gazeSamples' | 'fixationData' | 'sessionScores' | 'dyslexVissDiffClicks' | 'rawGazeData';
 export type DataEntry =
 	| GazeSampleDataEntry
 	| FixationDataEntry
 	| SessionScoreDataEntry
-	| DyslexVissDiffClicksDataEntry;
+	| DyslexVissDiffClicksDataEntry
+	| RawGazeDataEntry;
 
 export interface ExportOptions {
 	mode: ExportMode;
@@ -60,19 +62,21 @@ export class DatabaseExporter {
 	 * Get all unique child IDs from all tables
 	 */
 	static async getChildIds(): Promise<string[]> {
-		const [gazeChildIds, fixationChildIds, sessionChildIds, visDiffClickChildIds] =
+		const [gazeChildIds, fixationChildIds, sessionChildIds, visDiffClickChildIds, rawGazeChildIds] =
 			await Promise.all([
 				db.gazeSamples.orderBy('child_id').uniqueKeys() as Promise<string[]>,
 				db.fixationData.orderBy('child_id').uniqueKeys() as Promise<string[]>,
 				db.sessionScores.orderBy('child_id').uniqueKeys() as Promise<string[]>,
-				db.dyslexVissDiffClicks.orderBy('child_id').uniqueKeys() as Promise<string[]>
+				db.dyslexVissDiffClicks.orderBy('child_id').uniqueKeys() as Promise<string[]>,
+				db.rawGazeData.orderBy('child_id').uniqueKeys() as Promise<string[]>
 			]);
 
 		const allChildIds = new Set([
 			...gazeChildIds,
 			...fixationChildIds,
 			...sessionChildIds,
-			...visDiffClickChildIds
+			...visDiffClickChildIds,
+			...rawGazeChildIds
 		]);
 		return Array.from(allChildIds).sort();
 	}
@@ -83,12 +87,13 @@ export class DatabaseExporter {
 	static async getSessionIds(childId: string): Promise<SessionInfo[]> {
 		if (!childId) return [];
 
-		const [gazeSessions, fixationSessions, scoreSessions, visDiffClickSessions] = await Promise.all(
+		const [gazeSessions, fixationSessions, scoreSessions, visDiffClickSessions, rawGazeSessions] = await Promise.all(
 			[
 				db.gazeSamples.where('child_id').equals(childId).toArray(),
 				db.fixationData.where('child_id').equals(childId).toArray(),
 				db.sessionScores.where('child_id').equals(childId).toArray(),
-				db.dyslexVissDiffClicks.where('child_id').equals(childId).toArray()
+				db.dyslexVissDiffClicks.where('child_id').equals(childId).toArray(),
+				db.rawGazeData.where('child_id').equals(childId).toArray()
 			]
 		);
 
@@ -96,7 +101,8 @@ export class DatabaseExporter {
 			...gazeSessions,
 			...fixationSessions,
 			...scoreSessions,
-			...visDiffClickSessions
+			...visDiffClickSessions,
+			...rawGazeSessions
 		];
 
 		const sessionMap = new Map<string, string>();
@@ -166,6 +172,26 @@ export class DatabaseExporter {
 				'AOI Target Fixations',
 				'AOI Field Fixations',
 				'Regression Count'
+			];
+		} else if (table === 'rawGazeData') {
+			return [
+				'ID',
+				'Child ID',
+				'Session ID',
+				'Task',
+				'Timestamp',
+				'Bridge Timestamp',
+				'Device Timestamp',
+				'X',
+				'Y',
+				'Left X',
+				'Left Y',
+				'Left Validity',
+				'Left Pupil Diameter',
+				'Right X',
+				'Right Y',
+				'Right Validity',
+				'Right Pupil Diameter'
 			];
 		} else {
 			return [
@@ -257,6 +283,28 @@ export class DatabaseExporter {
 				data.regression_count
 			];
 			return values[index];
+		} else if (table === 'rawGazeData') {
+			const data = entry as RawGazeDataEntry;
+			const values = [
+				data.id,
+				data.child_id,
+				data.session_id,
+				data.task_name,
+				data.timestamp,
+				data.bridgeTimeStamp,
+				data.deviceTimeStamp,
+				data.x,
+				data.y,
+				data.xL,
+				data.yL,
+				data.validityL,
+				data.pupilDiameterL,
+				data.xR,
+				data.yR,
+				data.validityR,
+				data.pupilDiameterR
+			];
+			return values[index];
 		} else {
 			const data = entry as DyslexVissDiffClicksDataEntry;
 			const values = [
@@ -332,12 +380,13 @@ export class DatabaseExporter {
 			'gazeSamples',
 			'fixationData',
 			'sessionScores',
-			'dyslexVissDiffClicks'
+			'dyslexVissDiffClicks',
+			'rawGazeData'
 		];
 
 		const filterBySlideIndex = (data: DataEntry[]): DataEntry[] => {
 			if (options.slideIndex === undefined) return data;
-			return data.filter((entry) => entry.slide_index === options.slideIndex);
+			return data.filter((entry) => 'slide_index' in entry && entry.slide_index === options.slideIndex);
 		};
 
 		if (options.mode === 'all') {
@@ -442,13 +491,14 @@ export class DatabaseExporter {
 			'gazeSamples',
 			'fixationData',
 			'sessionScores',
-			'dyslexVissDiffClicks'
+			'dyslexVissDiffClicks',
+			'rawGazeData'
 		];
 		const files: File[] = [];
 
 		const filterBySlideIndex = (data: DataEntry[]): DataEntry[] => {
 			if (options.slideIndex === undefined) return data;
-			return data.filter((entry) => entry.slide_index === options.slideIndex);
+			return data.filter((entry) => 'slide_index' in entry && entry.slide_index === options.slideIndex);
 		};
 
 		for (const tableName of tables) {
@@ -479,6 +529,22 @@ export class DatabaseExporter {
 		}
 
 		return files;
+	}
+
+	/**
+	 * Export raw gaze data for a specific session as a single CSV File.
+	 */
+	static async exportRawGazeDataAsFile(childId: string, sessionId: string): Promise<File | null> {
+		const data = await db.rawGazeData
+			.where('[child_id+session_id]')
+			.equals([childId, sessionId])
+			.toArray();
+
+		if (data.length === 0) return null;
+
+		const csvContent = this.createCsvContent(data, 'rawGazeData');
+		const blob = new Blob([csvContent], { type: 'text/csv' });
+		return new File([blob], 'rawGazeData.csv', { type: 'text/csv' });
 	}
 
 	/**

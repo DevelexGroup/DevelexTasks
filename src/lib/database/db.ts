@@ -3,6 +3,7 @@ import type {
 	DyslexVissDiffClicksDataEntry,
 	FixationDataEntry,
 	GazeSampleDataEntry,
+	RawGazeDataEntry,
 	SessionScoreDataEntry
 } from '$lib/database/db.types';
 
@@ -11,6 +12,7 @@ const db = new Dexie('DevelexDatabase') as Dexie & {
 	fixationData: EntityTable<FixationDataEntry, 'id'>;
 	sessionScores: EntityTable<SessionScoreDataEntry, 'id'>;
 	dyslexVissDiffClicks: EntityTable<DyslexVissDiffClicksDataEntry, 'id'>;
+	rawGazeData: EntityTable<RawGazeDataEntry, 'id'>;
 };
 
 db.version(1).stores({
@@ -22,6 +24,11 @@ db.version(1).stores({
 		'++id, child_id, session_id, [child_id+session_id], task_name, slide_index, stimulus_id, timestamp, fluency_score, error_rate, response_time, mean_fix_dur, fix_count, aoi_target_fix, aoi_field_fix, regression_count',
 	dyslexVissDiffClicks:
 		'++id, child_id, session_id, [child_id+session_id], task_name, slide_index, stimulus_id, timestamp, is_correct, aoi'
+});
+
+db.version(2).stores({
+	rawGazeData:
+		'++id, child_id, [child_id+session_id], timestamp'
 });
 
 export { db };
