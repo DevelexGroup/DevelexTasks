@@ -57,6 +57,7 @@ export interface RawGazeDataEntry {
 	child_id: string;
 	session_id: string;
 	task_name: string;
+	slide_index: number;
 	timestamp: number;
 	bridgeTimeStamp: string;
 	deviceTimeStamp: string;

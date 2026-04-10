@@ -179,6 +179,7 @@ export class DatabaseExporter {
 				'Child ID',
 				'Session ID',
 				'Task',
+				'Slide Index',
 				'Timestamp',
 				'Bridge Timestamp',
 				'Device Timestamp',
@@ -290,6 +291,7 @@ export class DatabaseExporter {
 				data.child_id,
 				data.session_id,
 				data.task_name,
+				data.slide_index,
 				data.timestamp,
 				data.bridgeTimeStamp,
 				data.deviceTimeStamp,
@@ -386,7 +388,7 @@ export class DatabaseExporter {
 
 		const filterBySlideIndex = (data: DataEntry[]): DataEntry[] => {
 			if (options.slideIndex === undefined) return data;
-			return data.filter((entry) => 'slide_index' in entry && entry.slide_index === options.slideIndex);
+			return data.filter((entry) => entry.slide_index === options.slideIndex);
 		};
 
 		if (options.mode === 'all') {
@@ -498,7 +500,7 @@ export class DatabaseExporter {
 
 		const filterBySlideIndex = (data: DataEntry[]): DataEntry[] => {
 			if (options.slideIndex === undefined) return data;
-			return data.filter((entry) => 'slide_index' in entry && entry.slide_index === options.slideIndex);
+			return data.filter((entry) => entry.slide_index === options.slideIndex);
 		};
 
 		for (const tableName of tables) {
@@ -531,21 +533,6 @@ export class DatabaseExporter {
 		return files;
 	}
 
-	/**
-	 * Export raw gaze data for a specific session as a single CSV File.
-	 */
-	static async exportRawGazeDataAsFile(childId: string, sessionId: string): Promise<File | null> {
-		const data = await db.rawGazeData
-			.where('[child_id+session_id]')
-			.equals([childId, sessionId])
-			.toArray();
-
-		if (data.length === 0) return null;
-
-		const csvContent = this.createCsvContent(data, 'rawGazeData');
-		const blob = new Blob([csvContent], { type: 'text/csv' });
-		return new File([blob], 'rawGazeData.csv', { type: 'text/csv' });
-	}
 
 	/**
 	 * Export and download the data as a ZIP file

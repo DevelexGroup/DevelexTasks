@@ -3,7 +3,7 @@
 	type FixationDataEntry,
 	type GazeSampleDataEntry,
 	type RawGazeDataEntry,
-	type SessionScoreMetrics
+	type SessionScoreMetrics,
 } from '$lib/database/db.types';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
@@ -259,7 +259,12 @@ export class AnalyticsManager {
 				}
 			}
 		})
-			.then(() => {
+			.then(async () => {
+				// Flush raw gaze buffer before resolving slide tokens
+				// so data is in the DB when per-slide export runs
+				if (hasPendingScores) {
+					await this.flushRawGazeBuffer();
+				}
 				// Resolve the waiting tokens for all processed slides
 				for (const slideIndex of pendingScoreSlides) {
 					this.resolveSlideProcessingToken(slideIndex);
@@ -393,6 +398,7 @@ export class AnalyticsManager {
 			child_id: user?.username ?? 'host',
 			session_id: task ? task.sessionId : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
+			slide_index: task?.currentSlideIndex ?? -1,
 			timestamp: window.performance.timeOrigin + window.performance.now(),
 			bridgeTimeStamp: inputData.timestamp,
 			deviceTimeStamp: inputData.deviceTimestamp,
@@ -451,11 +457,11 @@ export class AnalyticsManager {
 	 * 	Raw gaze data buffering
 	 * *************************** */
 
-	private flushRawGazeBuffer() {
-		if (this.rawGazeBuffer.length === 0) return;
+	private flushRawGazeBuffer(): Promise<void> {
+		if (this.rawGazeBuffer.length === 0) return Promise.resolve();
 		const batch = this.rawGazeBuffer;
 		this.rawGazeBuffer = [];
-		db.rawGazeData.bulkAdd(batch).catch((error) => {
+		return db.rawGazeData.bulkAdd(batch).then(() => {}).catch((error) => {
 			console.error('Error flushing raw gaze buffer:', error);
 		});
 	}
