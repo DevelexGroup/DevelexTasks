@@ -51,7 +51,7 @@ export class AnalyticsManager {
 	private PAUSE_LOGGING_EVENT = 'pause_logging';
 	private RESUME_LOGGING_EVENT = 'resume_logging';
 
-	private pollingTimer: ReturnType<typeof setInterval> | null = null;
+	private timerWorker: Worker | null = null;
 	private rawGazeFlushTimer: ReturnType<typeof setInterval> | null = null;
 	private rawGazeBuffer: RawGazeDataEntry[] = [];
 
@@ -191,13 +191,26 @@ export class AnalyticsManager {
 	}
 
 	public startLogging() {
-		if (this.pollingTimer) return;
+		if (this.timerWorker) return;
 
 		this.registerListeners();
 
 		this.loggingPaused = false;
 
-		this.pollingTimer = setInterval(this.tickLogging.bind(this), this.POLLING_INTERVAL_MS);
+		this.timerWorker = new Worker(
+			new URL('./analyticsWorker.ts', import.meta.url),
+			{ type: 'module' }
+		);
+		this.timerWorker.onmessage = (e: MessageEvent) => {
+			if (e.data.type === 'tick') {
+				this.tickLogging();
+			}
+		};
+		this.timerWorker.postMessage({
+			type: 'start',
+			intervalMs: this.POLLING_INTERVAL_MS
+		});
+
 		this.rawGazeFlushTimer = setInterval(
 			this.flushRawGazeBuffer.bind(this),
 			this.RAW_GAZE_FLUSH_INTERVAL_MS
@@ -285,10 +298,11 @@ export class AnalyticsManager {
 	}
 
 	public stopLogging(exitType: TaskResult) {
-		if (!this.pollingTimer) return;
+		if (!this.timerWorker) return;
 
-		clearInterval(this.pollingTimer);
-		this.pollingTimer = null;
+		this.timerWorker.postMessage({ type: 'stop' });
+		this.timerWorker.terminate();
+		this.timerWorker = null;
 
 		if (this.rawGazeFlushTimer) {
 			clearInterval(this.rawGazeFlushTimer);
@@ -337,7 +351,7 @@ export class AnalyticsManager {
 	}
 
 	public isLoggingActive() {
-		return this.pollingTimer !== null && !this.loggingPaused;
+		return this.timerWorker !== null && !this.loggingPaused;
 	}
 
 	/* *************************** *
