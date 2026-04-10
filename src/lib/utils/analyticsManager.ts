@@ -146,6 +146,9 @@ export class AnalyticsManager {
 		this.eventBuffer.events.add(`complete-slide-${slideIndex}`);
 		this.calculateScoreSlideRequest.push(slideIndex);
 
+		// Force clear played sounds on slide change
+		this.playedSounds.clear();
+
 		// Create a waiting token for this slide
 		this.createSlideProcessingToken(slideIndex);
 

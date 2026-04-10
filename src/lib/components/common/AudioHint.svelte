@@ -97,6 +97,11 @@
 		if (reportToAnalytics) {
 			analyticsManager.setSoundActive(audioSrc, isPlaying);
 		}
+		return () => {
+			if (reportToAnalytics) {
+				analyticsManager.setSoundActive(audioSrc, false);
+			}
+		};
 	});
 </script>
 
