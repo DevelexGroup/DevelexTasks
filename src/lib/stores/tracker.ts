@@ -8,6 +8,16 @@ export enum AvaiableTracker {
 	MouseIdt = 'mouse_idt'
 }
 
+export enum SamplingMode {
+	TrackerPolled = 'tracker_polled',
+	TimerBased = 'timer_based'
+}
+
+export const SAMPLING_MODE_LABELS: Record<SamplingMode, string> = {
+	[SamplingMode.TrackerPolled]: 'Tracker samplování',
+	[SamplingMode.TimerBased]: 'Statické 120hz samplování'
+};
+
 export const GAZE_INPUT_CONFIGS: Record<AvaiableTracker, GazeInputConfigWithFixations> = {
 	gazepoint_base: {
 		tracker: 'gazepoint',
@@ -35,3 +45,4 @@ export const GAZE_INPUT_CONFIGS: Record<AvaiableTracker, GazeInputConfigWithFixa
 };
 
 export const trackerConfig = session<AvaiableTracker>('tracker_config', AvaiableTracker.MouseIdt);
+export const samplingMode = session<SamplingMode>('sampling_mode', SamplingMode.TrackerPolled);

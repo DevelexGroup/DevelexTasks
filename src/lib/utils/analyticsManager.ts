@@ -17,6 +17,7 @@ import { browser } from '$app/environment';
 import Dexie from 'dexie';
 import { db } from '$lib/database/db';
 import { authUser } from '$lib/stores/auth';
+import { SamplingMode, samplingMode } from '$lib/stores/tracker';
 
 interface SlideTimeWindow {
 	slideIndex: number;
@@ -51,6 +52,7 @@ export class AnalyticsManager {
 	private pollingTimer: ReturnType<typeof setInterval> | null = null;
 
 	private eyetrackerPosition: { x: number; y: number } = { x: 0, y: 0 };
+	private lastTrackerTimestamp: number | null = null;
 	private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
 	private playedSounds: Set<string> = new Set<string>();
 	private activeAOI: Set<string> = new Set<string>();
@@ -64,6 +66,7 @@ export class AnalyticsManager {
 
 	private gazeManager: GazeManager;
 
+	private loggingActive = false;
 	private loggingPaused = false;
 	private pauseRequest = false;
 
@@ -124,13 +127,18 @@ export class AnalyticsManager {
 		const user = get(authUser);
 		const task = get(currentTask);
 
+		const timestamp =
+			this.lastTrackerTimestamp !== null
+				? this.lastTrackerTimestamp
+				: window.performance.timeOrigin + window.performance.now();
+
 		return {
 			child_id: user?.username ?? 'host',
 			session_id: task ? task.sessionId : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
 			slide_index: task?.currentSlideIndex ?? -1,
 			stimulus_id: task?.stimulusId ?? 'null',
-			timestamp: window.performance.timeOrigin + window.performance.now()
+			timestamp
 		};
 	}
 
@@ -186,13 +194,18 @@ export class AnalyticsManager {
 	}
 
 	public startLogging() {
-		if (this.pollingTimer) return;
+		if (this.loggingActive) return;
 
 		this.registerListeners();
 
+		this.loggingActive = true;
 		this.loggingPaused = false;
 
-		this.pollingTimer = setInterval(this.tickLogging.bind(this), this.POLLING_INTERVAL_MS);
+		const mode = get(samplingMode);
+		if (mode === SamplingMode.TimerBased) {
+			this.pollingTimer = setInterval(this.tickLogging.bind(this), this.POLLING_INTERVAL_MS);
+		}
+		// In TrackerPolled mode, tickLogging is called from handleInputData
 	}
 
 	private tickLogging() {
@@ -271,10 +284,14 @@ export class AnalyticsManager {
 	}
 
 	public stopLogging(exitType: TaskResult) {
-		if (!this.pollingTimer) return;
+		if (!this.loggingActive) return;
 
-		clearInterval(this.pollingTimer);
-		this.pollingTimer = null;
+		if (this.pollingTimer) {
+			clearInterval(this.pollingTimer);
+			this.pollingTimer = null;
+		}
+
+		this.loggingActive = false;
 
 		const baseData = this.getBaseDataEntry();
 		const finalGazeSample: GazeSampleDataEntry = {
@@ -315,7 +332,7 @@ export class AnalyticsManager {
 	}
 
 	public isLoggingActive() {
-		return this.pollingTimer !== null && !this.loggingPaused;
+		return this.loggingActive && !this.loggingPaused;
 	}
 
 	/* *************************** *
@@ -366,10 +383,29 @@ export class AnalyticsManager {
 		if (inputData.parseValidity) {
 			this.updateEyetrackerPosition(inputData.x, inputData.y);
 		}
+
+		// In TrackerPolled mode, each incoming gaze event drives a logging tick
+		if (this.loggingActive && !this.pollingTimer) {
+			// Use the tracker's own timestamp for this sample
+			const ts = Number(inputData.timestamp);
+			this.lastTrackerTimestamp = Number.isFinite(ts) ? ts : null;
+
+			this.tickLogging();
+
+			// Reset so non-polled paths (e.g. stopLogging) fall back to performance.now()
+			this.lastTrackerTimestamp = null;
+		}
 	};
 
 	private handleFixationStart = (fixationData: FixationDataPoint) => {
 		if (!this.isLoggingActive()) return;
+
+		// Use tracker timestamp in TrackerPolled mode
+		if (!this.pollingTimer) {
+			const ts = Number(fixationData.timestamp);
+			this.lastTrackerTimestamp = Number.isFinite(ts) ? ts : null;
+		}
+
 		const dataEntry = this.getBaseDataEntry();
 		const fixationEntry: FixationDataEntry = {
 			...dataEntry,
@@ -380,6 +416,10 @@ export class AnalyticsManager {
 			fixation_index: fixationData.fixationId
 		};
 		this.activeFixations.push(fixationEntry);
+
+		if (!this.pollingTimer) {
+			this.lastTrackerTimestamp = null;
+		}
 	};
 
 	private handleFixationEnd = (fixationData: FixationDataPoint) => {

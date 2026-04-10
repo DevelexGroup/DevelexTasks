@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { GAZE_INPUT_CONFIGS, trackerConfig } from '$lib/stores/tracker';
+	import { GAZE_INPUT_CONFIGS, trackerConfig, samplingMode, SamplingMode, SAMPLING_MODE_LABELS } from '$lib/stores/tracker';
 	import { isDiagnosisMode } from '$lib/stores/diagnosis';
 	import DiagnosisDialog from '$lib/components/DiagnosisDialog.svelte';
 	import { Switch } from '$lib/components/ui/switch';
@@ -39,6 +39,24 @@
 			{#each Object.entries(GAZE_INPUT_CONFIGS) as [key, value] (key)}
 				<option value={key} class="capitalize" selected={key === $trackerConfig}>
 					{value.tracker} - {value.fixationDetection}
+				</option>
+			{/each}
+		</select>
+	</div>
+
+	<div class="mt-4 flex flex-col">
+		<label for="sampling-mode" class="mb-1 text-sm font-semibold text-gray-700"
+			>Režim vzorkování</label
+		>
+
+		<select
+			id="sampling-mode"
+			bind:value={$samplingMode}
+			class="rounded-md border border-gray-300 px-3 py-1.5"
+		>
+			{#each Object.values(SamplingMode) as mode (mode)}
+				<option value={mode} selected={mode === $samplingMode}>
+					{SAMPLING_MODE_LABELS[mode]}
 				</option>
 			{/each}
 		</select>
