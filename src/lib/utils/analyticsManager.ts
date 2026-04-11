@@ -55,6 +55,12 @@ export class AnalyticsManager {
 	private rawGazeFlushTimer: ReturnType<typeof setInterval> | null = null;
 	private rawGazeBuffer: RawGazeDataEntry[] = [];
 
+	// SharedArrayBuffer written by the main thread on every eyetracker inputData
+	// event and read by the worker at the exact scheduled tick moment.
+	// Layout (Int32Array): [x×100, y×100, parseValidity]
+	private gazeSharedBuf: SharedArrayBuffer | null = null;
+	private gazeSharedArray: Int32Array | null = null;
+
 	private eyetrackerPosition: { x: number; y: number } = { x: 0, y: 0 };
 	private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
 	private playedSounds: Set<string> = new Set<string>();
@@ -197,17 +203,32 @@ export class AnalyticsManager {
 
 		this.loggingPaused = false;
 
-		this.timerWorker = new Worker(new URL('./analyticsWorker.ts', import.meta.url), {
-			type: 'module'
-		});
+		// Allocate shared memory so the worker can read eyetracker state
+		// atomically at the exact scheduled tick moment.
+		// SharedArrayBuffer requires cross-origin isolation headers (COOP + COEP).
+		// If unavailable, fall back to main-thread mirrored values.
+		if (typeof SharedArrayBuffer !== 'undefined') {
+			this.gazeSharedBuf = new SharedArrayBuffer(3 * Int32Array.BYTES_PER_ELEMENT);
+			this.gazeSharedArray = new Int32Array(this.gazeSharedBuf);
+		} else {
+			console.warn('SharedArrayBuffer is not available – falling back to main-thread gaze mirroring. Ensure Cross-Origin-Opener-Policy and Cross-Origin-Embedder-Policy headers are set.');
+			this.gazeSharedBuf = null;
+			this.gazeSharedArray = null;
+		}
+
+		this.timerWorker = new Worker(
+			new URL('./analyticsWorker.ts', import.meta.url),
+			{ type: 'module' }
+		);
 		this.timerWorker.onmessage = (e: MessageEvent) => {
 			if (e.data.type === 'tick') {
-				this.tickLogging();
+				this.tickLogging(e.data.timestamp, e.data.x, e.data.y);
 			}
 		};
 		this.timerWorker.postMessage({
 			type: 'start',
-			intervalMs: this.POLLING_INTERVAL_MS
+			intervalMs: this.POLLING_INTERVAL_MS,
+			gazeBuf: this.gazeSharedBuf
 		});
 
 		this.rawGazeFlushTimer = setInterval(
@@ -216,14 +237,21 @@ export class AnalyticsManager {
 		);
 	}
 
-	private tickLogging() {
+	private tickLogging(workerTimestamp?: number, workerX?: number, workerY?: number) {
 		if (this.loggingPaused) return;
 
 		const baseData = this.getBaseDataEntry();
+		// Use the worker's scheduled tick time so samples are spaced exactly
+		// at the polling interval regardless of main-thread scheduling jitter.
+		if (workerTimestamp !== undefined) {
+			baseData.timestamp = performance.timeOrigin + workerTimestamp;
+		}
 		const gazeSample: GazeSampleDataEntry = {
 			...baseData,
-			eyetracker_x: this.eyetrackerPosition.x,
-			eyetracker_y: this.eyetrackerPosition.y,
+			// Use the worker-captured position (read at the exact tick moment via
+			// SharedArrayBuffer) when available; fall back to the mirrored value.
+			eyetracker_x: workerX ?? this.eyetrackerPosition.x,
+			eyetracker_y: workerY ?? this.eyetrackerPosition.y,
 			aoi: Array.from(this.activeAOI),
 			mouse_x: this.mousePosition.x,
 			mouse_y: this.mousePosition.y,
@@ -400,6 +428,16 @@ export class AnalyticsManager {
 	private handleInputData = (inputData: GazeDataPoint) => {
 		if (inputData.parseValidity) {
 			this.updateEyetrackerPosition(inputData.x, inputData.y);
+		}
+
+		// Write to SharedArrayBuffer so the worker can read position atomically
+		// at the exact scheduled tick moment (no message-passing delay).
+		// Only update x/y when valid — same policy as updateEyetrackerPosition —
+		// so the buffer always holds the last known good position.
+		if (this.gazeSharedArray !== null) {
+			Atomics.store(this.gazeSharedArray, 0, Math.round(inputData.x * 100));
+			Atomics.store(this.gazeSharedArray, 1, Math.round(inputData.y * 100));
+			Atomics.store(this.gazeSharedArray, 2, inputData.parseValidity ? 1 : 0);
 		}
 
 		if (!this.isLoggingActive()) return;

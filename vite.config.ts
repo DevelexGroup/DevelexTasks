@@ -2,8 +2,19 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 
+// SharedArrayBuffer requires cross-origin isolation headers.
+// For production (adapter-static), configure the same headers on your web server:
+//   Cross-Origin-Opener-Policy: same-origin
+//   Cross-Origin-Embedder-Policy: require-corp
+const crossOriginIsolationHeaders = {
+	'Cross-Origin-Opener-Policy': 'same-origin',
+	'Cross-Origin-Embedder-Policy': 'require-corp'
+};
+
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
+	server: { headers: crossOriginIsolationHeaders },
+	preview: { headers: crossOriginIsolationHeaders },
 	test: {
 		expect: { requireAssertions: true },
 		projects: [
