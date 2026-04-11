@@ -60,9 +60,8 @@ export class DatabaseExporter {
 		}
 
 		const milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0');
-		const microseconds = String(Math.floor((unixTimestamp % 1) * 1000)).padStart(3, '0');
 
-		return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}${microseconds}Z`;
+		return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
 	}
 
 	/**
