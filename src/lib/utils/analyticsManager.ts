@@ -3,7 +3,7 @@
 	type FixationDataEntry,
 	type GazeSampleDataEntry,
 	type RawGazeDataEntry,
-	type SessionScoreMetrics,
+	type SessionScoreMetrics
 } from '$lib/database/db.types';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
@@ -197,10 +197,9 @@ export class AnalyticsManager {
 
 		this.loggingPaused = false;
 
-		this.timerWorker = new Worker(
-			new URL('./analyticsWorker.ts', import.meta.url),
-			{ type: 'module' }
-		);
+		this.timerWorker = new Worker(new URL('./analyticsWorker.ts', import.meta.url), {
+			type: 'module'
+		});
 		this.timerWorker.onmessage = (e: MessageEvent) => {
 			if (e.data.type === 'tick') {
 				this.tickLogging();
@@ -413,7 +412,7 @@ export class AnalyticsManager {
 			session_id: task ? task.sessionId : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
 			slide_index: task?.currentSlideIndex ?? -1,
-			timestamp: window.performance.timeOrigin + window.performance.now(),
+			timestamp: new Date(window.performance.timeOrigin + window.performance.now()).toISOString(),
 			bridgeTimeStamp: inputData.timestamp,
 			deviceTimeStamp: inputData.deviceTimestamp,
 			x: inputData.x,
@@ -475,9 +474,12 @@ export class AnalyticsManager {
 		if (this.rawGazeBuffer.length === 0) return Promise.resolve();
 		const batch = this.rawGazeBuffer;
 		this.rawGazeBuffer = [];
-		return db.rawGazeData.bulkAdd(batch).then(() => {}).catch((error) => {
-			console.error('Error flushing raw gaze buffer:', error);
-		});
+		return db.rawGazeData
+			.bulkAdd(batch)
+			.then(() => {})
+			.catch((error) => {
+				console.error('Error flushing raw gaze buffer:', error);
+			});
 	}
 
 	/* *************************** *
