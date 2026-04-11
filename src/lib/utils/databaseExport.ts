@@ -9,7 +9,12 @@ import type {
 import JSZip from 'jszip';
 
 export type ExportMode = 'all' | 'child' | 'session';
-export type TableName = 'gazeSamples' | 'fixationData' | 'sessionScores' | 'dyslexVissDiffClicks' | 'rawGazeData';
+export type TableName =
+	| 'gazeSamples'
+	| 'fixationData'
+	| 'sessionScores'
+	| 'dyslexVissDiffClicks'
+	| 'rawGazeData';
 export type DataEntry =
 	| GazeSampleDataEntry
 	| FixationDataEntry
@@ -38,24 +43,26 @@ export class DatabaseExporter {
 		format: 'full' | 'simple' | 'filename' = 'full'
 	): string {
 		const date = new Date(Math.floor(unixTimestamp));
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
-		const hours = String(date.getHours()).padStart(2, '0');
-		const minutes = String(date.getMinutes()).padStart(2, '0');
-		const seconds = String(date.getSeconds()).padStart(2, '0');
+
+		const year = date.getUTCFullYear();
+		const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+		const day = String(date.getUTCDate()).padStart(2, '0');
+		const hours = String(date.getUTCHours()).padStart(2, '0');
+		const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+		const seconds = String(date.getUTCSeconds()).padStart(2, '0');
 
 		if (format === 'filename') {
 			return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
 		}
 
 		if (format === 'simple') {
-			return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+			return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
 		}
 
-		const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+		const milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0');
 		const microseconds = String(Math.floor((unixTimestamp % 1) * 1000)).padStart(3, '0');
-		return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}.${milliseconds}${microseconds}`;
+
+		return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}${microseconds}Z`;
 	}
 
 	/**
@@ -87,15 +94,14 @@ export class DatabaseExporter {
 	static async getSessionIds(childId: string): Promise<SessionInfo[]> {
 		if (!childId) return [];
 
-		const [gazeSessions, fixationSessions, scoreSessions, visDiffClickSessions, rawGazeSessions] = await Promise.all(
-			[
+		const [gazeSessions, fixationSessions, scoreSessions, visDiffClickSessions, rawGazeSessions] =
+			await Promise.all([
 				db.gazeSamples.where('child_id').equals(childId).toArray(),
 				db.fixationData.where('child_id').equals(childId).toArray(),
 				db.sessionScores.where('child_id').equals(childId).toArray(),
 				db.dyslexVissDiffClicks.where('child_id').equals(childId).toArray(),
 				db.rawGazeData.where('child_id').equals(childId).toArray()
-			]
-		);
+			]);
 
 		const filtered: DataEntry[] = [
 			...gazeSessions,
@@ -532,7 +538,6 @@ export class DatabaseExporter {
 
 		return files;
 	}
-
 
 	/**
 	 * Export and download the data as a ZIP file

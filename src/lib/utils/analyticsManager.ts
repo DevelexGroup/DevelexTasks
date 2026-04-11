@@ -412,7 +412,7 @@ export class AnalyticsManager {
 			session_id: task ? task.sessionId : 'unknown',
 			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
 			slide_index: task?.currentSlideIndex ?? -1,
-			timestamp: new Date(window.performance.timeOrigin + window.performance.now()).toISOString(),
+			timestamp: window.performance.timeOrigin + window.performance.now(),
 			bridgeTimeStamp: inputData.timestamp,
 			deviceTimeStamp: inputData.deviceTimestamp,
 			x: inputData.x,
