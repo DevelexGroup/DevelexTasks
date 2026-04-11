@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Dedicated Web Worker for high-precision 120Hz polling timer.
  *
  * Uses a SharedArrayBuffer written by the main thread on every eyetracker
@@ -14,7 +14,7 @@
  * Protocol:
  *   Main → Worker:  { type: 'start', intervalMs: number, gazeBuf: SharedArrayBuffer }
  *   Main → Worker:  { type: 'stop' }
- *   Worker → Main:  { type: 'tick', timestamp: number, x: number, y: number, valid: number }
+ *   Worker → Main:  { type: 'tick', timestamp: number (Unix ms), x: number, y: number, valid: number }
  */
 
 let timer: ReturnType<typeof setTimeout> | null = null;
@@ -38,7 +38,7 @@ function scheduleTick() {
 
 		// Send the *scheduled* tick time as the sample timestamp so
 		// consecutive samples are spaced exactly intervalMs apart.
-		postMessage({ type: 'tick', timestamp: nextTickTime, x, y, valid });
+		postMessage({ type: 'tick', timestamp: performance.timeOrigin + nextTickTime, x, y, valid });
 
 		nextTickTime += intervalMs;
 

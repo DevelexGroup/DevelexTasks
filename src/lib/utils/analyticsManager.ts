@@ -243,8 +243,9 @@ export class AnalyticsManager {
 		const baseData = this.getBaseDataEntry();
 		// Use the worker's scheduled tick time so samples are spaced exactly
 		// at the polling interval regardless of main-thread scheduling jitter.
+		// The worker sends a full Unix timestamp (worker.timeOrigin + worker.now).
 		if (workerTimestamp !== undefined) {
-			baseData.timestamp = performance.timeOrigin + workerTimestamp;
+			baseData.timestamp = workerTimestamp;
 		}
 		const gazeSample: GazeSampleDataEntry = {
 			...baseData,
