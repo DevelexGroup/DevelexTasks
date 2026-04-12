@@ -43,24 +43,14 @@ function parseCsvLine(line: string): string[] {
 
 /**
  * Parse formatted timestamp back to Unix timestamp (ms).
- * Handles "YYYY/MM/DD HH:MM:SS" and "YYYY/MM/DD HH:MM:SS.MMMUUU" formats
+ * Handles UTC ISO formats "YYYY-MM-DDTHH:MM:SSZ" and "YYYY-MM-DDTHH:MM:SS.sssZ"
  * produced by DatabaseExporter.formatTimestamp().
  */
 function parseFormattedTimestamp(formatted: string): number {
 	if (!formatted) return 0;
-	const match = formatted.match(
-		/(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?/
-	);
-	if (!match) return parseFloat(formatted) || 0;
-
-	const [, year, month, day, hours, minutes, seconds, frac] = match;
-	const date = new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
-	let ms = date.getTime();
-	if (frac) {
-		const millis = frac.substring(0, 3);
-		ms += parseInt(millis);
-	}
-	return ms;
+	const ms = Date.parse(formatted);
+	if (!Number.isNaN(ms)) return ms;
+	return parseFloat(formatted) || 0;
 }
 
 function parseNumber(value: string): number {
@@ -91,7 +81,7 @@ export function parseGazeSamplesCsv(csvText: string): GazeSampleDataEntry[] {
 	const entries: GazeSampleDataEntry[] = [];
 	for (let i = 1; i < lines.length; i++) {
 		const cols = parseCsvLine(lines[i]);
-		if (cols.length < 16) continue;
+		if (cols.length < 17) continue;
 
 		entries.push({
 			child_id: cols[1],
@@ -100,15 +90,16 @@ export function parseGazeSamplesCsv(csvText: string): GazeSampleDataEntry[] {
 			slide_index: parseInt(cols[4]) || 0,
 			stimulus_id: cols[5],
 			timestamp: parseFormattedTimestamp(cols[6]),
-			eyetracker_x: parseNullableNumber(cols[7]),
-			eyetracker_y: parseNullableNumber(cols[8]),
-			aoi: parsePipeArray(cols[9]),
-			mouse_x: parseNumber(cols[10]),
-			mouse_y: parseNumber(cols[11]),
-			events: parsePipeArray(cols[12]),
-			sound_name: parsePipeArray(cols[13]),
-			mistake_type: parsePipeArray(cols[14]),
-			task_result: (cols[15] || null) as TaskResult | null
+			device_timestamp: cols[7],
+			eyetracker_x: parseNullableNumber(cols[8]),
+			eyetracker_y: parseNullableNumber(cols[9]),
+			aoi: parsePipeArray(cols[10]),
+			mouse_x: parseNumber(cols[11]),
+			mouse_y: parseNumber(cols[12]),
+			events: parsePipeArray(cols[13]),
+			sound_name: parsePipeArray(cols[14]),
+			mistake_type: parsePipeArray(cols[15]),
+			task_result: (cols[16] || null) as TaskResult | null
 		});
 	}
 

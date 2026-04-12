@@ -13,6 +13,7 @@ export interface GazeSampleDataEntry extends BaseDataEntry {
 	id?: number;
 	eyetracker_x: number | null;
 	eyetracker_y: number | null;
+	device_timestamp: string;
 	aoi: string[];
 	mouse_x: number;
 	mouse_y: number;

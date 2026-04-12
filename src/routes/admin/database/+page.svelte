@@ -10,6 +10,7 @@
 	} from '$lib/database/db.types';
 	import { untrack } from 'svelte';
 	import ExportWindow from './components/ExportWindow.svelte';
+	import { DatabaseExporter } from '$lib/utils/databaseExport';
 
 	type TableNames = 'gazeSamples' | 'fixationData' | 'sessionScores' | 'dyslexVissDiffClicks';
 
@@ -199,6 +200,7 @@
 				'Slide Index',
 				'Stimulus ID',
 				'Timestamp',
+				'Device Timestamp',
 				'Eye X',
 				'Eye Y',
 				'AOI',
@@ -262,26 +264,7 @@
 		unixTimestamp: number,
 		format: 'full' | 'simple' | 'filename' = 'full'
 	): string {
-		const date = new Date(Math.floor(unixTimestamp));
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
-		const hours = String(date.getHours()).padStart(2, '0');
-		const minutes = String(date.getMinutes()).padStart(2, '0');
-		const seconds = String(date.getSeconds()).padStart(2, '0');
-
-		if (format === 'filename') {
-			return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
-		}
-
-		if (format === 'simple') {
-			return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
-		}
-
-		// format === 'full'
-		const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
-		const microseconds = String(Math.floor((unixTimestamp % 1) * 1000)).padStart(3, '0');
-		return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}.${milliseconds}${microseconds}`;
+		return DatabaseExporter.formatTimestamp(unixTimestamp, format);
 	}
 
 	function formatColumnValue(column: string, value: unknown): string {
@@ -330,6 +313,7 @@
 				data.slide_index,
 				data.stimulus_id,
 				data.timestamp,
+				data.device_timestamp,
 				data.eyetracker_x,
 				data.eyetracker_y,
 				data.aoi,

@@ -61,6 +61,7 @@ export class AnalyticsManager {
 	private gazeSharedBuf: SharedArrayBuffer | null = null;
 	private gazeSharedArray: Int32Array | null = null;
 
+	private lastDeviceTimestamp: string = '';
 	private eyetrackerPosition: { x: number; y: number } = { x: 0, y: 0 };
 	private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
 	private playedSounds: Set<string> = new Set<string>();
@@ -253,6 +254,7 @@ export class AnalyticsManager {
 			// SharedArrayBuffer) when available; fall back to the mirrored value.
 			eyetracker_x: workerX ?? this.eyetrackerPosition.x,
 			eyetracker_y: workerY ?? this.eyetrackerPosition.y,
+			device_timestamp: this.lastDeviceTimestamp,
 			aoi: Array.from(this.activeAOI),
 			mouse_x: this.mousePosition.x,
 			mouse_y: this.mousePosition.y,
@@ -345,6 +347,7 @@ export class AnalyticsManager {
 			...baseData,
 			eyetracker_x: this.eyetrackerPosition.x,
 			eyetracker_y: this.eyetrackerPosition.y,
+			device_timestamp: this.lastDeviceTimestamp,
 			aoi: Array.from(this.activeAOI),
 			mouse_x: this.mousePosition.x,
 			mouse_y: this.mousePosition.y,
@@ -430,6 +433,8 @@ export class AnalyticsManager {
 		if (inputData.parseValidity) {
 			this.updateEyetrackerPosition(inputData.x, inputData.y);
 		}
+
+		this.lastDeviceTimestamp = inputData.deviceTimestamp;
 
 		// Write to SharedArrayBuffer so the worker can read position atomically
 		// at the exact scheduled tick moment (no message-passing delay).
