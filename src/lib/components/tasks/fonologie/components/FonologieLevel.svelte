@@ -38,8 +38,15 @@
 	const preset = isPractice ? levelPreset?.practiceContent : levelPreset?.content;
 
 	// Select one random topic (only used when useCategories is true)
-	const randomData = rawData[
-		Math.floor(Math.random() * rawData.length)
+	// First, determine the level value from the preset so we only pick categories that exist for this level
+	const presetLevel = preset
+		?.map((item) => ('generate' in item ? (item.generate as Record<string, unknown>)?.level : undefined))
+		.find((level) => level != null) as string | undefined;
+	const levelFilteredRawData = presetLevel
+		? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).level === presetLevel)
+		: rawData;
+	const randomData = levelFilteredRawData[
+		Math.floor(Math.random() * levelFilteredRawData.length)
 	] as FonologieAudioRawDataEntry;
 	const randomCategory = $derived(useCategories ? randomData.set : null);
 	const filteredRawData = $derived(
