@@ -10,6 +10,7 @@
 		basePath?: string;
 		extension?: string;
 		wordToRead?: string | null;
+		audioSrc?: string | null;
 		validateSymbolClick?: (symbol: string, index: number) => boolean;
 		interactable?: boolean;
 		letterSpacing?: number;
@@ -26,6 +27,7 @@
 		basePath = '/images',
 		extension = 'png',
 		wordToRead = null,
+		audioSrc = null,
 		validateSymbolClick = () => true,
 		interactable = true,
 		letterSpacing = 0,
@@ -34,8 +36,9 @@
 	}: Props = $props();
 
 	function onSymbolClick(): void {
-		if (wordToRead) {
-			playSoundOrTTS(getWordAudioSource(wordToRead), wordToRead, 'cs-CZ');
+		const resolvedAudioSrc = audioSrc ?? (wordToRead ? getWordAudioSource(wordToRead) : null);
+		if (resolvedAudioSrc) {
+			playSoundOrTTS(resolvedAudioSrc, wordToRead ?? '', 'cs-CZ');
 		}
 
 		let validationResult = validateSymbolClick(symbol, index);

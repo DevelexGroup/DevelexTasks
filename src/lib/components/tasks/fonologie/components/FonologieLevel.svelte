@@ -107,11 +107,7 @@
 			{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 				<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16}>
 					{#snippet symbolSnippet({ symbol, index })}
-						{@const wordToRead = `fono/${symbol
-							?.split('/')
-							.at(-1)
-							?.replace(/[0-9]+/g, '')
-							.replace(/[A-Z]+/g, '')}.wav`}
+						{@const wordAudioSrc = resolveAny(`/sound/fonologie/words/${symbol?.replace(/[0-9]+/g, '').replace(/[A-Z]+/g, '')}.ogg`)}
 
 						<ImageSymbolElement
 							{symbol}
@@ -119,7 +115,7 @@
 							{validateSymbolClick}
 							basePath="/images/tasks/fonologie"
 							extension="webp"
-							{wordToRead}
+							audioSrc={wordAudioSrc}
 							width={symbolSize}
 							height={symbolSize}
 						/>

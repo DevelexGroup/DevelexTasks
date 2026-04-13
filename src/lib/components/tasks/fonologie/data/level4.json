@@ -1,4 +1,4 @@
-﻿[
+[
 	{
 		"task_id": "fonologie",
 		"id": "FL4001",
@@ -6,18 +6,16 @@
 		"sound": "4001",
 		"model": ["vaza2"],
 		"sequence": ["vana", "vaha", "duha", "veka"],
-		"correct_indices": [1],
-		"tags": ["evaulation"]
+		"correct_indices": [1]
 	},
 	{
 		"task_id": "fonologie",
 		"id": "FL4002",
 		"level": "level4",
 		"sound": "4002",
-		"model": ["krava5"],
+		"model": ["krava1"],
 		"sequence": ["taska", "hlava2", "trava", "triko"],
-		"correct_indices": [2],
-		"tags": ["evaulation"]
+		"correct_indices": [2]
 	},
 	{
 		"task_id": "fonologie",
@@ -26,8 +24,7 @@
 		"sound": "4003",
 		"model": ["vilaX"],
 		"sequence": ["pirat1", "pizza", "vila", "pila"],
-		"correct_indices": [3],
-		"tags": ["evaulation"]
+		"correct_indices": [3]
 	},
 	{
 		"task_id": "fonologie",
@@ -71,7 +68,7 @@
 		"level": "level4",
 		"sound": "4008",
 		"model": ["srot"],
-		"sequence": ["hotel3", "hory", "hrot", "hrob"],
+		"sequence": ["hotel3", "hory", "hrot", "hrob2"],
 		"correct_indices": [2]
 	},
 	{
@@ -88,9 +85,936 @@
 		"id": "FL4010",
 		"level": "level4",
 		"sound": "4010",
-		"model": ["brana"],
+		"model": ["branaX"],
 		"sequence": ["vana", "banan", "vrana", "farma"],
 		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4011",
+		"level": "level4",
+		"sound": "4011",
+		"model": ["kanec4"],
+		"sequence": ["tanec", "hrnec2", "palec", "lovec"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4012",
+		"level": "level4",
+		"sound": "4012",
+		"model": ["suk"],
+		"sequence": ["sul", "stul", "lod", "sud"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4013",
+		"level": "level4",
+		"sound": "4013",
+		"model": ["kosa"],
+		"sequence": ["vesta", "vosa", "vila", "koza5"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4014",
+		"level": "level4",
+		"sound": "4014",
+		"model": ["sadlo"],
+		"sequence": ["pradlo", "padlo", "palka", "kridlo"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4015",
+		"level": "level4",
+		"sound": "4015",
+		"model": ["husa4"],
+		"sequence": ["vosa4", "pusa", "kapsa", "krysa4"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4016",
+		"level": "level4",
+		"sound": "4016",
+		"model": ["kul"],
+		"sequence": ["ul", "dul", "hul", "sul"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4017",
+		"level": "level4",
+		"sound": "4017",
+		"model": ["vrak"],
+		"sequence": ["vlak", "vlas", "drak", "lak"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4018",
+		"level": "level4",
+		"sound": "4018",
+		"model": ["hracka"],
+		"sequence": ["vlocka", "spicka", "pracka", "pradlo"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4019",
+		"level": "level4",
+		"sound": "4019",
+		"model": ["talir"],
+		"sequence": ["mriz", "malir", "rytir", "klic"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4020",
+		"level": "level4",
+		"sound": "4020",
+		"model": ["vuz"],
+		"sequence": ["kul", "ves", "hul", "vul"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4021",
+		"level": "level4",
+		"sound": "4021",
+		"model": ["sachy"],
+		"sequence": ["sortky", "srot", "saty", "salek"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4022",
+		"level": "level4",
+		"sound": "4022",
+		"model": ["mlok"],
+		"sequence": ["blesk", "blok", "bobr1", "bomba"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4023",
+		"level": "level4",
+		"sound": "4023",
+		"model": ["nota"],
+		"sequence": ["bota", "potah", "bomba", "chata"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4024",
+		"level": "level4",
+		"sound": "4024",
+		"model": ["med"],
+		"sequence": ["mech", "jed", "led", "lak"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4025",
+		"level": "level4",
+		"sound": "4025",
+		"model": ["kosX"],
+		"sequence": ["noc", "kos", "nuz", "nos2"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4026",
+		"level": "level4",
+		"sound": "4026",
+		"model": ["laso"],
+		"sequence": ["mast", "maso", "mango2", "mesto"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4027",
+		"level": "level4",
+		"sound": "4027",
+		"model": ["broz"],
+		"sequence": ["mroz3", "mriz", "kriz", "nuz"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4028",
+		"level": "level4",
+		"sound": "4028",
+		"model": ["zak"],
+		"sequence": ["hak", "mrak", "mak", "rak"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4029",
+		"level": "level4",
+		"sound": "4029",
+		"model": ["mak"],
+		"sequence": ["rak", "mrak", "hak", "had4"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4030",
+		"level": "level4",
+		"sound": "4030",
+		"model": ["mriz"],
+		"sequence": ["klic", "kriz", "kreslo", "kridlo"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4031",
+		"level": "level4",
+		"sound": "4031",
+		"model": ["past"],
+		"sequence": ["maso", "most", "mast", "maska"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4032",
+		"level": "level4",
+		"sound": "4032",
+		"model": ["kuze"],
+		"sequence": ["ruzeX", "rajce", "ryba5", "musle"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4033",
+		"level": "level4",
+		"sound": "4033",
+		"model": ["oaza"],
+		"sequence": ["vrana", "vosa", "vana", "vaza2"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4034",
+		"level": "level4",
+		"sound": "4034",
+		"model": ["reka"],
+		"sequence": ["viko", "veka", "vilaX", "vydra3"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4035",
+		"level": "level4",
+		"sound": "4035",
+		"model": ["chyba"],
+		"sequence": ["rybiz", "ryba5", "robot", "rybnik"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4036",
+		"level": "level4",
+		"sound": "4036",
+		"model": ["zert"],
+		"sequence": ["cerv", "cap5", "cert1", "serm"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4037",
+		"level": "level4",
+		"sound": "4037",
+		"model": ["rost"],
+		"sequence": ["most", "more", "mostX", "nos2"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4038",
+		"level": "level4",
+		"sound": "4038",
+		"model": ["zebraX"],
+		"sequence": ["cela", "zelva", "zrna", "zebra1"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4039",
+		"level": "level4",
+		"sound": "4039",
+		"model": ["ves"],
+		"sequence": ["pec", "pest2", "pes3", "les"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4040",
+		"level": "level4",
+		"sound": "4040",
+		"model": ["les"],
+		"sequence": ["lek", "led", "lev3", "lak"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4041",
+		"level": "level4",
+		"sound": "4041",
+		"model": ["pec"],
+		"sequence": ["les", "pes3", "blesk", "dres"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4042",
+		"level": "level4",
+		"sound": "4042",
+		"model": ["noc"],
+		"sequence": ["kos", "nos2", "los1", "nuz"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4043",
+		"level": "level4",
+		"sound": "4043",
+		"model": ["buk"],
+		"sequence": ["box", "bus", "broz", "vul"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4044",
+		"level": "level4",
+		"sound": "4044",
+		"model": ["stroj"],
+		"sequence": ["stul", "zahon", "strom", "citron"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4045",
+		"level": "level4",
+		"sound": "4045",
+		"model": ["hrom"],
+		"sequence": ["hrad", "had5", "hrot", "hrob2"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4046",
+		"level": "level4",
+		"sound": "4046",
+		"model": ["vul"],
+		"sequence": ["kul", "stul", "hul", "sul"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4047",
+		"level": "level4",
+		"sound": "4047",
+		"model": ["cerv"],
+		"sequence": ["cert1", "serm", "cap5", "snek3"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4048",
+		"level": "level4",
+		"sound": "4048",
+		"model": ["kul"],
+		"sequence": ["vul", "hul", "kosX", "kun1"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4049",
+		"level": "level4",
+		"sound": "4049",
+		"model": ["pisen"],
+		"sequence": ["pytel", "penize", "pisek", "pirat1"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4050",
+		"level": "level4",
+		"sound": "4050",
+		"model": ["drat"],
+		"sequence": ["drak", "mrak", "dort2", "drap"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4051",
+		"level": "level4",
+		"sound": "4051",
+		"model": ["klin"],
+		"sequence": ["mic", "kriz", "klic", "mriz"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4052",
+		"level": "level4",
+		"sound": "4052",
+		"model": ["rok"],
+		"sequence": ["hroch1", "rak", "roh", "rost"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4053",
+		"level": "level4",
+		"sound": "4053",
+		"model": ["lev3"],
+		"sequence": ["luk", "lak", "lek", "les"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4054",
+		"level": "level4",
+		"sound": "4054",
+		"model": ["slava"],
+		"sequence": ["sluha", "slza", "slama", "zrna"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4055",
+		"level": "level4",
+		"sound": "4055",
+		"model": ["dul"],
+		"sequence": ["kul", "vul", "duch", "dum"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4056",
+		"level": "level4",
+		"sound": "4056",
+		"model": ["plan"],
+		"sequence": ["plaz", "pater", "broz", "kriz"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4057",
+		"level": "level4",
+		"sound": "4057",
+		"model": ["dub"],
+		"sequence": ["dum", "dul", "kul", "duch"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4058",
+		"level": "level4",
+		"sound": "4058",
+		"model": ["krk"],
+		"sequence": ["krab4", "kral2", "krb2", "krev"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4059",
+		"level": "level4",
+		"sound": "4059",
+		"model": ["vak"],
+		"sequence": ["rok", "rak", "mrak", "vlak"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4060",
+		"level": "level4",
+		"sound": "4060",
+		"model": ["nora"],
+		"sequence": ["nota", "noha2", "para", "zrna"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4061",
+		"level": "level4",
+		"sound": "4061",
+		"model": ["vlas"],
+		"sequence": ["hlas", "klas", "kaktus", "knez"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4062",
+		"level": "level4",
+		"sound": "4062",
+		"model": ["hrach"],
+		"sequence": ["roh", "hrob2", "hroch1", "hrot"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4063",
+		"level": "level4",
+		"sound": "4063",
+		"model": ["kosa"],
+		"sequence": ["vosa", "kos", "kostra2", "koza5"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4064",
+		"level": "level4",
+		"sound": "4064",
+		"model": ["orel5"],
+		"sequence": ["postel", "obal", "osel5", "kozel5"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4065",
+		"level": "level4",
+		"sound": "4065",
+		"model": ["lis"],
+		"sequence": ["lak", "luk", "list", "los1"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4066",
+		"level": "level4",
+		"sound": "4066",
+		"model": ["mec"],
+		"sequence": ["mriz", "klic", "mic", "med"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4067",
+		"level": "level4",
+		"sound": "4067",
+		"model": ["cena"],
+		"sequence": ["cesta", "cela", "zebra1", "zeli"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4068",
+		"level": "level4",
+		"sound": "4068",
+		"model": ["ladicka"],
+		"sequence": ["krabicka", "lavicka", "stolicka", "letuska"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4069",
+		"level": "level4",
+		"sound": "4069",
+		"model": ["sitko"],
+		"sequence": ["pitko", "pravitko", "viko", "triko"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4070",
+		"level": "level4",
+		"sound": "4070",
+		"model": ["napoj"],
+		"sequence": ["kovboj", "naboj", "zavoj", "stroj"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4071",
+		"level": "level4",
+		"sound": "4071",
+		"model": ["svet"],
+		"sequence": ["krev2", "kvet", "kruh", "kvetak"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4072",
+		"level": "level4",
+		"sound": "4072",
+		"model": ["kasna"],
+		"sequence": ["kamen", "kamion", "kamna", "kava2"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4073",
+		"level": "level4",
+		"sound": "4073",
+		"model": ["kuse"],
+		"sequence": ["kuze", "kuzel", "more", "kureX"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4074",
+		"level": "level4",
+		"sound": "4074",
+		"model": ["mostX"],
+		"sequence": ["mast", "most", "kost", "past"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4075",
+		"level": "level4",
+		"sound": "4075",
+		"model": ["zokej"],
+		"sequence": ["kolej", "hokej", "hotel3", "olej2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4076",
+		"level": "level4",
+		"sound": "4076",
+		"model": ["spek"],
+		"sequence": ["snek3", "cesnek2", "salek", "serm"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4077",
+		"level": "level4",
+		"sound": "4077",
+		"model": ["puch"],
+		"sequence": ["kruh", "dul", "duch", "dum"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4078",
+		"level": "level4",
+		"sound": "4078",
+		"model": ["mech"],
+		"sequence": ["led", "jed", "med", "mec"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4080",
+		"level": "level4",
+		"sound": "4080",
+		"model": ["palice"],
+		"sequence": ["policie", "police", "hadice", "brokolice"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4081",
+		"level": "level4",
+		"sound": "4081",
+		"model": ["srna"],
+		"sequence": ["zrni", "slza", "zrna", "zima"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4082",
+		"level": "level4",
+		"sound": "4082",
+		"model": ["doklad"],
+		"sequence": ["naklad", "poklad", "pirat1", "palka"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4084",
+		"level": "level4",
+		"sound": "4084",
+		"model": ["hotel2"],
+		"sequence": ["kostel2", "konev", "kotel", "postel"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4085",
+		"level": "level4",
+		"sound": "4085",
+		"model": ["paka"],
+		"sequence": ["parat", "palka", "para", "parek"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4086",
+		"level": "level4",
+		"sound": "4086",
+		"model": ["luk"],
+		"sequence": ["rak", "lek", "lak", "led"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4087",
+		"level": "level4",
+		"sound": "4087",
+		"model": ["vrak"],
+		"sequence": ["drak", "mrak", "hrad", "rak"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4088",
+		"level": "level4",
+		"sound": "4088",
+		"model": ["vul"],
+		"sequence": ["kul", "sul", "hul", "ul"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4089",
+		"level": "level4",
+		"sound": "4089",
+		"model": ["hlas"],
+		"sequence": ["vlas", "klas", "kos", "kaktus"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4092",
+		"level": "level4",
+		"sound": "4092",
+		"model": ["pesak"],
+		"sequence": ["susak", "vesak", "strasak", "vesta"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4093",
+		"level": "level4",
+		"sound": "4093",
+		"model": ["kosa"],
+		"sequence": ["most", "past", "kost", "mast"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4094",
+		"level": "level4",
+		"sound": "4094",
+		"model": ["sadlo"],
+		"sequence": ["stehno2", "sedlo", "zezlo", "sidlo"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4095",
+		"level": "level4",
+		"sound": "4095",
+		"model": ["mast"],
+		"sequence": ["mesto", "laso", "mango", "maso"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4096",
+		"level": "level4",
+		"sound": "4096",
+		"model": ["odraz"],
+		"sequence": ["obal", "obraz", "oblek", "okap"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4097",
+		"level": "level4",
+		"sound": "4097",
+		"model": ["konik"],
+		"sequence": ["kosik", "kotnik2", "kralik5", "kolik"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4098",
+		"level": "level4",
+		"sound": "4098",
+		"model": ["palac"],
+		"sequence": ["pulec", "palec2", "parez", "valec"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4099",
+		"level": "level4",
+		"sound": "4099",
+		"model": ["pulec"],
+		"sequence": ["palac", "valec", "palec2", "parez"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4100",
+		"level": "level4",
+		"sound": "4100",
+		"model": ["kozel5"],
+		"sequence": ["kostel2", "kotel", "pytel", "kuzel"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4102",
+		"level": "level4",
+		"sound": "4102",
+		"model": ["konec"],
+		"sequence": ["koberec", "kopec", "hrnec", "kolac"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4103",
+		"level": "level4",
+		"sound": "4103",
+		"model": ["kasna"],
+		"sequence": ["kamna", "kachna5", "kniha", "kastan"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4104",
+		"level": "level4",
+		"sound": "4104",
+		"model": ["mec"],
+		"sequence": ["led", "jed", "med", "lek"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4105",
+		"level": "level4",
+		"sound": "4105",
+		"model": ["les"],
+		"sequence": ["pec", "ves", "pest2", "pes3"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4106",
+		"level": "level4",
+		"sound": "4106",
+		"model": ["klub"],
+		"sequence": ["kruh", "luk", "kluk", "puk"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4107",
+		"level": "level4",
+		"sound": "4107",
+		"model": ["porek"],
+		"sequence": ["pohar", "darek", "pisek", "parek"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4108",
+		"level": "level4",
+		"sound": "4108",
+		"model": ["nora"],
+		"sequence": ["bota", "noha2", "nota", "para"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4109",
+		"level": "level4",
+		"sound": "4109",
+		"model": ["satek"],
+		"sequence": ["sala", "sasek", "salek", "snek3"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4110",
+		"level": "level4",
+		"sound": "4110",
+		"model": ["poleno"],
+		"sequence": ["rameno2", "koleno2", "semeno", "vemeno"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4111",
+		"level": "level4",
+		"sound": "4111",
+		"model": ["semeno"],
+		"sequence": ["koleno", "poleno", "vemeno", "rameno2"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4112",
+		"level": "level4",
+		"sound": "4112",
+		"model": ["jed"],
+		"sequence": ["lek", "med", "lak", "led"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4113",
+		"level": "level4",
+		"sound": "4113",
+		"model": ["baret"],
+		"sequence": ["batoh", "balon", "darek", "balet"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4114",
+		"level": "level4",
+		"sound": "4114",
+		"model": ["sidlo"],
+		"sequence": ["mydlo", "padlo", "jidlo", "kridlo"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4115",
+		"level": "level4",
+		"sound": "4115",
+		"model": ["vidle"],
+		"sequence": ["zinka", "zidle", "nudle", "zelva3"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4116",
+		"level": "level4",
+		"sound": "4116",
+		"model": ["chobot"],
+		"sequence": ["robot", "rolak", "hrob2", "rejnok5"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4117",
+		"level": "level4",
+		"sound": "4117",
+		"model": ["zenich"],
+		"sequence": ["cepel", "cenich", "cinka", "cesnek2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL4118",
+		"level": "level4",
+		"sound": "4118",
+		"model": ["holinky"],
+		"sequence": ["hodiny", "hodinky", "houslistka", "housenka5"],
+		"correct_indices": [1]
 	},
 	{
 		"task_id": "fonologie",
@@ -99,8 +1023,7 @@
 		"sound": "5001",
 		"model": ["kocka3"],
 		"sequence": ["kocar", "hracka", "volant", "vlocka"],
-		"correct_indices": [3],
-		"tags": ["evaulation"]
+		"correct_indices": [3]
 	},
 	{
 		"task_id": "fonologie",
@@ -109,8 +1032,7 @@
 		"sound": "5002",
 		"model": ["druzina"],
 		"sequence": ["ostruzina", "bazina", "svacina", "mikina"],
-		"correct_indices": [1],
-		"tags": ["evaulation"]
+		"correct_indices": [1]
 	},
 	{
 		"task_id": "fonologie",
@@ -119,8 +1041,7 @@
 		"sound": "5003",
 		"model": ["flaska"],
 		"sequence": ["sasek", "siska", "hruska2", "houska"],
-		"correct_indices": [1],
-		"tags": ["evaulation"]
+		"correct_indices": [1]
 	},
 	{
 		"task_id": "fonologie",
@@ -129,6 +1050,15 @@
 		"sound": "5004",
 		"model": ["knizka"],
 		"sequence": ["vazka3", "tucnak5", "tuzka", "hruska2"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5005",
+		"level": "level5",
+		"sound": "5005",
+		"model": ["jidlo"],
+		"sequence": ["kridlo", "padlo", "mydlo", "mytus"],
 		"correct_indices": [2]
 	},
 	{
@@ -145,8 +1075,35 @@
 		"id": "FL5007",
 		"level": "level5",
 		"sound": "5007",
-		"model": ["jmeli3"],
+		"model": ["jmeli"],
 		"sequence": ["zima", "zrni", "zeli", "zamek2"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5008",
+		"level": "level5",
+		"sound": "5008",
+		"model": ["klada"],
+		"sequence": ["zaba3", "zada", "zahon", "zebra1"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5010",
+		"level": "level5",
+		"sound": "5010",
+		"model": ["jidlo"],
+		"sequence": ["krida", "kreslo", "kriz", "kridlo"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5011",
+		"level": "level5",
+		"sound": "5011",
+		"model": ["valec"],
+		"sequence": ["palka", "pulec", "palec2", "panev"],
 		"correct_indices": [2]
 	},
 	{
@@ -166,5 +1123,959 @@
 		"model": ["pochod"],
 		"sequence": ["obchod2", "obal", "oblek", "vychod"],
 		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5014",
+		"level": "level5",
+		"sound": "5014",
+		"model": ["kotel"],
+		"sequence": ["pilot", "pistol", "pytel", "kostel2"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5015",
+		"level": "level5",
+		"sound": "5015",
+		"model": ["cesta"],
+		"sequence": ["vesta", "vesak", "testo", "vetev"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5017",
+		"level": "level5",
+		"sound": "5017",
+		"model": ["more"],
+		"sequence": ["kuze", "kureX", "kuzel", "kuryr2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5018",
+		"level": "level5",
+		"sound": "5018",
+		"model": ["cepice"],
+		"sequence": ["sklenice", "slepice5", "police", "slunce"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5020",
+		"level": "level5",
+		"sound": "5020",
+		"model": ["mlha"],
+		"sequence": ["duch", "dum", "duha", "sluha"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5021",
+		"level": "level5",
+		"sound": "5021",
+		"model": ["dvere"],
+		"sequence": ["more", "kuze", "kuzel", "kureX"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5023",
+		"level": "level5",
+		"sound": "5023",
+		"model": ["zinka"],
+		"sequence": ["srnka", "skala", "skore", "sluha"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5024",
+		"level": "level5",
+		"sound": "5024",
+		"model": ["datel"],
+		"sequence": ["postel", "pistol", "pytel", "hotel3"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5025",
+		"level": "level5",
+		"sound": "5025",
+		"model": ["vesak2"],
+		"sequence": ["susak", "strasak", "strom", "sprcha"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5026",
+		"level": "level5",
+		"sound": "5026",
+		"model": ["kradez"],
+		"sequence": ["papez", "mladez", "nuzky", "mroz3"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5027",
+		"level": "level5",
+		"sound": "5027",
+		"model": ["liska1"],
+		"sequence": ["hracka", "hriste", "hruska2", "siska"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5028",
+		"level": "level5",
+		"sound": "5028",
+		"model": ["vazka3"],
+		"sequence": ["tuzka", "knizka", "kocka3", "hruska2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5029",
+		"level": "level5",
+		"sound": "5029",
+		"model": ["bomba"],
+		"sequence": ["chleba", "chnapka", "chata", "chobot"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5030",
+		"level": "level5",
+		"sound": "5030",
+		"model": ["kletba"],
+		"sequence": ["fotbal", "svatba", "chleba", "sopka"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5032",
+		"level": "level5",
+		"sound": "5032",
+		"model": ["strasak"],
+		"sequence": ["vesak2", "pstros5", "susak", "sukne"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5033",
+		"level": "level5",
+		"sound": "5033",
+		"model": ["naklad"],
+		"sequence": ["sklad", "popel", "poklad", "postel"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5034",
+		"level": "level5",
+		"sound": "5034",
+		"model": ["pradlo"],
+		"sequence": ["sedlo", "kreslo", "kridlo", "kriz"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5035",
+		"level": "level5",
+		"sound": "5035",
+		"model": ["lava"],
+		"sequence": ["kava2", "trava", "krava1", "kamen"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5036",
+		"level": "level5",
+		"sound": "5036",
+		"model": ["pradelna"],
+		"sequence": ["jidelna", "posilovna", "ucebna", "tovarna"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5037",
+		"level": "level5",
+		"sound": "5037",
+		"model": ["mesec"],
+		"sequence": ["testo", "mesic", "mesto", "mleko"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5038",
+		"level": "level5",
+		"sound": "5038",
+		"model": ["hribek"],
+		"sequence": ["hribe", "hriva", "hriste", "hruska"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5039",
+		"level": "level5",
+		"sound": "5039",
+		"model": ["mesec"],
+		"sequence": ["mesto", "mesic", "zajic1", "meloun2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5040",
+		"level": "level5",
+		"sound": "5040",
+		"model": ["jelen4"],
+		"sequence": ["snek4", "cesnek3", "jezek4", "jehla"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5041",
+		"level": "level5",
+		"sound": "5041",
+		"model": ["hlava"],
+		"sequence": ["socha", "sopka2", "sova4", "ryba4"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5042",
+		"level": "level5",
+		"sound": "5042",
+		"model": ["dyka"],
+		"sequence": ["dyne2", "sukne", "skrin", "tresne2"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5043",
+		"level": "level5",
+		"sound": "5043",
+		"model": ["sala2"],
+		"sequence": ["saty", "salek", "satek", "sachy"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5045",
+		"level": "level5",
+		"sound": "5045",
+		"model": ["pohar3"],
+		"sequence": ["potah", "podzim", "pochod", "poklad"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5046",
+		"level": "level5",
+		"sound": "5046",
+		"model": ["mixer"],
+		"sequence": ["mic2", "maska", "miska", "mydlo"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5047",
+		"level": "level5",
+		"sound": "5047",
+		"model": ["leto"],
+		"sequence": ["pekar", "trakar", "lekar", "liska1"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5048",
+		"level": "level5",
+		"sound": "5048",
+		"model": ["mytus"],
+		"sequence": ["kaktus", "kasna", "kabat", "klas"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5049",
+		"level": "level5",
+		"sound": "5049",
+		"model": ["koleda"],
+		"sequence": ["kolej", "kolac", "koleno2", "komar"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5050",
+		"level": "level5",
+		"sound": "5050",
+		"model": ["koren"],
+		"sequence": ["koberec", "kopec", "valec", "palec2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5051",
+		"level": "level5",
+		"sound": "5051",
+		"model": ["kolo"],
+		"sequence": ["koala3", "kosa", "koza5", "delo"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5052",
+		"level": "level5",
+		"sound": "5052",
+		"model": ["briza"],
+		"sequence": ["sluha", "slza", "koza5", "zebra1"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5053",
+		"level": "level5",
+		"sound": "5053",
+		"model": ["kolej"],
+		"sequence": ["kolac", "valec", "kopec", "konev"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5054",
+		"level": "level5",
+		"sound": "5054",
+		"model": ["zahon"],
+		"sequence": ["zaclona", "zavoj", "zachod", "zastera"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5055",
+		"level": "level5",
+		"sound": "5055",
+		"model": ["potah"],
+		"sequence": ["vychod", "vydra3", "vytah", "vila"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5056",
+		"level": "level5",
+		"sound": "5056",
+		"model": ["zakrut"],
+		"sequence": ["naramek", "zvonek", "zamek2", "zahon"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5057",
+		"level": "level5",
+		"sound": "5057",
+		"model": ["moped"],
+		"sequence": ["mrak", "mozek2", "more", "mroz3"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5058",
+		"level": "level5",
+		"sound": "5058",
+		"model": ["koste"],
+		"sequence": ["komin", "komar", "koza5", "koren"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5059",
+		"level": "level5",
+		"sound": "5059",
+		"model": ["nebe"],
+		"sequence": ["nora", "nehet2", "nakup", "balet"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5060",
+		"level": "level5",
+		"sound": "5060",
+		"model": ["zezlo"],
+		"sequence": ["cisnik", "zebrik", "rucnik", "zralok3"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5061",
+		"level": "level5",
+		"sound": "5061",
+		"model": ["vyklad"],
+		"sequence": ["vystava2", "vitez3", "vytah2", "vystup"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5062",
+		"level": "level5",
+		"sound": "5062",
+		"model": ["hribe"],
+		"sequence": ["hriste", "hriva", "vila", "hruska"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5064",
+		"level": "level5",
+		"sound": "5064",
+		"model": ["vyprava"],
+		"sequence": ["vyrazy", "postava", "vystava", "vytah2"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5065",
+		"level": "level5",
+		"sound": "5065",
+		"model": ["brokovnice"],
+		"sequence": ["broskev", "police", "brokolice", "brambory"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5066",
+		"level": "level5",
+		"sound": "5066",
+		"model": ["bankaX"],
+		"sequence": ["smrtka", "sopka", "zebra1", "cesta"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5067",
+		"level": "level5",
+		"sound": "5067",
+		"model": ["lachtan3"],
+		"sequence": ["kasna", "kastan", "kachna5", "klokan5"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5068",
+		"level": "level5",
+		"sound": "5068",
+		"model": ["taska"],
+		"sequence": ["spicka", "sasek", "skola", "siska"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5069",
+		"level": "level5",
+		"sound": "5069",
+		"model": ["vlajka"],
+		"sequence": ["banka", "bomba", "babka", "bankaX"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5070",
+		"level": "level5",
+		"sound": "5070",
+		"model": ["kralik5"],
+		"sequence": ["kava2", "klada", "krava1", "lava"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5071",
+		"level": "level5",
+		"sound": "5071",
+		"model": ["kuryr"],
+		"sequence": ["kuchyne", "kuchar", "kureX", "kun1"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5073",
+		"level": "level5",
+		"sound": "5073",
+		"model": ["napad"],
+		"sequence": ["naboj", "naklad", "nakup", "nanuk"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5074",
+		"level": "level5",
+		"sound": "5074",
+		"model": ["vychod"],
+		"sequence": ["pochod", "podchod", "chobot", "chodba"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5075",
+		"level": "level5",
+		"sound": "5075",
+		"model": ["viko"],
+		"sequence": ["mlok", "mlha", "mleko", "mydlo"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5076",
+		"level": "level5",
+		"sound": "5076",
+		"model": ["cepel"],
+		"sequence": ["postel", "pytel", "popel", "kotel"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5077",
+		"level": "level5",
+		"sound": "5077",
+		"model": ["sesit"],
+		"sequence": ["sklad", "sedlo", "zebra1", "sadlo"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5078",
+		"level": "level5",
+		"sound": "5078",
+		"model": ["nudle"],
+		"sequence": ["zidle", "viking", "vidle", "vila"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5079",
+		"level": "level5",
+		"sound": "5079",
+		"model": ["basen"],
+		"sequence": ["pisek", "pisen", "plan", "plice2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5080",
+		"level": "level5",
+		"sound": "5080",
+		"model": ["spion"],
+		"sequence": ["siska", "spicka", "sunka", "pracka"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5081",
+		"level": "level5",
+		"sound": "5081",
+		"model": ["manzel"],
+		"sequence": ["kureX", "kuzelky", "kuzel", "zelva3"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5082",
+		"level": "level5",
+		"sound": "5082",
+		"model": ["chodnik"],
+		"sequence": ["chobot", "chyba", "chleba", "chodba"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5083",
+		"level": "level5",
+		"sound": "5083",
+		"model": ["bahno"],
+		"sequence": ["sedlo", "stehno2", "zachod", "sadlo"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5084",
+		"level": "level5",
+		"sound": "5084",
+		"model": ["flakon"],
+		"sequence": ["buvol5", "balon", "balkon", "banan"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5085",
+		"level": "level5",
+		"sound": "5085",
+		"model": ["zakon"],
+		"sequence": ["kohout3", "kokon", "konev", "kostel2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5086",
+		"level": "level5",
+		"sound": "5086",
+		"model": ["radnice"],
+		"sequence": ["kytice", "hadice", "vinice", "sklenice"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5087",
+		"level": "level5",
+		"sound": "5087",
+		"model": ["loupez"],
+		"sequence": ["palec2", "plaz", "papez", "pekar"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5088",
+		"level": "level5",
+		"sound": "5088",
+		"model": ["hrasek"],
+		"sequence": ["papousek5", "prasek", "sasek", "salek"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5089",
+		"level": "level5",
+		"sound": "5089",
+		"model": ["zabal"],
+		"sequence": ["zahon", "zavoj", "zachod", "zajic1"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5090",
+		"level": "level5",
+		"sound": "5090",
+		"model": ["naboj"],
+		"sequence": ["nakup", "naklad", "nanuk", "poklad"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5091",
+		"level": "level5",
+		"sound": "5091",
+		"model": ["sluha"],
+		"sequence": ["duha", "vaha", "mlha", "duch"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5092",
+		"level": "level5",
+		"sound": "5092",
+		"model": ["prechod"],
+		"sequence": ["zajic1", "zahon", "zachod", "zakon"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5093",
+		"level": "level5",
+		"sound": "5093",
+		"model": ["majak"],
+		"sequence": ["mango2", "mesto", "maso", "mydlo"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5094",
+		"level": "level5",
+		"sound": "5094",
+		"model": ["kovar"],
+		"sequence": ["palec2", "kopec", "koberec", "kolac"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5095",
+		"level": "level5",
+		"sound": "5095",
+		"model": ["zednik"],
+		"sequence": ["kuryr2", "kurnik", "kosik", "rybnik"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5096",
+		"level": "level5",
+		"sound": "5096",
+		"model": ["stonozka"],
+		"sequence": ["pekarka", "pohovka", "ponozka", "pistalka"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5097",
+		"level": "level5",
+		"sound": "5097",
+		"model": ["stoparka"],
+		"sequence": ["stonozka", "svacina", "stolicka", "ponozka"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5098",
+		"level": "level5",
+		"sound": "5098",
+		"model": ["padlo"],
+		"sequence": ["stehno2", "sedlo", "sadlo", "salat"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5099",
+		"level": "level5",
+		"sound": "5099",
+		"model": ["puvab"],
+		"sequence": ["budka", "puda", "brada", "para"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5100",
+		"level": "level5",
+		"sound": "5100",
+		"model": ["tovarna"],
+		"sequence": ["kavarna", "knihovna", "kancelar", "hvezdarna"],
+		"correct_indices": [0]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5101",
+		"level": "level5",
+		"sound": "5101",
+		"model": ["naklad"],
+		"sequence": ["nakup", "naplast", "past", "mast"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5102",
+		"level": "level5",
+		"sound": "5102",
+		"model": ["skola"],
+		"sequence": ["vilaX", "vino2", "viko", "vila"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5103",
+		"level": "level5",
+		"sound": "5103",
+		"model": ["skolka"],
+		"sequence": ["padlo", "palec2", "palka", "pila"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5104",
+		"level": "level5",
+		"sound": "5104",
+		"model": ["vytah"],
+		"sequence": ["podchod", "vychod", "pochod", "zachod"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5105",
+		"level": "level5",
+		"sound": "5105",
+		"model": ["brasna"],
+		"sequence": ["kastan", "kasna", "kocar", "kocka3"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5106",
+		"level": "level5",
+		"sound": "5106",
+		"model": ["parez"],
+		"sequence": ["palec2", "palac", "palka", "parek"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5107",
+		"level": "level5",
+		"sound": "5107",
+		"model": ["sluzebnik"],
+		"sequence": ["slunecnice", "slunecnik", "sklenice", "znaceni"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5108",
+		"level": "level5",
+		"sound": "5108",
+		"model": ["poklice"],
+		"sequence": ["policie", "plice", "police", "pulec"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5109",
+		"level": "level5",
+		"sound": "5109",
+		"model": ["vanicka"],
+		"sequence": ["valecek", "varecka", "vozicek", "vrtulnik"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5110",
+		"level": "level5",
+		"sound": "5110",
+		"model": ["kopec"],
+		"sequence": ["konev", "komar", "kamen", "komin"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5111",
+		"level": "level5",
+		"sound": "5111",
+		"model": ["para"],
+		"sequence": ["parez", "pater", "pekar", "plaz"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5112",
+		"level": "level5",
+		"sound": "5112",
+		"model": ["buvol5"],
+		"sequence": ["budka", "budik", "kolik", "babka"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5113",
+		"level": "level5",
+		"sound": "5113",
+		"model": ["parat"],
+		"sequence": ["pater", "palec2", "parez", "pozar"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5114",
+		"level": "level5",
+		"sound": "5114",
+		"model": ["predstava"],
+		"sequence": ["postava", "vyprava", "vystava2", "soustava"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5115",
+		"level": "level5",
+		"sound": "5115",
+		"model": ["zabrana"],
+		"sequence": ["zastera", "zmrzlina2", "zaclona", "zastavka"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5116",
+		"level": "level5",
+		"sound": "5116",
+		"model": ["podchod"],
+		"sequence": ["pochod", "vychod", "prechod", "pribor"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5117",
+		"level": "level5",
+		"sound": "5117",
+		"model": ["taska"],
+		"sequence": ["sasek", "sunka", "siska", "zinka"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5118",
+		"level": "level5",
+		"sound": "5118",
+		"model": ["trakar"],
+		"sequence": ["pater", "pekar", "plaz", "pozar"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5119",
+		"level": "level5",
+		"sound": "5119",
+		"model": ["mamut"],
+		"sequence": ["miska", "maska", "maso", "mango2"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5120",
+		"level": "level5",
+		"sound": "5120",
+		"model": ["lavice"],
+		"sequence": ["policie", "poklice", "plice", "police"],
+		"correct_indices": [3]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5121",
+		"level": "level5",
+		"sound": "5121",
+		"model": ["husa4"],
+		"sequence": ["voda2", "vousy", "vosa4", "vlasy"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5122",
+		"level": "level5",
+		"sound": "5122",
+		"model": ["vetev"],
+		"sequence": ["platek", "plastev", "ploutev", "broskev"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5123",
+		"level": "level5",
+		"sound": "5123",
+		"model": ["kvetak"],
+		"sequence": ["susak", "vetrak", "smetak", "broskev"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5124",
+		"level": "level5",
+		"sound": "5124",
+		"model": ["kutil"],
+		"sequence": ["kralik5", "kuryr2", "netopyr5", "kurnik"],
+		"correct_indices": [1]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5125",
+		"level": "level5",
+		"sound": "5125",
+		"model": ["okap"],
+		"sequence": ["ovce1", "osel5", "ostep", "koste"],
+		"correct_indices": [2]
+	},
+	{
+		"task_id": "fonologie",
+		"id": "FL5126",
+		"level": "level5",
+		"sound": "5126",
+		"model": ["olej2"],
+		"sequence": ["osel5", "ohen", "konev", "obal"],
+		"correct_indices": [1]
 	}
 ]
