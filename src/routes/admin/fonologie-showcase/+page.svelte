@@ -88,13 +88,8 @@
 
 	let filterStatus = $state<string>('all');
 
-	function onImageLoad(symbol: string) {
-		imageStatus = { ...imageStatus, [symbol]: 'ok' };
-		loadingProgress++;
-	}
-
-	function onImageError(symbol: string) {
-		imageStatus = { ...imageStatus, [symbol]: 'error' };
+	function onImageChecked(symbol: string, ok: boolean) {
+		imageStatus = { ...imageStatus, [symbol]: ok ? 'ok' : 'error' };
 		loadingProgress++;
 	}
 
@@ -115,7 +110,14 @@
 		await Promise.all(Array.from({ length: Math.min(concurrency, tasks.length) }, () => next()));
 	}
 
-	// Actively probe all sounds on mount
+	// Check content-type to detect SPA fallback
+	function isResponseType(r: Response, prefix: string): boolean {
+		if (!r.ok) return false;
+		const ct = r.headers.get('content-type') ?? '';
+		return ct.startsWith(prefix);
+	}
+
+	// Actively probe all files on mount
 	onMount(() => {
 		// Initialise all statuses to pending
 		const imgInit: Record<string, 'pending'> = {};
@@ -127,24 +129,35 @@
 		for (const s of allSounds) sndInit[`task-${s.id}`] = 'pending';
 		soundStatus = sndInit;
 
-		loadingTotal = allSymbols.length + allSymbols.length + allSounds.length; // images + word sounds + task sounds
+		loadingTotal = allSymbols.length * 2 + allSounds.length; // images + word sounds + task sounds
 		loadingProgress = 0;
 
 		// Build task list for throttled execution
 		const fetchTasks: (() => Promise<void>)[] = [];
 
+		// Probe images
+		for (const entry of allSymbols) {
+			fetchTasks.push(() =>
+				fetch(entry.imageSrc, { method: 'HEAD' })
+					.then((r) => onImageChecked(entry.symbol, isResponseType(r, 'image/')))
+					.catch(() => onImageChecked(entry.symbol, false))
+			);
+		}
+
+		// Probe word sounds
 		for (const entry of allSymbols) {
 			fetchTasks.push(() =>
 				fetch(entry.wordAudioSrc, { method: 'HEAD' })
-					.then((r) => onSoundChecked(`word-${entry.symbol}`, r.ok))
+					.then((r) => onSoundChecked(`word-${entry.symbol}`, isResponseType(r, 'audio/') || isResponseType(r, 'application/ogg')))
 					.catch(() => onSoundChecked(`word-${entry.symbol}`, false))
 			);
 		}
 
+		// Probe task sounds
 		for (const sound of allSounds) {
 			fetchTasks.push(() =>
 				fetch(sound.soundSrc, { method: 'HEAD' })
-					.then((r) => onSoundChecked(`task-${sound.id}`, r.ok))
+					.then((r) => onSoundChecked(`task-${sound.id}`, isResponseType(r, 'audio/') || isResponseType(r, 'application/ogg')))
 					.catch(() => onSoundChecked(`task-${sound.id}`, false))
 			);
 		}
@@ -312,8 +325,6 @@
 									src={entry.imageSrc}
 									alt={entry.symbol}
 									loading="lazy"
-									onload={() => onImageLoad(entry.symbol)}
-									onerror={() => onImageError(entry.symbol)}
 								/>
 							</span>
 
