@@ -8152,7 +8152,7 @@
     "level": "level2",
     "sound": "Č_kon",
     "sequence": [
-      "mic",
+      "mic2",
       "klic",
       "pocitac",
       "slunecnik",
@@ -13037,7 +13037,7 @@
     "level": "level3",
     "sound": "Č_upr",
     "sequence": [
-      "mic",
+      "mic2",
       "pocitac",
       "kocarek",
       "nocnik",

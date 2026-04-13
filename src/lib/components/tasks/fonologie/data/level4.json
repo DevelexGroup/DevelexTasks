@@ -338,7 +338,7 @@
 		"level": "level4",
 		"sound": "4038",
 		"model": ["zebraX"],
-		"sequence": ["cela", "zelva", "zrna", "zebra1"],
+		"sequence": ["cela", "zelva3", "zrna", "zebra1"],
 		"correct_indices": [3]
 	},
 	{
@@ -455,7 +455,7 @@
 		"level": "level4",
 		"sound": "4051",
 		"model": ["klin"],
-		"sequence": ["mic", "kriz", "klic", "mriz"],
+		"sequence": ["mic2", "kriz", "klic", "mriz"],
 		"correct_indices": [2]
 	},
 	{
@@ -590,7 +590,7 @@
 		"level": "level4",
 		"sound": "4066",
 		"model": ["mec"],
-		"sequence": ["mriz", "klic", "mic", "med"],
+		"sequence": ["mriz", "klic", "mic2", "med"],
 		"correct_indices": [2]
 	},
 	{
