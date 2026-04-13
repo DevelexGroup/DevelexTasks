@@ -47,7 +47,7 @@
 	function addSymbol(sym: string) {
 		if (symbolSet.has(sym)) return;
 		symbolSet.add(sym);
-		const cleanName = sym.replace(/[0-9]+/g, '').replace(/[A-Z]+/g, '');
+		const cleanName = sym.replace(/[0-9]+/g, '');
 		allSymbols.push({
 			symbol: sym,
 			imageSrc: resolveAny(`/images/tasks/fonologie/${sym}.webp`),
