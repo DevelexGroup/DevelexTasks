@@ -1,20 +1,33 @@
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, type Plugin } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 
-// SharedArrayBuffer requires cross-origin isolation headers.
-// For production (adapter-static), configure the same headers on your web server:
-//   Cross-Origin-Opener-Policy: same-origin
-//   Cross-Origin-Embedder-Policy: require-corp
-const crossOriginIsolationHeaders = {
-	'Cross-Origin-Opener-Policy': 'same-origin',
-	'Cross-Origin-Embedder-Policy': 'require-corp'
-};
+// SharedArrayBuffer requires cross-origin isolation headers (COOP + COEP).
+// In production, these are set by nginx.  In development, we inject them via
+// a Vite plugin so they are applied to *every* response — including pages
+// served by SvelteKit's dev middleware (which `server.headers` may miss).
+function crossOriginIsolation(): Plugin {
+	return {
+		name: 'cross-origin-isolation',
+		configureServer(server) {
+			server.middlewares.use((_req, res, next) => {
+				res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+				res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+				next();
+			});
+		},
+		configurePreviewServer(server) {
+			server.middlewares.use((_req, res, next) => {
+				res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+				res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+				next();
+			});
+		}
+	};
+}
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
-	server: { headers: crossOriginIsolationHeaders },
-	preview: { headers: crossOriginIsolationHeaders },
+	plugins: [tailwindcss(), crossOriginIsolation(), sveltekit()],
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

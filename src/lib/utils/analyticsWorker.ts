@@ -60,7 +60,7 @@ self.onmessage = (e: MessageEvent) => {
 	if (type === 'start') {
 		if (timer !== null) return; // already running
 		intervalMs = e.data.intervalMs;
-		if (e.data.gazeBuf instanceof SharedArrayBuffer) {
+		if (typeof SharedArrayBuffer !== 'undefined' && e.data.gazeBuf instanceof SharedArrayBuffer) {
 			gazeArray = new Int32Array(e.data.gazeBuf);
 		}
 		nextTickTime = performance.now() + intervalMs;
