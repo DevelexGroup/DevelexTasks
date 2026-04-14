@@ -6,7 +6,8 @@
 		"sound": "4001",
 		"model": ["vaza2"],
 		"sequence": ["vana", "vaha", "duha", "veka"],
-		"correct_indices": [1]
+		"correct_indices": [1],
+		"tags": ["evaulation"]
 	},
 	{
 		"task_id": "fonologie",
@@ -15,7 +16,8 @@
 		"sound": "4002",
 		"model": ["krava1"],
 		"sequence": ["taska", "hlava2", "trava", "triko"],
-		"correct_indices": [2]
+		"correct_indices": [2],
+		"tags": ["evaulation"]
 	},
 	{
 		"task_id": "fonologie",
@@ -24,7 +26,8 @@
 		"sound": "4003",
 		"model": ["vilaX"],
 		"sequence": ["pirat1", "pizza", "vila", "pila"],
-		"correct_indices": [3]
+		"correct_indices": [3],
+		"tags": ["evaulation"]
 	},
 	{
 		"task_id": "fonologie",
@@ -33,7 +36,8 @@
 		"sound": "4004",
 		"model": ["mesto"],
 		"sequence": ["testo", "triko", "tenis", "vesta"],
-		"correct_indices": [0]
+		"correct_indices": [0],
+		"tags": ["evaulation"]
 	},
 	{
 		"task_id": "fonologie",
@@ -1023,7 +1027,8 @@
 		"sound": "5001",
 		"model": ["kocka3"],
 		"sequence": ["kocar", "hracka", "volant", "vlocka"],
-		"correct_indices": [3]
+		"correct_indices": [3],
+		"tags": ["evaulation"]
 	},
 	{
 		"task_id": "fonologie",
@@ -1032,7 +1037,8 @@
 		"sound": "5002",
 		"model": ["druzina"],
 		"sequence": ["ostruzina", "bazina", "svacina", "mikina"],
-		"correct_indices": [1]
+		"correct_indices": [1],
+		"tags": ["evaulation"]
 	},
 	{
 		"task_id": "fonologie",
@@ -1041,7 +1047,8 @@
 		"sound": "5003",
 		"model": ["flaska"],
 		"sequence": ["sasek", "siska", "hruska2", "houska"],
-		"correct_indices": [1]
+		"correct_indices": [1],
+		"tags": ["evaulation"]
 	},
 	{
 		"task_id": "fonologie",
@@ -1050,7 +1057,8 @@
 		"sound": "5004",
 		"model": ["knizka"],
 		"sequence": ["vazka3", "tucnak5", "tuzka", "hruska2"],
-		"correct_indices": [2]
+		"correct_indices": [2],
+		"tags": ["evaulation"]
 	},
 	{
 		"task_id": "fonologie",

@@ -882,25 +882,15 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FA4110",
-    "topic": "zvířata",
-    "set": "animals4",
-    "level": "level1",
-    "sound": "N_zac",
-    "sequence": [
-      "mravenec4",
-      "netopyr4",
-      "snek4",
-      "nosorozec4",
-      "medved4"
-    ],
-    "correct_indices": [
-      0,
-      1,
-      3
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FA4110",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "N_zac",
+		"sequence": ["mravenec4", "netopyr4", "snek4", "nosorozec4", "medved4"],
+		"correct_indices": [0, 1, 3]
+	},
   {
     "task_id": "fonologie",
     "id": "FA4111",
@@ -938,7 +928,8 @@
     "correct_indices": [
       1,
       3
-    ]
+    ],
+		"tags": ["evaluation"]
   },
   {
     "task_id": "fonologie",
@@ -1002,24 +993,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FA4116",
-    "topic": "zvířata",
-    "set": "animals4",
-    "level": "level1",
-    "sound": "K_zac",
-    "sequence": [
-      "jezek4",
-      "klokan4",
-      "pstros4",
-      "kohout4",
-      "delfin4"
-    ],
-    "correct_indices": [
-      1,
-      3
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FA4116",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "K_zac",
+		"sequence": ["jezek4", "klokan4", "pstros4", "kohout4", "delfin4"],
+		"correct_indices": [1, 3],
+		"tags": ["evaluation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FA4117",
@@ -1079,23 +1062,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FA4120",
-    "topic": "zvířata",
-    "set": "animals4",
-    "level": "level1",
-    "sound": "H_zac",
-    "sequence": [
-      "krokodyl4",
-      "had4",
-      "labut4",
-      "chobotnice4",
-      "koza4"
-    ],
-    "correct_indices": [
-      1
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FA4120",
+		"topic": "zvířata",
+		"set": "animals4",
+		"level": "level1",
+		"sound": "H_zac",
+		"sequence": ["krokodyl4", "had4", "labut4", "chobotnice4", "koza4"],
+		"correct_indices": [1],
+		"tags": ["evaluation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FA4121",
@@ -4504,25 +4480,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FOB123",
-    "topic": "předměty",
-    "set": "objects",
-    "level": "level1",
-    "sound": "Ž_zac",
-    "sequence": [
-      "zebrik",
-      "zezlo",
-      "zahon",
-      "retez",
-      "zinka"
-    ],
-    "correct_indices": [
-      0,
-      1,
-      4
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FOB123",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level1",
+		"sound": "Ž_zac",
+		"sequence": ["zebrik", "zezlo", "zahon", "retez", "zinka"],
+		"correct_indices": [0, 1, 4],
+		"tags": ["evaulation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FOB124",
@@ -5837,24 +5804,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FF1210",
-    "topic": "jídlo",
-    "set": "food1",
-    "level": "level2",
-    "sound": "K_kon",
-    "sequence": [
-      "dort",
-      "syr",
-      "paprika",
-      "rohlik",
-      "cesnek"
-    ],
-    "correct_indices": [
-      3,
-      4
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FF1210",
+		"topic": "jídlo",
+		"set": "food1",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["dort", "syr", "paprika", "rohlik", "cesnek"],
+		"correct_indices": [3, 4],
+		"tags": ["evaulation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FF2201",
@@ -8004,26 +7963,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FOB203",
-    "topic": "předměty",
-    "set": "objects",
-    "level": "level2",
-    "sound": "K_kon",
-    "sequence": [
-      "rucnik",
-      "darek",
-      "lek",
-      "obchod",
-      "lak"
-    ],
-    "correct_indices": [
-      0,
-      1,
-      2,
-      4
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FOB203",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "K_kon",
+		"sequence": ["rucnik", "darek", "lek", "obchod", "lak"],
+		"correct_indices": [0, 1, 2, 4],
+		"tags": ["evaluation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FOB204",
@@ -8185,26 +8134,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FOB212",
-    "topic": "předměty",
-    "set": "objects",
-    "level": "level2",
-    "sound": "T_kon",
-    "sequence": [
-      "nehet2",
-      "chobot",
-      "robot",
-      "sesit",
-      "vychod"
-    ],
-    "correct_indices": [
-      0,
-      1,
-      2,
-      3
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FOB212",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "T_kon",
+		"sequence": ["nehet2", "chobot", "robot", "sesit", "vychod"],
+		"correct_indices": [0, 1, 2, 3],
+		"tags": ["evaluation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FOB213",
@@ -8324,26 +8263,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FOB219",
-    "topic": "předměty",
-    "set": "objects",
-    "level": "level2",
-    "sound": "O_kon",
-    "sequence": [
-      "kladivo",
-      "moped",
-      "zezlo",
-      "viko",
-      "sedlo"
-    ],
-    "correct_indices": [
-      0,
-      2,
-      3,
-      4
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FOB219",
+		"topic": "předměty",
+		"set": "objects",
+		"level": "level2",
+		"sound": "O_kon",
+		"sequence": ["kladivo", "moped", "zezlo", "viko", "sedlo"],
+		"correct_indices": [0, 2, 3, 4],
+		"tags": ["evaluation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FOB220",
@@ -8660,24 +8589,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FHM301",
-    "topic": "tělo",
-    "set": "body",
-    "level": "level3",
-    "sound": "Á_upr",
-    "sequence": [
-      "zada",
-      "vrasky",
-      "jizva",
-      "oboci",
-      "kostra"
-    ],
-    "correct_indices": [
-      0,
-      1
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FHM301",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "Á_upr",
+		"sequence": ["zada", "vrasky", "jizva", "oboci", "kostra"],
+		"correct_indices": [0, 1],
+		"tags": ["evaulation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FHM302",
@@ -8718,25 +8639,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FHM304",
-    "topic": "tělo",
-    "set": "body",
-    "level": "level3",
-    "sound": "Z_upr",
-    "sequence": [
-      "vlasy",
-      "zada",
-      "jizva",
-      "jazyk",
-      "ukazovacek"
-    ],
-    "correct_indices": [
-      2,
-      3,
-      4
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FHM304",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "Z_upr",
+		"sequence": ["vlasy", "zada", "jizva", "jazyk", "ukazovacek"],
+		"correct_indices": [2, 3, 4],
+		"tags": ["evaulation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FHM305",
@@ -8778,25 +8690,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FHM307",
-    "topic": "tělo",
-    "set": "body",
-    "level": "level3",
-    "sound": "T_upr",
-    "sequence": [
-      "rty",
-      "brada",
-      "kostra",
-      "chodidlo",
-      "kotnik"
-    ],
-    "correct_indices": [
-      0,
-      2,
-      4
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FHM307",
+		"topic": "tělo",
+		"set": "body",
+		"level": "level3",
+		"sound": "T_upr",
+		"sequence": ["rty", "brada", "kostra", "chodidlo", "kotnik"],
+		"correct_indices": [0, 2, 4],
+		"tags": ["evaulation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FHM308",
@@ -12231,25 +12134,16 @@
     ]
   },
   {
-    "task_id": "fonologie",
-    "id": "FNA306",
-    "topic": "příroda",
-    "set": "nature",
-    "level": "level3",
-    "sound": "R_upr",
-    "sequence": [
-      "strom",
-      "bahno",
-      "hory",
-      "hnizdo",
-      "ostrov"
-    ],
-    "correct_indices": [
-      0,
-      2,
-      4
-    ]
-  },
+		"task_id": "fonologie",
+		"id": "FNA306",
+		"topic": "příroda",
+		"set": "nature",
+		"level": "level3",
+		"sound": "R_upr",
+		"sequence": ["strom", "bahno", "hory", "hnizdo", "ostrov"],
+		"correct_indices": [0, 2, 4],
+		"tags": ["evaluation"]
+	},
   {
     "task_id": "fonologie",
     "id": "FNA307",
