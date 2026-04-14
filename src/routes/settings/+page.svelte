@@ -1,10 +1,15 @@
 <script lang="ts">
+	import { version } from '$app/environment';
 	import { GAZE_INPUT_CONFIGS, trackerConfig } from '$lib/stores/tracker';
 	import { isDiagnosisMode } from '$lib/stores/diagnosis';
 	import DiagnosisDialog from '$lib/components/DiagnosisDialog.svelte';
 	import { Switch } from '$lib/components/ui/switch';
 	import { Label } from '$lib/components/ui/label';
 	import { Lock } from '@lucide/svelte';
+
+	const versionParts = version.split('-');
+	const gitHash = versionParts.pop();
+	const appVersion = versionParts.join('-');
 
 	let showDialog = $state(false);
 	let visualChecked = $state($isDiagnosisMode);
@@ -57,6 +62,11 @@
 	</div>
 
 	<!-- separator --> <div class="my-8 h-px w-40 bg-gray-300"></div>
+
+	<p class="mb-6 text-xs text-gray-400">
+		DeveLex - v{appVersion}
+		<span class="font-mono">({gitHash})</span>
+	</p>
 
 	<button
 		class="rounded-md bg-blue-500 px-4 py-2 text-white"

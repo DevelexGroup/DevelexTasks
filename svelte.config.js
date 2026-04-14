@@ -1,5 +1,18 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { readFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
+
+const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
+const gitHash = (() => {
+	try {
+		return execSync('git rev-parse --short HEAD').toString().trim();
+	} catch {
+		return 'unknown';
+	}
+})();
+
+const buildNumber = process.env.GITHUB_RUN_NUMBER ?? 'dev';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -18,6 +31,9 @@ const config = {
 		},
 		prerender: {
 			handleUnseenRoutes: 'warn'
+		},
+		version: {
+			name: `${pkg.version}+${buildNumber}-${gitHash}`
 		}
 	}
 };
