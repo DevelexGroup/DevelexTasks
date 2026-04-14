@@ -21,6 +21,7 @@
 	import { MistakeUnfinished } from '$lib/types/mistakes.types';
 	import MicrophoneHint from '$lib/components/common/MicrophoneHint.svelte';
 	import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
+	import { browser } from '$app/environment';
 
 	interface Props {
 		taskPreset?: TrackTaskPreset<CibuleRawDataEntry>
@@ -37,7 +38,7 @@
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
-	let spacePressed = false;
+	let spacePressed = $state(false);
 
 	function onSpace(state: TrackTaskState) {
 		if (validateStage(state) === true) {
@@ -58,6 +59,8 @@
 	function resetSpacePressed() {
 		spacePressed = false;
 	}
+
+	const isTouchDevice = browser && window.matchMedia('(pointer: coarse)').matches;
 </script>
 
 {#if data}
@@ -82,15 +85,17 @@
 						visible={isSyllableFrameVisible(state, syllable, index)}
 					/>
 				{/each}
-				{#if validateStage(state) === true && !spacePressed}
-					<div
-						class="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2"
-						in:fade|global={{ delay: 1000 }}
-						out:fade|global
-					>
-						<MicrophoneHint />
-					</div>
-				{/if}
+			{#if validateStage(state) === true && !spacePressed}
+				<button
+					type="button"
+					class="absolute bottom-16 left-1/2 -translate-x-1/2 cursor-pointer border-none bg-transparent p-0"
+					in:fade|global={{ delay: isTouchDevice ? 0 : 1000 }}
+					out:fade|global
+					onclick={() => onSpace(state)}
+				>
+					<MicrophoneHint />
+				</button>
+			{/if}
 			</div>
 		{/snippet}
 		{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
