@@ -147,6 +147,7 @@ export class AnalyticsManager {
 	}
 
 	public logEvent(key: string) {
+		if (!this.isLoggingActive()) return;
 		this.eventBuffer.events.add(key);
 	}
 
@@ -155,6 +156,7 @@ export class AnalyticsManager {
 		taskState?: TrackTaskState,
 		metricEvaluation?: (scoreMetrics: Partial<SessionScoreMetrics>, state: TrackTaskState) => number
 	) {
+		if (!this.isLoggingActive()) return;
 		this.eventBuffer.events.add(`complete-slide-${slideIndex}`);
 		this.calculateScoreSlideRequest.push(slideIndex);
 
@@ -169,6 +171,7 @@ export class AnalyticsManager {
 	}
 
 	public logMistakeType(mistakeType: TaskMistake | TaskMistake[]) {
+		if (!this.isLoggingActive()) return;
 		if (Array.isArray(mistakeType)) {
 			mistakeType.forEach((mistake) => this.eventBuffer.mistake_type.add(mistake.id));
 		} else {
