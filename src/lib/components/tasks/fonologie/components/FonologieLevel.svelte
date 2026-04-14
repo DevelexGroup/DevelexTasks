@@ -1,12 +1,11 @@
 ﻿<script lang="ts">
 	import TrackLevel from '$lib/components/common/TrackLevel.svelte';
 	import { taskStage } from '$lib/stores/task';
-	import { type TaskMistake, TaskStage, type TrackTaskPreset, type TrackTaskState } from '$lib/types/task.types';
+	import { TaskStage, type TrackTaskPreset } from '$lib/types/task.types';
 	import SymbolTrack from '$lib/components/common/tracks/SymbolTrack.svelte';
 	import { getLevelData } from '$lib/utils/trackLevelUtils';
 	import AudioHint from '$lib/components/common/AudioHint.svelte';
 	import ImageSymbolElement from '$lib/components/common/tracks/ImageSymbolElement.svelte';
-	import { MistakeUnfinished } from '$lib/types/mistakes.types';
 	import {
 		fonologieLevelPreset,
 		fonologieStageValidation,
@@ -85,15 +84,6 @@
 	const optimalColumns = $derived(Math.ceil(Math.sqrt(showcaseSymbolCount * aspectRatio)));
 
 	let symbolsShowcase = $state(true);
-
-	function allSymbolsClicked(state: TrackTaskState): TaskMistake[] | true {
-		const selectedCount = state.selectedCorrectIndices.length;
-		const totalCount = state.dataEntry.sequence.length;
-		if (selectedCount < totalCount) {
-			return [MistakeUnfinished];
-		}
-		return true;
-	}
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -104,7 +94,7 @@
 			id={`${id}-showcase`}
 			data={showcaseData}
 			validateSymbol={() => true}
-			validateStage={allSymbolsClicked}
+			validateStage={() => true}
 			{isPractice}
 			onCompleted={() => {
 				symbolsShowcase = false;
