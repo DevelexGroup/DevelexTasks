@@ -1,4 +1,5 @@
 ﻿import { browser } from '$app/environment';
+import { resolve } from '$app/paths';
 import { authSession, clearAuthSession } from '$lib/stores/auth';
 import { get } from 'svelte/store';
 
@@ -39,7 +40,7 @@ function handleUnauthorized(hadSession: boolean): void {
 	// Only redirect if the user was previously logged in
 	if (browser && hadSession) {
 		const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-		window.location.href = `/login?expired=true&returnUrl=${returnUrl}`;
+		window.location.href = `${resolve('/login')}?expired=true&returnUrl=${returnUrl}`;
 	}
 }
 

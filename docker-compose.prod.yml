@@ -1,0 +1,19 @@
+name: develex-tasks
+
+services:
+  app:
+    container_name: develex-tasks
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.develex-tasks.rule=Host(`develex.phil.muni.cz`)"
+      - "traefik.http.routers.develex-tasks.entrypoints=https"
+      - "traefik.http.routers.develex-tasks.tls.certresolver=letsencrypt"
+      - "traefik.http.services.develex-tasks.loadbalancer.server.port=80"
+
+      # HTTP → HTTPS redirect
+      - "traefik.http.routers.develex-tasks-http.rule=Host(`develex.phil.muni.cz`)"
+      - "traefik.http.routers.develex-tasks-http.entrypoints=http"
+      - "traefik.http.middlewares.develex-tasks-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.develex-tasks-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.develex-tasks-http.middlewares=develex-tasks-redirect"

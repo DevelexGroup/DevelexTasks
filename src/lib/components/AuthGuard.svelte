@@ -1,6 +1,7 @@
 ﻿<script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
+	import { resolve } from '$app/paths';
 	import { authSession, isTokenExpired, getTimeUntilExpiry, clearAuthSession } from '$lib/stores/auth';
 
 	interface Props {
@@ -24,7 +25,7 @@
 
 		if (browser) {
 			const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-			window.location.href = `/login?expired=true&returnUrl=${returnUrl}`;
+			window.location.href = `${resolve('/login')}?expired=true&returnUrl=${returnUrl}`;
 		}
 	}
 

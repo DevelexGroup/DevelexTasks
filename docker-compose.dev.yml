@@ -1,0 +1,23 @@
+name: develex-tasks-dev
+
+services:
+  app:
+    container_name: develex-tasks-dev
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router — serves develex.phil.muni.cz/dev
+      - "traefik.http.routers.develex-tasks-dev.rule=Host(`develex.phil.muni.cz`) && PathPrefix(`/dev`)"
+      - "traefik.http.routers.develex-tasks-dev.entrypoints=https"
+      - "traefik.http.routers.develex-tasks-dev.tls.certresolver=letsencrypt"
+      - "traefik.http.services.develex-tasks-dev.loadbalancer.server.port=80"
+      - "traefik.http.routers.develex-tasks-dev.middlewares=develex-tasks-dev-strip"
+
+      # HTTP → HTTPS redirect (scoped to the /dev prefix)
+      - "traefik.http.routers.develex-tasks-dev-http.rule=Host(`develex.phil.muni.cz`) && PathPrefix(`/dev`)"
+      - "traefik.http.routers.develex-tasks-dev-http.entrypoints=http"
+      - "traefik.http.middlewares.develex-tasks-dev-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.develex-tasks-dev-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.develex-tasks-dev-http.middlewares=develex-tasks-dev-redirect"
+
+      # Strip /dev so the nginx container can serve from its own root
+      - "traefik.http.middlewares.develex-tasks-dev-strip.stripprefix.prefixes=/dev"

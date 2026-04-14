@@ -4,12 +4,19 @@ on:
   push:
     branches:
       - main
+      - develop
   pull_request:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        type: environment
+        required: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || (github.ref == 'refs/heads/develop' && 'development' || 'production') }}
 
     steps:
       - name: Checkout code
@@ -32,6 +39,8 @@ jobs:
           EOF
 
       - name: Build application
+        env:
+          BASE_PATH: ${{ vars.BASE_PATH }}
         run: npm run build
 
       - name: Upload artifact
@@ -42,7 +51,9 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || (github.ref == 'refs/heads/develop' && 'development' || 'production') }}
 
     steps:
       - name: Checkout code
@@ -63,13 +74,13 @@ jobs:
           source: "./build/*"
           target: ${{ secrets.DEPLOY_PATH }}
 
-      - name: Copy docker-compose.yml to server
+      - name: Copy compose files and nginx config to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "docker-compose.yml"
+          source: "docker-compose.yml,docker-compose.prod.yml,docker-compose.dev.yml,nginx.conf"
           target: ${{ secrets.DEPLOY_PATH }}
 
       - name: Run Docker Compose on server
@@ -80,7 +91,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
-            
-            docker compose down
-            docker compose build --no-cache
-            docker compose up -d
+
+            docker compose -f docker-compose.yml -f ${{ vars.COMPOSE_OVERRIDE }} down
+            docker compose -f docker-compose.yml -f ${{ vars.COMPOSE_OVERRIDE }} build --no-cache
+            docker compose -f docker-compose.yml -f ${{ vars.COMPOSE_OVERRIDE }} up -d

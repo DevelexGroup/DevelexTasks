@@ -9,6 +9,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import TaskViewportCalibration from './TaskViewportCalibration.svelte';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import Icon from '@iconify/svelte';
 
 	interface Props {
@@ -186,7 +187,7 @@
 							<button
 								class="rounded-md bg-neutral-200 px-4 py-2 text-center text-neutral-600 hover:bg-neutral-300"
 								onclick={() => {
-									goto('/');
+									goto(resolve('/'));
 								}}
 							>
 								Přejít na hlavní stranu
