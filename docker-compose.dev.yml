@@ -5,6 +5,7 @@ services:
     container_name: develex-tasks-dev
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=coolify"
       # HTTPS router — serves develex.phil.muni.cz/dev
       - "traefik.http.routers.develex-tasks-dev.rule=Host(`develex.phil.muni.cz`) && PathPrefix(`/dev`)"
       - "traefik.http.routers.develex-tasks-dev.entrypoints=https"
