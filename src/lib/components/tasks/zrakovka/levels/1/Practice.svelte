@@ -68,7 +68,7 @@
 				<div style="width: {getScaledSize(12) * 0.25}rem; height: {getScaledSize(12) * 0.25}rem;">
 					<img
 						class="h-full w-full object-contain"
-						src={resolveAny(`/images/tasks/zrakovka/${state.dataEntry.correct[0]}.png`)}
+						src={resolveAny(`/images/tasks/zrakovka/${state.dataEntry.correct[0]}.webp`)}
 						alt={state.dataEntry.correct[0]}
 					/>
 				</div>
