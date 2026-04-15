@@ -6,9 +6,10 @@
 		instructionVideo?: string;
 		label: string;
 		level?: string | number;
+		levelLabel?: string | null;
 	}
 
-	const { instructionVideo, label, level }: Props = $props();
+	const { instructionVideo, label, level, levelLabel }: Props = $props();
 </script>
 
 <div
@@ -51,7 +52,7 @@
 						<span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
 
 						{label}
-						{level ? `- úroveň ${level}` : ''}
+						{levelLabel ? `- ${levelLabel}` : level ? `- úroveň ${level}` : ''}
 					</div>
 
 					<div class="space-y-5">

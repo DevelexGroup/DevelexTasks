@@ -78,7 +78,7 @@
 	<svelte:fragment slot="Instructions">
 		{#if instructionsComponentPromise}
 			{#await instructionsComponentPromise then InstructionsComponent}
-				<InstructionsComponent />
+				<InstructionsComponent levelLabel={data.levelLabel} />
 			{:catch error}
 				<p>Error loading Instructions component: {error.message}</p>
 			{/await}
