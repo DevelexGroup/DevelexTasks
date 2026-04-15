@@ -34,6 +34,18 @@ export const load: PageLoad = async ({ params, url }) => {
 		eager: true
 	});
 
+	const levelIndexModules = import.meta.glob<{ label?: string }>(
+		'/src/lib/components/tasks/*/levels/*/index.ts',
+		{ eager: true }
+	);
+
+	const levelIndexLabelBySlug = new Map(
+		Object.entries(levelIndexModules)
+			.filter(([path]) => path.includes(`/tasks/${taskSlug}/levels/`))
+			.map(([path, mod]) => [path.split('/').at(-2)!, mod.label])
+			.filter((entry): entry is [string, string] => entry[1] != null)
+	);
+
 	const levels = Object.keys(levelModules)
 		.filter((path) => path.includes(`/tasks/${taskSlug}/levels/`))
 		.map((path) => {
@@ -45,7 +57,7 @@ export const load: PageLoad = async ({ params, url }) => {
 			return {
 				slug,
 				label:
-					modeLabelByLevel.get(slug) ?? defaultLabelByLevel.get(slug) ?? `Level: ${slug}`
+					modeLabelByLevel.get(slug) ?? defaultLabelByLevel.get(slug) ?? levelIndexLabelBySlug.get(slug) ?? `Level: ${slug}`
 			};
 		})
 		.filter((level): level is { slug: string; label: string } => level !== null)
