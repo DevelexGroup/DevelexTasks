@@ -37,7 +37,7 @@
 					<div class="inline-flex items-center space-x-4">
 						<div class="inline-flex h-13 w-13 items-center justify-center rounded-md bg-cyan-200">
 							<Icon
-								icon="material-symbols:chair"
+								icon="material-symbols-light:book-ribbon-rounded"
 								class="h-7.5 w-7.5 text-cyan-700"
 							/>
 						</div>
