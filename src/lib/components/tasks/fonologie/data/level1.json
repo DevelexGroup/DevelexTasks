@@ -8048,8 +8048,8 @@
       "tuzka"
     ],
     "correct_indices": [
+      0,
       1,
-      2,
       4
     ]
   },
@@ -8068,8 +8068,8 @@
       "pytel"
     ],
     "correct_indices": [
+      0,
       1,
-      2,
       3
     ]
   },
