@@ -7,12 +7,8 @@
 } from '$lib/database/db.types';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
-import { DEFAULT_TASK_MODE, type TaskMode } from '$lib/utils/taskMode';
+import { formatTaskName } from '$lib/utils/taskMode';
 import { type TaskMistake, TaskResult, type TrackTaskState } from '$lib/types/task.types';
-
-function formatTaskName(slug: string, level: string, mode: TaskMode): string {
-	return mode === DEFAULT_TASK_MODE ? `${slug}-${level}` : `${slug}-${level}-${mode}`;
-}
 import type {
 	FixationDataPoint,
 	GazeDataPoint,

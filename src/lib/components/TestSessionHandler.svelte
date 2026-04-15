@@ -15,6 +15,7 @@
 	import { get } from 'svelte/store';
 	import { authUser } from '$lib/stores/auth';
 	import { clientLog } from '$lib/utils/clientLogger';
+	import { formatTaskName } from '$lib/utils/taskMode';
 
 	const FIRST_SLIDE_INDEX = 1;
 
@@ -44,7 +45,7 @@
 			// Set previousSlideIndex so the slide change effect won't duplicate the first part
 			previousSlideIndex = FIRST_SLIDE_INDEX;
 
-			operationChain = createTestSession(`${task.slug}-${task.level}`)
+			operationChain = createTestSession(formatTaskName(task.slug, task.level, task.mode))
 				.then(async (session) => {
 					console.log('Test session created:', session);
 					clientLog.log('Test session created:', session);

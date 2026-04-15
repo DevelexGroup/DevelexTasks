@@ -78,6 +78,10 @@ export function getTaskModePreset(mode: TaskMode, taskSlug: string): TaskModePre
 	return getTaskModeConfig(mode).presets?.[taskSlug] ?? null;
 }
 
+export function formatTaskName(slug: string, level: string, mode: TaskMode): string {
+	return mode === DEFAULT_TASK_MODE ? `${slug}-${level}` : `${slug}-${level}-${mode}`;
+}
+
 export function resolveExcludeTags(preset: TaskModePreset | null): string[] {
 	const include = new Set(preset?.includeTags ?? []);
 	const base = MODE_TAGS.filter((tag) => !include.has(tag));
