@@ -1,23 +1,12 @@
 import type { TaskMetadata, TrackTaskPresetUnknown } from '$lib/types/task.types';
 import type { PageLoad } from './$types';
-import evaluationTaskPresets from '$lib/data/evaluation-task-presets.json';
-
-type LevelMetadata = {
-	label?: string;
-};
-
-type RouteMode = 'evaluation' | 'reeducation';
+import { getTaskModeConfig, getTaskModePreset, parseTaskMode } from '$lib/utils/taskMode';
 
 export const load: PageLoad = async ({ params, url }) => {
 	const { task: taskSlug } = params;
-	const mode: RouteMode =
-		url.searchParams.get('mode') === 'evaluation' ? 'evaluation' : 'reeducation';
-
-	const taskPresetMap = evaluationTaskPresets as Record<string, TrackTaskPresetUnknown>;
-	const evaluationTaskPreset = mode === 'evaluation' ? (taskPresetMap[params.task] ?? null) : null;
-	const evaluationLabelByLevelSlug = new Map(
-		(evaluationTaskPreset ?? []).map((preset) => [preset.levelID, preset.label])
-	);
+	const mode = parseTaskMode(url);
+	const modeConfig = getTaskModeConfig(mode);
+	const modePreset = getTaskModePreset(mode, taskSlug);
 
 	const taskModules = import.meta.glob<TaskMetadata>('/src/lib/components/tasks/*/index.ts', {
 		eager: true
@@ -32,15 +21,18 @@ export const load: PageLoad = async ({ params, url }) => {
 	}
 
 	const task = taskModules[taskPath];
+	const defaultPreset: TrackTaskPresetUnknown = task.defaultPreset ?? [];
+
+	const modeLabelByLevel = new Map(
+		(modePreset?.levels ?? []).map((preset) => [preset.levelID, preset.label])
+	);
+	const defaultLabelByLevel = new Map(
+		defaultPreset.map((preset) => [preset.levelID, preset.label])
+	);
+
 	const levelModules = import.meta.glob(`/src/lib/components/tasks/*/levels/*/Task.svelte`, {
 		eager: true
 	});
-	const levelMetadataModules = import.meta.glob<LevelMetadata>(
-		`/src/lib/components/tasks/*/levels/*/index.ts`,
-		{
-			eager: true
-		}
-	);
 
 	const levels = Object.keys(levelModules)
 		.filter((path) => path.includes(`/tasks/${taskSlug}/levels/`))
@@ -50,20 +42,17 @@ export const load: PageLoad = async ({ params, url }) => {
 				return null;
 			}
 
-			const levelMetadataPath = path.replace('/Task.svelte', '/index.ts');
-			const levelMetadata = levelMetadataModules[levelMetadataPath];
-
 			return {
 				slug,
 				label:
-					evaluationLabelByLevelSlug.get(slug) ?? levelMetadata?.label ?? `Level: ${slug}`
+					modeLabelByLevel.get(slug) ?? defaultLabelByLevel.get(slug) ?? `Level: ${slug}`
 			};
 		})
 		.filter((level): level is { slug: string; label: string } => level !== null)
 		.filter((level) => {
 			return (
-				evaluationTaskPreset == null ||
-				evaluationTaskPreset.some((preset) => preset.levelID === level.slug)
+				modePreset == null ||
+				modePreset.levels.some((preset) => preset.levelID === level.slug)
 			);
 		})
 		.sort((a, b) => a.slug.localeCompare(b.slug, undefined, { numeric: true }));
@@ -71,9 +60,16 @@ export const load: PageLoad = async ({ params, url }) => {
 	return {
 		levels,
 		mode,
+		modeQuery: modeConfig.query,
+		modeListPath: modeConfig.listPath,
+		modePageHeading: modeConfig.pageHeading,
+		modeLevelCardClass: modeConfig.levelCardClass,
+		modeStartButtonClass: modeConfig.startButtonClass,
 		task: {
 			slug: taskSlug,
-			...task
+			label: modePreset?.label ?? task.label,
+			description: task.description,
+			addToList: task.addToList
 		}
 	};
 };

@@ -7,5 +7,5 @@ export const load: PageLoad = async () => {
 		eager: true
 	});
 
-	return { tasks: buildModeTaskList(modules, 'reeducation') };
+	return { tasks: buildModeTaskList(modules, 'intervention') };
 };

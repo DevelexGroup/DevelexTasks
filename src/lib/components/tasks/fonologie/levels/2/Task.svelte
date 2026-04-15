@@ -1,4 +1,4 @@
-﻿<script lang="ts">
+<script lang="ts">
 	import FonologieLevel from '$lib/components/tasks/fonologie/components/FonologieLevel.svelte';
 	import { id, rawData } from './index';
 	import type { TrackTaskPreset } from '$lib/types/task.types';
@@ -7,14 +7,14 @@
 	interface Props {
 		taskPreset?: TrackTaskPreset<FonologieTaskRawDataEntry>
 		excludeTags?: string[]
-		mode?: string
+		useCategories?: boolean
 	}
 
 	let {
 		taskPreset = fonologieLevelPreset,
 		excludeTags,
-		mode
+		useCategories = true
 	 }: Props = $props();
 </script>
 
-<FonologieLevel {id} {rawData} {taskPreset} {excludeTags} isPractice={false} useCategories={mode !== 'evaluation'} showShowcaseTitle={true} />
+<FonologieLevel {id} {rawData} {taskPreset} {excludeTags} isPractice={false} {useCategories} showShowcaseTitle={true} />

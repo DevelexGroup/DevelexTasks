@@ -222,8 +222,11 @@ export function formatFonologieRawData(rawData: FonologieTaskRawDataEntry): Trac
 }
 // #endregion
 
+export const defaultPreset = fonologieLevelPreset;
+
 export default {
 	label,
 	description,
-	addToList
+	addToList,
+	defaultPreset
 } satisfies TaskMetadata;

@@ -229,8 +229,11 @@ export function formatCibuleRawData(rawData: CibuleRawDataEntry): TrackTaskDataE
 }
 // #endregion
 
+export const defaultPreset = cibuleLevelPreset;
+
 export default {
 	label,
 	description,
-	addToList
+	addToList,
+	defaultPreset
 } satisfies TaskMetadata;

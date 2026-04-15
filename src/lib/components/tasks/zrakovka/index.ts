@@ -338,8 +338,11 @@ export const formatZrakovkaRawData = (rawData: ZrakovkaRawDataEntry): TrackTaskD
 	};
 };
 
+export const defaultPreset = zrakovkaLevelPreset;
+
 export default {
 	label,
 	description,
-	addToList
+	addToList,
+	defaultPreset
 } satisfies TaskMetadata;

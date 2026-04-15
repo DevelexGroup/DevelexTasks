@@ -1,20 +1,18 @@
 import type { PageLoad } from './$types';
-import evaluationTaskPresets from '$lib/data/evaluation-task-presets.json';
-
-type RouteMode = 'evaluation' | 'reeducation';
-
-const taskPresetMap = evaluationTaskPresets as Record<string, unknown>;
+import { getTaskModeConfig, getTaskModePreset, parseTaskMode, resolveExcludeTags } from '$lib/utils/taskMode';
 
 export const load: PageLoad = ({ params, url }) => {
-	const mode: RouteMode = url.searchParams.get('mode') === 'evaluation' ? 'evaluation' : 'reeducation';
-	const taskPreset = mode === 'evaluation' ? (taskPresetMap[params.task] ?? null) : null;
-	const excludeTags = mode === 'evaluation' ? [] : ['evaluation'];
+	const mode = parseTaskMode(url);
+	const modeConfig = getTaskModeConfig(mode);
+	const modePreset = getTaskModePreset(mode, params.task);
 
 	return {
 		task: params.task,
 		level: params.level,
 		mode,
-		taskPreset,
-		excludeTags
+		modeQuery: modeConfig.query,
+		taskPreset: modePreset?.levels ?? null,
+		excludeTags: resolveExcludeTags(modePreset),
+		useCategories: modePreset?.useCategories ?? true
 	};
 };

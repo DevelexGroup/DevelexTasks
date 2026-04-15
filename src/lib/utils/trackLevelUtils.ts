@@ -16,6 +16,7 @@ import {
 } from '$lib/types/mistakes.types';
 import type { RawDataEntry } from '$lib/types/data.types';
 import type { CibuleRawDataEntry } from '$lib/components/tasks/cibule/cibule.types';
+import { MODE_TAGS } from '$lib/utils/taskMode';
 
 export function tryReadWordFromState(state: TrackTaskState, analyticsManager?: AnalyticsManager) {
 	const wordToRead = state.dataEntry?.sound;
@@ -141,12 +142,12 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 	preset: (TrackTaskPresetEntryDefinition<TRawDataEntry> | TrackTaskPresetEntryGenerator<TRawDataEntry>)[],
 	rawData: TRawDataEntry[],
 	formatRawData: (rawData: TRawDataEntry) => TrackTaskDataEntry,
-	excludeTags: string[] = ['evaluation']
+	excludeTags: string[] = [...MODE_TAGS]
 ): TrackTaskDataEntry[] {
 	const content: TrackTaskDataEntry[] = [];
 	const usedIds = new Set<string>();
 
-	// console.log("Exclude tags:", excludeTags);
+	console.log("Exclude tags:", excludeTags);
 
 	for (const item of preset) {
 		if (item.generate !== undefined) {

@@ -26,9 +26,13 @@
 		modules[getComponentPath('Instructions')]?.()?.then((mod) => mod.default) || null;
 
 	const taskPresetProps = data.taskPreset
-		? { taskPreset: data.taskPreset, excludeTags: data.excludeTags }
-		: {};
-	const taskRouteQuery = data.mode === 'evaluation' ? '?mode=evaluation' : '';
+		? {
+				taskPreset: data.taskPreset,
+				excludeTags: data.excludeTags,
+				useCategories: data.useCategories
+			}
+		: { useCategories: data.useCategories };
+	const taskRouteQuery = data.modeQuery;
 
 	onMount(() => {
 		// Sanity check: validate auth status with the server before entering task
@@ -37,6 +41,7 @@
 		$currentTask = {
 			slug: data.task,
 			level: data.level,
+			mode: data.mode,
 			sessionId: Date.now().toString(),
 			stimulusId: 'null',
 			currentSlideIndex: -1,
@@ -53,7 +58,7 @@
 	<svelte:fragment slot="Task">
 		{#if taskComponentPromise}
 			{#await taskComponentPromise then TaskComponent}
-				<TaskComponent {...taskPresetProps} mode={data.mode} />
+				<TaskComponent {...taskPresetProps} />
 			{:catch error}
 				<p>Error loading Task component: {error.message}</p>
 			{/await}
@@ -63,7 +68,7 @@
 	<svelte:fragment slot="Practice">
 		{#if practiceComponentPromise}
 			{#await practiceComponentPromise then PracticeComponent}
-				<PracticeComponent {...taskPresetProps} mode={data.mode} />
+				<PracticeComponent {...taskPresetProps} />
 			{:catch error}
 				<p>Error loading Practice component: {error.message}</p>
 			{/await}

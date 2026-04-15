@@ -40,14 +40,9 @@
 		}
 	];
 
-	const isEvaluationMode = data.mode === 'evaluation';
-	const modeQuery = isEvaluationMode ? '?mode=evaluation' : '';
-	const levelCardClass = isEvaluationMode
-		? 'bg-amber-50 hover:border-amber-600/20'
-		: 'bg-indigo-50 hover:border-blue-600/20';
-	const startButtonClass = isEvaluationMode
-		? 'bg-amber-600 hover:bg-orange-700'
-		: 'bg-blue-600 hover:bg-blue-700';
+	const modeQuery = data.modeQuery;
+	const levelCardClass = data.modeLevelCardClass;
+	const startButtonClass = data.modeStartButtonClass;
 </script>
 
 <DefaultLayout>
@@ -57,11 +52,9 @@
 			onclick={() =>
 				goto(
 					resolve(
-						isEvaluationMode
-							? '/evaluation'
-							: data.task.slug === 'dyslex'
-								? '/'
-								: '/reeducation'
+						data.task.slug === 'dyslex' && data.mode === 'reeducation'
+							? '/'
+							: data.modeListPath
 					)
 				)}
 		>
@@ -71,7 +64,7 @@
 		</button>
 	</div>
 
-	<h1 class="text-2xl font-black text-gray-800">{isEvaluationMode ? 'Evaluace' : 'Úloha'}: {data.task.label}</h1>
+	<h1 class="text-2xl font-black text-gray-800">{data.modePageHeading}: {data.task.label}</h1>
 
 	<div class="grid grid-cols-1 gap-5">
 		{#each data.levels as level, index (level.slug)}

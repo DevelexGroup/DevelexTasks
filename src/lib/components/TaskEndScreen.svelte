@@ -6,6 +6,7 @@
 	import { TaskResult } from '$lib/types/task.types';
 	import { currentTask, testSessionUploading, clientLogUploading } from '$lib/stores/task';
 	import Icon from '@iconify/svelte';
+	import { getTaskModeConfig, parseTaskMode } from '$lib/utils/taskMode';
 
 	interface Props {
 		exitType: TaskResult;
@@ -13,9 +14,8 @@
 
 	let { exitType }: Props = $props();
 
-	const modeQuery = $derived(
-		page.url.searchParams.get('mode') === 'evaluation' ? '?mode=evaluation' : ''
-	);
+	const modeConfig = $derived(getTaskModeConfig(parseTaskMode(page.url)));
+	const modeQuery = $derived(modeConfig.query);
 	const isUploading = $derived($testSessionUploading || $clientLogUploading);
 	const isSuccessful = $derived(exitType === TaskResult.Natural);
 	const status = $derived(
@@ -54,9 +54,7 @@
 			return;
 		}
 
-		goto(
-			resolve(page.url.searchParams.get('mode') === 'evaluation' ? '/evaluation' : '/reeducation')
-		);
+		goto(resolve(modeConfig.listPath));
 	}
 
 	function retryTask() {

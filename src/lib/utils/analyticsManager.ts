@@ -7,7 +7,12 @@
 } from '$lib/database/db.types';
 import { get } from 'svelte/store';
 import { currentTask } from '$lib/stores/task';
+import { DEFAULT_TASK_MODE, type TaskMode } from '$lib/utils/taskMode';
 import { type TaskMistake, TaskResult, type TrackTaskState } from '$lib/types/task.types';
+
+function formatTaskName(slug: string, level: string, mode: TaskMode): string {
+	return mode === DEFAULT_TASK_MODE ? `${slug}-${level}` : `${slug}-${level}-${mode}`;
+}
 import type {
 	FixationDataPoint,
 	GazeDataPoint,
@@ -139,7 +144,7 @@ export class AnalyticsManager {
 		return {
 			child_id: user?.username ?? 'host',
 			session_id: task ? task.sessionId : 'unknown',
-			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
+			task_name: task ? formatTaskName(task.slug, task.level, task.mode) : 'unknown',
 			slide_index: task?.currentSlideIndex ?? -1,
 			stimulus_id: task?.stimulusId ?? 'null',
 			timestamp: window.performance.timeOrigin + window.performance.now()
@@ -457,7 +462,7 @@ export class AnalyticsManager {
 		this.rawGazeBuffer.push({
 			child_id: user?.username ?? 'host',
 			session_id: task ? task.sessionId : 'unknown',
-			task_name: task ? `${task.slug}-${task.level}` : 'unknown',
+			task_name: task ? formatTaskName(task.slug, task.level, task.mode) : 'unknown',
 			slide_index: task?.currentSlideIndex ?? -1,
 			timestamp: window.performance.timeOrigin + window.performance.now(),
 			bridgeTimeStamp: inputData.timestamp,

@@ -158,8 +158,11 @@ export function formatSlabikyRawData(rawData: SlabikyRawDataEntry): TrackTaskDat
 }
 // #endregion
 
+export const defaultPreset = slabikyLevelPreset;
+
 export default {
 	label,
 	description,
-	addToList
+	addToList,
+	defaultPreset
 } satisfies TaskMetadata;

@@ -8,6 +8,7 @@ export interface TaskMetadata {
 	description: string;
 	addToList: boolean;
 	diagnosticMode?: boolean;
+	defaultPreset?: TrackTaskPresetUnknown;
 }
 
 export enum TaskStage {

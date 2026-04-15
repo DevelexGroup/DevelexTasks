@@ -1,233 +1,246 @@
-﻿{
-	"cibule": [
-		{
-			"levelID": "1",
-			"label": "Úroveň 1",
-			"practiceContent": [{ "generate": { "type": ["pismena0"] } }],
-			"content": [
-				{ "generate": { "id": "CI1243" } },
-				{ "generate": { "id": "CI1343" } },
-				{ "generate": { "id": "CI1563" } },
-				{ "generate": { "id": "CI1692" } }
-			]
-		},
-		{
-			"levelID": "2",
-			"label": "Úroveň 2",
-			"practiceContent": [{ "generate": { "type": ["pismena0"] } }],
-			"content": [
-				{ "generate": { "id": "CI1113" } },
-				{ "generate": { "id": "CI1484" } },
-				{ "generate": { "id": "CI1568" } },
-				{ "generate": { "id": "CI1665" } }
-			]
-		},
-		{
-			"levelID": "3",
-			"label": "Úroveň 3",
-			"practiceContent": [{ "generate": { "type": ["slova1_3sl"] } }],
-			"content": [
-				{ "generate": { "id": "CI3101" } },
-				{ "generate": { "id": "CI3102" } },
-				{ "generate": { "id": "CI3103" } },
-				{ "generate": { "id": "CI3104" } }
-			]
-		},
-		{
-			"levelID": "4",
-			"label": "Úroveň 4",
-			"practiceContent": [{ "generate": { "type": ["slova2_3sl"] } }],
-			"content": [
-				{ "generate": { "id": "CI3201" } },
-				{ "generate": { "id": "CI3202" } },
-				{ "generate": { "id": "CI3203" } },
-				{ "generate": { "id": "CI3204" } }
-			]
-		}
-	],
-	"zrakovka": [
-		{
-			"levelID": "2",
-			"label": "Úroveň 1",
-			"practiceContent": [{ "generate": { "sada": ["zacvik2"] } }],
-			"content": [
-				{ "generate": { "id": "23067" } },
-				{ "generate": { "id": "23478" } },
-				{ "generate": { "id": "24910" } },
-				{ "generate": { "id": "26240" } },
-				{ "generate": { "id": "28229" } },
-				{ "generate": { "id": "28539" } },
-				{ "generate": { "id": "29225" } },
-				{ "generate": { "id": "31945" } }
-			]
-		},
-		{
-			"levelID": "4",
-			"label": "Úroveň 2",
-			"practiceContent": [{ "generate": { "sada": ["zacvik4"] } }],
-			"content": [
-				{ "generate": { "id": "46010" } },
-				{ "generate": { "id": "46590" } },
-				{ "generate": { "id": "47355" } },
-				{ "generate": { "id": "48650" } },
-				{ "generate": { "id": "51369" } },
-				{ "generate": { "id": "51542" } },
-				{ "generate": { "id": "52095" } },
-				{ "generate": { "id": "52680" } }
-			]
-		},
-		{
-			"levelID": "6",
-			"label": "Úroveň 3",
-			"practiceContent": [{ "generate": { "sada": ["zacvik6"] } }],
-			"content": [
-				{ "generate": { "id": "66029" } },
-				{ "generate": { "id": "66548" } },
-				{ "generate": { "id": "67785" } },
-				{ "generate": { "id": "68910" } },
-				{ "generate": { "id": "71020" } },
-				{ "generate": { "id": "71310" } },
-				{ "generate": { "id": "71870" } },
-				{ "generate": { "id": "73255" } }
-			]
-		}
-	],
-	"fonologie": [
-		{
-			"levelID": "1",
-			"label": "Úroveň 1",
-			"practiceContent": [
-				{
-					"task_id": "fonologie",
-					"id": "FOB123",
-					"topic": "předměty",
-					"set": "objects",
-					"level": "level1",
-					"sound": "Ž_zac",
-					"sequence": ["zebrik", "zezlo", "zahon", "retez", "zinka"],
-					"correct_indices": [0, 1, 4],
-					"tags": ["evaulation"]
-				}
-			],
-			"content": [
-				{ "generate": { "id": "FA4112" } },
-				{ "generate": { "id": "FA4116" } },
-				{ "generate": { "id": "FA4120" } }
-			]
-		},
-		{
-			"levelID": "2",
-			"label": "Úroveň 2",
-			"practiceContent": [
-				{
-					"task_id": "fonologie",
-					"id": "FF1210",
-					"topic": "jídlo",
-					"set": "food1",
-					"level": "level2",
-					"sound": "K_kon",
-					"sequence": ["dort", "syr", "paprika", "rohlik", "cesnek"],
-					"correct_indices": [3, 4],
-					"tags": ["evaulation"]
-				}
-			],
-			"content": [
-				{ "generate": { "id": "FOB203" } },
-				{ "generate": { "id": "FOB212" } },
-				{ "generate": { "id": "FOB219" } }
-			]
-		},
-		{
-			"levelID": "3",
-			"label": "Úroveň 3",
-			"practiceContent": [
-				{
-					"task_id": "fonologie",
-					"id": "FNA306",
-					"topic": "příroda",
-					"set": "nature",
-					"level": "level3",
-					"sound": "R_upr",
-					"sequence": ["strom", "bahno", "hory", "hnizdo", "ostrov"],
-					"correct_indices": [0, 2, 4],
-					"tags": ["evaulation"]
-				}
-			],
-			"content": [
-				{ "generate": { "id": "FHM304" } },
-				{ "generate": { "id": "FHM307" } },
-				{ "generate": { "id": "FHM301" } }
-			]
-		},
-		{
-			"levelID": "4",
-			"label": "Úroveň 4",
-			"practiceContent": [
-				{
-					"task_id": "fonologie",
-					"id": "FL4004",
-					"level": "level4",
-					"sound": "4004",
-					"model": ["mesto"],
-					"sequence": ["testo", "triko", "tenis", "vesta"],
-					"correct_indices": [0],
-					"tags": ["evaulation"]
-				}
-			],
-			"content": [
-				{ "generate": { "id": "FL4001" } },
-				{ "generate": { "id": "FL4002" } },
-				{ "generate": { "id": "FL4003" } }
-			]
-		},
-		{
-			"levelID": "5",
-			"label": "Úroveň 5",
-			"practiceContent": [
-				{
-					"task_id": "fonologie",
-					"id": "FL5004",
-					"level": "level5",
-					"sound": "5004",
-					"model": ["knizka"],
-					"sequence": ["vazka3", "tucnak5", "tuzka", "hruska2"],
-					"correct_indices": [2],
-					"tags": ["evaulation"]
-				}
-			],
-			"content": [
-				{ "generate": { "id": "FL5001" } },
-				{ "generate": { "id": "FL5002" } },
-				{ "generate": { "id": "FL5003" } }
-			]
-		}
-	],
-	"slabiky": [
-		{
-			"levelID": "1",
-			"label": "Úroveň 1",
-			"practiceContent": [{ "generate": { "type": ["practice"] } }],
-			"content": [
-				{ "generate": { "id": "SL101" } },
-				{ "generate": { "id": "SL701" } },
-				{ "generate": { "id": "SL215" } },
-				{ "generate": { "id": "SL808" } },
-				{ "generate": { "id": "SL637" } },
-				{ "generate": { "id": "SL919" } }
-			]
-		},
-		{
-			"levelID": "2",
-			"label": "Úroveň 2",
-			"practiceContent": [{ "generate": { "type": ["practice"] } }],
-			"content": [
-				{ "generate": { "id": "SL187" } },
-				{ "generate": { "id": "SL775" } },
-				{ "generate": { "id": "SL289" } },
-				{ "generate": { "id": "SL823" } },
-				{ "generate": { "id": "SL689" } },
-				{ "generate": { "id": "SL909" } }
-			]
-		}
-	]
+{
+	"cibule": {
+		"includeTags": ["evaluation"],
+		"levels": [
+			{
+				"levelID": "1",
+				"label": "Úroveň 1",
+				"practiceContent": [{ "generate": { "type": ["pismena0"] } }],
+				"content": [
+					{ "generate": { "id": "CI1243" } },
+					{ "generate": { "id": "CI1343" } },
+					{ "generate": { "id": "CI1563" } },
+					{ "generate": { "id": "CI1692" } }
+				]
+			},
+			{
+				"levelID": "2",
+				"label": "Úroveň 2",
+				"practiceContent": [{ "generate": { "type": ["pismena0"] } }],
+				"content": [
+					{ "generate": { "id": "CI1113" } },
+					{ "generate": { "id": "CI1484" } },
+					{ "generate": { "id": "CI1568" } },
+					{ "generate": { "id": "CI1665" } }
+				]
+			},
+			{
+				"levelID": "3",
+				"label": "Úroveň 3",
+				"practiceContent": [{ "generate": { "type": ["slova1_3sl"] } }],
+				"content": [
+					{ "generate": { "id": "CI3101" } },
+					{ "generate": { "id": "CI3102" } },
+					{ "generate": { "id": "CI3103" } },
+					{ "generate": { "id": "CI3104" } }
+				]
+			},
+			{
+				"levelID": "4",
+				"label": "Úroveň 4",
+				"practiceContent": [{ "generate": { "type": ["slova2_3sl"] } }],
+				"content": [
+					{ "generate": { "id": "CI3201" } },
+					{ "generate": { "id": "CI3202" } },
+					{ "generate": { "id": "CI3203" } },
+					{ "generate": { "id": "CI3204" } }
+				]
+			}
+		]
+	},
+	"zrakovka": {
+		"includeTags": ["evaluation"],
+		"levels": [
+			{
+				"levelID": "2",
+				"label": "Úroveň 1",
+				"practiceContent": [{ "generate": { "sada": ["zacvik2"] } }],
+				"content": [
+					{ "generate": { "id": "23067" } },
+					{ "generate": { "id": "23478" } },
+					{ "generate": { "id": "24910" } },
+					{ "generate": { "id": "26240" } },
+					{ "generate": { "id": "28229" } },
+					{ "generate": { "id": "28539" } },
+					{ "generate": { "id": "29225" } },
+					{ "generate": { "id": "31945" } }
+				]
+			},
+			{
+				"levelID": "4",
+				"label": "Úroveň 2",
+				"practiceContent": [{ "generate": { "sada": ["zacvik4"] } }],
+				"content": [
+					{ "generate": { "id": "46010" } },
+					{ "generate": { "id": "46590" } },
+					{ "generate": { "id": "47355" } },
+					{ "generate": { "id": "48650" } },
+					{ "generate": { "id": "51369" } },
+					{ "generate": { "id": "51542" } },
+					{ "generate": { "id": "52095" } },
+					{ "generate": { "id": "52680" } }
+				]
+			},
+			{
+				"levelID": "6",
+				"label": "Úroveň 3",
+				"practiceContent": [{ "generate": { "sada": ["zacvik6"] } }],
+				"content": [
+					{ "generate": { "id": "66029" } },
+					{ "generate": { "id": "66548" } },
+					{ "generate": { "id": "67785" } },
+					{ "generate": { "id": "68910" } },
+					{ "generate": { "id": "71020" } },
+					{ "generate": { "id": "71310" } },
+					{ "generate": { "id": "71870" } },
+					{ "generate": { "id": "73255" } }
+				]
+			}
+		]
+	},
+	"fonologie": {
+		"includeTags": ["evaluation"],
+		"useCategories": false,
+		"levels": [
+			{
+				"levelID": "1",
+				"label": "Úroveň 1",
+				"practiceContent": [
+					{
+						"task_id": "fonologie",
+						"id": "FOB123",
+						"topic": "předměty",
+						"set": "objects",
+						"level": "level1",
+						"sound": "Ž_zac",
+						"sequence": ["zebrik", "zezlo", "zahon", "retez", "zinka"],
+						"correct_indices": [0, 1, 4],
+						"tags": ["evaulation"]
+					}
+				],
+				"content": [
+					{ "generate": { "id": "FA4112" } },
+					{ "generate": { "id": "FA4116" } },
+					{ "generate": { "id": "FA4120" } }
+				]
+			},
+			{
+				"levelID": "2",
+				"label": "Úroveň 2",
+				"practiceContent": [
+					{
+						"task_id": "fonologie",
+						"id": "FF1210",
+						"topic": "jídlo",
+						"set": "food1",
+						"level": "level2",
+						"sound": "K_kon",
+						"sequence": ["dort", "syr", "paprika", "rohlik", "cesnek"],
+						"correct_indices": [3, 4],
+						"tags": ["evaulation"]
+					}
+				],
+				"content": [
+					{ "generate": { "id": "FOB203" } },
+					{ "generate": { "id": "FOB212" } },
+					{ "generate": { "id": "FOB219" } }
+				]
+			},
+			{
+				"levelID": "3",
+				"label": "Úroveň 3",
+				"practiceContent": [
+					{
+						"task_id": "fonologie",
+						"id": "FNA306",
+						"topic": "příroda",
+						"set": "nature",
+						"level": "level3",
+						"sound": "R_upr",
+						"sequence": ["strom", "bahno", "hory", "hnizdo", "ostrov"],
+						"correct_indices": [0, 2, 4],
+						"tags": ["evaulation"]
+					}
+				],
+				"content": [
+					{ "generate": { "id": "FHM304" } },
+					{ "generate": { "id": "FHM307" } },
+					{ "generate": { "id": "FHM301" } }
+				]
+			},
+			{
+				"levelID": "4",
+				"label": "Úroveň 4",
+				"practiceContent": [
+					{
+						"task_id": "fonologie",
+						"id": "FL4004",
+						"level": "level4",
+						"sound": "4004",
+						"model": ["mesto"],
+						"sequence": ["testo", "triko", "tenis", "vesta"],
+						"correct_indices": [0],
+						"tags": ["evaulation"]
+					}
+				],
+				"content": [
+					{ "generate": { "id": "FL4001" } },
+					{ "generate": { "id": "FL4002" } },
+					{ "generate": { "id": "FL4003" } }
+				]
+			},
+			{
+				"levelID": "5",
+				"label": "Úroveň 5",
+				"practiceContent": [
+					{
+						"task_id": "fonologie",
+						"id": "FL5004",
+						"level": "level5",
+						"sound": "5004",
+						"model": ["knizka"],
+						"sequence": ["vazka3", "tucnak5", "tuzka", "hruska2"],
+						"correct_indices": [2],
+						"tags": ["evaulation"]
+					}
+				],
+				"content": [
+					{ "generate": { "id": "FL5001" } },
+					{ "generate": { "id": "FL5002" } },
+					{ "generate": { "id": "FL5003" } }
+				]
+			}
+		]
+	},
+	"slabiky": {
+		"includeTags": ["evaluation"],
+		"levels": [
+			{
+				"levelID": "1",
+				"label": "Úroveň 1",
+				"practiceContent": [{ "generate": { "type": ["practice"] } }],
+				"content": [
+					{ "generate": { "id": "SL101" } },
+					{ "generate": { "id": "SL701" } },
+					{ "generate": { "id": "SL215" } },
+					{ "generate": { "id": "SL808" } },
+					{ "generate": { "id": "SL637" } },
+					{ "generate": { "id": "SL919" } }
+				]
+			},
+			{
+				"levelID": "2",
+				"label": "Úroveň 2",
+				"practiceContent": [{ "generate": { "type": ["practice"] } }],
+				"content": [
+					{ "generate": { "id": "SL187" } },
+					{ "generate": { "id": "SL775" } },
+					{ "generate": { "id": "SL289" } },
+					{ "generate": { "id": "SL823" } },
+					{ "generate": { "id": "SL689" } },
+					{ "generate": { "id": "SL909" } }
+				]
+			}
+		]
+	}
 }
