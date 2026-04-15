@@ -44,20 +44,39 @@
 	const levelFilteredRawData = presetLevel
 		? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).level === presetLevel)
 		: rawData;
-	const randomData = levelFilteredRawData[
-		Math.floor(Math.random() * levelFilteredRawData.length)
-	] as FonologieAudioRawDataEntry;
-	const randomCategory = $derived(useCategories ? randomData.set : null);
-	const filteredRawData = $derived(
-		useCategories
-			? rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).set === randomCategory)
-			: rawData
-	);
 
-	const data = preset
-		? getLevelData<FonologieTaskRawDataEntry>(preset, filteredRawData, formatFonologieRawData, excludeTags)
-		: null;
-	const showcaseData = data ? getShowcaseData(data, true) : null;
+	function generateLevelDataWithCategory() {
+		if (!preset) return { data: null, showcaseData: null };
+
+		if (!useCategories) {
+			const data = getLevelData<FonologieTaskRawDataEntry>(preset, rawData, formatFonologieRawData, excludeTags);
+			return { data, showcaseData: getShowcaseData(data, true) };
+		}
+
+		// Get all unique categories and shuffle them
+		const availableCategories = [...new Set(levelFilteredRawData.map((entry) => (entry as FonologieAudioRawDataEntry).set))];
+		for (let i = availableCategories.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[availableCategories[i], availableCategories[j]] = [availableCategories[j], availableCategories[i]];
+		}
+
+		// Try each category until one succeeds
+		for (const category of availableCategories) {
+			try {
+				const filtered = rawData.filter((entry) => (entry as FonologieAudioRawDataEntry).set === category);
+				const data = getLevelData<FonologieTaskRawDataEntry>(preset, filtered, formatFonologieRawData, excludeTags);
+				console.log('Selected random category:', category);
+				return { data, showcaseData: getShowcaseData(data, true) };
+			} catch (e) {
+				console.warn(`Category "${category}" failed, trying another...`, e);
+			}
+		}
+
+		console.error('No valid category found for the given preset.');
+		return { data: null, showcaseData: null };
+	}
+
+	const { data, showcaseData } = generateLevelDataWithCategory();
 
 	const topicName = $derived(data?.length ? data[0].topic : null);
 

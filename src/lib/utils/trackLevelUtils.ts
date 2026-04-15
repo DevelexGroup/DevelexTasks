@@ -141,7 +141,7 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 	preset: (TrackTaskPresetEntryDefinition<TRawDataEntry> | TrackTaskPresetEntryGenerator<TRawDataEntry>)[],
 	rawData: TRawDataEntry[],
 	formatRawData: (rawData: TRawDataEntry) => TrackTaskDataEntry,
-	excludeTags: string[] = [...MODE_TAGS]
+	excludeTags: string[] = [...MODE_TAGS, 'disabled']
 ): TrackTaskDataEntry[] {
 	const content: TrackTaskDataEntry[] = [];
 	const usedIds = new Set<string>();
