@@ -104,7 +104,7 @@
 			{#snippet trackComponent({ symbols, correctSymbols, validateSymbolClick })}
 				<SymbolTrack {symbols} {correctSymbols} {validateSymbolClick} symbolSpacing={16}>
 					{#snippet symbolSnippet({ symbol, index })}
-						{@const wordAudioSrc = resolveAny(`/sound/fonologie/words/${symbol?.replace(/[0-9]+/g, '').replace(/[A-Z]+/g, '')}.ogg`)}
+						{@const wordAudioSrc = `/sound/fonologie/words/${symbol?.replace(/[0-9]+/g, '').replace(/[A-Z]+/g, '')}.ogg`}
 
 						<ImageSymbolElement
 							{symbol}

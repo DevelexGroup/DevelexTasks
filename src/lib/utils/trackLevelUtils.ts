@@ -6,7 +6,6 @@
 	TrackTaskState
 } from '$lib/types/task.types';
 import { playSoundOrTTS } from '$lib/utils/sound';
-import { resolveAny } from '$lib/utils/resolveAny';
 import { AnalyticsManager } from '$lib/utils/analyticsManager';
 import {
 	MistakeMisclick,
@@ -32,7 +31,7 @@ export function tryReadWordFromState(state: TrackTaskState, analyticsManager?: A
 export function getWordAudioSource(word: string): string {
 	const fileName = word.endsWith('.ogg') || word.endsWith('.wav') ? word : `${word}.ogg`;
 
-	return resolveAny(`/sound/syllables/${fileName}`);
+	return `/sound/syllables/${fileName}`;
 }
 
 export function getFlattenedSymbols(state: TrackTaskState): string[] {
