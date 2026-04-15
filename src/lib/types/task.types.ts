@@ -88,20 +88,20 @@ export interface TrackTaskDataEntry<TElement = string> {
 
 export type TrackTaskData = TaskData<TrackTaskDataEntry>;
 
-export interface TrackTaskPresetEntryDefinition extends TrackTaskDataEntry {
+export type TrackTaskPresetEntryDefinition<TRawDataEntry extends RawDataEntry> = TRawDataEntry & {
 	generate?: null;
-}
+};
 export interface TrackTaskPresetEntryGenerator<TRawDataEntry extends RawDataEntry> {
 	generate: PartialArrayable<TRawDataEntry>;
 	excludeTags?: string[];
 }
 
 export type TrackTaskPreset<TRawDataEntry extends RawDataEntry> = TaskData<
-	TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<TRawDataEntry>
+	TrackTaskPresetEntryDefinition<TRawDataEntry> | TrackTaskPresetEntryGenerator<TRawDataEntry>
 >;
 
 export type TrackTaskPresetUnknown = TaskData<
-	TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<RawDataEntry>
+	TrackTaskPresetEntryDefinition<RawDataEntry> | TrackTaskPresetEntryGenerator<RawDataEntry>
 >;
 
 // Components

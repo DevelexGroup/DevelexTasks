@@ -5,6 +5,7 @@ import ZrakovkaLevel3Data from '$lib/components/tasks/zrakovka/data/level3.json'
 import ZrakovkaLevel4Data from '$lib/components/tasks/zrakovka/data/level4.json';
 import ZrakovkaLevel5Data from '$lib/components/tasks/zrakovka/data/level5.json';
 import ZrakovkaLevel6Data from '$lib/components/tasks/zrakovka/data/level6.json';
+import type { ZrakovkaRawDataEntry } from '$lib/components/tasks/zrakovka/zrakovka.types';
 
 export const zrakovkaZacvikData: ZrakovkaRawDataEntry[] = ZrakovkaZacvikData;
 export const zrakovkaLevel1Data: ZrakovkaRawDataEntry[] = ZrakovkaLevel1Data;

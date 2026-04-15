@@ -18,7 +18,18 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 	{
 		levelID: '1',
 		label: 'Úroveň 1',
-		practiceContent: [{ generate: { level: 'level1' } }],
+		practiceContent: [
+			{
+				task_id: 'fonologie',
+				id: 'FOB123',
+				topic: 'předměty',
+				set: 'objects',
+				level: 'level1',
+				sound: 'Ž_zac',
+				sequence: ['zebrik', 'zezlo', 'zahon', 'retez', 'zinka'],
+				correct_indices: [0, 1, 4]
+			}
+		],
 		content: [
 			{ generate: { level: 'level1' } },
 			{ generate: { level: 'level1' } },
@@ -30,7 +41,18 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 	{
 		levelID: '2',
 		label: 'Úroveň 2',
-		practiceContent: [{ generate: { level: 'level2' } }],
+		practiceContent: [
+			{
+				task_id: 'fonologie',
+				id: 'FF1210',
+				topic: 'jídlo',
+				set: 'food1',
+				level: 'level2',
+				sound: 'K_kon',
+				sequence: ['dort', 'syr', 'paprika', 'rohlik', 'cesnek'],
+				correct_indices: [3, 4]
+			}
+		],
 		content: [
 			{ generate: { level: 'level2' } },
 			{ generate: { level: 'level2' } },
@@ -42,7 +64,18 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 	{
 		levelID: '3',
 		label: 'Úroveň 3',
-		practiceContent: [{ generate: { level: 'level3' } }],
+		practiceContent: [
+			{
+				task_id: 'fonologie',
+				id: 'FNA306',
+				topic: 'příroda',
+				set: 'nature',
+				level: 'level3',
+				sound: 'R_upr',
+				sequence: ['strom', 'bahno', 'hory', 'hnizdo', 'ostrov'],
+				correct_indices: [0, 2, 4]
+			}
+		],
 		content: [
 			{ generate: { level: 'level3' } },
 			{ generate: { level: 'level3' } },
@@ -54,7 +87,17 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 	{
 		levelID: '4',
 		label: 'Úroveň 4',
-		practiceContent: [{ generate: { level: 'level4' } }],
+		practiceContent: [
+			{
+				task_id: 'fonologie',
+				id: 'FL4004',
+				level: 'level4',
+				sound: '4004',
+				model: ['mesto'],
+				sequence: ['testo', 'triko', 'tenis', 'vesta'],
+				correct_indices: [0]
+			}
+		],
 		content: [
 			{ generate: { level: 'level4' } },
 			{ generate: { level: 'level4' } },
@@ -66,7 +109,17 @@ export const fonologieLevelPreset: TrackTaskPreset<FonologieTaskRawDataEntry> = 
 	{
 		levelID: '5',
 		label: 'Úroveň 5',
-		practiceContent: [{ generate: { level: 'level5' } }],
+		practiceContent: [
+			{
+				task_id: 'fonologie',
+				id: 'FL5004',
+				level: 'level5',
+				sound: '5004',
+				model: ['knizka'],
+				sequence: ['vazka3', 'tucnak5', 'tuzka', 'hruska2'],
+				correct_indices: [2]
+			}
+		],
 		content: [
 			{ generate: { level: 'level5' } },
 			{ generate: { level: 'level5' } },

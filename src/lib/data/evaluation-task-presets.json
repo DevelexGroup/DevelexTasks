@@ -96,7 +96,19 @@
 		{
 			"levelID": "1",
 			"label": "Úroveň 1",
-			"practiceContent": [{ "generate": { "id": "FOB123" } }],
+			"practiceContent": [
+				{
+					"task_id": "fonologie",
+					"id": "FOB123",
+					"topic": "předměty",
+					"set": "objects",
+					"level": "level1",
+					"sound": "Ž_zac",
+					"sequence": ["zebrik", "zezlo", "zahon", "retez", "zinka"],
+					"correct_indices": [0, 1, 4],
+					"tags": ["evaulation"]
+				}
+			],
 			"content": [
 				{ "generate": { "id": "FA4112" } },
 				{ "generate": { "id": "FA4116" } },
@@ -106,7 +118,19 @@
 		{
 			"levelID": "2",
 			"label": "Úroveň 2",
-			"practiceContent": [{ "generate": { "id": "FF1210" } }],
+			"practiceContent": [
+				{
+					"task_id": "fonologie",
+					"id": "FF1210",
+					"topic": "jídlo",
+					"set": "food1",
+					"level": "level2",
+					"sound": "K_kon",
+					"sequence": ["dort", "syr", "paprika", "rohlik", "cesnek"],
+					"correct_indices": [3, 4],
+					"tags": ["evaulation"]
+				}
+			],
 			"content": [
 				{ "generate": { "id": "FOB203" } },
 				{ "generate": { "id": "FOB212" } },
@@ -138,7 +162,18 @@
 		{
 			"levelID": "4",
 			"label": "Úroveň 4",
-			"practiceContent": [{ "generate": { "id": "FL4004" } }],
+			"practiceContent": [
+				{
+					"task_id": "fonologie",
+					"id": "FL4004",
+					"level": "level4",
+					"sound": "4004",
+					"model": ["mesto"],
+					"sequence": ["testo", "triko", "tenis", "vesta"],
+					"correct_indices": [0],
+					"tags": ["evaulation"]
+				}
+			],
 			"content": [
 				{ "generate": { "id": "FL4001" } },
 				{ "generate": { "id": "FL4002" } },
@@ -148,7 +183,18 @@
 		{
 			"levelID": "5",
 			"label": "Úroveň 5",
-			"practiceContent": [{ "generate": { "id": "FL5004" } }],
+			"practiceContent": [
+				{
+					"task_id": "fonologie",
+					"id": "FL5004",
+					"level": "level5",
+					"sound": "5004",
+					"model": ["knizka"],
+					"sequence": ["vazka3", "tucnak5", "tuzka", "hruska2"],
+					"correct_indices": [2],
+					"tags": ["evaulation"]
+				}
+			],
 			"content": [
 				{ "generate": { "id": "FL5001" } },
 				{ "generate": { "id": "FL5002" } },

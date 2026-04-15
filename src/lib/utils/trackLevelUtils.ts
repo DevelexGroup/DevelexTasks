@@ -138,7 +138,7 @@ export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
 }
 
 export function getLevelData<TRawDataEntry extends RawDataEntry>(
-	preset: (TrackTaskPresetEntryDefinition | TrackTaskPresetEntryGenerator<TRawDataEntry>)[],
+	preset: (TrackTaskPresetEntryDefinition<TRawDataEntry> | TrackTaskPresetEntryGenerator<TRawDataEntry>)[],
 	rawData: TRawDataEntry[],
 	formatRawData: (rawData: TRawDataEntry) => TrackTaskDataEntry,
 	excludeTags: string[] = ['evaluation']
@@ -163,7 +163,6 @@ export function getLevelData<TRawDataEntry extends RawDataEntry>(
 			content.push(generatedEntry);
 		} else {
 			// Definition
-			// @ts-expect-error item should have structure of TRawDataEntry, but TS can't verify it
 			const data = formatRawData(item as TRawDataEntry);
 			const sequenceFlat = Array.isArray(data.sequence[0])
 				? (data.sequence as string[][]).flat()
