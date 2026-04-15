@@ -25,7 +25,7 @@
 				<Icon icon="material-symbols:eyeglasses" class="h-7 w-7 text-blue-700" />
 			</div>
 
-			<span class="mt-5 text-xl font-bold text-gray-800">Reedukace dyslexie</span>
+			<span class="mt-5 text-xl font-bold text-gray-800">Trénink čtenářských dovedností</span>
 
 			<a
 				href={resolve('/reeducation')}

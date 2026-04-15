@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>Reedukace dyslexie</title>
+	<title>Trénink čtenářských dovedností</title>
 	<meta name="description" content="Various develex tasks" />
 </svelte:head>
 
@@ -25,7 +25,7 @@
 		</button>
 	</div>
 
-	<h1 class="text-2xl font-black text-gray-800">Reedukace dyslexie</h1>
+	<h1 class="text-2xl font-black text-gray-800">Trénink čtenářských dovedností</h1>
 
 	<div class="grid grid-cols-1 gap-5">
 		{#each data.tasks as task (task.slug)}
