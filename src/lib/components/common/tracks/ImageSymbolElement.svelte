@@ -25,7 +25,7 @@
 		symbol = '',
 		index = -1,
 		basePath = '/images',
-		extension = 'png',
+		extension = 'webp',
 		wordToRead = null,
 		audioSrc = null,
 		validateSymbolClick = () => true,
