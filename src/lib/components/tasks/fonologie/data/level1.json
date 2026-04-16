@@ -2381,8 +2381,7 @@
 		"level": "level1",
 		"sound": "B_zac",
 		"sequence": ["pekarna", "bazen", "banka", "ucebna", "posilovna"],
-		"correct_indices": [1, 2],
-		"tags": ["disabled"]
+		"correct_indices": [1, 2]
 	},
 	{
 		"task_id": "fonologie",
@@ -2392,8 +2391,7 @@
 		"level": "level1",
 		"sound": "V_zac",
 		"sequence": ["vezeni", "farma", "divadlo", "kavarna", "veterina"],
-		"correct_indices": [0, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -2403,8 +2401,7 @@
 		"level": "level1",
 		"sound": "S_zac",
 		"sequence": ["sklad", "stavba", "posilovna", "koncert", "atelier"],
-		"correct_indices": [0, 1],
-		"tags": ["disabled"]
+		"correct_indices": [0, 1]
 	},
 	{
 		"task_id": "fonologie",
@@ -2414,8 +2411,7 @@
 		"level": "level1",
 		"sound": "K_zac",
 		"sequence": ["krejcovstvi", "kuchyne", "letiste", "kancelar", "kadernictvi"],
-		"correct_indices": [0, 1, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 1, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -2425,8 +2421,7 @@
 		"level": "level1",
 		"sound": "Š_zac",
 		"sequence": ["letiste", "stavba", "hristeX", "skola", "satna"],
-		"correct_indices": [3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -2436,8 +2431,7 @@
 		"level": "level1",
 		"sound": "K_zac",
 		"sequence": ["knihovna2", "hotel1", "kluziste", "tovarna", "klub"],
-		"correct_indices": [0, 2, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 2, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -2447,8 +2441,7 @@
 		"level": "level1",
 		"sound": "P_zac",
 		"sequence": ["banka", "posilovna", "pradelna", "pekarna", "park"],
-		"correct_indices": [1, 2, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [1, 2, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -2458,8 +2451,7 @@
 		"level": "level1",
 		"sound": "K_zac",
 		"sequence": ["koncert", "kavarna", "kino", "skola", "farma"],
-		"correct_indices": [0, 1, 2],
-		"tags": ["disabled"]
+		"correct_indices": [0, 1, 2]
 	},
 	{
 		"task_id": "fonologie",
@@ -2469,8 +2461,7 @@
 		"level": "level1",
 		"sound": "H_zac",
 		"sequence": ["hotel1", "obchod2", "divadlo", "hvezdarna", "hristeX"],
-		"correct_indices": [0, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -2480,8 +2471,7 @@
 		"level": "level1",
 		"sound": "L_zac",
 		"sequence": ["jidelna", "farma", "nemocnice", "letiste", "sklad"],
-		"correct_indices": [3],
-		"tags": ["disabled"]
+		"correct_indices": [3]
 	},
 	{
 		"task_id": "fonologie",
@@ -4385,8 +4375,7 @@
 		"level": "level2",
 		"sound": "A_kon",
 		"sequence": ["tovarna", "ucebna", "pradelna", "atelier", "kino"],
-		"correct_indices": [0, 1, 2],
-		"tags": ["disabled"]
+		"correct_indices": [0, 1, 2]
 	},
 	{
 		"task_id": "fonologie",
@@ -4396,8 +4385,7 @@
 		"level": "level2",
 		"sound": "Í_kon",
 		"sequence": ["nemocnice", "hristeX", "vezeni", "krejcovstvi", "kadernictvi"],
-		"correct_indices": [2, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [2, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -4407,8 +4395,7 @@
 		"level": "level2",
 		"sound": "D_kon",
 		"sequence": ["obchod2", "letiste", "divadlo", "atelier", "sklad"],
-		"correct_indices": [0, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -4418,8 +4405,7 @@
 		"level": "level2",
 		"sound": "A_kon",
 		"sequence": ["kavarna", "knihovna2", "satna", "hvezdarna", "divadlo"],
-		"correct_indices": [0, 1, 2, 3],
-		"tags": ["disabled"]
+		"correct_indices": [0, 1, 2, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -4429,8 +4415,7 @@
 		"level": "level2",
 		"sound": "Ě_kon",
 		"sequence": ["letiste", "hristeX", "nemocnice", "kluziste", "kuchyne"],
-		"correct_indices": [0, 1, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 1, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -4440,8 +4425,7 @@
 		"level": "level2",
 		"sound": "A_kon",
 		"sequence": ["banka", "park", "veterina", "stavba", "pekarna"],
-		"correct_indices": [0, 2, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 2, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -4451,8 +4435,7 @@
 		"level": "level2",
 		"sound": "O_kon",
 		"sequence": ["nemocnice", "obchod2", "kino", "skola", "divadlo"],
-		"correct_indices": [2, 4],
-		"tags": ["disabled"]
+		"correct_indices": [2, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -4462,8 +4445,7 @@
 		"level": "level2",
 		"sound": "R_kon",
 		"sequence": ["hotel1", "kancelar", "farma", "atelier", "park"],
-		"correct_indices": [3],
-		"tags": ["disabled"]
+		"correct_indices": [3]
 	},
 	{
 		"task_id": "fonologie",
@@ -4473,8 +4455,7 @@
 		"level": "level2",
 		"sound": "L_kon",
 		"sequence": ["divadlo", "atelier", "letiste", "skola", "hotel1"],
-		"correct_indices": [4],
-		"tags": ["disabled"]
+		"correct_indices": [4]
 	},
 	{
 		"task_id": "fonologie",
@@ -4484,8 +4465,7 @@
 		"level": "level2",
 		"sound": "A_kon",
 		"sequence": ["vezeni", "posilovna", "jidelna", "skola", "obchod2"],
-		"correct_indices": [1, 2, 3],
-		"tags": ["disabled"]
+		"correct_indices": [1, 2, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -6809,8 +6789,7 @@
 		"level": "level3",
 		"sound": "A_upr",
 		"sequence": ["divadlo", "atelier", "park", "ucebna", "stavba"],
-		"correct_indices": [0, 2, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 2, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -6820,8 +6799,7 @@
 		"level": "level3",
 		"sound": "Z_upr",
 		"sequence": ["bazen", "kluziste", "vezeni", "koncert", "posilovna"],
-		"correct_indices": [0, 1, 2, 3],
-		"tags": ["disabled"]
+		"correct_indices": [0, 1, 2, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -6831,8 +6809,7 @@
 		"level": "level3",
 		"sound": "CH_upr",
 		"sequence": ["knihovna2", "stavba", "kuchyne", "obchod2", "divadlo"],
-		"correct_indices": [2, 3],
-		"tags": ["disabled"]
+		"correct_indices": [2, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -6842,8 +6819,7 @@
 		"level": "level3",
 		"sound": "Á_upr",
 		"sequence": ["jidelna", "tovarna", "kavarna", "pradelna", "pekarna"],
-		"correct_indices": [1, 2, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [1, 2, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -6853,8 +6829,7 @@
 		"level": "level3",
 		"sound": "E_upr",
 		"sequence": ["pradelna", "divadlo", "jidelna", "ucebna", "veterina"],
-		"correct_indices": [0, 2, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 2, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -6864,8 +6839,7 @@
 		"level": "level3",
 		"sound": "O_upr",
 		"sequence": ["posilovna", "nemocnice", "satna", "skola", "knihovna2"],
-		"correct_indices": [0, 1, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [0, 1, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -6875,8 +6849,7 @@
 		"level": "level3",
 		"sound": "L_upr",
 		"sequence": ["hotel1", "posilovna", "klub", "krejcovstvi", "sklad"],
-		"correct_indices": [1, 2, 4],
-		"tags": ["disabled"]
+		"correct_indices": [1, 2, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -6886,8 +6859,7 @@
 		"level": "level3",
 		"sound": "T_upr",
 		"sequence": ["satna", "pradelna", "hotel1", "hvezdarna", "sklad"],
-		"correct_indices": [0, 2],
-		"tags": ["disabled"]
+		"correct_indices": [0, 2]
 	},
 	{
 		"task_id": "fonologie",
@@ -6897,8 +6869,7 @@
 		"level": "level3",
 		"sound": "D_upr",
 		"sequence": ["hotel1", "obchod2", "pradelna", "hvezdarna", "divadlo"],
-		"correct_indices": [2, 3, 4],
-		"tags": ["disabled"]
+		"correct_indices": [2, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -6908,7 +6879,6 @@
 		"level": "level3",
 		"sound": "R_upr",
 		"sequence": ["atelier", "farma", "park", "kancelar", "sklad"],
-		"correct_indices": [1, 2],
-		"tags": ["disabled"]
+		"correct_indices": [1, 2]
 	}
 ]
