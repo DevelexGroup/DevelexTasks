@@ -4,6 +4,9 @@
 	import { playSound, playSoundOrTTS } from '$lib/utils/sound';
 	import { getWordAudioSource } from '$lib/utils/trackLevelUtils';
 
+	const MAX_RETRIES = 3;
+	const RETRY_DELAY_MS = 500;
+
 	interface Props {
 		symbol?: string;
 		index?: number;
@@ -20,6 +23,8 @@
 
 	let isCorrect = $state<boolean>(false);
 	let isSelected = $state<boolean>(false);
+	let retryCount = $state(0);
+	let imgSrc = $state('');
 
 	let {
 		symbol = '',
@@ -34,6 +39,20 @@
 		width = 20,
 		height = width
 	}: Props = $props();
+
+	$effect(() => {
+		retryCount = 0;
+		imgSrc = resolveAny(`${basePath}/${symbol}.${extension}`);
+	});
+
+	function onImgError() {
+		if (retryCount < MAX_RETRIES) {
+			retryCount++;
+			setTimeout(() => {
+				imgSrc = resolveAny(`${basePath}/${symbol}.${extension}`) + `?retry=${retryCount}`;
+			}, RETRY_DELAY_MS * retryCount);
+		}
+	}
 
 	function onSymbolClick(): void {
 		const resolvedAudioSrc = audioSrc ?? (wordToRead ? getWordAudioSource(wordToRead) : null);
@@ -67,8 +86,9 @@
 	>
 		<img
 			class="h-full w-full object-contain"
-			src={resolveAny(`${basePath}/${symbol}.${extension}`)}
+			src={imgSrc}
 			alt={symbol}
+			onerror={onImgError}
 		/>
 	</button>
 </GazeArea>
