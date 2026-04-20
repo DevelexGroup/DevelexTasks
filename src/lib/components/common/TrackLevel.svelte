@@ -41,6 +41,7 @@
 	let shouldShakeArrow = $state<boolean>(false);
 
 	let mistakeCount = $state<number>(0);
+	let mistakeDialogShown = $state<boolean>(false);
 
 	const repetitions = data.length;
 	const currentData = $derived(() => data[currentRepetition % data.length]);
@@ -108,7 +109,15 @@
 	});
 
 	$effect(() => {
-		if (!isPractice && mistakeCount >= MAX_MISTAKES_BEFORE_DIALOG) {
+		const task = $currentTask;
+		const isEvalOrIntervention = task?.mode === 'evaluation' || task?.mode === 'intervention';
+		if (
+			!isPractice &&
+			!isEvalOrIntervention &&
+			!mistakeDialogShown &&
+			mistakeCount >= MAX_MISTAKES_BEFORE_DIALOG
+		) {
+			mistakeDialogShown = true;
 			showDialog({
 				title: 'Chceš pokračovat?',
 				description:
@@ -117,9 +126,6 @@
 					{
 						label: 'Pokračovat',
 						variant: 'secondary',
-						callback: () => {
-							mistakeCount = 0;
-						},
 						closeOnClick: true
 					},
 					{
