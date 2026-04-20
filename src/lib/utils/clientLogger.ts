@@ -4,6 +4,7 @@ interface LogEntry {
 	timestamp: number;
 	level: LogLevel;
 	message: string;
+	stack?: string;
 }
 
 /**
@@ -24,16 +25,30 @@ interface LogEntry {
 class ClientLogger {
 	private logs: LogEntry[] = [];
 	private _active = false;
+	private onError = (e: ErrorEvent) => {
+		const err = e.error;
+		const stack = err instanceof Error ? err.stack : undefined;
+		this.capture('error', [`Uncaught ${err ?? e.message}`], stack);
+	};
+	private onUnhandledRejection = (e: PromiseRejectionEvent) => {
+		const reason = e.reason;
+		const stack = reason instanceof Error ? reason.stack : undefined;
+		this.capture('error', [`Unhandled rejection: ${reason}`], stack);
+	};
 
 	/** Enable buffering and clear previous entries. */
 	start(): void {
 		this._active = true;
 		this.logs = [];
+		window.addEventListener('error', this.onError);
+		window.addEventListener('unhandledrejection', this.onUnhandledRejection);
 	}
 
 	/** Disable buffering (entries are kept until `clear()` or next `start()`). */
 	stop(): void {
 		this._active = false;
+		window.removeEventListener('error', this.onError);
+		window.removeEventListener('unhandledrejection', this.onUnhandledRejection);
 	}
 
 	get active(): boolean {
@@ -65,7 +80,7 @@ class ClientLogger {
 		const content = this.logs
 			.map((entry) => {
 				const time = new Date(entry.timestamp).toISOString();
-				return `[${time}] [${entry.level.toUpperCase().padEnd(5)}] ${entry.message}`;
+				return `[${time}] [${entry.level.toUpperCase().padEnd(5)}] ${entry.message}${entry.stack ? `\n${entry.stack}` : ''}`;
 			})
 			.join('\n');
 
@@ -76,12 +91,13 @@ class ClientLogger {
 		this.logs = [];
 	}
 
-	private capture(level: LogLevel, args: unknown[]): void {
+	private capture(level: LogLevel, args: unknown[], stack?: string): void {
 		if (!this._active) return;
 		this.logs.push({
 			timestamp: Date.now(),
 			level,
-			message: args.map(formatArg).join(' ')
+			message: args.map(formatArg).join(' '),
+			stack
 		});
 	}
 }
