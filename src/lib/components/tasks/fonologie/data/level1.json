@@ -37,7 +37,7 @@
 		"level": "level1",
 		"sound": "K_zac",
 		"sequence": ["knir", "dlan", "kostra", "bricho", "kotnik"],
-		"correct_indices": [0, 1, 4]
+		"correct_indices": [0, 2, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -127,7 +127,7 @@
 		"level": "level1",
 		"sound": "J_zac",
 		"sequence": ["lev1", "jelen1", "zajic1", "jezevec1", "liska1"],
-		"correct_indices": [1, 2]
+		"correct_indices": [1, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -467,7 +467,7 @@
 		"level": "level1",
 		"sound": "N_zac",
 		"sequence": ["mravenec4", "netopyr4", "snek4", "nosorozec4", "medved4"],
-		"correct_indices": [0, 1, 3]
+		"correct_indices": [1, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -610,7 +610,7 @@
 		"level": "level1",
 		"sound": "C_zac",
 		"sequence": ["cibule", "dyne", "bonbony", "zmrzlina", "syr"],
-		"correct_indices": []
+		"correct_indices": [0]
 	},
 	{
 		"task_id": "fonologie",
@@ -730,7 +730,7 @@
 		"level": "level1",
 		"sound": "B_zac",
 		"sequence": ["babovka", "salat", "bramburky", "pohar", "kureX"],
-		"correct_indices": []
+		"correct_indices": [0, 2]
 	},
 	{
 		"task_id": "fonologie",
@@ -1110,7 +1110,7 @@
 		"level": "level1",
 		"sound": "M_zac",
 		"sequence": ["lekarka", "malirka", "ucitelka", "houslistka", "kosmonaut"],
-		"correct_indices": [1, 3]
+		"correct_indices": [1]
 	},
 	{
 		"task_id": "fonologie",
@@ -1390,7 +1390,7 @@
 		"level": "level1",
 		"sound": "H_zac",
 		"sequence": ["chnapka", "hrnec", "dzban", "hrnek", "struhadlo"],
-		"correct_indices": [2, 3]
+		"correct_indices": [1, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -1550,7 +1550,7 @@
 		"level": "level1",
 		"sound": "Z_zac",
 		"sequence": ["zaclona", "kreslo", "zachod", "zrcadlo", "zidle"],
-		"correct_indices": [0, 3, 4]
+		"correct_indices": [0, 2, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -1869,7 +1869,7 @@
 		"set": "nature",
 		"level": "level1",
 		"sound": "H_zac",
-		"sequence": ["ohen", "hnizdo", "hory", "rybnik", "hvezdy"],
+		"sequence": ["ohen", "hnizdo", "hory", "rybnik", "hvezdy2"],
 		"correct_indices": [1, 2, 4]
 	},
 	{
@@ -1899,7 +1899,7 @@
 		"set": "nature",
 		"level": "level1",
 		"sound": "K_zac",
-		"sequence": ["hory", "jeskyne", "klada", "rozcesti", "hvezdy"],
+		"sequence": ["hory", "jeskyne", "klada", "rozcesti", "hvezdy2"],
 		"correct_indices": [2]
 	},
 	{
@@ -1929,7 +1929,7 @@
 		"set": "nature",
 		"level": "level1",
 		"sound": "V_zac",
-		"sequence": ["vodopad", "vetev", "hvezdy", "pampeliska", "ostrov"],
+		"sequence": ["vodopad", "vetev", "hvezdy2", "pampeliska", "ostrov"],
 		"correct_indices": [0, 1]
 	},
 	{
@@ -2169,7 +2169,7 @@
 		"set": "objects",
 		"level": "level1",
 		"sound": "K_zac",
-		"sequence": ["kaktus", "lak", "drak", "drak", "konev"],
+		"sequence": ["kaktus", "lak", "kost", "drak", "konev"],
 		"correct_indices": [0, 2, 4]
 	},
 	{
@@ -2280,7 +2280,7 @@
 		"level": "level1",
 		"sound": "S_zac",
 		"sequence": ["slzy", "slunecnik", "zapalky", "vystava", "cirkus"],
-		"correct_indices": [1, 2]
+		"correct_indices": [0, 1]
 	},
 	{
 		"task_id": "fonologie",
@@ -2571,7 +2571,7 @@
 		"level": "level2",
 		"sound": "Í_kon",
 		"sequence": ["oboci", "brada", "chodidlo", "nehet", "tetovani"],
-		"correct_indices": [1, 4]
+		"correct_indices": [0, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -2971,7 +2971,7 @@
 		"level": "level2",
 		"sound": "E_kon",
 		"sequence": ["tresne", "dyne", "rajcata", "cibule", "vejce"],
-		"correct_indices": [1, 3, 4]
+		"correct_indices": [3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -3062,7 +3062,7 @@
 		"level": "level2",
 		"sound": "A_kon",
 		"sequence": ["babovka", "parek", "salat", "rolada", "pizza"],
-		"correct_indices": [0, 1, 3]
+		"correct_indices": [0, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -3152,7 +3152,7 @@
 		"level": "level2",
 		"sound": "A_kon",
 		"sequence": ["cuketa", "pomeranc", "redkvicky", "hruska", "salat2"],
-		"correct_indices": [0, 2, 3]
+		"correct_indices": [0, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -3801,7 +3801,7 @@
 		"set": "weather",
 		"level": "level2",
 		"sound": "Í_kon",
-		"sequence": ["zatmeni", "prazdniny", "tsunami", "hvezdy2", "zemetreseni"],
+		"sequence": ["zatmeni", "prazdniny", "tsunami", "hvezdy", "zemetreseni"],
 		"correct_indices": [0, 4]
 	},
 	{
@@ -3851,7 +3851,7 @@
 		"set": "weather",
 		"level": "level2",
 		"sound": "Y_kon",
-		"sequence": ["meteorit", "zemetreseni", "prazdniny", "zima", "hvezdy2"],
+		"sequence": ["meteorit", "zemetreseni", "prazdniny", "zima", "hvezdy"],
 		"correct_indices": [2, 4]
 	},
 	{
@@ -4283,7 +4283,7 @@
 		"set": "objects",
 		"level": "level2",
 		"sound": "A_kon",
-		"sequence": ["vytah", "vystava", "kytara", "banka", "zinka"],
+		"sequence": ["vytah", "vaza2", "kytara", "banka", "zinka"],
 		"correct_indices": [1, 2, 3, 4]
 	},
 	{
@@ -4315,7 +4315,7 @@
 		"level": "level2",
 		"sound": "A_kon",
 		"sequence": ["sluchatka", "viko", "kniha", "mydlo", "susak"],
-		"correct_indices": [0, 1]
+		"correct_indices": [0, 2]
 	},
 	{
 		"task_id": "fonologie",
@@ -4345,7 +4345,7 @@
 		"level": "level2",
 		"sound": "O_kon",
 		"sequence": ["popel", "orezavatko", "pradlo", "pravitko", "telefon"],
-		"correct_indices": [1, 2]
+		"correct_indices": [1, 2, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -4486,7 +4486,7 @@
 		"level": "level3",
 		"sound": "D_upr",
 		"sequence": ["rty", "kotnik", "chodidlo", "oboci", "zadek"],
-		"correct_indices": [2, 3]
+		"correct_indices": [2, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -4638,7 +4638,7 @@
 		"level": "level3",
 		"sound": "R_upr",
 		"sequence": ["zirafa1", "kun1", "koza1", "nosorozec1", "bobr1"],
-		"correct_indices": [0, 3, 4]
+		"correct_indices": [0, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -4898,7 +4898,7 @@
 		"level": "level3",
 		"sound": "Ž_upr",
 		"sequence": ["vazka4", "tucnak4", "jezek4", "nosorozec4", "zaba4"],
-		"correct_indices": [0, 1, 3]
+		"correct_indices": [0, 2, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -5278,7 +5278,7 @@
 		"level": "level3",
 		"sound": "B_upr",
 		"sequence": ["jablko", "rybiz", "brambory", "cibule", "repa"],
-		"correct_indices": [0, 2, 3, 4]
+		"correct_indices": [0, 1, 2, 3]
 	},
 	{
 		"task_id": "fonologie",
@@ -5638,7 +5638,7 @@
 		"level": "level3",
 		"sound": "N_upr",
 		"sequence": ["stadion", "helma", "cinka", "lanovka", "gymnastika"],
-		"correct_indices": [0, 2, 3, 4]
+		"correct_indices": [2, 3, 4]
 	},
 	{
 		"task_id": "fonologie",
@@ -5788,7 +5788,7 @@
 		"level": "level3",
 		"sound": "I_upr",
 		"sequence": ["holinky", "lodicky", "mikina", "prsten", "motylek"],
-		"correct_indices": [0, 1, 2, 4]
+		"correct_indices": [0, 1, 2]
 	},
 	{
 		"task_id": "fonologie",
@@ -6258,7 +6258,7 @@
 		"level": "level3",
 		"sound": "K_upr",
 		"sequence": ["jeskyne", "vodopad", "leknin", "zvonek", "mraveniste"],
-		"correct_indices": [0, 3]
+		"correct_indices": [0, 2]
 	},
 	{
 		"task_id": "fonologie",
@@ -6438,7 +6438,7 @@
 		"set": "weather",
 		"level": "level3",
 		"sound": "S_upr",
-		"sequence": ["soustava", "hvezdy2", "velikonoce", "sucho", "ohnostroj"],
+		"sequence": ["soustava", "hvezdy", "velikonoce", "sucho", "ohnostroj"],
 		"correct_indices": [0, 4]
 	},
 	{
