@@ -241,85 +241,87 @@
 			/>
 		</div>
 	{:else if currentStage === TrackSlideStage.Task}
-		<div class="flex flex-col items-center justify-center gap-16">
-			<div class="text-center">
-				{#if hintComponent}
-					<div class="main-components flex justify-center gap-36">
-						<div class="hint-component flex items-start justify-center">
-							<GazeArea id="hint" bufferSize={50}>
-								<div in:fade|global={{ delay: 500 }} out:fade|global>
-									{@render hintComponent({
-										state: currentState(),
-										isPractice
-									})}
-								</div>
-							</GazeArea>
-						</div>
-						{#if trackComponent}
-							<div class="track-component flex items-center">
-								<GazeArea id="track" bufferSize={50}>
-									<div
-										class="flex items-center justify-center"
-										in:fade|global={{ delay: 800 }}
-										out:fade|global
-									>
-										{@render trackComponent({
-											symbols: symbols(),
-											correctSymbols: currentData().correct,
-											validateSymbolClick,
-											dataEntry: currentData()
+		{#key currentRepetition}
+			<div class="flex flex-col items-center justify-center gap-16">
+				<div class="text-center">
+					{#if hintComponent}
+						<div class="main-components flex justify-center gap-36">
+							<div class="hint-component flex items-start justify-center">
+								<GazeArea id="hint" bufferSize={50}>
+									<div in:fade|global={{ delay: 500 }} out:fade|global>
+										{@render hintComponent({
+											state: currentState(),
+											isPractice
 										})}
 									</div>
 								</GazeArea>
 							</div>
-						{/if}
-					</div>
-				{:else if trackComponent}
-					<div class="track-component flex items-center">
-						<GazeArea id="track" bufferSize={50}>
-							<div
-								class="flex items-center justify-center"
-								in:fade|global={{ delay: 500 }}
-								out:fade|global
-							>
-								{@render trackComponent({
-									symbols: symbols(),
-									correctSymbols: currentData().correct,
-									validateSymbolClick,
-									dataEntry: currentData()
-								})}
-							</div>
-						</GazeArea>
+							{#if trackComponent}
+								<div class="track-component flex items-center">
+									<GazeArea id="track" bufferSize={50}>
+										<div
+											class="flex items-center justify-center"
+											in:fade|global={{ delay: 800 }}
+											out:fade|global
+										>
+											{@render trackComponent({
+												symbols: symbols(),
+												correctSymbols: currentData().correct,
+												validateSymbolClick,
+												dataEntry: currentData()
+											})}
+										</div>
+									</GazeArea>
+								</div>
+							{/if}
+						</div>
+					{:else if trackComponent}
+						<div class="track-component flex items-center">
+							<GazeArea id="track" bufferSize={50}>
+								<div
+									class="flex items-center justify-center"
+									in:fade|global={{ delay: 500 }}
+									out:fade|global
+								>
+									{@render trackComponent({
+										symbols: symbols(),
+										correctSymbols: currentData().correct,
+										validateSymbolClick,
+										dataEntry: currentData()
+									})}
+								</div>
+							</GazeArea>
+						</div>
+					{/if}
+				</div>
+				{#if extraComponent}
+					<div class="extra-component" in:fade|global={{ delay: 500 }} out:fade|global>
+						{@render extraComponent({
+							state: currentState(),
+							isPractice
+						})}
 					</div>
 				{/if}
 			</div>
-			{#if extraComponent}
-				<div class="extra-component" in:fade|global={{ delay: 500 }} out:fade|global>
-					{@render extraComponent({
-						state: currentState(),
-						isPractice
-					})}
-				</div>
-			{/if}
-		</div>
-		<div
-			class="fixed right-16 bottom-16"
-			class:shake={shouldShakeArrow}
-			id={`${id}_end}`}
-			transition:fade
-		>
-			<DwellTarget
-				bind:this={dwellArrowElement}
-				id={`slide-${currentRepetition + 1}_end`}
-				dwellTimeMs={1000}
-				bufferSize={50}
-				width={125}
-				onDwellComplete={onAdvanceDwellComplete}
-				disableOnComplete={false}
+			<div
+				class="fixed right-16 bottom-16"
+				class:shake={shouldShakeArrow}
+				id={`${id}_end}`}
+				transition:fade
 			>
-				<DwellTargetArrow />
-			</DwellTarget>
-		</div>
+				<DwellTarget
+					bind:this={dwellArrowElement}
+					id={`slide-${currentRepetition + 1}_end`}
+					dwellTimeMs={1000}
+					bufferSize={50}
+					width={125}
+					onDwellComplete={onAdvanceDwellComplete}
+					disableOnComplete={false}
+				>
+					<DwellTargetArrow />
+				</DwellTarget>
+			</div>
+		{/key}
 	{/if}
 </div>
 

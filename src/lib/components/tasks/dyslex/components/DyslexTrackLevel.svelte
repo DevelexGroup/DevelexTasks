@@ -146,27 +146,29 @@
 			/>
 		</div>
 	{:else if currentStage === TrackSlideStage.Task}
-		<div
-			class="flex flex-col items-center justify-center"
-			style={`margin-top: ${offset.y}px; margin-left: ${offset.x}px;`}
-		>
-			<div in:fade|global={{ delay: 500 }} out:fade|global>
-				{@render children?.()}
-			</div>
-		</div>
-
-		<div class="fixed right-[254px] bottom-[149px]" id={`${id}_end}`} transition:fade>
-			<DwellTarget
-				id={`slide-${currentRepetition + 1}_end`}
-				dwellTimeMs={1000}
-				bufferSize={50}
-				width={32}
-				height={32}
-				onDwellComplete={onAdvanceDwellComplete}
-				disableOnComplete={false}
+		{#key currentRepetition}
+			<div
+				class="flex flex-col items-center justify-center"
+				style={`margin-top: ${offset.y}px; margin-left: ${offset.x}px;`}
 			>
-				<DyslexFixCross />
-			</DwellTarget>
-		</div>
+				<div in:fade|global={{ delay: 500 }} out:fade|global>
+					{@render children?.()}
+				</div>
+			</div>
+
+			<div class="fixed right-[254px] bottom-[149px]" id={`${id}_end}`} transition:fade>
+				<DwellTarget
+					id={`slide-${currentRepetition + 1}_end`}
+					dwellTimeMs={1000}
+					bufferSize={50}
+					width={32}
+					height={32}
+					onDwellComplete={onAdvanceDwellComplete}
+					disableOnComplete={false}
+				>
+					<DyslexFixCross />
+				</DwellTarget>
+			</div>
+		{/key}
 	{/if}
 </div>
