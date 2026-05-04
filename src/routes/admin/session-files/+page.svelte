@@ -3,12 +3,14 @@
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
 	import { getAllUsers } from '$lib/api/user-management';
 	import {
 		getTestSessions,
 		getTestSessionDetail,
 		downloadTestSessionFile,
-		downloadSessionAsZip
+		downloadSessionAsZip,
+		deleteTestSession
 	} from '$lib/api/test-sessions';
 	import { SortBy, SortDirection } from '$lib/types/api.types';
 	import type {
@@ -30,7 +32,24 @@
 	let isLoadingSessions = $state(false);
 	let isLoadingDetail = $state(false);
 	let isDownloading = $state(false);
+	let isDeleting = $state(false);
+	let deleteDialogOpen = $state(false);
+	let menuOpen = $state(false);
+	let menuRef = $state<HTMLDivElement | null>(null);
 	let error = $state('');
+
+	function handleWindowClick(event: MouseEvent) {
+		if (!menuOpen) return;
+		if (menuRef && !menuRef.contains(event.target as Node)) {
+			menuOpen = false;
+		}
+	}
+
+	function handleWindowKey(event: KeyboardEvent) {
+		if (menuOpen && event.key === 'Escape') {
+			menuOpen = false;
+		}
+	}
 
 	onMount(() => {
 		loadUsers();
@@ -170,6 +189,24 @@
 		}
 	}
 
+	async function handleDeleteSession() {
+		if (!selectedSessionId) return;
+		isDeleting = true;
+		error = '';
+		try {
+			const deletedId = selectedSessionId;
+			await deleteTestSession(deletedId);
+			deleteDialogOpen = false;
+			selectedSessionId = '';
+			sessionDetail = null;
+			sessions = sessions.filter((s) => s.id !== deletedId);
+		} catch (err) {
+			error = err instanceof Error ? err.message : 'Nepodařilo se smazat sezení';
+		} finally {
+			isDeleting = false;
+		}
+	}
+
 	function triggerDownload(blob: Blob, fileName: string) {
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
@@ -230,6 +267,8 @@
 <svelte:head>
 	<title>Soubory sezení - DeveLex Tasks</title>
 </svelte:head>
+
+<svelte:window onclick={handleWindowClick} onkeydown={handleWindowKey} />
 
 <!-- Header selectors -->
 <section class="fixed top-0 right-0 left-0 z-10 bg-gray-100 px-4 pt-4 pb-3 shadow-sm">
@@ -341,19 +380,53 @@
 						{getStatusLabel(sessionDetail.status)}
 					</span>
 				</div>
-				<button
-					class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200 transition-all hover:bg-blue-700 hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
-					disabled={isDownloading || allFiles.length === 0}
-					onclick={downloadAllAsZip}
-				>
-					{#if isDownloading}
-						<Icon icon="mdi:loading" class="h-5 w-5 animate-spin" />
-						Stahuji…
-					{:else}
-						<Icon icon="material-symbols:download" class="h-5 w-5" />
-						Stáhnout vše jako ZIP
-					{/if}
-				</button>
+				<div class="flex items-center gap-2">
+					<button
+						class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200 transition-all hover:bg-blue-700 hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none"
+						disabled={isDownloading || allFiles.length === 0}
+						onclick={downloadAllAsZip}
+					>
+						{#if isDownloading}
+							<Icon icon="mdi:loading" class="h-5 w-5 animate-spin" />
+							Stahuji…
+						{:else}
+							<Icon icon="material-symbols:download" class="h-5 w-5" />
+							Stáhnout vše jako ZIP
+						{/if}
+					</button>
+					<div class="relative" bind:this={menuRef}>
+						<button
+							type="button"
+							aria-label="Další akce"
+							aria-haspopup="menu"
+							aria-expanded={menuOpen}
+							class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+							disabled={isDeleting}
+							onclick={() => (menuOpen = !menuOpen)}
+						>
+							<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
+						</button>
+						{#if menuOpen}
+							<div
+								role="menu"
+								class="absolute right-0 z-20 mt-1 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+							>
+								<button
+									type="button"
+									role="menuitem"
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+									onclick={() => {
+										menuOpen = false;
+										deleteDialogOpen = true;
+									}}
+								>
+									<Icon icon="material-symbols:delete-outline" class="h-4 w-4" />
+									Smazat sezení
+								</button>
+							</div>
+						{/if}
+					</div>
+				</div>
 			</div>
 			<div class="mt-4 flex flex-wrap gap-x-6 gap-y-1 border-t border-gray-100 pt-3 text-sm text-gray-500">
 				<span>
@@ -458,6 +531,57 @@
 		<span class="text-gray-700">Celkem souborů: {getAllFiles().length}</span>
 	{/if}
 </div>
+
+<!-- Delete confirmation dialog -->
+<Dialog.Root bind:open={deleteDialogOpen}>
+	<Dialog.Content class="sm:max-w-[500px]">
+		<Dialog.Header>
+			<Dialog.Title>Smazat sezení</Dialog.Title>
+			<Dialog.Description>
+				Tato akce je nevratná. Sezení a všechny jeho soubory budou trvale odstraněny.
+			</Dialog.Description>
+		</Dialog.Header>
+
+		{#if sessionDetail}
+			<div class="space-y-4 py-4">
+				<div class="rounded-lg border border-red-200 bg-red-50 p-4">
+					<p class="mb-2 text-sm font-medium text-red-800">Chystáte se smazat:</p>
+					<div class="space-y-1 text-sm text-red-700">
+						<p><span class="font-semibold">Uživatel:</span> {sessionDetail.userFullName}</p>
+						<p><span class="font-semibold">Typ testu:</span> {sessionDetail.testType}</p>
+						<p><span class="font-semibold">Začátek:</span> {formatDate(sessionDetail.sessionStartTime)}</p>
+						<p><span class="font-semibold">Počet souborů:</span> {getAllFiles().length}</p>
+					</div>
+				</div>
+
+				{#if error}
+					<div class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+						{error}
+					</div>
+				{/if}
+			</div>
+
+			<Dialog.Footer>
+				<button
+					type="button"
+					class="rounded-md bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300 disabled:opacity-50"
+					onclick={() => (deleteDialogOpen = false)}
+					disabled={isDeleting}
+				>
+					Zrušit
+				</button>
+				<button
+					type="button"
+					class="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:opacity-50"
+					onclick={handleDeleteSession}
+					disabled={isDeleting}
+				>
+					{isDeleting ? 'Mazání...' : 'Smazat sezení'}
+				</button>
+			</Dialog.Footer>
+		{/if}
+	</Dialog.Content>
+</Dialog.Root>
 
 <style>
 	.content-area {
