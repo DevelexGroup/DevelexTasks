@@ -176,6 +176,19 @@
 					Správa uživatelů
 				</span>
 			</a>
+
+			<a
+				href={resolve('/admin')}
+				class="group relative flex w-44 flex-col overflow-hidden rounded-xl border-2 border-dashed border-gray-300 bg-white/50 p-5 transition-all hover:border-gray-400 hover:shadow-2xl"
+			>
+				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-gray-100">
+					<Icon icon="material-symbols:apps" class="h-6 w-6 text-gray-600" />
+				</div>
+
+				<span class="mt-4 text-sm font-bold text-gray-600 group-hover:underline">
+					Více…
+				</span>
+			</a>
 		</div>
 	</RoleGuard>
 </DefaultLayout>
