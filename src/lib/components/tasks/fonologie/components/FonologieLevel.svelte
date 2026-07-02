@@ -20,6 +20,8 @@
 	} from '$lib/components/tasks/fonologie/fonologie.types';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import { scaleResponsiveSize } from '$lib/utils/responsive';
+	import { getContext } from 'svelte';
+	import { SCREENSHOT_MODE_KEY, type ScreenshotModeContext } from '$lib/types/general.types';
 
 	interface Props {
 		isPractice?: boolean;
@@ -80,9 +82,14 @@
 
 	const topicName = $derived(data?.length ? data[0].topic : null);
 
-	// Track window dimensions for dynamic aspect ratio
-	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
-	let innerHeight = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
+	const screenshot = getContext<ScreenshotModeContext | undefined>(SCREENSHOT_MODE_KEY);
+
+	// Track window dimensions for dynamic aspect ratio (overridden by the simulated
+	// viewport in screenshot mode)
+	let winW = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
+	let winH = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
+	const innerWidth = $derived(screenshot?.viewport.width ?? winW);
+	const innerHeight = $derived(screenshot?.viewport.height ?? winH);
 	const aspectRatio = $derived(innerWidth / innerHeight);
 
 	const symbolSize = $derived(
@@ -102,10 +109,10 @@
 	);
 	const optimalColumns = $derived(Math.ceil(Math.sqrt(showcaseSymbolCount * aspectRatio)));
 
-	let symbolsShowcase = $state(true);
+	let symbolsShowcase = $state(!screenshot);
 </script>
 
-<svelte:window bind:innerWidth bind:innerHeight />
+<svelte:window bind:innerWidth={winW} bind:innerHeight={winH} />
 
 {#if showcaseData && symbolsShowcase}
 	<div class="symbols-showcase" style="--optimal-columns: {optimalColumns}" transition:fade>
@@ -151,7 +158,7 @@
 	</div>
 {/if}
 {#if data && !symbolsShowcase}
-	<div class="task" transition:fade>
+	<div class="task h-full" transition:fade={screenshot ? { duration: 0 } : {}}>
 		<TrackLevel
 			{id}
 			{data}

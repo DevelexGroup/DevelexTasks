@@ -13,8 +13,14 @@
 	import { authUser } from '$lib/stores/auth';
 	import { get } from 'svelte/store';
 
+	interface Props {
+		initialSlide?: number;
+	}
+
+	let { initialSlide = 0 }: Props = $props();
+
 	const data = visdiffData['content'];
-	let slide = $state(0);
+	let slide = $state(initialSlide);
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 

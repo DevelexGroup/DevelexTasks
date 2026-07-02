@@ -74,6 +74,21 @@
 		</a>
 
 		<a
+			href={resolve('/admin/stimulus-export')}
+			class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
+		>
+			<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-emerald-100/40"></div>
+
+			<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-emerald-100">
+				<Icon icon="material-symbols:photo-camera" class="h-6 w-6 text-emerald-700" />
+			</div>
+
+			<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+				Export stimulů
+			</span>
+		</a>
+
+		<a
 			href={resolve('/admin/fonologie-showcase')}
 			class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
 		>

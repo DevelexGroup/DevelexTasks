@@ -4,7 +4,11 @@
 	import type { TrackSymbolComponent } from '$lib/types/task.types';
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
-	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
+	import {
+		ANALYTICS_MANAGER_KEY,
+		SCREENSHOT_MODE_KEY,
+		type ScreenshotModeContext
+	} from '$lib/types/general.types';
 
 	interface Props {
 		id: string;
@@ -17,6 +21,7 @@
 	}
 
 	let analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
+	const screenshot = getContext<ScreenshotModeContext | undefined>(SCREENSHOT_MODE_KEY);
 
 	let groupId = $derived(() => (isCorrect ? `target-${id}` : id));
 
@@ -37,7 +42,10 @@
 </script>
 
 <GazeArea id={groupId()} bufferSize={50}>
-	<div class="flex items-center justify-center">
+	<div
+		class="flex items-center justify-center"
+		class:screenshot-target={screenshot?.highlightTargets && isCorrect}
+	>
 		{#each symbols as symbol, groupIndex (groupIndex)}
 			{#if symbolSnippet}
 				{@render symbolSnippet({
@@ -52,3 +60,13 @@
 		{/each}
 	</div>
 </GazeArea>
+
+<style>
+	/* Answer-overlay highlight used by the admin stimulus-export tool */
+	.screenshot-target {
+		outline: 4px solid #16a34a;
+		outline-offset: 4px;
+		border-radius: 0.5rem;
+		background: rgba(22, 163, 74, 0.12);
+	}
+</style>

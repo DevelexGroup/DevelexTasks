@@ -1,5 +1,9 @@
 ﻿<script lang="ts">
-	import { GAZE_MANAGER_KEY } from '$lib/types/general.types';
+	import {
+		GAZE_MANAGER_KEY,
+		SCREENSHOT_MODE_KEY,
+		type ScreenshotModeContext
+	} from '$lib/types/general.types';
 	import type { GazeManager } from 'develex-js-sdk';
 	import { getContext, onDestroy, onMount, type Snippet } from 'svelte';
 	import { debugMode, debugOptions } from '$lib/stores/debug';
@@ -23,6 +27,7 @@
 	}: Props = $props();
 
 	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
+	const screenshot = getContext<ScreenshotModeContext | undefined>(SCREENSHOT_MODE_KEY);
 
 	let element = $state<HTMLElement | null>(null);
 	let isHovered = $state(false);
@@ -61,7 +66,7 @@
 	}
 
 	onMount(() => {
-		if (!element) return;
+		if (!element || screenshot) return;
 
 		if (registerFixation) {
 			gazeManager.register({
@@ -87,7 +92,7 @@
 	});
 
 	onDestroy(() => {
-		if (!element) return;
+		if (!element || screenshot) return;
 
 		if (registerFixation) {
 			gazeManager.unregister({

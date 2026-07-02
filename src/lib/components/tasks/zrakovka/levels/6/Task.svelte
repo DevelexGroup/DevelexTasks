@@ -16,6 +16,8 @@
 	import SymbolElement from '$lib/components/common/tracks/SymbolElement.svelte';
 	import { getSize } from '../../zrakovka.utils';
 	import { getBreakpointValue, scaleResponsiveSize } from '$lib/utils/responsive';
+	import { getContext } from 'svelte';
+	import { SCREENSHOT_MODE_KEY, type ScreenshotModeContext } from '$lib/types/general.types';
 
 	interface Props {
 		taskPreset?: TrackTaskPreset<ZrakovkaRawDataEntry>
@@ -32,8 +34,12 @@
 		? getLevelData<ZrakovkaRawDataEntry>(levelPreset, zrakovkaLevel6Data, formatZrakovkaRawData, excludeTags)
 		: null;
 
-	let innerWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
-	let innerHeight = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
+	const screenshot = getContext<ScreenshotModeContext | undefined>(SCREENSHOT_MODE_KEY);
+
+	let winW = $state(typeof window !== 'undefined' ? window.innerWidth : 1920);
+	let winH = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
+	const innerWidth = $derived(screenshot?.viewport.width ?? winW);
+	const innerHeight = $derived(screenshot?.viewport.height ?? winH);
 
 	const sizeMultiplier = $derived(
 		getBreakpointValue(innerWidth, {
@@ -56,7 +62,7 @@
 	}
 </script>
 
-<svelte:window bind:innerWidth bind:innerHeight />
+<svelte:window bind:innerWidth={winW} bind:innerHeight={winH} />
 
 {#if data}
 	<TrackLevel

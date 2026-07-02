@@ -2,7 +2,11 @@
 	import { getContext, onMount } from 'svelte';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
-	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
+	import {
+		ANALYTICS_MANAGER_KEY,
+		SCREENSHOT_MODE_KEY,
+		type ScreenshotModeContext
+	} from '$lib/types/general.types';
 
 	interface Props {
 		audioSrc: string;
@@ -31,10 +35,12 @@
 	let activeSrc = resolveAny('/images/common/audio-player-active.svg');
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
+	const screenshot = getContext<ScreenshotModeContext | undefined>(SCREENSHOT_MODE_KEY);
 
 	let useTTS = $state(false);
 
 	onMount(() => {
+		if (screenshot) return;
 		audioElement = new Audio(audioSrc);
 
 		audioElement.addEventListener('ended', () => {

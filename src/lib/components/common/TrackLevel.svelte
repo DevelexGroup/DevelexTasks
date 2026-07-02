@@ -7,7 +7,12 @@
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { playSound, SOUND_CORRECT, SOUND_MISTAKE } from '$lib/utils/sound';
 	import { TaskResult, TrackSlideStage, type TrackTaskProps } from '$lib/types/task.types';
-	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import {
+		ANALYTICS_MANAGER_KEY,
+		KEYBOARD_MANAGER_KEY,
+		SCREENSHOT_MODE_KEY,
+		type ScreenshotModeContext
+	} from '$lib/types/general.types';
 	import GazeArea from '$lib/components/common/GazeArea.svelte';
 	import { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { currentTask } from '$lib/stores/task';
@@ -33,7 +38,12 @@
 
 	const MAX_MISTAKES_BEFORE_DIALOG = 5;
 
-	let currentStage = $state<TrackSlideStage>(TrackSlideStage.InitialDwell);
+	const screenshot = getContext<ScreenshotModeContext | undefined>(SCREENSHOT_MODE_KEY);
+	const fadeParams = (delay: number) => (screenshot ? { duration: 0, delay: 0 } : { delay });
+
+	let currentStage = $state<TrackSlideStage>(
+		screenshot ? TrackSlideStage.Task : TrackSlideStage.InitialDwell
+	);
 	let currentRepetition = $state<number>(0);
 
 	// let lastSymbolIndex = $state<number | null>(null);
@@ -57,6 +67,7 @@
 
 	// Sync currentRepetition with the task store for centralized tracking
 	$effect(() => {
+		if (screenshot) return;
 		currentTask.update((task) => {
 			if (task) {
 				return { ...task, currentSlideIndex: currentRepetition };
@@ -66,6 +77,7 @@
 	});
 
 	onMount(() => {
+		if (screenshot) return;
 		let keyboardManager = getContext<KeyboardManager>(KEYBOARD_MANAGER_KEY);
 
 		const skipEvt = keyboardManager.onKeyDown('Enter', skipStage, {
@@ -85,6 +97,7 @@
 	});
 
 	$effect(() => {
+		if (screenshot) return;
 		if (
 			currentStage === TrackSlideStage.InitialDwell &&
 			$trackerConfig !== AvaiableTracker.MouseIdt
@@ -96,6 +109,7 @@
 	});
 
 	$effect(() => {
+		if (screenshot) return;
 		currentTask.update((task) => {
 			if (task) {
 				return {
@@ -227,7 +241,11 @@
 	}
 </script>
 
-<div class="flex h-screen w-full items-center justify-center bg-task-background">
+<div
+	class="flex w-full items-center justify-center bg-task-background {screenshot
+		? 'h-full'
+		: 'h-screen'}"
+>
 	{#if currentStage === TrackSlideStage.InitialDwell}
 		<div class="fixed top-16 left-16" id={`${id}_initial}`} transition:fade>
 			<DwellTarget
@@ -248,7 +266,7 @@
 						<div class="main-components flex justify-center gap-36">
 							<div class="hint-component flex items-start justify-center">
 								<GazeArea id="hint" bufferSize={50}>
-									<div in:fade|global={{ delay: 500 }} out:fade|global>
+									<div in:fade|global={fadeParams(500)} out:fade|global={fadeParams(0)}>
 										{@render hintComponent({
 											state: currentState(),
 											isPractice
@@ -261,8 +279,8 @@
 									<GazeArea id="track" bufferSize={50}>
 										<div
 											class="flex items-center justify-center"
-											in:fade|global={{ delay: 800 }}
-											out:fade|global
+											in:fade|global={fadeParams(800)}
+											out:fade|global={fadeParams(0)}
 										>
 											{@render trackComponent({
 												symbols: symbols(),
@@ -280,8 +298,8 @@
 							<GazeArea id="track" bufferSize={50}>
 								<div
 									class="flex items-center justify-center"
-									in:fade|global={{ delay: 500 }}
-									out:fade|global
+									in:fade|global={fadeParams(500)}
+									out:fade|global={fadeParams(0)}
 								>
 									{@render trackComponent({
 										symbols: symbols(),
@@ -295,7 +313,7 @@
 					{/if}
 				</div>
 				{#if extraComponent}
-					<div class="extra-component" in:fade|global={{ delay: 500 }} out:fade|global>
+					<div class="extra-component" in:fade|global={fadeParams(500)} out:fade|global={fadeParams(0)}>
 						{@render extraComponent({
 							state: currentState(),
 							isPractice
@@ -303,24 +321,26 @@
 					</div>
 				{/if}
 			</div>
-			<div
-				class="fixed right-16 bottom-16"
-				class:shake={shouldShakeArrow}
-				id={`${id}_end}`}
-				transition:fade
-			>
-				<DwellTarget
-					bind:this={dwellArrowElement}
-					id={`slide-${currentRepetition + 1}_end`}
-					dwellTimeMs={1000}
-					bufferSize={50}
-					width={125}
-					onDwellComplete={onAdvanceDwellComplete}
-					disableOnComplete={false}
+			{#if !screenshot}
+				<div
+					class="fixed right-16 bottom-16"
+					class:shake={shouldShakeArrow}
+					id={`${id}_end}`}
+					transition:fade
 				>
-					<DwellTargetArrow />
-				</DwellTarget>
-			</div>
+					<DwellTarget
+						bind:this={dwellArrowElement}
+						id={`slide-${currentRepetition + 1}_end`}
+						dwellTimeMs={1000}
+						bufferSize={50}
+						width={125}
+						onDwellComplete={onAdvanceDwellComplete}
+						disableOnComplete={false}
+					>
+						<DwellTargetArrow />
+					</DwellTarget>
+				</div>
+			{/if}
 		{/key}
 	{/if}
 </div>

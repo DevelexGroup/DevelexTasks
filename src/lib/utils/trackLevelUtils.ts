@@ -87,16 +87,12 @@ export function defaultValidateSymbol(
 	return [MistakeMisclick];
 }
 
-export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
-	presetEntry: TrackTaskPresetEntryGenerator<TRawDataEntry>,
+export function filterRawDataByGenerator<TRawDataEntry extends RawDataEntry>(
 	rawData: TRawDataEntry[],
-	formatRawData: (rawData: TRawDataEntry) => TrackTaskDataEntry,
-	excludeIds?: Set<string>,
-	excludeTags?: string[]
-): TrackTaskDataEntry {
-	// For each key in the presetEntry filter out the raw data entries that match the elements in the preset
+	generate: TrackTaskPresetEntryGenerator<TRawDataEntry>['generate'] | null | undefined
+): TRawDataEntry[] {
+	// For each key in the generator filter out the raw data entries that match the elements in the preset
 	let filteredData = rawData;
-	const generate = presetEntry.generate;
 
 	// console.log("base", filteredData);
 	if (generate) {
@@ -110,7 +106,19 @@ export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
 		}
 	}
 
-	// console.log(`after preset filtering (${JSON.stringify(generate)})`, filteredData);
+	return filteredData;
+}
+
+export function generateDataEntry<TRawDataEntry extends RawDataEntry>(
+	presetEntry: TrackTaskPresetEntryGenerator<TRawDataEntry>,
+	rawData: TRawDataEntry[],
+	formatRawData: (rawData: TRawDataEntry) => TrackTaskDataEntry,
+	excludeIds?: Set<string>,
+	excludeTags?: string[]
+): TrackTaskDataEntry {
+	let filteredData = filterRawDataByGenerator(rawData, presetEntry.generate);
+
+	// console.log(`after preset filtering (${JSON.stringify(presetEntry.generate)})`, filteredData);
 	// Exclude already used IDs
 	if (excludeIds) {
 		filteredData = filteredData.filter((entry) => !excludeIds.has(entry.id));

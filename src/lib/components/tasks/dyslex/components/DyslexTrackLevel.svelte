@@ -5,7 +5,12 @@
 	import { fade } from 'svelte/transition';
 	import type { KeyboardManager } from '$lib/utils/keyboardManager';
 	import { TaskResult, TrackSlideStage } from '$lib/types/task.types';
-	import { ANALYTICS_MANAGER_KEY, KEYBOARD_MANAGER_KEY } from '$lib/types/general.types';
+	import {
+		ANALYTICS_MANAGER_KEY,
+		KEYBOARD_MANAGER_KEY,
+		SCREENSHOT_MODE_KEY,
+		type ScreenshotModeContext
+	} from '$lib/types/general.types';
 	import { currentTask } from '$lib/stores/task';
 	import { AvaiableTracker, trackerConfig } from '$lib/stores/tracker';
 	import DyslexFixCross from './DyslexFixCross.svelte';
@@ -35,12 +40,18 @@
 		offset = { x: 0, y: 0 }
 	}: Props = $props();
 
-	let currentStage = $state<TrackSlideStage>(TrackSlideStage.InitialDwell);
+	const screenshot = getContext<ScreenshotModeContext | undefined>(SCREENSHOT_MODE_KEY);
+	const fadeParams = (delay: number) => (screenshot ? { duration: 0, delay: 0 } : { delay });
+
+	let currentStage = $state<TrackSlideStage>(
+		screenshot ? TrackSlideStage.Task : TrackSlideStage.InitialDwell
+	);
 	let currentRepetition = $state<number>(0);
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 
 	$effect(() => {
+		if (screenshot) return;
 		currentTask.update((task) => {
 			if (task) {
 				return { ...task, currentSlideIndex: currentRepetition };
@@ -50,6 +61,7 @@
 	});
 
 	onMount(() => {
+		if (screenshot) return;
 		let keyboardManager = getContext<KeyboardManager>(KEYBOARD_MANAGER_KEY);
 
 		const skipEvt = keyboardManager.onKeyDown('Enter', skipStage, {
@@ -69,6 +81,7 @@
 	});
 
 	$effect(() => {
+		if (screenshot) return;
 		if (
 			(currentStage === TrackSlideStage.InitialDwell || id !== visDiffId) &&
 			$trackerConfig !== AvaiableTracker.MouseIdt
@@ -80,6 +93,7 @@
 	});
 
 	$effect(() => {
+		if (screenshot) return;
 		currentTask.update((task) => {
 			if (task) {
 				return {
@@ -131,7 +145,9 @@
 </script>
 
 <div
-	class="flex h-screen w-full items-center justify-center bg-dyslex-task-background font-[Times_New_Roman] text-black"
+	class="flex w-full items-center justify-center bg-dyslex-task-background font-[Times_New_Roman] text-black {screenshot
+		? 'h-full'
+		: 'h-screen'}"
 >
 	{#if currentStage === TrackSlideStage.InitialDwell}
 		<div class="fixed top-[130px] left-[207px]" id={`${id}_initial}`} transition:fade>
@@ -151,24 +167,26 @@
 				class="flex flex-col items-center justify-center"
 				style={`margin-top: ${offset.y}px; margin-left: ${offset.x}px;`}
 			>
-				<div in:fade|global={{ delay: 500 }} out:fade|global>
+				<div in:fade|global={fadeParams(500)} out:fade|global={fadeParams(0)}>
 					{@render children?.()}
 				</div>
 			</div>
 
-			<div class="fixed right-[254px] bottom-[149px]" id={`${id}_end}`} transition:fade>
-				<DwellTarget
-					id={`slide-${currentRepetition + 1}_end`}
-					dwellTimeMs={1000}
-					bufferSize={50}
-					width={32}
-					height={32}
-					onDwellComplete={onAdvanceDwellComplete}
-					disableOnComplete={false}
-				>
-					<DyslexFixCross />
-				</DwellTarget>
-			</div>
+			{#if !screenshot}
+				<div class="fixed right-[254px] bottom-[149px]" id={`${id}_end}`} transition:fade>
+					<DwellTarget
+						id={`slide-${currentRepetition + 1}_end`}
+						dwellTimeMs={1000}
+						bufferSize={50}
+						width={32}
+						height={32}
+						onDwellComplete={onAdvanceDwellComplete}
+						disableOnComplete={false}
+					>
+						<DyslexFixCross />
+					</DwellTarget>
+				</div>
+			{/if}
 		{/key}
 	{/if}
 </div>

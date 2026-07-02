@@ -3,6 +3,8 @@
 	import { cn } from '$lib/utils';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import type { VisDiffItem } from '../dyslex.types';
+	import { getContext } from 'svelte';
+	import { SCREENSHOT_MODE_KEY, type ScreenshotModeContext } from '$lib/types/general.types';
 
 	interface Props {
 		data: VisDiffItem;
@@ -17,6 +19,8 @@
 	}
 
 	let { data, elementBufferSize = 0, slide, isPractice, border, onClick }: Props = $props();
+
+	const screenshot = getContext<ScreenshotModeContext | undefined>(SCREENSHOT_MODE_KEY);
 </script>
 
 <div
@@ -28,6 +32,7 @@
 		<GazeArea id={aoi} bufferSize={elementBufferSize}>
 			<button
 				class="cursor-pointer"
+				class:screenshot-target={screenshot?.highlightTargets && data.correct.includes(item)}
 				onclick={() => onClick(item, aoi, data.correct.includes(item))}
 			>
 				<img
@@ -45,3 +50,12 @@
 		</GazeArea>
 	{/each}
 </div>
+
+<style>
+	/* Answer-overlay highlight used by the admin stimulus-export tool. Inset so it
+	   stays visible inside the tight grid. */
+	.screenshot-target {
+		outline: 4px solid #16a34a;
+		outline-offset: -4px;
+	}
+</style>
