@@ -93,6 +93,8 @@ export async function settleStimulus(node: HTMLElement): Promise<SettleResult> {
 export function captureToCanvas(node: HTMLElement, scale: number): Promise<HTMLCanvasElement> {
 	return domToCanvas(node, {
 		scale,
+		width: node.offsetWidth,
+		height: node.offsetHeight,
 		// Skip the preview chrome; capture exactly the simulated viewport contents.
 		filter: (el) => !(el instanceof HTMLElement && el.dataset.screenshotExclude !== undefined)
 	});
