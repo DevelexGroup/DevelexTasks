@@ -20,6 +20,7 @@
 		height?: number;
 		dwellState?: DwellState;
 		bufferSize?: number;
+		fitWidthToContent?: boolean;
 		disableOnComplete?: boolean;
 		onCompleteCooldown?: number;
 		children?: Snippet;
@@ -32,6 +33,7 @@
 		width = 250,
 		height = width * DEFAULT_SIZE_RATIO,
 		bufferSize = 100,
+		fitWidthToContent = false,
 		dwellState = $bindable(DwellState.Active) as DwellState,
 		disableOnComplete = true,
 		onCompleteCooldown = 500,
@@ -240,7 +242,7 @@
 	class="dwell-target"
 	class:visible={$debugMode && $debugOptions.debugAOIAreaVisible}
 	class:hovered={isHovered}
-	style:width="{width}px"
+	style:width={fitWidthToContent ? 'fit-content' : `${width}px`}
 	style:height="{height}px"
 	style:--buffer-size="{bufferSize}px"
 	style:--debug-hue={(id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 137) % 360}

@@ -1,0 +1,62 @@
+[
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-001",
+		"set": "practice",
+		"word": "dům"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-002",
+		"set": "practice",
+		"word": "voda"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-003",
+		"set": "practice",
+		"word": "kolo"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-004",
+		"set": "practice",
+		"word": "mísa"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-005",
+		"set": "practice",
+		"word": "doba"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-006",
+		"set": "practice",
+		"word": "ráno"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-007",
+		"set": "practice",
+		"word": "strana"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-008",
+		"set": "practice",
+		"word": "člověk"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-009",
+		"set": "practice",
+		"word": "pravda"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-P-010",
+		"set": "practice",
+		"word": "chvíle"
+	}
+]

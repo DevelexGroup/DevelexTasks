@@ -1,0 +1,62 @@
+[
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-001",
+		"set": "level1",
+		"word": "zahrada"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-002",
+		"set": "level1",
+		"word": "sluníčko"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-003",
+		"set": "level1",
+		"word": "rodina"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-004",
+		"set": "level1",
+		"word": "lavice"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-005",
+		"set": "level1",
+		"word": "raketa"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-006",
+		"set": "level1",
+		"word": "pohádka"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-007",
+		"set": "level1",
+		"word": "ovoce"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-008",
+		"set": "level1",
+		"word": "nádraží"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-009",
+		"set": "level1",
+		"word": "motorka"
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L1-010",
+		"set": "level1",
+		"word": "počítač"
+	}
+]

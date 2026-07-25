@@ -1,0 +1,50 @@
+[
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-001",
+		"set": "level2",
+		"words": ["Malý", "pes", "běží", "po", "zahradě."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-002",
+		"set": "level2",
+		"words": ["Tatínek", "ráno", "vaří", "teplý", "čaj."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-003",
+		"set": "level2",
+		"words": ["Děti", "si", "hrají", "před", "školou."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-004",
+		"set": "level2",
+		"words": ["Na", "obloze", "svítí", "jasné", "slunce."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-005",
+		"set": "level2",
+		"words": ["Eliška", "čte", "novou", "dobrodružnou", "knihu."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-006",
+		"set": "level2",
+		"words": ["Vlak", "pomalu", "přijíždí", "na", "nádraží."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-007",
+		"set": "level2",
+		"words": ["Babička", "peče", "sladký", "jablečný", "koláč."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-008",
+		"set": "level2",
+		"words": ["Ptáci", "zpívají", "vysoko", "v", "korunách", "stromů."]
+	}
+]

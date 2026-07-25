@@ -1,0 +1,26 @@
+[
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-P-001",
+		"set": "level2-practice",
+		"words": ["Kočka", "mňouká", "a", "pes", "štěká."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-P-002",
+		"set": "level2-practice",
+		"words": ["Maruška", "právě", "dělá", "domácí", "úkoly."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-P-003",
+		"set": "level2-practice",
+		"words": ["Domácí", "úkoly", "Marušku", "velmi", "baví."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L2-P-004",
+		"set": "level2-practice",
+		"words": ["Pilná", "Maruška", "má", "nejraději", "matematiku."]
+	}
+]
