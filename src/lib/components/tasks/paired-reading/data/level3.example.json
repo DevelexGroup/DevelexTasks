@@ -1,0 +1,26 @@
+[
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L3-009",
+		"set": "level3",
+		"words": ["Bára", "se", "ráno", "probudila", "dříve", "než", "obvykle."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L3-010",
+		"set": "level3",
+		"words": ["Venku", "svítilo", "slunce", "a", "zpívali", "ptáci."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L3-011",
+		"set": "level3",
+		"words": ["Po", "snídani", "vyrazila", "s", "kamarádkou", "do", "lesa", "hledat", "houby."]
+	},
+	{
+		"task_id": "paired-reading",
+		"id": "PR-L3-012",
+		"set": "level3",
+		"words": ["Domů", "se", "vrátily", "s", "plným", "košíkem", "a", "dobrou", "náladou."]
+	}
+]

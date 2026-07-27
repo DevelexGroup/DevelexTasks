@@ -16,7 +16,7 @@ export const LEVEL_2_PRACTICE_SENTENCE_COUNT = 4;
 export const LEVEL_2_SENTENCE_COUNT = 6;
 export const LEVEL_3_SENTENCES_PER_LIST = 3;
 export const LEVEL_3_PRACTICE_SENTENCE_COUNT = LEVEL_3_SENTENCES_PER_LIST;
-export const LEVEL_3_SENTENCE_COUNT = LEVEL_3_SENTENCES_PER_LIST * 4;
+export const LEVEL_3_SENTENCE_COUNT = 4;
 
 const createSelection = (
 	count: number,

@@ -2,6 +2,7 @@ import practiceData from '$lib/components/tasks/paired-reading/data/practice.jso
 import level1ExampleData from '$lib/components/tasks/paired-reading/data/level1.example.json';
 import level2PracticeData from '$lib/components/tasks/paired-reading/data/level2.practice.json';
 import level2ExampleData from '$lib/components/tasks/paired-reading/data/level2.example.json';
+import level3ExampleData from '$lib/components/tasks/paired-reading/data/level3.example.json';
 import type {
 	PairedReadingSentenceRawDataEntry,
 	PairedReadingWordRawDataEntry
@@ -48,14 +49,11 @@ export const pairedReadingLevel3PracticeData: PairedReadingSentenceRawDataEntry[
 		words: [...entry.words]
 	}));
 
-export const pairedReadingLevel3ExampleData: PairedReadingSentenceRawDataEntry[] = [
-	...pairedReadingLevel2ExampleData.map((entry) => ({
+export const pairedReadingLevel3ExampleData: PairedReadingSentenceRawDataEntry[] =
+	level3ExampleData.map((entry) => ({
 		...entry,
-		id: entry.id.replace('PR-L2-', 'PR-L3-'),
-		set: 'level3' as const,
-		words: [...entry.words]
-	}))
-];
+		set: 'level3' as const
+	}));
 
 export const pairedReadingLevel3Data: PairedReadingSentenceRawDataEntry[] = [
 	...pairedReadingLevel3PracticeData,
