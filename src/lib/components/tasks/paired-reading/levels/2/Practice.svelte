@@ -5,7 +5,7 @@
 		pairedReadingLevelPreset
 	} from '$lib/components/tasks/paired-reading';
 	import type { PairedReadingRawDataEntry } from '$lib/components/tasks/paired-reading/paired-reading.types';
-	import { id, rawData } from '$lib/components/tasks/paired-reading/levels/2';
+	import { id, practiceRawData } from '$lib/components/tasks/paired-reading/levels/2';
 	import type { TrackTaskPreset } from '$lib/types/task.types';
 	import { getLevelData } from '$lib/utils/trackLevelUtils';
 
@@ -18,7 +18,7 @@
 
 	const levelPreset = taskPreset.find((level) => level.levelID === id)?.practiceContent;
 	const data = levelPreset
-		? getLevelData(levelPreset, rawData, formatPairedReadingSentenceRawData, excludeTags)
+		? getLevelData(levelPreset, practiceRawData, formatPairedReadingSentenceRawData, excludeTags)
 		: null;
 </script>
 
