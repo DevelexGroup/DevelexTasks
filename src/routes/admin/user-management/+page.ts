@@ -1,7 +1,6 @@
 import { protectLoad } from '$lib/utils/protectLoad';
-import { Guards } from '$lib/utils/capabilityGuard';
 
 export const load = protectLoad({
-	caps: Guards.readAllUsers,
+	caps: ['USER_READ_ALL', 'GROUP_READ_OWN', 'GROUP_READ_ALL'],
 	redirectTo: '/login'
 });

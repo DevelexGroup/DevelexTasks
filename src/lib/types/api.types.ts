@@ -10,22 +10,49 @@ export const roleLabels: Record<UserRole, string> = {
 	[UserRole.Student]: 'Student'
 };
 
-export type Capability =
-	| 'SESSION_RUN_OWN'
-	| 'SESSION_READ_GROUP'
-	| 'SESSION_READ_ALL'
-	| 'SESSION_MANAGE_ALL'
-	| 'USER_EDIT_OWN'
-	| 'USER_READ_GROUP'
-	| 'USER_READ_ALL'
-	| 'USER_CREATE_STUDENT_IN_GROUP'
-	| 'USER_CREATE_ANY'
-	| 'USER_MANAGE_ALL'
-	| 'GROUP_READ_OWN'
-	| 'GROUP_READ_ALL'
-	| 'GROUP_MANAGE_OWN'
-	| 'GROUP_MANAGE_ALL'
-	| 'CONFIG_MANAGE';
+export const CAPABILITIES = [
+	'SESSION_RUN_OWN',
+	'SESSION_READ_GROUP',
+	'SESSION_READ_ALL',
+	'SESSION_MANAGE_ALL',
+	'USER_EDIT_OWN',
+	'USER_READ_GROUP',
+	'USER_READ_ALL',
+	'USER_CREATE_STUDENT_IN_GROUP',
+	'USER_CREATE_ANY',
+	'USER_MANAGE_ALL',
+	'GROUP_READ_OWN',
+	'GROUP_READ_ALL',
+	'GROUP_MANAGE_OWN',
+	'GROUP_MANAGE_ALL',
+	'CONFIG_MANAGE'
+] as const;
+
+export type Capability = (typeof CAPABILITIES)[number];
+
+export const capabilityLabels: Record<Capability, string> = {
+	SESSION_RUN_OWN: 'Spouštění vlastních testů',
+	SESSION_READ_GROUP: 'Prohlížení výsledků členů vlastních skupin',
+	SESSION_READ_ALL: 'Prohlížení všech výsledků',
+	SESSION_MANAGE_ALL: 'Úprava a mazání sezení',
+	USER_EDIT_OWN: 'Úprava vlastního profilu',
+	USER_READ_GROUP: 'Zobrazení členů vlastních skupin',
+	USER_READ_ALL: 'Zobrazení všech uživatelů',
+	USER_CREATE_STUDENT_IN_GROUP: 'Vytváření studentů ve vlastních skupinách',
+	USER_CREATE_ANY: 'Vytváření libovolných uživatelů',
+	USER_MANAGE_ALL: 'Plná správa uživatelů',
+	GROUP_READ_OWN: 'Zobrazení vlastních skupin',
+	GROUP_READ_ALL: 'Zobrazení všech skupin',
+	GROUP_MANAGE_OWN: 'Správa členů vlastních skupin',
+	GROUP_MANAGE_ALL: 'Plná správa skupin',
+	CONFIG_MANAGE: 'Správa konfigurace serveru'
+};
+
+export interface UserCapabilitiesResponse {
+	role: UserRole;
+	roleCapabilities: Capability[];
+	extraCapabilities: Capability[];
+}
 
 export interface GroupDTO {
 	id: string;

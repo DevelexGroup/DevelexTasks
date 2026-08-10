@@ -1,6 +1,8 @@
 import { apiClient } from './client';
 import type {
+	Capability,
 	UserDTO,
+	UserCapabilitiesResponse,
 	UserCreateRequest,
 	UserEditRequest,
 	UserActionResponse,
@@ -108,6 +110,20 @@ export async function resetPassword(
 	return apiClient<UserActionResponse>(`/user/${uuid}/reset-password`, {
 		method: 'POST',
 		body: JSON.stringify({ newPassword })
+	});
+}
+
+export async function getUserCapabilities(uuid: string): Promise<UserCapabilitiesResponse> {
+	return apiClient<UserCapabilitiesResponse>(`/user/${uuid}/capabilities`);
+}
+
+export async function setUserCapabilities(
+	uuid: string,
+	capabilities: Capability[]
+): Promise<UserActionResponse> {
+	return apiClient<UserActionResponse>(`/user/${uuid}/capabilities`, {
+		method: 'PUT',
+		body: JSON.stringify({ capabilities })
 	});
 }
 

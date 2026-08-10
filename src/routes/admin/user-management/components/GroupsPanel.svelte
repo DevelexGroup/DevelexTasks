@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -23,10 +21,14 @@
 	let groups = $state<GroupDTO[]>([]);
 	let members = $state<GroupMemberDTO[]>([]);
 	let selectedGroupId = $state('');
+	let searchQuery = $state('');
 
 	let isLoadingGroups = $state(true);
 	let isLoadingMembers = $state(false);
 	let error = $state('');
+
+	let detailMenuOpen = $state(false);
+	let detailMenuRef = $state<HTMLDivElement | null>(null);
 
 	let canManageAllGroups = $derived(hasCapability($authUser, 'GROUP_MANAGE_ALL'));
 	let canManageMembers = $derived(hasCapability($authUser, 'GROUP_MANAGE_OWN', 'GROUP_MANAGE_ALL'));
@@ -35,6 +37,16 @@
 	);
 
 	let selectedGroup = $derived(groups.find((g) => g.id === selectedGroupId) ?? null);
+
+	let filteredGroups = $derived.by(() => {
+		const query = searchQuery.toLowerCase();
+		return groups.filter(
+			(g) =>
+				!query ||
+				g.name.toLowerCase().includes(query) ||
+				(g.description ?? '').toLowerCase().includes(query)
+		);
+	});
 
 	// Dialog state
 	let groupDialogOpen = $state(false);
@@ -55,6 +67,18 @@
 	let dialogError = $state('');
 	let isSubmitting = $state(false);
 
+	function handleWindowClick(event: MouseEvent) {
+		if (detailMenuOpen && detailMenuRef && !detailMenuRef.contains(event.target as Node)) {
+			detailMenuOpen = false;
+		}
+	}
+
+	function handleWindowKey(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			detailMenuOpen = false;
+		}
+	}
+
 	onMount(() => {
 		loadGroups();
 	});
@@ -63,7 +87,8 @@
 		isLoadingGroups = true;
 		error = '';
 		try {
-			groups = canManageAllGroups ? await getAllGroups() : await getMyGroups();
+			const raw = canManageAllGroups ? await getAllGroups() : await getMyGroups();
+			groups = raw.slice().sort((a, b) => a.name.localeCompare(b.name, 'cs'));
 			if (selectedGroupId && !groups.some((g) => g.id === selectedGroupId)) {
 				selectedGroupId = '';
 			}
@@ -286,216 +311,251 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Skupiny - DeveLex Tasks</title>
-</svelte:head>
+<svelte:window onclick={handleWindowClick} onkeydown={handleWindowKey} />
 
-<section class="fixed top-0 right-0 left-0 z-10 bg-gray-100 px-4 pt-4 pb-3 shadow-sm">
-	<div class="mx-auto flex max-w-5xl flex-wrap items-end justify-between gap-4">
-		<div class="flex flex-col gap-1">
-			<label for="groupSelect" class="text-xs font-semibold text-gray-500 uppercase">
-				{canManageAllGroups ? 'Skupiny' : 'Moje skupiny'}
-			</label>
-			<select
-				id="groupSelect"
-				bind:value={selectedGroupId}
-				disabled={isLoadingGroups || groups.length === 0}
-				class="min-w-72 rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800 disabled:cursor-not-allowed disabled:bg-gray-100"
-			>
-				<option value="">
-					{#if isLoadingGroups}
-						Načítání…
-					{:else if groups.length === 0}
-						Žádné skupiny
-					{:else}
-						Vyberte skupinu…
-					{/if}
-				</option>
-				{#each groups as group (group.id)}
-					<option value={group.id}>
-						{group.name} ({group.memberCount ?? 0} členů)
-					</option>
-				{/each}
-			</select>
+{#if !selectedGroup}
+	<div class="mb-4 flex items-center gap-2">
+		<div class="relative flex-1">
+			<Icon
+				icon="material-symbols:search"
+				class="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400"
+			/>
+			<input
+				type="text"
+				bind:value={searchQuery}
+				placeholder="Hledat skupinu…"
+				class="w-full rounded-md border border-gray-300 bg-white py-2 pr-3 pl-10 text-gray-800"
+			/>
 		</div>
-
 		{#if canManageAllGroups}
 			<button
-				class="rounded-md bg-green-500 px-3 py-1.5 text-gray-50 hover:bg-green-600"
+				class="shrink-0 rounded-md bg-green-500 px-3 py-2 text-sm text-gray-50 hover:bg-green-600"
 				onclick={openCreateGroup}
 			>
 				+ Vytvořit skupinu
 			</button>
 		{/if}
 	</div>
-</section>
 
-<section class="content-area mt-24 mb-16 overflow-auto bg-gray-100 px-4">
-	<div class="mx-auto max-w-5xl py-2">
-		{#if error}
-			<div class="flex h-full flex-col items-center justify-center gap-4">
-				<p class="text-lg text-red-500">{error}</p>
+	{#if isLoadingGroups}
+		<div class="flex h-48 items-center justify-center rounded-xl bg-white shadow-md shadow-gray-300/50">
+			<p class="text-lg text-gray-500">Načítání…</p>
+		</div>
+	{:else if error}
+		<div class="flex h-48 flex-col items-center justify-center gap-4 rounded-xl bg-white shadow-md shadow-gray-300/50">
+			<p class="text-lg text-red-500">{error}</p>
+			<button
+				class="rounded-md bg-blue-500 px-3 py-1.5 text-white hover:bg-blue-600"
+				onclick={loadGroups}
+			>
+				Zkusit znovu
+			</button>
+		</div>
+	{:else if groups.length === 0}
+		<div class="flex h-48 items-center justify-center rounded-xl bg-white shadow-md shadow-gray-300/50">
+			<p class="px-6 text-center text-lg text-gray-500">
+				{canManageAllGroups
+					? 'Zatím neexistují žádné skupiny'
+					: 'Nejste členem žádné skupiny — kontaktujte administrátora.'}
+			</p>
+		</div>
+	{:else if filteredGroups.length === 0}
+		<div class="flex h-48 items-center justify-center rounded-xl bg-white shadow-md shadow-gray-300/50">
+			<p class="text-lg text-gray-500">Žádné skupiny neodpovídají hledání</p>
+		</div>
+	{:else}
+		<div class="divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-md shadow-gray-300/50">
+			{#each filteredGroups as group (group.id)}
 				<button
-					class="rounded-md bg-blue-500 px-3 py-1.5 text-white hover:bg-blue-600"
-					onclick={() => {
-						error = '';
-						if (selectedGroupId) loadMembers(selectedGroupId);
-						else loadGroups();
-					}}
+					type="button"
+					class="flex w-full items-center justify-between gap-4 px-5 py-3 text-left transition-colors hover:bg-gray-50"
+					onclick={() => (selectedGroupId = group.id)}
 				>
-					Zkusit znovu
+					<div class="min-w-0">
+						<span class="text-sm font-medium text-gray-900">{group.name}</span>
+						{#if group.description}
+							<p class="truncate text-xs text-gray-500">{group.description}</p>
+						{/if}
+					</div>
+					<span class="shrink-0 text-xs text-gray-400">{group.memberCount ?? 0} členů</span>
 				</button>
+			{/each}
+		</div>
+	{/if}
+{:else}
+	<div class="mb-4">
+		<button
+			class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline"
+			onclick={() => (selectedGroupId = '')}
+		>
+			<Icon icon="mdi:arrow-left" class="h-4 w-4" />
+			Zpět na seznam
+		</button>
+	</div>
+
+	<div class="mb-6 rounded-xl bg-white p-5 shadow-md shadow-gray-300/50">
+		<div class="flex flex-wrap items-center justify-between gap-4">
+			<div class="flex items-center gap-4">
+				<div class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-rose-100">
+					<Icon icon="material-symbols:groups" class="h-6 w-6 text-rose-700" />
+				</div>
+				<div>
+					<h2 class="text-lg font-bold text-gray-800">{selectedGroup.name}</h2>
+					{#if selectedGroup.description}
+						<p class="text-sm text-gray-500">{selectedGroup.description}</p>
+					{/if}
+				</div>
 			</div>
-		{:else if !isLoadingGroups && groups.length === 0}
-			<div class="flex h-full items-center justify-center">
-				<p class="text-lg text-gray-500">
-					{canManageAllGroups
-						? 'Zatím neexistují žádné skupiny'
-						: 'Nejste členem žádné skupiny — kontaktujte administrátora.'}
-				</p>
-			</div>
-		{:else if !selectedGroupId}
-			<div class="flex h-full items-center justify-center">
-				<p class="text-lg text-gray-500">Vyberte skupinu pro zobrazení členů</p>
-			</div>
-		{:else if selectedGroup}
-			<div class="mb-6 rounded-xl bg-white p-5 shadow-md shadow-gray-300/50">
-				<div class="flex flex-wrap items-center justify-between gap-4">
-					<div class="flex items-center gap-4">
-						<div class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-rose-100">
-							<Icon icon="material-symbols:groups" class="h-6 w-6 text-rose-700" />
-						</div>
-						<div>
-							<h2 class="text-lg font-bold text-gray-800">{selectedGroup.name}</h2>
-							{#if selectedGroup.description}
-								<p class="text-sm text-gray-500">{selectedGroup.description}</p>
+
+			{#if canManageMembers || canCreateStudent || canManageAllGroups}
+				<div class="relative" bind:this={detailMenuRef}>
+					<button
+						type="button"
+						aria-label="Akce skupiny"
+						aria-haspopup="menu"
+						aria-expanded={detailMenuOpen}
+						class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+						onclick={() => (detailMenuOpen = !detailMenuOpen)}
+					>
+						<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
+					</button>
+					{#if detailMenuOpen}
+						<div
+							role="menu"
+							class="absolute right-0 z-20 mt-1 w-56 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+						>
+							{#if canManageMembers}
+								<button
+									type="button"
+									role="menuitem"
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+									onclick={() => {
+										detailMenuOpen = false;
+										addMemberUsername = '';
+										dialogError = '';
+										addMemberOpen = true;
+									}}
+								>
+									<Icon icon="material-symbols:person-add" class="h-4 w-4" />
+									Přidat člena
+								</button>
+							{/if}
+							{#if canCreateStudent}
+								<button
+									type="button"
+									role="menuitem"
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+									onclick={() => {
+										detailMenuOpen = false;
+										resetStudentForm();
+										dialogError = '';
+										createStudentOpen = true;
+									}}
+								>
+									<Icon icon="material-symbols:school" class="h-4 w-4" />
+									Vytvořit studenta
+								</button>
+							{/if}
+							{#if canManageAllGroups}
+								<button
+									type="button"
+									role="menuitem"
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+									onclick={() => {
+										detailMenuOpen = false;
+										openRenameGroup(selectedGroup);
+									}}
+								>
+									<Icon icon="material-symbols:edit-outline" class="h-4 w-4" />
+									Upravit skupinu
+								</button>
+								<button
+									type="button"
+									role="menuitem"
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+									onclick={() => {
+										detailMenuOpen = false;
+										dialogError = '';
+										deleteGroupOpen = true;
+									}}
+								>
+									<Icon icon="material-symbols:delete-outline" class="h-4 w-4" />
+									Smazat skupinu
+								</button>
 							{/if}
 						</div>
-					</div>
-					<div class="flex flex-wrap items-center gap-2">
-						{#if canManageMembers}
-							<button
-								class="inline-flex items-center gap-1 rounded-md bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600"
-								onclick={() => {
-									addMemberUsername = '';
-									dialogError = '';
-									addMemberOpen = true;
-								}}
-							>
-								<Icon icon="material-symbols:person-add" class="h-4 w-4" />
-								Přidat člena
-							</button>
-						{/if}
-						{#if canCreateStudent}
-							<button
-								class="inline-flex items-center gap-1 rounded-md bg-green-500 px-3 py-1.5 text-sm text-white hover:bg-green-600"
-								onclick={() => {
-									resetStudentForm();
-									dialogError = '';
-									createStudentOpen = true;
-								}}
-							>
-								<Icon icon="material-symbols:school" class="h-4 w-4" />
-								Vytvořit studenta
-							</button>
-						{/if}
-						{#if canManageAllGroups}
-							<button
-								class="inline-flex items-center gap-1 rounded-md bg-gray-200 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-300"
-								onclick={() => openRenameGroup(selectedGroup)}
-							>
-								<Icon icon="material-symbols:edit-outline" class="h-4 w-4" />
-								Upravit
-							</button>
-							<button
-								class="inline-flex items-center gap-1 rounded-md bg-red-100 px-3 py-1.5 text-sm text-red-700 hover:bg-red-200"
-								onclick={() => {
-									dialogError = '';
-									deleteGroupOpen = true;
-								}}
-							>
-								<Icon icon="material-symbols:delete-outline" class="h-4 w-4" />
-								Smazat skupinu
-							</button>
-						{/if}
-					</div>
-				</div>
-			</div>
-
-			{#if isLoadingMembers}
-				<div class="flex h-48 items-center justify-center rounded-xl bg-white shadow-md shadow-gray-300/50">
-					<p class="text-lg text-gray-500">Načítání členů…</p>
-				</div>
-			{:else if members.length === 0}
-				<div class="flex h-48 items-center justify-center rounded-xl bg-white shadow-md shadow-gray-300/50">
-					<p class="text-lg text-gray-400">Skupina nemá žádné členy</p>
-				</div>
-			{:else}
-				<div class="overflow-x-auto rounded-lg bg-white shadow">
-					<table class="min-w-full divide-y divide-gray-200">
-						<thead class="bg-gray-50">
-							<tr>
-								<th class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-									Člen
-								</th>
-								<th class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-									Role
-								</th>
-								<th class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-									Přidán
-								</th>
-								<th class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase">
-									Akce
-								</th>
-							</tr>
-						</thead>
-						<tbody class="divide-y divide-gray-200 bg-white">
-							{#each members as member, i (member.userUuid)}
-								<tr class={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-									<td class="px-6 py-4 whitespace-nowrap">
-										<div class="flex flex-col">
-											<span class="text-sm font-medium text-gray-900">{displayName(member)}</span>
-											<span class="text-sm text-gray-500">@{member.username}</span>
-										</div>
-									</td>
-									<td class="px-6 py-4 whitespace-nowrap">
-										<span
-											class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {getRoleColor(member.role)}"
-										>
-											{roleLabels[member.role] ?? member.role}
-										</span>
-									</td>
-									<td class="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
-										{formatDate(member.addedAt)}
-									</td>
-									<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
-										{#if canRemove(member)}
-											<button
-												class="rounded bg-red-100 px-2 py-1 text-xs text-red-700 hover:bg-red-200"
-												onclick={() => {
-													dialogError = '';
-													removeMemberTarget = member;
-												}}
-											>
-												Odebrat ze skupiny
-											</button>
-										{/if}
-									</td>
-								</tr>
-							{/each}
-						</tbody>
-					</table>
+					{/if}
 				</div>
 			{/if}
-		{/if}
+		</div>
 	</div>
-</section>
 
-<div class="fixed bottom-4 left-4 flex gap-1">
-	<button class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800" onclick={() => goto(resolve('/'))}>
-		Zpět
-	</button>
-</div>
+	{#if isLoadingMembers}
+		<div class="flex h-48 items-center justify-center rounded-xl bg-white shadow-md shadow-gray-300/50">
+			<p class="text-lg text-gray-500">Načítání členů…</p>
+		</div>
+	{:else if members.length === 0}
+		<div class="flex h-48 items-center justify-center rounded-xl bg-white shadow-md shadow-gray-300/50">
+			<p class="text-lg text-gray-400">Skupina nemá žádné členy</p>
+		</div>
+	{:else}
+		<div class="overflow-x-auto rounded-lg bg-white shadow">
+			<table class="min-w-full divide-y divide-gray-200">
+				<thead class="bg-gray-50">
+					<tr>
+						<th class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+							Člen
+						</th>
+						<th class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+							Role
+						</th>
+						<th class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+							Přidán
+						</th>
+						<th class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase">
+							Akce
+						</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-200 bg-white">
+					{#each members as member, i (member.userUuid)}
+						<tr class={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex flex-col">
+									<span class="text-sm font-medium text-gray-900">{displayName(member)}</span>
+									<span class="text-sm text-gray-500">@{member.username}</span>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<span
+									class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {getRoleColor(member.role)}"
+								>
+									{roleLabels[member.role] ?? member.role}
+								</span>
+							</td>
+							<td class="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
+								{formatDate(member.addedAt)}
+							</td>
+							<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
+								{#if canRemove(member)}
+									<button
+										class="rounded bg-red-100 px-2 py-1 text-xs text-red-700 hover:bg-red-200"
+										onclick={() => {
+											dialogError = '';
+											removeMemberTarget = member;
+										}}
+									>
+										Odebrat ze skupiny
+									</button>
+								{/if}
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
+	{/if}
+{/if}
 
 <!-- Create / rename group dialog -->
 <Dialog.Root bind:open={groupDialogOpen}>
@@ -772,9 +832,3 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
-
-<style>
-	.content-area {
-		height: calc(100vh - 6rem);
-	}
-</style>

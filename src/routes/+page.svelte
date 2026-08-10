@@ -133,23 +133,6 @@
 				</span>
 			</a>
 
-			{#if hasCapability($authUser, ...Guards.viewGroups)}
-				<a
-					href={resolve('/groups')}
-					class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
-				>
-					<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-rose-100/40"></div>
-
-					<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-rose-100">
-						<Icon icon="material-symbols:groups" class="h-6 w-6 text-rose-700" />
-					</div>
-
-					<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-						Skupiny
-					</span>
-				</a>
-			{/if}
-
 			{#if hasCapability($authUser, ...Guards.viewAllResults)}
 				<a
 					href={resolve('/admin/database')}
@@ -182,7 +165,7 @@
 				</span>
 			</a>
 
-			{#if hasCapability($authUser, ...Guards.readAllUsers)}
+			{#if hasCapability($authUser, ...Guards.readAllUsers, ...Guards.viewGroups)}
 				<a
 					href={resolve('/admin/user-management')}
 					class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
