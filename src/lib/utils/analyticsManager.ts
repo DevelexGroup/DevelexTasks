@@ -562,11 +562,9 @@ export class AnalyticsManager {
 			const windowedGazeSamples = gazeSamples.filter(
 				(sample) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
 			);
-			// Account for the fact that fixation timestamps are based on their end time
+			// Fixation timestamps mark their start time
 			const windowedFixationData = fixationData.filter(
-				(fix) =>
-					fix.timestamp - fix.duration >= window.startTime &&
-					fix.timestamp - fix.duration <= window.endTime
+				(fix) => fix.timestamp >= window.startTime && fix.timestamp <= window.endTime
 			);
 
 			// Calculate metrics
