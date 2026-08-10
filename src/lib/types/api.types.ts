@@ -1,12 +1,12 @@
 ﻿export enum UserRole {
 	Admin = 'ADMIN',
-	GroupAdmin = 'GROUP_ADMIN',
+	Supervisor = 'SUPERVISOR',
 	Student = 'STUDENT'
 }
 
 export const roleLabels: Record<UserRole, string> = {
 	[UserRole.Admin]: 'Administrátor',
-	[UserRole.GroupAdmin]: 'Správce skupiny',
+	[UserRole.Supervisor]: 'Supervizor',
 	[UserRole.Student]: 'Student'
 };
 
@@ -23,7 +23,9 @@ export const CAPABILITIES = [
 	'USER_MANAGE_ALL',
 	'GROUP_READ_OWN',
 	'GROUP_READ_ALL',
+	'GROUP_CREATE',
 	'GROUP_MANAGE_OWN',
+	'GROUP_EDIT_OWNED',
 	'GROUP_MANAGE_ALL',
 	'CONFIG_MANAGE'
 ] as const;
@@ -43,7 +45,9 @@ export const capabilityLabels: Record<Capability, string> = {
 	USER_MANAGE_ALL: 'Plná správa uživatelů',
 	GROUP_READ_OWN: 'Zobrazení vlastních skupin',
 	GROUP_READ_ALL: 'Zobrazení všech skupin',
+	GROUP_CREATE: 'Zakládání vlastních skupin',
 	GROUP_MANAGE_OWN: 'Správa členů vlastních skupin',
+	GROUP_EDIT_OWNED: 'Úprava a mazání vlastněných skupin',
 	GROUP_MANAGE_ALL: 'Plná správa skupin',
 	CONFIG_MANAGE: 'Správa konfigurace serveru'
 };
@@ -59,6 +63,8 @@ export interface GroupDTO {
 	name: string;
 	description: string | null;
 	memberCount: number | null;
+	ownerUuid: string | null;
+	ownedByMe: boolean;
 }
 
 export interface GroupMemberDTO {
@@ -69,6 +75,14 @@ export interface GroupMemberDTO {
 	role: UserRole;
 	status: UserStatus;
 	addedAt: Date;
+}
+
+export interface UserLookupDTO {
+	uuid: string;
+	username: string;
+	firstName: string | null;
+	lastName: string | null;
+	role: UserRole;
 }
 
 export interface GroupCreateRequest {

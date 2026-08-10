@@ -144,7 +144,7 @@
 					class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800"
 				>
 					<option value={UserRole.Student}>{roleLabels[UserRole.Student]}</option>
-					<option value={UserRole.GroupAdmin}>{roleLabels[UserRole.GroupAdmin]}</option>
+					<option value={UserRole.Supervisor}>{roleLabels[UserRole.Supervisor]}</option>
 					<option value={UserRole.Admin}>{roleLabels[UserRole.Admin]}</option>
 				</select>
 			</div>

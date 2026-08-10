@@ -5,7 +5,8 @@ import type {
 	GroupDTO,
 	GroupMemberDTO,
 	UserCreateRequest,
-	UserDTO
+	UserDTO,
+	UserLookupDTO
 } from '$lib/types/api.types';
 
 export async function getAllGroups(): Promise<GroupDTO[]> {
@@ -42,6 +43,12 @@ export async function deleteGroup(groupId: string): Promise<void> {
 
 export async function getGroupMembers(groupId: string): Promise<GroupMemberDTO[]> {
 	return apiClient<GroupMemberDTO[]>(`/groups/${groupId}/members`);
+}
+
+export async function findAddableUsers(groupId: string, query: string): Promise<UserLookupDTO[]> {
+	return apiClient<UserLookupDTO[]>(
+		`/groups/${groupId}/candidates?q=${encodeURIComponent(query)}`
+	);
 }
 
 export async function addMemberByUsername(

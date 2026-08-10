@@ -11,6 +11,7 @@
 	import { UserRole, UserStatus, roleLabels, type UserDTO } from '$lib/types/api.types';
 	import { hasCapability } from '$lib/utils/capabilityGuard';
 	import { authUser } from '$lib/stores/auth';
+	import IconButton from '$lib/components/IconButton.svelte';
 	import CreateUserDialog from './CreateUserDialog.svelte';
 	import BulkCreateDialog from './BulkCreateDialog.svelte';
 	import EditUserDialog from './EditUserDialog.svelte';
@@ -27,9 +28,9 @@
 
 	let pageMenuOpen = $state(false);
 	let pageMenuRef = $state<HTMLDivElement | null>(null);
-	let detailMenuOpen = $state(false);
-	let detailMenuRef = $state<HTMLDivElement | null>(null);
+	let openMenuUserId = $state('');
 
+	let dialogUser = $state<UserDTO | null>(null);
 	let createUserOpen = $state(false);
 	let bulkCreateOpen = $state(false);
 	let editUserOpen = $state(false);
@@ -55,18 +56,19 @@
 	});
 
 	function handleWindowClick(event: MouseEvent) {
-		if (pageMenuOpen && pageMenuRef && !pageMenuRef.contains(event.target as Node)) {
+		const target = event.target as HTMLElement;
+		if (pageMenuOpen && pageMenuRef && !pageMenuRef.contains(target)) {
 			pageMenuOpen = false;
 		}
-		if (detailMenuOpen && detailMenuRef && !detailMenuRef.contains(event.target as Node)) {
-			detailMenuOpen = false;
+		if (openMenuUserId && !target.closest('[data-row-menu]')) {
+			openMenuUserId = '';
 		}
 	}
 
 	function handleWindowKey(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
 			pageMenuOpen = false;
-			detailMenuOpen = false;
+			openMenuUserId = '';
 		}
 	}
 
@@ -87,18 +89,40 @@
 		}
 	}
 
-	async function handleStatusAction() {
-		if (!selectedUser) return;
+	function openDialog(user: UserDTO, dialog: 'edit' | 'role' | 'capabilities' | 'sessions' | 'delete') {
+		dialogUser = user;
+		openMenuUserId = '';
+		switch (dialog) {
+			case 'edit':
+				editUserOpen = true;
+				break;
+			case 'role':
+				changeRoleOpen = true;
+				break;
+			case 'capabilities':
+				capabilitiesOpen = true;
+				break;
+			case 'sessions':
+				sessionsOpen = true;
+				break;
+			case 'delete':
+				deleteUserOpen = true;
+				break;
+		}
+	}
+
+	async function handleStatusAction(user: UserDTO) {
+		openMenuUserId = '';
 		try {
-			switch (selectedUser.status) {
+			switch (user.status) {
 				case UserStatus.Unactive:
-					await activateUser(selectedUser.id);
+					await activateUser(user.id);
 					break;
 				case UserStatus.Active:
-					await deactivateUser(selectedUser.id);
+					await deactivateUser(user.id);
 					break;
 				case UserStatus.Locked:
-					await unlockUser(selectedUser.id);
+					await unlockUser(user.id);
 					break;
 			}
 			await loadUsers();
@@ -107,10 +131,10 @@
 		}
 	}
 
-	async function handleLockUser() {
-		if (!selectedUser) return;
+	async function handleLockUser(user: UserDTO) {
+		openMenuUserId = '';
 		try {
-			await lockUser(selectedUser.id);
+			await lockUser(user.id);
 			await loadUsers();
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se zamknout uživatele';
@@ -160,7 +184,7 @@
 		switch (role) {
 			case UserRole.Admin:
 				return 'bg-purple-100 text-purple-800';
-			case UserRole.GroupAdmin:
+			case UserRole.Supervisor:
 				return 'bg-blue-100 text-blue-800';
 			default:
 				return 'bg-gray-100 text-gray-800';
@@ -215,6 +239,70 @@
 </script>
 
 <svelte:window onclick={handleWindowClick} onkeydown={handleWindowKey} />
+
+{#snippet userMenu(user: UserDTO)}
+	<div
+		role="menu"
+		class="absolute right-0 z-20 mt-1 w-56 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+	>
+		<button
+			type="button"
+			role="menuitem"
+			class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+			onclick={() => openDialog(user, 'role')}
+		>
+			<Icon icon="material-symbols:badge-outline" class="h-4 w-4" />
+			Změnit roli
+		</button>
+		<button
+			type="button"
+			role="menuitem"
+			class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+			onclick={() => openDialog(user, 'capabilities')}
+		>
+			<Icon icon="material-symbols:key-outline" class="h-4 w-4" />
+			Oprávnění
+		</button>
+		<button
+			type="button"
+			role="menuitem"
+			class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+			onclick={() => openDialog(user, 'sessions')}
+		>
+			<Icon icon="material-symbols:devices-outline" class="h-4 w-4" />
+			Relace
+		</button>
+		<button
+			type="button"
+			role="menuitem"
+			class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+			onclick={() => handleStatusAction(user)}
+		>
+			<Icon icon="material-symbols:power-settings-new" class="h-4 w-4" />
+			{getStatusActionLabel(user.status)}
+		</button>
+		{#if user.status === UserStatus.Active}
+			<button
+				type="button"
+				role="menuitem"
+				class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+				onclick={() => handleLockUser(user)}
+			>
+				<Icon icon="material-symbols:lock-outline" class="h-4 w-4" />
+				Zamknout
+			</button>
+		{/if}
+		<button
+			type="button"
+			role="menuitem"
+			class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+			onclick={() => openDialog(user, 'delete')}
+		>
+			<Icon icon="material-symbols:delete-outline" class="h-4 w-4" />
+			Smazat
+		</button>
+	</div>
+{/snippet}
 
 {#if !selectedUser}
 	<div class="mb-4 flex items-center gap-2">
@@ -302,20 +390,73 @@
 			<p class="text-lg text-gray-500">Žádní uživatelé</p>
 		</div>
 	{:else}
-		<div class="divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-md shadow-gray-300/50">
+		<div class="divide-y divide-gray-100 rounded-xl bg-white shadow-md shadow-gray-300/50">
 			{#each filteredUsers as user (user.id)}
-				<button
-					type="button"
-					class="flex w-full items-center justify-between gap-4 px-5 py-3 text-left transition-colors hover:bg-gray-50"
-					onclick={() => (selectedUserId = user.id)}
+				<div
+					role="button"
+					tabindex="0"
+					class="flex cursor-pointer items-center justify-between gap-4 px-5 py-3 transition-colors hover:bg-gray-50"
+					onclick={(event) => {
+						if ((event.target as HTMLElement).closest('[data-row-actions]')) return;
+						selectedUserId = user.id;
+					}}
+					onkeydown={(event) => {
+						if (event.key === 'Enter' || event.key === ' ') {
+							event.preventDefault();
+							selectedUserId = user.id;
+						}
+					}}
 				>
-					<span class="text-sm font-medium text-gray-900">@{user.username}</span>
-					<span
-						class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {getRoleColor(user.role)}"
-					>
-						{roleLabels[user.role]}
-					</span>
-				</button>
+					<div class="flex min-w-0 flex-1 items-center gap-4">
+						<div class="flex w-44 min-w-0 shrink-0 flex-col">
+							<span class="truncate text-sm font-medium text-gray-900">
+								{displayName(user) || '—'}
+							</span>
+							<span class="truncate text-sm text-gray-500">@{user.username}</span>
+						</div>
+						<span class="hidden w-56 shrink-0 truncate text-sm text-gray-500 md:inline">
+							{user.email ?? '—'}
+						</span>
+						<div class="flex shrink-0 items-center gap-2 md:ml-3">
+							<span
+								class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {getRoleColor(user.role)}"
+							>
+								{roleLabels[user.role]}
+							</span>
+							<span
+								class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {getStatusColor(user.status)}"
+							>
+								{getStatusLabel(user.status)}
+							</span>
+						</div>
+					</div>
+
+					{#if canManageUsers}
+						<div class="flex shrink-0 items-center gap-1" data-row-actions>
+							<IconButton
+								icon="material-symbols:edit-outline"
+								label="Upravit"
+								size="sm"
+								onclick={() => openDialog(user, 'edit')}
+							/>
+							<div class="relative" data-row-menu>
+								<button
+									type="button"
+									aria-label="Další akce"
+									aria-haspopup="menu"
+									aria-expanded={openMenuUserId === user.id}
+									class="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
+									onclick={() => (openMenuUserId = openMenuUserId === user.id ? '' : user.id)}
+								>
+									<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
+								</button>
+								{#if openMenuUserId === user.id}
+									{@render userMenu(user)}
+								{/if}
+							</div>
+						</div>
+					{/if}
+				</div>
 			{/each}
 		</div>
 		<p class="mt-3 text-right text-sm text-gray-500">Celkem uživatelů: {filteredUsers.length}</p>
@@ -338,10 +479,8 @@
 					<Icon icon="material-symbols:person" class="h-6 w-6 text-teal-700" />
 				</div>
 				<div>
-					<h2 class="text-lg font-bold text-gray-800">@{selectedUser.username}</h2>
-					{#if displayName(selectedUser)}
-						<p class="text-sm text-gray-500">{displayName(selectedUser)}</p>
-					{/if}
+					<h2 class="text-lg font-bold text-gray-800">{displayName(selectedUser) || `@${selectedUser.username}`}</h2>
+					<p class="text-sm text-gray-500">@{selectedUser.username}</p>
 				</div>
 				<span
 					class="inline-flex rounded-full px-2 py-1 text-xs font-semibold {getRoleColor(selectedUser.role)}"
@@ -356,110 +495,28 @@
 			</div>
 
 			{#if canManageUsers}
-				<div class="relative" bind:this={detailMenuRef}>
-					<button
-						type="button"
-						aria-label="Akce uživatele"
-						aria-haspopup="menu"
-						aria-expanded={detailMenuOpen}
-						class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
-						onclick={() => (detailMenuOpen = !detailMenuOpen)}
-					>
-						<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
-					</button>
-					{#if detailMenuOpen}
-						<div
-							role="menu"
-							class="absolute right-0 z-20 mt-1 w-56 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+				<div class="flex items-center gap-1">
+					<IconButton
+						icon="material-symbols:edit-outline"
+						label="Upravit"
+						onclick={() => openDialog(selectedUser, 'edit')}
+					/>
+					<div class="relative" data-row-menu>
+						<button
+							type="button"
+							aria-label="Akce uživatele"
+							aria-haspopup="menu"
+							aria-expanded={openMenuUserId === selectedUser.id}
+							class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+							onclick={() =>
+								(openMenuUserId = openMenuUserId === selectedUser.id ? '' : selectedUser.id)}
 						>
-							<button
-								type="button"
-								role="menuitem"
-								class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
-								onclick={() => {
-									detailMenuOpen = false;
-									editUserOpen = true;
-								}}
-							>
-								<Icon icon="material-symbols:edit-outline" class="h-4 w-4" />
-								Upravit
-							</button>
-							<button
-								type="button"
-								role="menuitem"
-								class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
-								onclick={() => {
-									detailMenuOpen = false;
-									changeRoleOpen = true;
-								}}
-							>
-								<Icon icon="material-symbols:badge-outline" class="h-4 w-4" />
-								Změnit roli
-							</button>
-							<button
-								type="button"
-								role="menuitem"
-								class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
-								onclick={() => {
-									detailMenuOpen = false;
-									capabilitiesOpen = true;
-								}}
-							>
-								<Icon icon="material-symbols:key-outline" class="h-4 w-4" />
-								Oprávnění
-							</button>
-							<button
-								type="button"
-								role="menuitem"
-								class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
-								onclick={() => {
-									detailMenuOpen = false;
-									sessionsOpen = true;
-								}}
-							>
-								<Icon icon="material-symbols:devices-outline" class="h-4 w-4" />
-								Relace
-							</button>
-							<button
-								type="button"
-								role="menuitem"
-								class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
-								onclick={() => {
-									detailMenuOpen = false;
-									handleStatusAction();
-								}}
-							>
-								<Icon icon="material-symbols:power-settings-new" class="h-4 w-4" />
-								{getStatusActionLabel(selectedUser.status)}
-							</button>
-							{#if selectedUser.status === UserStatus.Active}
-								<button
-									type="button"
-									role="menuitem"
-									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
-									onclick={() => {
-										detailMenuOpen = false;
-										handleLockUser();
-									}}
-								>
-									<Icon icon="material-symbols:lock-outline" class="h-4 w-4" />
-									Zamknout
-								</button>
-							{/if}
-							<button
-								type="button"
-								role="menuitem"
-								class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
-								onclick={() => {
-									detailMenuOpen = false;
-									deleteUserOpen = true;
-								}}
-							>
-								<Icon icon="material-symbols:delete-outline" class="h-4 w-4" />
-								Smazat
-							</button>
-						</div>
-					{/if}
+							<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
+						</button>
+						{#if openMenuUserId === selectedUser.id}
+							{@render userMenu(selectedUser)}
+						{/if}
+					</div>
 				</div>
 			{/if}
 		</div>
@@ -491,8 +548,8 @@
 
 <CreateUserDialog bind:open={createUserOpen} onSuccess={loadUsers} />
 <BulkCreateDialog bind:open={bulkCreateOpen} onSuccess={loadUsers} />
-<EditUserDialog bind:open={editUserOpen} user={selectedUser} onSuccess={loadUsers} />
-<ChangeRoleDialog bind:open={changeRoleOpen} user={selectedUser} onSuccess={loadUsers} />
-<CapabilitiesDialog bind:open={capabilitiesOpen} user={selectedUser} onSuccess={loadUsers} />
-<DeleteUserDialog bind:open={deleteUserOpen} user={selectedUser} onSuccess={loadUsers} />
-<SessionsDialog bind:open={sessionsOpen} user={selectedUser} onSuccess={loadUsers} />
+<EditUserDialog bind:open={editUserOpen} user={dialogUser} onSuccess={loadUsers} />
+<ChangeRoleDialog bind:open={changeRoleOpen} user={dialogUser} onSuccess={loadUsers} />
+<CapabilitiesDialog bind:open={capabilitiesOpen} user={dialogUser} onSuccess={loadUsers} />
+<DeleteUserDialog bind:open={deleteUserOpen} user={dialogUser} onSuccess={loadUsers} />
+<SessionsDialog bind:open={sessionsOpen} user={dialogUser} onSuccess={loadUsers} />

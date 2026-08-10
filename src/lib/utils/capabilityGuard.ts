@@ -25,7 +25,9 @@ export const Guards = {
 	readAllUsers: ['USER_READ_ALL'],
 	manageUsers: ['USER_MANAGE_ALL'],
 	viewGroups: ['GROUP_READ_OWN', 'GROUP_READ_ALL'],
+	createGroups: ['GROUP_CREATE', 'GROUP_MANAGE_ALL'],
 	manageGroups: ['GROUP_MANAGE_OWN', 'GROUP_MANAGE_ALL'],
+	editOwnedGroups: ['GROUP_EDIT_OWNED', 'GROUP_MANAGE_ALL'],
 	adminArea: ['SESSION_READ_GROUP', 'SESSION_READ_ALL', 'USER_MANAGE_ALL']
 } satisfies Record<string, Capability[]>;
 
