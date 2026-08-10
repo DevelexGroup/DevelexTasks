@@ -5,6 +5,9 @@
 	import Icon from '@iconify/svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { getAllUsers } from '$lib/api/user-management';
+	import { getMyGroupMembers } from '$lib/api/groups';
+	import { hasCapability } from '$lib/utils/capabilityGuard';
+	import { authUser } from '$lib/stores/auth';
 	import {
 		getTestSessions,
 		getTestSessionDetail,
@@ -55,11 +58,15 @@
 		loadUsers();
 	});
 
+	let canDeleteSessions = $derived(hasCapability($authUser, 'SESSION_MANAGE_ALL'));
+
 	async function loadUsers() {
 		isLoadingUsers = true;
 		error = '';
 		try {
-			const raw = await getAllUsers();
+			const raw = hasCapability($authUser, 'USER_READ_ALL')
+				? await getAllUsers()
+				: await getMyGroupMembers();
 			users = raw.slice().sort((a, b) => a.username.localeCompare(b.username, 'cs'));
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se načíst uživatele';
@@ -172,7 +179,9 @@
 			const blob = await downloadSessionAsZip(selectedSessionId);
 
 			const user = users.find((u) => u.id === selectedUserId);
-			const userName = user ? `${user.firstName}_${user.lastName}` : selectedUserId;
+			const userName = user
+				? (user.firstName && user.lastName ? `${user.firstName}_${user.lastName}` : user.username)
+				: selectedUserId;
 			const sessionStart = sessionDetail.sessionStartTime
 				? new Date(sessionDetail.sessionStartTime)
 						.toISOString()
@@ -394,6 +403,7 @@
 							Stáhnout vše jako ZIP
 						{/if}
 					</button>
+					{#if canDeleteSessions}
 					<div class="relative" bind:this={menuRef}>
 						<button
 							type="button"
@@ -426,6 +436,7 @@
 							</div>
 						{/if}
 					</div>
+					{/if}
 				</div>
 			</div>
 			<div class="mt-4 flex flex-wrap gap-x-6 gap-y-1 border-t border-gray-100 pt-3 text-sm text-gray-500">

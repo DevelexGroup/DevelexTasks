@@ -1,13 +1,16 @@
-﻿import type { UserRole } from '$lib/types/api.types';
+import type { Capability, GroupDTO, UserRole } from '$lib/types/api.types';
 import { persistedNullable } from '../utils/persistedStore';
+import { browser } from '$app/environment';
 import { get } from 'svelte/store';
 
 export interface AuthUser {
 	userId: string;
 	username: string;
-	firstName: string;
-	lastName: string;
+	firstName: string | null;
+	lastName: string | null;
 	role: UserRole;
+	capabilities: Capability[];
+	groups: GroupDTO[];
 }
 
 export interface AuthSession {
@@ -15,7 +18,15 @@ export interface AuthSession {
 	expiresAt: number; // Unix timestamp in milliseconds
 }
 
-export const authSession = persistedNullable<AuthSession>('auth_session');
+export const authSession = persistedNullable<AuthSession>('auth_session_v2');
+
+if (browser) {
+	localStorage.removeItem('auth_session');
+	const session = get(authSession);
+	if (session && !Array.isArray(session.user?.capabilities)) {
+		authSession.set(null);
+	}
+}
 
 // Derived accessor for backward compatibility
 export const authUser = {

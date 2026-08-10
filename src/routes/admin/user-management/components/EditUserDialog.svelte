@@ -28,9 +28,9 @@
 	$effect(() => {
 		if (user && open) {
 			username = user.username;
-			email = user.email;
-			firstName = user.firstName;
-			lastName = user.lastName;
+			email = user.email ?? '';
+			firstName = user.firstName ?? '';
+			lastName = user.lastName ?? '';
 			newPassword = '';
 			confirmPassword = '';
 			changePassword = false;
@@ -53,8 +53,8 @@
 		if (!user) return;
 		error = '';
 
-		if (!username || !firstName || !lastName) {
-			error = 'Vyplňte všechna povinná pole';
+		if (!username) {
+			error = 'Uživatelské jméno je povinné';
 			return;
 		}
 
@@ -117,7 +117,7 @@
 		<form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-4 py-4">
 			<div class="grid grid-cols-2 gap-4">
 				<div class="space-y-2">
-					<label for="editFirstName" class="text-sm font-medium text-gray-700">Jméno:</label>
+					<label for="editFirstName" class="text-sm font-medium text-gray-700">Jméno (volitelné):</label>
 					<input
 						id="editFirstName"
 						type="text"
@@ -126,7 +126,7 @@
 					/>
 				</div>
 				<div class="space-y-2">
-					<label for="editLastName" class="text-sm font-medium text-gray-700">Příjmení:</label>
+					<label for="editLastName" class="text-sm font-medium text-gray-700">Příjmení (volitelné):</label>
 					<input
 						id="editLastName"
 						type="text"

@@ -9,6 +9,9 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { getAllUsers } from '$lib/api/user-management';
+	import { getMyGroupMembers } from '$lib/api/groups';
+	import { hasCapability } from '$lib/utils/capabilityGuard';
+	import { authUser } from '$lib/stores/auth';
 	import {
 		getTestSessions,
 		getTestSessionDetail,
@@ -176,7 +179,9 @@
 		isLoadingUsers = true;
 		error = '';
 		try {
-			const raw = await getAllUsers();
+			const raw = hasCapability($authUser, 'USER_READ_ALL')
+				? await getAllUsers()
+				: await getMyGroupMembers();
 			remoteUsers = raw.slice().sort((a, b) => a.username.localeCompare(b.username, 'cs'));
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se načíst uživatele';

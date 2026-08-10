@@ -9,7 +9,7 @@
 		lockUser,
 		unlockUser
 	} from '$lib/api/user-management';
-	import { UserRole, UserStatus, type UserDTO } from '$lib/types/api.types';
+	import { UserRole, UserStatus, roleLabels, type UserDTO } from '$lib/types/api.types';
 	import CreateUserDialog from './components/CreateUserDialog.svelte';
 	import BulkCreateDialog from './components/BulkCreateDialog.svelte';
 	import EditUserDialog from './components/EditUserDialog.svelte';
@@ -43,9 +43,9 @@
 			result = result.filter(
 				(u) =>
 					u.username.toLowerCase().includes(query) ||
-					u.email.toLowerCase().includes(query) ||
-					u.firstName.toLowerCase().includes(query) ||
-					u.lastName.toLowerCase().includes(query)
+					(u.email ?? '').toLowerCase().includes(query) ||
+					(u.firstName ?? '').toLowerCase().includes(query) ||
+					(u.lastName ?? '').toLowerCase().includes(query)
 			);
 		}
 
@@ -160,23 +160,14 @@
 	}
 
 	function getRoleLabel(role: UserRole): string {
-		switch (role) {
-			case UserRole.Garant:
-				return 'Garant';
-			case UserRole.Lector:
-				return 'Lektor';
-			case UserRole.Student:
-				return 'Student';
-			default:
-				return role;
-		}
+		return roleLabels[role] ?? role;
 	}
 
 	function getRoleColor(role: UserRole): string {
 		switch (role) {
-			case UserRole.Garant:
+			case UserRole.Admin:
 				return 'bg-purple-100 text-purple-800';
-			case UserRole.Lector:
+			case UserRole.GroupAdmin:
 				return 'bg-blue-100 text-blue-800';
 			case UserRole.Student:
 				return 'bg-gray-100 text-gray-800';
@@ -264,9 +255,9 @@
 			class="min-w-[150px] rounded-md border border-gray-300 bg-white px-3 py-1.5 text-gray-800"
 		>
 			<option value="">Všechny</option>
-			<option value={UserRole.Garant}>Garant</option>
-			<option value={UserRole.Lector}>Lektor</option>
-			<option value={UserRole.Student}>Student</option>
+			<option value={UserRole.Admin}>{roleLabels[UserRole.Admin]}</option>
+			<option value={UserRole.GroupAdmin}>{roleLabels[UserRole.GroupAdmin]}</option>
+			<option value={UserRole.Student}>{roleLabels[UserRole.Student]}</option>
 		</select>
 	</div>
 </section>

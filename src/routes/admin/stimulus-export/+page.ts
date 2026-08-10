@@ -1,7 +1,7 @@
 import { protectLoad } from '$lib/utils/protectLoad';
-import { RoleGuards } from '$lib/utils/roleGuard';
+import { Guards } from '$lib/utils/capabilityGuard';
 
 export const load = protectLoad({
-	config: RoleGuards.garantOnly,
+	caps: Guards.viewAllResults,
 	redirectTo: '/login'
 });

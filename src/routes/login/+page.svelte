@@ -73,8 +73,8 @@
 	async function handleRegister() {
 		registerError = '';
 
-		if (!registerUsername || !registerPassword || !registerFirstName || !registerLastName) {
-			registerError = 'Prosím, vyplňte všechna povinná pole.';
+		if (!registerUsername || !registerPassword) {
+			registerError = 'Prosím, vyplňte uživatelské jméno a heslo.';
 			return;
 		}
 
@@ -233,9 +233,7 @@
 						>
 							<div class="grid grid-cols-2 gap-4">
 								<div class="flex flex-col gap-2">
-									<Label for="register-firstName"
-										>Křestní jméno <span class="text-red-500">*</span></Label
-									>
+									<Label for="register-firstName">Křestní jméno <small>(dobrovolné)</small></Label>
 									<Input
 										id="register-firstName"
 										type="text"
@@ -245,8 +243,7 @@
 									/>
 								</div>
 								<div class="flex flex-col gap-2">
-									<Label for="register-lastName">Příjmení <span class="text-red-500">*</span></Label
-									>
+									<Label for="register-lastName">Příjmení <small>(dobrovolné)</small></Label>
 									<Input
 										id="register-lastName"
 										type="text"

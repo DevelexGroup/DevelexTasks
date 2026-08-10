@@ -3,7 +3,7 @@ import { resolve } from '$app/paths';
 import { authSession, clearAuthSession } from '$lib/stores/auth';
 import { get } from 'svelte/store';
 
-const BASE_URL = import.meta.env.VITE_API_ENDPOINT || '/api';
+export const BASE_URL = import.meta.env.VITE_API_ENDPOINT || '/api';
 
 export class ApiError extends Error {
 	constructor(
@@ -16,7 +16,7 @@ export class ApiError extends Error {
 	}
 }
 
-function getAuthToken(): string | null {
+export function getAuthToken(): string | null {
 	if (typeof document === 'undefined') return null;
 	const match = document.cookie.match(/(?:^|; )auth_token=([^;]*)/);
 	return match ? decodeURIComponent(match[1]) : null;

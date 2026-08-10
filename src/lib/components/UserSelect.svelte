@@ -5,14 +5,18 @@
 	import { logout } from '$lib/api/auth';
 
 	const isLoggedIn = $derived($authUser !== null);
-	const userName = $derived(
-		isLoggedIn ? `${$authUser!.firstName} ${$authUser!.lastName}` : 'Nepřihlášen'
-	);
-	const initials = $derived(
-		isLoggedIn
-			? `${$authUser!.firstName.charAt(0)}${$authUser!.lastName.charAt(0)}`.toUpperCase()
-			: '?'
-	);
+	const userName = $derived.by(() => {
+		if (!$authUser) return 'Nepřihlášen';
+		const name = `${$authUser.firstName ?? ''} ${$authUser.lastName ?? ''}`.trim();
+		return name || $authUser.username;
+	});
+	const initials = $derived.by(() => {
+		if (!$authUser) return '?';
+		if ($authUser.firstName && $authUser.lastName) {
+			return `${$authUser.firstName.charAt(0)}${$authUser.lastName.charAt(0)}`.toUpperCase();
+		}
+		return $authUser.username.slice(0, 2).toUpperCase();
+	});
 
 	let loggingOut = $state(false);
 

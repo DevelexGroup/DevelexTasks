@@ -1,22 +1,23 @@
-﻿import { redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { authUser } from '$lib/stores/auth';
-import { hasRolePermission, type RoleGuardConfig } from './roleGuard';
+import { hasCapability } from './capabilityGuard';
 import { get } from 'svelte/store';
 import type { AuthUser } from '$lib/stores/auth';
+import type { Capability } from '$lib/types/api.types';
 
 export interface ProtectLoadOptions {
-	config: RoleGuardConfig;
+	caps: Capability[];
 	redirectTo?: string;
 	getAuthUser?: () => AuthUser | null | undefined;
 }
 
 export function protectLoad(options: ProtectLoadOptions) {
-	const { config, redirectTo = '/login', getAuthUser } = options;
+	const { caps, redirectTo = '/login', getAuthUser } = options;
 
 	return async () => {
 		const user = getAuthUser ? getAuthUser() : get(authUser);
 
-		if (!hasRolePermission(user, config)) {
+		if (!hasCapability(user, ...caps)) {
 			throw redirect(303, redirectTo);
 		}
 
@@ -28,12 +29,12 @@ export function createProtectedLoad<T>(
 	options: ProtectLoadOptions,
 	loadFn: (params: { user: AuthUser | null | undefined }) => Promise<T> | T
 ) {
-	const { config, redirectTo = '/login', getAuthUser } = options;
+	const { caps, redirectTo = '/login', getAuthUser } = options;
 
 	return async () => {
 		const user = getAuthUser ? getAuthUser() : get(authUser);
 
-		if (!hasRolePermission(user, config)) {
+		if (!hasCapability(user, ...caps)) {
 			throw redirect(303, redirectTo);
 		}
 

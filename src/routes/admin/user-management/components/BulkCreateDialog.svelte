@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { createUser } from '$lib/api/user-management';
-	import { UserRole } from '$lib/types/api.types';
+	import { UserRole, roleLabels } from '$lib/types/api.types';
 
 	interface GeneratedUser {
 		username: string;
@@ -60,7 +60,7 @@
 			generatedUsers.push({
 				username,
 				password: generateRandomPassword(),
-				email: `${username}@generated.local`,
+				email: '',
 				firstName,
 				lastName,
 				role
@@ -184,9 +184,9 @@
 						bind:value={role}
 						class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800"
 					>
-						<option value={UserRole.Student}>Student</option>
-						<option value={UserRole.Lector}>Lektor</option>
-						<option value={UserRole.Garant}>Garant</option>
+						<option value={UserRole.Student}>{roleLabels[UserRole.Student]}</option>
+						<option value={UserRole.GroupAdmin}>{roleLabels[UserRole.GroupAdmin]}</option>
+						<option value={UserRole.Admin}>{roleLabels[UserRole.Admin]}</option>
 					</select>
 				</div>
 			</div>

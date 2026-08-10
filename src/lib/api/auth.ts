@@ -1,5 +1,11 @@
-﻿import { apiClient } from './client';
-import type { LoginRequest, LoginResponse, RegisterRequest, UserDTO } from '$lib/types/api.types';
+import { apiClient, BASE_URL, getAuthToken } from './client';
+import type {
+	CurrentUserResponse,
+	LoginRequest,
+	LoginResponse,
+	RegisterRequest,
+	UserDTO
+} from '$lib/types/api.types';
 import { setAuthSession, clearAuthSession, authSession } from '$lib/stores/auth';
 import { get } from 'svelte/store';
 
@@ -20,7 +26,9 @@ export async function login(credentials: LoginRequest): Promise<LoginResponse> {
 			username: response.username,
 			firstName: response.firstName,
 			lastName: response.lastName,
-			role: response.role
+			role: response.role,
+			capabilities: response.capabilities ?? [],
+			groups: response.groups ?? []
 		},
 		new Date(response.expiresIn)
 	);
@@ -32,7 +40,11 @@ export async function login(credentials: LoginRequest): Promise<LoginResponse> {
 
 export async function logout(): Promise<void> {
 	try {
-		await fetch('/api/auth/logout', { method: 'POST' });
+		const token = getAuthToken();
+		await fetch(`${BASE_URL}/auth/logout`, {
+			method: 'POST',
+			headers: token ? { Authorization: `Bearer ${token}` } : {}
+		});
 	} catch {
 		// Ignore errors - we still want to clear local state
 	}
@@ -60,26 +72,33 @@ export async function register(data: RegisterRequest): Promise<UserDTO> {
 
 /**
  * Validate the current auth session by making a lightweight API call.
- * This performs a server-side sanity check to ensure the token is still valid.
+ * Refreshes the locally stored user info, capabilities and groups on success.
  * If the token is invalid, the apiClient will automatically handle the 401 response
  * and redirect to the login page.
  * @returns true if the session is valid, false if there's no session or validation fails
  */
 export async function validateAuthStatus(): Promise<boolean> {
-	// Check if there's a session first
 	const session = get(authSession);
 	if (!session) {
 		return false;
 	}
 
 	try {
-		// Make a lightweight API call to validate the token on the server
-		await apiClient<UserDTO>('/auth/me');
+		const me = await apiClient<CurrentUserResponse>('/auth/me');
+		authSession.set({
+			user: {
+				userId: me.user.id,
+				username: me.user.username,
+				firstName: me.user.firstName,
+				lastName: me.user.lastName,
+				role: me.user.role,
+				capabilities: me.capabilities ?? [],
+				groups: me.groups ?? []
+			},
+			expiresAt: session.expiresAt
+		});
 		return true;
 	} catch {
-		// If the call fails (including 401), the apiClient handles the redirect
-		// We just return false here
 		return false;
 	}
 }
-

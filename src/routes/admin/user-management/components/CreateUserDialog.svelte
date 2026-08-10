@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { createUser } from '$lib/api/user-management';
-	import { UserRole } from '$lib/types/api.types';
+	import { UserRole, roleLabels } from '$lib/types/api.types';
 
 	let {
 		open = $bindable(false),
@@ -37,8 +37,8 @@
 	async function handleSubmit() {
 		error = '';
 
-		if (!username || !password || !firstName || !lastName) {
-			error = 'Vyplňte všechna povinná pole';
+		if (!username || !password) {
+			error = 'Vyplňte uživatelské jméno a heslo';
 			return;
 		}
 
@@ -93,7 +93,7 @@
 		<form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-4 py-4">
 			<div class="grid grid-cols-2 gap-4">
 				<div class="space-y-2">
-					<label for="firstName" class="text-sm font-medium text-gray-700">Jméno:</label>
+					<label for="firstName" class="text-sm font-medium text-gray-700">Jméno (volitelné):</label>
 					<input
 						id="firstName"
 						type="text"
@@ -103,7 +103,7 @@
 					/>
 				</div>
 				<div class="space-y-2">
-					<label for="lastName" class="text-sm font-medium text-gray-700">Příjmení:</label>
+					<label for="lastName" class="text-sm font-medium text-gray-700">Příjmení (volitelné):</label>
 					<input
 						id="lastName"
 						type="text"
@@ -143,9 +143,9 @@
 					bind:value={role}
 					class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800"
 				>
-					<option value={UserRole.Student}>Student</option>
-					<option value={UserRole.Lector}>Lektor</option>
-					<option value={UserRole.Garant}>Garant</option>
+					<option value={UserRole.Student}>{roleLabels[UserRole.Student]}</option>
+					<option value={UserRole.GroupAdmin}>{roleLabels[UserRole.GroupAdmin]}</option>
+					<option value={UserRole.Admin}>{roleLabels[UserRole.Admin]}</option>
 				</select>
 			</div>
 

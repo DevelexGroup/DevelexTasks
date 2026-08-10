@@ -1,7 +1,56 @@
 ﻿export enum UserRole {
-	Garant = 'GARANT',
-	Lector = 'LECTOR',
+	Admin = 'ADMIN',
+	GroupAdmin = 'GROUP_ADMIN',
 	Student = 'STUDENT'
+}
+
+export const roleLabels: Record<UserRole, string> = {
+	[UserRole.Admin]: 'Administrátor',
+	[UserRole.GroupAdmin]: 'Správce skupiny',
+	[UserRole.Student]: 'Student'
+};
+
+export type Capability =
+	| 'SESSION_RUN_OWN'
+	| 'SESSION_READ_GROUP'
+	| 'SESSION_READ_ALL'
+	| 'SESSION_MANAGE_ALL'
+	| 'USER_EDIT_OWN'
+	| 'USER_READ_GROUP'
+	| 'USER_READ_ALL'
+	| 'USER_CREATE_STUDENT_IN_GROUP'
+	| 'USER_CREATE_ANY'
+	| 'USER_MANAGE_ALL'
+	| 'GROUP_READ_OWN'
+	| 'GROUP_READ_ALL'
+	| 'GROUP_MANAGE_OWN'
+	| 'GROUP_MANAGE_ALL'
+	| 'CONFIG_MANAGE';
+
+export interface GroupDTO {
+	id: string;
+	name: string;
+	description: string | null;
+	memberCount: number | null;
+}
+
+export interface GroupMemberDTO {
+	userUuid: string;
+	username: string;
+	firstName: string | null;
+	lastName: string | null;
+	role: UserRole;
+	status: UserStatus;
+	addedAt: Date;
+}
+
+export interface GroupCreateRequest {
+	name: string;
+	description?: string;
+}
+
+export interface AddMemberRequest {
+	username: string;
 }
 
 export enum TestSessionStatus {
@@ -48,9 +97,9 @@ export interface TestSessionDTO {
 export interface RegisterRequest {
 	username: string;
 	password: string;
-	email: string;
-	firstName: string;
-	lastName: string;
+	email?: string;
+	firstName?: string;
+	lastName?: string;
 }
 
 export interface UserDTO {
@@ -76,9 +125,17 @@ export interface LoginResponse {
 	expiresIn: Date;
 	userId: string;
 	username: string;
-	firstName: string;
-	lastName: string;
+	firstName: string | null;
+	lastName: string | null;
 	role: UserRole;
+	capabilities: Capability[];
+	groups: GroupDTO[];
+}
+
+export interface CurrentUserResponse {
+	user: UserDTO;
+	capabilities: Capability[];
+	groups: GroupDTO[];
 }
 
 export interface PageableObject {
@@ -160,8 +217,8 @@ export interface UserCreateRequest {
 	username: string;
 	password: string;
 	email?: string;
-	firstName: string;
-	lastName: string;
+	firstName?: string;
+	lastName?: string;
 	userRole?: UserRole;
 }
 

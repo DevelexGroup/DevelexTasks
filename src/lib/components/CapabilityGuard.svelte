@@ -1,13 +1,14 @@
-﻿<script lang="ts">
+<script lang="ts">
 	import { authUser } from '$lib/stores/auth';
-	import { hasRolePermission, getUnauthorizedMessage, type RoleGuardConfig } from '$lib/utils/roleGuard';
+	import { hasCapability } from '$lib/utils/capabilityGuard';
+	import type { Capability } from '$lib/types/api.types';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import type { Snippet } from 'svelte';
 
 	interface Props {
-		config: RoleGuardConfig;
+		caps: Capability[];
 		redirectTo?: string;
 		showError?: boolean;
 		unauthorizedMessage?: string;
@@ -15,15 +16,14 @@
 	}
 
 	let {
-		config,
+		caps,
 		redirectTo,
 		showError = false,
-		unauthorizedMessage,
+		unauthorizedMessage = 'Tato stránka vyžaduje vyšší oprávnění.',
 		children
 	}: Props = $props();
 
-	let isAuthorized = $derived(hasRolePermission($authUser, config));
-	let errorMessage = $derived(unauthorizedMessage || getUnauthorizedMessage(config));
+	let isAuthorized = $derived(hasCapability($authUser, ...caps));
 	let isLoading = $state(true);
 
 	onMount(() => {
@@ -37,23 +37,22 @@
 </script>
 
 {#if isLoading}
-	<div class="role-guard-loading">
-		<p>Loading...</p>
+	<div class="capability-guard-loading">
+		<p>Načítání...</p>
 	</div>
 {:else if isAuthorized}
 	{@render children?.()}
 {:else if showError}
-	<div class="role-guard-error">
-		<h1>Access Denied</h1>
-		<p>{errorMessage}</p>
-		<!-- @ts-ignore - login is a valid route -->
-		<a href={resolve('/login')}>Go to Login</a>
+	<div class="capability-guard-error">
+		<h1>Přístup odepřen</h1>
+		<p>{unauthorizedMessage}</p>
+		<a href={resolve('/login')}>Přejít na přihlášení</a>
 	</div>
 {/if}
 
 <style>
-	.role-guard-loading,
-	.role-guard-error {
+	.capability-guard-loading,
+	.capability-guard-error {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -63,19 +62,19 @@
 		text-align: center;
 	}
 
-	.role-guard-error h1 {
+	.capability-guard-error h1 {
 		font-size: 2rem;
 		margin-bottom: 1rem;
 		color: #ef4444;
 	}
 
-	.role-guard-error p {
+	.capability-guard-error p {
 		font-size: 1.125rem;
 		margin-bottom: 1.5rem;
 		color: #6b7280;
 	}
 
-	.role-guard-error a {
+	.capability-guard-error a {
 		padding: 0.5rem 1rem;
 		background-color: #3b82f6;
 		color: white;
@@ -84,7 +83,7 @@
 		transition: background-color 0.2s;
 	}
 
-	.role-guard-error a:hover {
+	.capability-guard-error a:hover {
 		background-color: #2563eb;
 	}
 </style>

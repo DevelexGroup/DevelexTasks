@@ -52,7 +52,9 @@ export async function getUsersByRole(role: UserRole): Promise<UserDTO[]> {
 }
 
 export async function enableUser(uuid: string): Promise<void> {
-	return apiClient<void>(`/user/${uuid}/enable`);
+	return apiClient<void>(`/user/${uuid}/enable`, {
+		method: 'POST'
+	});
 }
 
 export async function activateUser(uuid: string): Promise<UserActionResponse> {

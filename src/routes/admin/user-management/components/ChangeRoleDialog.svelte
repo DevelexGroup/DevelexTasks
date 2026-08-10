@@ -1,7 +1,7 @@
 ﻿<script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { setUserRole } from '$lib/api/user-management';
-	import { UserRole, type UserDTO } from '$lib/types/api.types';
+	import { UserRole, roleLabels, type UserDTO } from '$lib/types/api.types';
 
 	let {
 		open = $bindable(false),
@@ -53,12 +53,7 @@
 	}
 
 	function getRoleName(role: UserRole): string {
-		switch (role) {
-			case UserRole.Garant: return 'Garant';
-			case UserRole.Lector: return 'Lektor';
-			case UserRole.Student: return 'Student';
-			default: return role;
-		}
+		return roleLabels[role] ?? role;
 	}
 </script>
 
@@ -84,9 +79,9 @@
 					bind:value={selectedRole}
 					class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800"
 				>
-					<option value={UserRole.Student}>Student</option>
-					<option value={UserRole.Lector}>Lektor</option>
-					<option value={UserRole.Garant}>Garant</option>
+					<option value={UserRole.Student}>{roleLabels[UserRole.Student]}</option>
+					<option value={UserRole.GroupAdmin}>{roleLabels[UserRole.GroupAdmin]}</option>
+					<option value={UserRole.Admin}>{roleLabels[UserRole.Admin]}</option>
 				</select>
 			</div>
 
