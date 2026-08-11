@@ -1,22 +1,29 @@
 <script lang="ts">
 	import { getContext, onDestroy, onMount } from 'svelte';
+	import { browser } from '$app/environment';
+	import { cubicOut } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
 	import type { GazeInteractionObjectIntersectEvent, GazeManager } from 'develex-js-sdk';
 	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY } from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { resolveAny } from '$lib/utils/resolveAny';
-	import type { DwellSymbolTarget } from '../dwell-symbols';
+	import { getProgressColorClass, getShapeClass, type DwellSymbolTarget } from '../dwell-symbols';
 
 	interface Props {
 		target: DwellSymbolTarget;
 		size: number;
+		isCorrect: boolean;
 		onCompleted: () => void;
 	}
 
-	let { target, size, onCompleted }: Props = $props();
+	let { target, size, isCorrect, onCompleted }: Props = $props();
 
 	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 	const gazeBufferSize = 8;
+	const feedbackDurationMs = 700;
+	const entranceDurationMs =
+		browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 360;
 
 	let element = $state<HTMLElement | null>(null);
 	let progressMs = $state(0);
@@ -29,20 +36,8 @@
 	let completionTimeout = 0;
 
 	const progress = $derived(Math.min(progressMs / target.dwellTimeMs, 1));
-	const progressColorClass = $derived(
-		target.shape === 'cube'
-			? 'stroke-blue-500'
-			: target.shape === 'circle'
-				? 'stroke-green-500'
-				: 'stroke-purple-500'
-	);
-	const shapeClass = $derived(
-		target.shape === 'cube'
-			? 'h-[60%] w-[60%] rounded-[10%] bg-blue-100'
-			: target.shape === 'circle'
-				? 'h-[76%] w-[76%] rounded-full bg-green-100'
-				: 'h-[76%] w-[76%] bg-purple-100 [clip-path:polygon(25%_6.7%,75%_6.7%,100%_50%,75%_93.3%,25%_93.3%,0_50%)]'
-	);
+	const progressColorClass = $derived(getProgressColorClass(target.shape));
+	const shapeClass = $derived(getShapeClass(target.shape));
 
 	onMount(() => {
 		if (!element) return;
@@ -109,7 +104,7 @@
 			completed = true;
 			successful = true;
 			analyticsManager.logEvent(`dwell-finish_${target.id}`);
-			completionTimeout = window.setTimeout(onCompleted, 360);
+			completionTimeout = window.setTimeout(onCompleted, feedbackDurationMs);
 			return;
 		}
 
@@ -120,7 +115,8 @@
 <div
 	bind:this={element}
 	id={target.id}
-	class="relative flex items-center justify-center transition-opacity duration-1000 ease-out select-none {successful
+	in:scale={{ start: 0.82, duration: entranceDurationMs, easing: cubicOut }}
+	class="relative flex items-center justify-center transition-opacity duration-700 ease-out select-none {successful
 		? 'opacity-0'
 		: ''}"
 	style:width="{size}px"
@@ -159,10 +155,12 @@
 
 	{#if successful}
 		<div
-			class="absolute flex aspect-square w-[36%] items-center justify-center rounded-full border-4 border-white bg-green-600 text-[clamp(1rem,3vw,2.25rem)] leading-none font-black text-white shadow-[0_6px_16px_rgb(22_163_74/30%)]"
+			class="absolute flex aspect-square w-[36%] items-center justify-center rounded-full border-4 border-white text-[clamp(1rem,3vw,2.25rem)] leading-none font-black text-white {isCorrect
+				? 'bg-green-600 shadow-[0_6px_16px_rgb(22_163_74/30%)]'
+				: 'bg-red-500 shadow-[0_6px_16px_rgb(239_68_68/30%)]'}"
 			aria-hidden="true"
 		>
-			✓
+			{isCorrect ? '✓' : '×'}
 		</div>
 	{/if}
 </div>

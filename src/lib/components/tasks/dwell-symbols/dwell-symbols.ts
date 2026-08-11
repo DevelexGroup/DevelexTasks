@@ -27,6 +27,11 @@ export interface DwellSymbolTarget extends Position {
 	dwellTimeMs: number;
 }
 
+export interface DwellSymbolCriterion {
+	image: DwellSymbolImage;
+	shape: DwellShape;
+}
+
 export interface DwellSymbolLayout {
 	width: number;
 	height: number;
@@ -117,7 +122,8 @@ export function generatePositions(
 export function createInitialTargets(
 	layout: DwellSymbolLayout,
 	createId: () => string,
-	random = Math.random
+	random = Math.random,
+	criterion?: DwellSymbolCriterion
 ): DwellSymbolTarget[] {
 	const positions = generatePositions(TARGET_COUNT, layout, random);
 	const images = shuffle(DWELL_SYMBOL_IMAGES, random).slice(0, TARGET_COUNT);
@@ -126,13 +132,29 @@ export function createInitialTargets(
 		random
 	);
 
-	return positions.map((position, index) => ({
+	const targets = positions.map((position, index) => ({
 		...position,
 		id: createId(),
 		image: images[index],
 		shape: shapes[index],
 		dwellTimeMs: randomInteger(MIN_DWELL_TIME_MS, MAX_DWELL_TIME_MS, random)
 	}));
+
+	return criterion ? ensureCriterion(targets, criterion) : targets;
+}
+
+export function createCriterion(random = Math.random): DwellSymbolCriterion {
+	return {
+		image: DWELL_SYMBOL_IMAGES[randomInteger(0, DWELL_SYMBOL_IMAGES.length - 1, random)],
+		shape: DWELL_SHAPES[randomInteger(0, DWELL_SHAPES.length - 1, random)]
+	};
+}
+
+export function matchesCriterion(
+	target: Pick<DwellSymbolTarget, 'image' | 'shape'>,
+	criterion: DwellSymbolCriterion
+): boolean {
+	return target.image.name === criterion.image.name && target.shape === criterion.shape;
 }
 
 export function createReplacementTarget(
@@ -159,6 +181,75 @@ export function createReplacementTarget(
 		shape: DWELL_SHAPES[randomInteger(0, DWELL_SHAPES.length - 1, random)],
 		dwellTimeMs: randomInteger(MIN_DWELL_TIME_MS, MAX_DWELL_TIME_MS, random)
 	};
+}
+
+export function ensureCriterion(
+	targets: DwellSymbolTarget[],
+	criterion: DwellSymbolCriterion
+): DwellSymbolTarget[] {
+	if (targets.some((target) => matchesCriterion(target, criterion))) return targets;
+
+	const criterionTargetIndex = Math.max(
+		0,
+		targets.findIndex((target) => target.shape === criterion.shape)
+	);
+	const criterionImageIndex = targets.findIndex(
+		(target) => target.image.name === criterion.image.name
+	);
+	const criterionTarget = targets[criterionTargetIndex];
+	const previousImage = criterionTarget.image;
+
+	return targets.map((target, index) => {
+		if (index === criterionTargetIndex) {
+			return { ...target, image: criterion.image, shape: criterion.shape };
+		}
+		if (index === criterionImageIndex) return { ...target, image: previousImage };
+		return target;
+	});
+}
+
+export function refreshTargets(
+	targets: DwellSymbolTarget[],
+	completedTargetId: string,
+	refreshCount: number,
+	criterion: DwellSymbolCriterion,
+	layout: DwellSymbolLayout,
+	createId: () => string,
+	random = Math.random
+): DwellSymbolTarget[] {
+	const completedIndex = targets.findIndex((target) => target.id === completedTargetId);
+	if (completedIndex === -1) return ensureCriterion(targets, criterion);
+
+	const additionalIndices = shuffle(
+		targets.map((_, index) => index).filter((index) => index !== completedIndex),
+		random
+	);
+	const selectedIndices = new Set([
+		completedIndex,
+		...additionalIndices.slice(0, Math.max(0, Math.min(refreshCount, targets.length) - 1))
+	]);
+	const result = [...targets];
+	const occupied = targets.filter((_, index) => !selectedIndices.has(index));
+
+	for (const index of selectedIndices) {
+		const replacement = createReplacementTarget(targets[index], occupied, layout, createId, random);
+		result[index] = replacement;
+		occupied.push(replacement);
+	}
+
+	return ensureCriterion(result, criterion);
+}
+
+export function getShapeClass(shape: DwellShape): string {
+	if (shape === 'cube') return 'h-[60%] w-[60%] rounded-[10%] bg-blue-100';
+	if (shape === 'circle') return 'h-[76%] w-[76%] rounded-full bg-green-100';
+	return 'h-[76%] w-[76%] bg-purple-100 [clip-path:polygon(25%_6.7%,75%_6.7%,100%_50%,75%_93.3%,25%_93.3%,0_50%)]';
+}
+
+export function getProgressColorClass(shape: DwellShape): string {
+	if (shape === 'cube') return 'stroke-blue-500';
+	if (shape === 'circle') return 'stroke-green-500';
+	return 'stroke-purple-500';
 }
 
 function generateGridPositions(

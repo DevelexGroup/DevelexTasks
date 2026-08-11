@@ -1,9 +1,16 @@
 <script lang="ts">
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import DwellSymbol from './DwellSymbol.svelte';
+	import DwellSymbolPreview from './DwellSymbolPreview.svelte';
+	import DwellTarget from '$lib/components/common/dwellTarget/DwellTarget.svelte';
+	import DwellTargetArrow from '$lib/components/common/dwellTarget/DwellTargetArrow.svelte';
 	import {
+		createCriterion,
 		createInitialTargets,
-		createReplacementTarget,
+		matchesCriterion,
+		randomInteger,
+		refreshTargets,
+		type DwellSymbolCriterion,
 		type DwellSymbolLayout,
 		type DwellSymbolTarget
 	} from '../dwell-symbols';
@@ -22,11 +29,13 @@
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 	const runDurationMs = 30_000;
-	const stimulusId = 'dwell-symbols-training';
 
 	let viewportWidth = $state(1920);
 	let viewportHeight = $state(1080);
 	let targets = $state<DwellSymbolTarget[]>([]);
+	let criterion = $state<DwellSymbolCriterion | null>(null);
+	let roundStage = $state<'preview' | 'game'>('preview');
+	let score = $state(0);
 	let remainingMs = $state(runDurationMs);
 	let mounted = $state(false);
 	let completed = false;
@@ -38,31 +47,28 @@
 	const remainingSeconds = $derived(Math.ceil(remainingMs / 1000));
 
 	$effect(() => {
-		if (!mounted) return;
-		targets = createInitialTargets(layout, createTargetId);
+		if (!mounted || !criterion) return;
+		targets = createInitialTargets(layout, createTargetId, Math.random, criterion);
 	});
 
 	onMount(() => {
 		viewportWidth = window.innerWidth;
 		viewportHeight = window.innerHeight;
+		criterion = createCriterion();
 		mounted = true;
-		runStartedAt = performance.now();
-		timerFrame = requestAnimationFrame(updateTimer);
 
 		if ($trackerConfig !== AvaiableTracker.MouseIdt) cursorVisible.set(false);
 
-		if (!isPractice) {
-			currentTask.update((task) =>
-				task
-					? {
-							...task,
-							currentSlideIndex: 1,
-							stimulusId
-						}
-					: task
-			);
-			analyticsManager.logEvent('dwell-symbols-start');
-		}
+		currentTask.update((task) =>
+			task
+				? {
+						...task,
+						currentSlideIndex: 1,
+						stimulusId: 'dwell-symbols-preview'
+					}
+				: task
+		);
+		if (!isPractice) analyticsManager.logEvent('dwell-symbols-preview');
 	});
 
 	onDestroy(() => {
@@ -75,16 +81,44 @@
 		return `dwell-symbol-${nextTargetId++}`;
 	}
 
-	function replaceTarget(targetId: string) {
-		if (completed) return;
+	function startGame() {
+		if (roundStage === 'game' || !criterion) return;
+		const currentCriterion = criterion;
 
-		const targetIndex = targets.findIndex((target) => target.id === targetId);
-		if (targetIndex === -1) return;
+		roundStage = 'game';
+		remainingMs = runDurationMs;
+		runStartedAt = performance.now();
+		timerFrame = requestAnimationFrame(updateTimer);
+		currentTask.update((task) =>
+			task
+				? {
+						...task,
+						currentSlideIndex: 2,
+						stimulusId: `dwell-symbols-${currentCriterion.shape}-${currentCriterion.image.name}`
+					}
+				: task
+		);
+		if (!isPractice) {
+			analyticsManager.logEvent('complete-slide-1');
+			analyticsManager.logEvent('dwell-symbols-start');
+		}
+	}
 
-		const current = targets[targetIndex];
-		const otherTargets = targets.filter((_, index) => index !== targetIndex);
-		const replacement = createReplacementTarget(current, otherTargets, layout, createTargetId);
-		targets = targets.map((target, index) => (index === targetIndex ? replacement : target));
+	function handleTargetCompleted(target: DwellSymbolTarget) {
+		if (completed || !criterion) return;
+
+		const isCorrect = matchesCriterion(target, criterion);
+		score += isCorrect ? 1 : -1;
+		analyticsManager.logEvent(isCorrect ? 'dwell-symbols-correct' : 'dwell-symbols-incorrect');
+		analyticsManager.logEvent(`dwell-symbols-score_${score}`);
+		targets = refreshTargets(
+			targets,
+			target.id,
+			isCorrect ? randomInteger(2, 4) : 1,
+			criterion,
+			layout,
+			createTargetId
+		);
 	}
 
 	function updateTimer(frameTime: number) {
@@ -111,7 +145,8 @@
 			return;
 		}
 
-		analyticsManager.logEvent('complete-slide-1');
+		analyticsManager.logEvent(`dwell-symbols-final-score_${score}`);
+		analyticsManager.logEvent('complete-slide-2');
 		currentTask.update((task) =>
 			task
 				? {
@@ -138,17 +173,52 @@
 <svelte:window bind:innerWidth={viewportWidth} bind:innerHeight={viewportHeight} />
 
 <div class="relative h-screen w-screen overflow-hidden bg-task-background">
-	<div
-		class="absolute top-[18px] left-1/2 z-10 flex min-w-28 -translate-x-1/2 flex-col items-center justify-center gap-px rounded-full border border-[#dbe2ea] bg-white/90 px-[18px] pt-[7px] pb-2 text-slate-700 shadow-[0_6px_20px_rgb(15_23_42/10%)]"
-		aria-label={`${remainingSeconds} seconds remaining`}
-	>
-		<span class="text-2xl leading-[1.05] font-extrabold tabular-nums">{remainingSeconds}</span>
-		<small class="text-xs leading-none font-bold tracking-[0.04em] uppercase">sekund</small>
-	</div>
-
-	{#each targets as target (target.id)}
-		<div class="absolute top-0 left-0" style:transform={`translate(${target.x}px, ${target.y}px)`}>
-			<DwellSymbol {target} size={layout.targetSize} onCompleted={() => replaceTarget(target.id)} />
+	{#if roundStage === 'preview' && criterion}
+		<div class="flex h-full w-full flex-col items-center justify-center gap-8">
+			<p class="text-xl font-bold text-slate-700">Hledej tento symbol</p>
+			<DwellSymbolPreview {criterion} size={Math.min(300, layout.targetSize * 1.65)} />
 		</div>
-	{/each}
+
+		<div class="fixed right-16 bottom-16">
+			<DwellTarget
+				id="dwell-symbols-preview-next"
+				dwellTimeMs={1000}
+				bufferSize={50}
+				width={125}
+				onDwellComplete={startGame}
+			>
+				<DwellTargetArrow />
+			</DwellTarget>
+		</div>
+	{:else if roundStage === 'game' && criterion}
+		<div
+			class="absolute top-[18px] left-1/2 z-10 flex min-w-28 -translate-x-1/2 flex-col items-center justify-center gap-px rounded-full border border-[#dbe2ea] bg-white/90 px-[18px] pt-[7px] pb-2 text-slate-700 shadow-[0_6px_20px_rgb(15_23_42/10%)]"
+			aria-label={`${remainingSeconds} seconds remaining`}
+		>
+			<span class="text-2xl leading-[1.05] font-extrabold tabular-nums">{remainingSeconds}</span>
+			<small class="text-xs leading-none font-bold tracking-[0.04em] uppercase">sekund</small>
+		</div>
+
+		<div
+			class="absolute top-[18px] left-[18px] z-10 flex min-w-28 flex-col items-center justify-center gap-px rounded-full border border-[#dbe2ea] bg-white/90 px-[18px] pt-[7px] pb-2 text-slate-700 shadow-[0_6px_20px_rgb(15_23_42/10%)]"
+			aria-label={`Score ${score}`}
+		>
+			<span class="text-2xl leading-[1.05] font-extrabold tabular-nums">{score}</span>
+			<small class="text-xs leading-none font-bold tracking-[0.04em] uppercase">skóre</small>
+		</div>
+
+		{#each targets as target (target.id)}
+			<div
+				class="absolute top-0 left-0"
+				style:transform={`translate(${target.x}px, ${target.y}px)`}
+			>
+				<DwellSymbol
+					{target}
+					size={layout.targetSize}
+					isCorrect={matchesCriterion(target, criterion)}
+					onCompleted={() => handleTargetCompleted(target)}
+				/>
+			</div>
+		{/each}
+	{/if}
 </div>
