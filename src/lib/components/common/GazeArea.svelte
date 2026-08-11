@@ -127,6 +127,7 @@
 	class="gaze-area"
 	class:visible={!hideFromDebug && $debugMode && $debugOptions.debugAOIAreaVisible}
 	class:hovered={isHovered}
+	data-aoi-buffer={bufferSize}
 	style:--buffer-size="{bufferSize}px"
 	style:--debug-hue={(id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 137) % 360}
 	role="group"

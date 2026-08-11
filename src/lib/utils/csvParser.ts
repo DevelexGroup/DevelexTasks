@@ -1,7 +1,8 @@
 ﻿import type {
 	GazeSampleDataEntry,
 	FixationDataEntry,
-	SessionScoreDataEntry
+	SessionScoreDataEntry,
+	RawGazeDataEntry
 } from '$lib/database/db.types';
 import type { TaskResult } from '$lib/types/task.types';
 
@@ -174,3 +175,41 @@ export function parseSessionScoresCsv(csvText: string): SessionScoreDataEntry[] 
 	return entries;
 }
 
+/**
+ * Parse a rawGazeData CSV file back into RawGazeDataEntry[].
+ * Expected columns: ID, Child ID, Session ID, Task, Slide Index, Timestamp,
+ * Bridge Timestamp, Device Timestamp, X, Y, Left X, Left Y, Left Validity,
+ * Left Pupil Diameter, Right X, Right Y, Right Validity, Right Pupil Diameter
+ */
+export function parseRawGazeDataCsv(csvText: string): RawGazeDataEntry[] {
+	const lines = csvText.split('\n').filter((l) => l.trim());
+	if (lines.length < 2) return [];
+
+	const entries: RawGazeDataEntry[] = [];
+	for (let i = 1; i < lines.length; i++) {
+		const cols = parseCsvLine(lines[i]);
+		if (cols.length < 18) continue;
+
+		entries.push({
+			child_id: cols[1],
+			session_id: String(parseFormattedTimestamp(cols[2])),
+			task_name: cols[3],
+			slide_index: parseInt(cols[4]) || 0,
+			timestamp: parseFormattedTimestamp(cols[5]),
+			bridgeTimeStamp: cols[6],
+			deviceTimeStamp: cols[7],
+			x: parseNumber(cols[8]),
+			y: parseNumber(cols[9]),
+			xL: parseNumber(cols[10]),
+			yL: parseNumber(cols[11]),
+			validityL: cols[12] === 'true',
+			pupilDiameterL: parseNumber(cols[13]),
+			xR: parseNumber(cols[14]),
+			yR: parseNumber(cols[15]),
+			validityR: cols[16] === 'true',
+			pupilDiameterR: parseNumber(cols[17])
+		});
+	}
+
+	return entries;
+}

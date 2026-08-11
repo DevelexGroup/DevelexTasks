@@ -19,12 +19,19 @@ import { browser } from '$app/environment';
 import Dexie from 'dexie';
 import { db } from '$lib/database/db';
 import { authUser } from '$lib/stores/auth';
-
-interface SlideTimeWindow {
-	slideIndex: number;
-	startTime: number;
-	endTime: number;
-}
+import {
+	type SlideTimeWindow,
+	getEffectiveTimeWindow,
+	getEffectiveTimeWindows,
+	filterSamplesInWindow,
+	filterFixationsInWindow,
+	calculateErrorRate,
+	calculateResponseTime,
+	calculateMeanFixationDuration,
+	calculateAOITargetFixations,
+	calculateAOIFieldFixations,
+	calculateRegressionCount
+} from '$lib/utils/scoreMetrics';
 
 interface Deferred {
 	promise: Promise<void>;
@@ -42,9 +49,6 @@ export class AnalyticsManager {
 	private POLLING_INTERVAL_MS = 1000 / this.POLLING_RATE_HZ;
 
 	private RAW_GAZE_FLUSH_INTERVAL_MS = 500;
-
-	private REGRESSION_MIN_DIST = 50; // pixels
-	private REGRESSION_MIN_DEGREE = 40; // degrees
 
 	private CLICK_EVENT_PREFIX = 'mouse_';
 	private KEYBOARD_EVENT_PREFIX = 'key_';
@@ -216,15 +220,16 @@ export class AnalyticsManager {
 			this.gazeSharedBuf = new SharedArrayBuffer(3 * Int32Array.BYTES_PER_ELEMENT);
 			this.gazeSharedArray = new Int32Array(this.gazeSharedBuf);
 		} else {
-			console.warn('SharedArrayBuffer is not available – falling back to main-thread gaze mirroring. Ensure Cross-Origin-Opener-Policy and Cross-Origin-Embedder-Policy headers are set.');
+			console.warn(
+				'SharedArrayBuffer is not available – falling back to main-thread gaze mirroring. Ensure Cross-Origin-Opener-Policy and Cross-Origin-Embedder-Policy headers are set.'
+			);
 			this.gazeSharedBuf = null;
 			this.gazeSharedArray = null;
 		}
 
-		this.timerWorker = new Worker(
-			new URL('./analyticsWorker.ts', import.meta.url),
-			{ type: 'module' }
-		);
+		this.timerWorker = new Worker(new URL('./analyticsWorker.ts', import.meta.url), {
+			type: 'module'
+		});
 		this.timerWorker.onmessage = (e: MessageEvent) => {
 			if (e.data.type === 'tick') {
 				this.tickLogging(e.data.timestamp, e.data.x, e.data.y);
@@ -552,30 +557,25 @@ export class AnalyticsManager {
 
 		const timeWindows =
 			slideIndex === -1
-				? this.getEffectiveTimeWindows(gazeSamples)
-				: [this.getEffectiveTimeWindow(gazeSamples, slideIndex)].filter(
+				? getEffectiveTimeWindows(gazeSamples)
+				: [getEffectiveTimeWindow(gazeSamples, slideIndex)].filter(
 						(window): window is SlideTimeWindow => window !== null
 					);
 
 		for (let i = 0; i < timeWindows.length; i++) {
 			const window = timeWindows[i];
-			const windowedGazeSamples = gazeSamples.filter(
-				(sample) => sample.timestamp >= window.startTime && sample.timestamp <= window.endTime
-			);
-			// Fixation timestamps mark their start time
-			const windowedFixationData = fixationData.filter(
-				(fix) => fix.timestamp >= window.startTime && fix.timestamp <= window.endTime
-			);
+			const windowedGazeSamples = filterSamplesInWindow(gazeSamples, window);
+			const windowedFixationData = filterFixationsInWindow(fixationData, window);
 
 			// Calculate metrics
 			const metrics: SessionScoreMetrics = {
-				error_rate: this.calculateErrorRate(windowedGazeSamples),
-				response_time: this.calculateResponseTime(windowedGazeSamples),
-				mean_fix_dur: this.calculateMeanFixationDuration(windowedFixationData),
+				error_rate: calculateErrorRate(windowedGazeSamples),
+				response_time: calculateResponseTime(windowedGazeSamples),
+				mean_fix_dur: calculateMeanFixationDuration(windowedFixationData),
 				fix_count: windowedFixationData.length,
-				aoi_target_fix: this.calculateAOITargetFixations(windowedFixationData),
-				aoi_field_fix: this.calculateAOIFieldFixations(windowedFixationData),
-				regression_count: this.calculateRegressionCount(windowedFixationData)
+				aoi_target_fix: calculateAOITargetFixations(windowedFixationData),
+				aoi_field_fix: calculateAOIFieldFixations(windowedFixationData),
+				regression_count: calculateRegressionCount(windowedFixationData)
 			};
 
 			let fluencyScore = 0;
@@ -602,127 +602,5 @@ export class AnalyticsManager {
 				console.error('Error storing session score metrics:', error);
 			}
 		}
-	}
-
-	private getEffectiveTimeWindow(
-		gazeSamples: GazeSampleDataEntry[],
-		slideIndex: number
-	): SlideTimeWindow | null {
-		let startTime: number | null = null;
-		let endTime: number | null = null;
-
-		for (const sample of gazeSamples) {
-			if (!sample.events) continue;
-
-			for (const event of sample.events) {
-				// Check for slide start event (dwell-finish_slide-{index}_initial)
-				if (startTime === null && event === `dwell-finish_slide-${slideIndex}_initial`) {
-					startTime = sample.timestamp;
-					continue;
-				}
-
-				// Check for slide complete event (complete-slide-{index})
-				if (startTime !== null && event === `complete-slide-${slideIndex}`) {
-					endTime = sample.timestamp;
-					return { slideIndex, startTime, endTime };
-				}
-			}
-		}
-
-		console.error(
-			`No complete event found for slide index ${slideIndex} (startTime: ${startTime}, endTime: ${endTime})`
-		);
-		return null;
-	}
-
-	private getEffectiveTimeWindows(gazeSamples: GazeSampleDataEntry[]): SlideTimeWindow[] {
-		const timeWindows: SlideTimeWindow[] = [];
-		let pendingStartTime: number | null = null;
-
-		for (const sample of gazeSamples) {
-			if (!sample.events) continue;
-
-			for (const event of sample.events) {
-				// Check for slide start event (dwell-finish_slide-{index}_initial)
-				if (
-					pendingStartTime === null &&
-					event.startsWith('dwell-finish_slide-') &&
-					event.endsWith('_initial')
-				) {
-					pendingStartTime = sample.timestamp;
-					continue;
-				}
-
-				// Check for slide complete event (complete-slide-{index})
-				if (pendingStartTime !== null && event.startsWith('complete-slide-')) {
-					timeWindows.push({
-						slideIndex: timeWindows.length,
-						startTime: pendingStartTime,
-						endTime: sample.timestamp
-					});
-					pendingStartTime = null;
-				}
-			}
-		}
-
-		return timeWindows;
-	}
-
-	private calculateErrorRate(gazeSamples: GazeSampleDataEntry[]): number {
-		// sum of all mistakes of type "misclick", "skipped" and "wrong-order"
-		return gazeSamples.reduce((count, sample) => {
-			const mistakes = sample.mistake_type || [];
-			mistakes.forEach((mistake) => {
-				if (mistake === 'misclick' || mistake === 'skipped' || mistake === 'wrong-order') {
-					count++;
-				}
-			});
-			return count;
-		}, 0);
-	}
-
-	private calculateResponseTime(gazeSamples: GazeSampleDataEntry[]): number {
-		if (gazeSamples.length === 0) return 0;
-		const startTime = gazeSamples[0].timestamp;
-		const endTime = gazeSamples[gazeSamples.length - 1].timestamp;
-		return endTime - startTime;
-	}
-
-	private calculateMeanFixationDuration(fixationData: FixationDataEntry[]): number {
-		if (fixationData.length === 0) return 0;
-		const totalDuration = fixationData.reduce((sum, fix) => sum + fix.duration, 0);
-		return totalDuration / fixationData.length;
-	}
-
-	private calculateAOITargetFixations(fixationData: FixationDataEntry[]): number {
-		return fixationData.filter((fix) => fix.aoi.includes('hint')).length;
-	}
-
-	private calculateAOIFieldFixations(fixationData: FixationDataEntry[]): number {
-		return fixationData.filter((fix) => fix.aoi.includes('track')).length;
-	}
-
-	private calculateRegressionCount(fixationData: FixationDataEntry[]): number {
-		// Count two consecutive fixations as a regression if:
-		// 1) The distance between them is greater than REGRESSION_MIN_DIST
-		// 2) The angle between them is greater than +- REGRESSION_MIN_DEGREE (0 degrees is rightwards)
-		let regressionCount = 0;
-		for (let i = 1; i < fixationData.length; i++) {
-			const prevFix = fixationData[i - 1];
-			const currFix = fixationData[i];
-
-			const deltaX = currFix.eyetracker_x! - prevFix.eyetracker_x!;
-			const deltaY = currFix.eyetracker_y! - prevFix.eyetracker_y!;
-			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-			if (distance < this.REGRESSION_MIN_DIST) continue;
-
-			const angle = (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
-
-			if (angle > this.REGRESSION_MIN_DEGREE || angle < -this.REGRESSION_MIN_DEGREE) {
-				regressionCount++;
-			}
-		}
-		return regressionCount;
 	}
 }
