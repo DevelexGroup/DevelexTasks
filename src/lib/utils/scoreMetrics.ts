@@ -83,10 +83,10 @@ export function filterSamplesInWindow(
 }
 
 // Fixation timestamps mark their start time
-export function filterFixationsInWindow(
-	fixationData: FixationDataEntry[],
+export function filterFixationsInWindow<T extends FixationDataEntry>(
+	fixationData: T[],
 	window: SlideTimeWindow
-): FixationDataEntry[] {
+): T[] {
 	return fixationData.filter(
 		(fix) => fix.timestamp >= window.startTime && fix.timestamp <= window.endTime
 	);

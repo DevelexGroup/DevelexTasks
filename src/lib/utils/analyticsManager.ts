@@ -67,6 +67,7 @@ export class AnalyticsManager {
 	private gazeSharedArray: Int32Array | null = null;
 
 	private lastDeviceTimestamp: string = '';
+	private lastSampleBridgeMs: number | null = null;
 	private eyetrackerPosition: { x: number; y: number } = { x: 0, y: 0 };
 	private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
 	private playedSounds: Set<string> = new Set<string>();
@@ -444,6 +445,8 @@ export class AnalyticsManager {
 		}
 
 		this.lastDeviceTimestamp = inputData.deviceTimestamp;
+		const bridgeMs = Date.parse(inputData.timestamp);
+		if (!Number.isNaN(bridgeMs)) this.lastSampleBridgeMs = bridgeMs;
 
 		// Write to SharedArrayBuffer so the worker can read position atomically
 		// at the exact scheduled tick moment (no message-passing delay).
@@ -465,7 +468,11 @@ export class AnalyticsManager {
 			session_id: task ? task.sessionId : 'unknown',
 			task_name: task ? formatTaskName(task.slug, task.level, task.mode) : 'unknown',
 			slide_index: task?.currentSlideIndex ?? -1,
-			timestamp: window.performance.timeOrigin + window.performance.now(),
+			// Bridge time ticks with the tracker; the main-thread clock stamps late
+			// and in bursts whenever the tab is busy.
+			timestamp: Number.isNaN(bridgeMs)
+				? window.performance.timeOrigin + window.performance.now()
+				: bridgeMs,
 			bridgeTimeStamp: inputData.timestamp,
 			deviceTimeStamp: inputData.deviceTimestamp,
 			x: inputData.x,
@@ -484,6 +491,12 @@ export class AnalyticsManager {
 	private handleFixationStart = (fixationData: FixationDataPoint) => {
 		if (!this.isLoggingActive()) return;
 		const dataEntry = this.getBaseDataEntry();
+		// The start event fires one minimum-duration after the fixation began and
+		// can queue behind a stalled main thread; the last sample's bridge time
+		// minus the reported duration is the actual onset.
+		if (this.lastSampleBridgeMs !== null) {
+			dataEntry.timestamp = this.lastSampleBridgeMs - fixationData.duration;
+		}
 		const fixationEntry: FixationDataEntry = {
 			...dataEntry,
 			eyetracker_x: fixationData.x,

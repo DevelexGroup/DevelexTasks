@@ -16,7 +16,12 @@ export interface CorrectedExportMeta {
 	detectorParams: DetectorParams;
 	aoiAttribution: AoiAttributionStrategy;
 	dropUnfinishedFinalFixation: boolean;
+	countFixationsOpenAtWindowEnd: boolean;
+	gapResetMs: number;
+	dropColdStartFixation: boolean;
+	rebaseRawTimestamps: boolean;
 	synthesizeDwellArrow: boolean;
+	synthesizeDwellEye: boolean;
 }
 
 export interface CorrectedFile {
@@ -30,7 +35,10 @@ export interface CorrectedFile {
  * keep the table substrings so the file-drop loader can re-import them, and
  * carry a _corrected marker so they are never confused with originals.
  */
-export function buildCorrectedFiles(result: ReplayResult, meta: CorrectedExportMeta): CorrectedFile[] {
+export function buildCorrectedFiles(
+	result: ReplayResult,
+	meta: CorrectedExportMeta
+): CorrectedFile[] {
 	return [
 		{
 			name: 'gazeSamples_corrected.csv',
@@ -63,7 +71,12 @@ export function buildCorrectedFiles(result: ReplayResult, meta: CorrectedExportM
 					detectorParams: meta.detectorParams,
 					aoiAttribution: meta.aoiAttribution,
 					dropUnfinishedFinalFixation: meta.dropUnfinishedFinalFixation,
+					countFixationsOpenAtWindowEnd: meta.countFixationsOpenAtWindowEnd,
+					gapResetMs: meta.gapResetMs,
+					dropColdStartFixation: meta.dropColdStartFixation,
+					rebaseRawTimestamps: meta.rebaseRawTimestamps,
 					synthesizeDwellArrow: meta.synthesizeDwellArrow,
+					synthesizeDwellEye: meta.synthesizeDwellEye,
 					warnings: result.warnings,
 					exportedAt: new Date().toISOString()
 				},

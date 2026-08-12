@@ -14,7 +14,12 @@
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
 	import { buildCorrectedZip, correctedZipName } from '$lib/utils/sessionSim/export';
 	import { SessionSimState } from '$lib/utils/sessionSim/simState.svelte';
-	import type { LoadedSession } from '$lib/utils/sessionSim/types';
+	import { IDENTITY_MATRIX } from '$lib/utils/sessionSim/transform';
+	import {
+		DEFAULT_GAP_RESET_MS,
+		type CorrectionMatrix,
+		type LoadedSession
+	} from '$lib/utils/sessionSim/types';
 
 	const sim = new SessionSimState();
 
@@ -23,6 +28,7 @@
 
 	// ── Viewport ──
 	const RESOLUTION_PRESETS = [
+		{ label: '2560 × 1440', width: 2560, height: 1440 },
 		{ label: '1920 × 1080', width: 1920, height: 1080 },
 		{ label: '1536 × 864', width: 1536, height: 864 },
 		{ label: '1366 × 768', width: 1366, height: 768 },
@@ -42,6 +48,10 @@
 	let captureProgress = $state<string | null>(null);
 	let capturingAll = false;
 
+	const missingGeometry = $derived(
+		sim.slides.filter((slide) => sim.resolvedBySlide[slide] && !sim.capturedAois[slide])
+	);
+
 	async function waitForStage(): Promise<HTMLElement | null> {
 		for (let i = 0; i < 120; i++) {
 			const node = stage?.getCaptureNode();
@@ -58,9 +68,7 @@
 		if (!node || sim.selectedSlide !== slide) return;
 		await settleStimulus(node);
 		if (sim.selectedSlide !== slide) return;
-		const fit = stage?.getFitScale() ?? 0;
-		if (fit <= 0) return;
-		sim.registerGeometry(slide, captureAoiRects(node, fit));
+		sim.registerGeometry(slide, captureAoiRects(node));
 	}
 
 	async function captureAllGeometry() {
@@ -144,6 +152,10 @@
 		return outside / gazeAfter.length;
 	});
 
+	function pct(value: number): string {
+		return `${Math.round(value * 100)} %`;
+	}
+
 	// ── Overlay toggles ──
 	let showGaze = $state(true);
 	let showBefore = $state(true);
@@ -166,6 +178,15 @@
 		return Number.isFinite(ms) ? DatabaseExporter.formatTimestamp(ms, 'simple') : sessionId;
 	}
 
+	// ── Matrix correction ──
+	const activeMatrix = $derived(sim.activeCorrection.matrix ?? IDENTITY_MATRIX);
+
+	function updateMatrixCell(index: number, value: number) {
+		const next = [...activeMatrix] as CorrectionMatrix;
+		next[index] = value;
+		sim.updateCorrection({ matrix: next });
+	}
+
 	// ── Export ──
 	let exporting = $state(false);
 
@@ -182,7 +203,12 @@
 				detectorParams: sim.detectorParams,
 				aoiAttribution: sim.aoiAttribution,
 				dropUnfinishedFinalFixation: sim.dropUnfinishedFinalFixation,
-				synthesizeDwellArrow: sim.synthesizeDwellArrow
+				countFixationsOpenAtWindowEnd: sim.countFixationsOpenAtWindowEnd,
+				gapResetMs: sim.gapResetMs,
+				dropColdStartFixation: sim.dropColdStartFixation,
+				rebaseRawTimestamps: sim.rebaseRawTimestamps,
+				synthesizeDwellArrow: sim.synthesizeDwellArrow,
+				synthesizeDwellEye: sim.synthesizeDwellEye
 			});
 			downloadBlob(blob, correctedZipName(sim.session));
 		} finally {
@@ -196,6 +222,8 @@
 
 	const inputClass =
 		'w-full rounded-md border border-gray-300 bg-white px-2 py-1 text-sm text-gray-800';
+	const matrixInputClass =
+		'w-full rounded-md border border-gray-300 bg-white px-1 py-1 text-center text-xs text-gray-800';
 </script>
 
 <svelte:head>
@@ -215,7 +243,6 @@
 		{showBefore}
 		{showAfter}
 		{showAois}
-		onDragOffset={(dx, dy) => sim.nudgeOffset(dx, dy)}
 	/>
 {/snippet}
 
@@ -229,11 +256,11 @@
 
 	<div class="flex items-start gap-6">
 		<aside class="w-80 shrink-0 space-y-4">
-			<Card.Root>
+			<Card.Root class="gap-3">
 				<Card.Header>
 					<Card.Title>Sezení</Card.Title>
 				</Card.Header>
-				<Card.Content class="space-y-2">
+				<Card.Content class="space-y-3">
 					{#if sim.session}
 						<div class="text-sm text-gray-700">
 							<div><span class="text-gray-400">Dítě:</span> {sim.session.childId}</div>
@@ -248,7 +275,7 @@
 							</div>
 						</div>
 					{:else}
-						<p class="text-sm text-gray-500">Žádné sezení není načtené.</p>
+						<p class="text-sm text-gray-500">Žádné sezení nenačteno.</p>
 					{/if}
 					<Button class="w-full" onclick={() => (loadDialogOpen = true)}>
 						<Icon icon="material-symbols:folder-open" class="mr-1 h-4 w-4" />
@@ -264,12 +291,11 @@
 			</Card.Root>
 
 			{#if sim.session}
-				<Card.Root>
+				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Viewport nahrávky</Card.Title>
-						<Card.Description>Rozlišení okna při nahrávání (neukládá se).</Card.Description>
 					</Card.Header>
-					<Card.Content class="space-y-2">
+					<Card.Content class="space-y-3">
 						<select
 							class={inputClass}
 							onchange={(e) => {
@@ -301,18 +327,17 @@
 						</div>
 						{#if outsideShare > 0.02}
 							<div class="rounded-md bg-amber-50 px-2 py-1.5 text-xs text-amber-700">
-								{Math.round(outsideShare * 100)} % pohledu je mimo viewport – zkontrolujte rozlišení
-								nebo korekci.
+								{pct(outsideShare)} pohledu mimo viewport.
 							</div>
 						{/if}
 					</Card.Content>
 				</Card.Root>
 
-				<Card.Root>
+				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Slide</Card.Title>
 					</Card.Header>
-					<Card.Content class="space-y-2">
+					<Card.Content class="space-y-3">
 						<div class="flex items-center gap-2">
 							<Button
 								size="sm"
@@ -357,74 +382,92 @@
 						</div>
 						{#if captureProgress}
 							<div class="text-xs text-blue-600">{captureProgress}</div>
-						{:else}
+						{:else if missingGeometry.length > 0}
 							<Button
 								size="sm"
 								variant="outline"
 								class="w-full"
 								onclick={() => captureAllGeometry()}
 							>
-								Načíst geometrii všech slidů
+								Načíst chybějící geometrii ({missingGeometry.length})
 							</Button>
 						{/if}
 					</Card.Content>
 				</Card.Root>
 
-				<Card.Root>
+				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Prostorová korekce</Card.Title>
-						<Card.Description>Tažením myší po stimulu posunete pohled.</Card.Description>
 					</Card.Header>
-					<Card.Content class="space-y-2">
+					<Card.Content class="space-y-3">
 						<label class="flex items-center justify-between text-sm text-gray-700">
 							Jen tento slide
 							<Switch bind:checked={sim.editSlideOnly} disabled={sim.selectedSlide === null} />
 						</label>
-						{#if sim.editSlideOnly && sim.selectedSlide !== null && !sim.slideOverrides[sim.selectedSlide]}
-							<p class="text-xs text-gray-400">
-								Slide zatím přebírá společnou korekci – úpravou vznikne vlastní.
-							</p>
+						<label
+							class="flex items-center justify-between text-sm text-gray-700"
+							title="Homogenní matice 4×4 pro bod (x, y, 0, 1); nahrazuje posun i měřítko"
+						>
+							Maticová korekce
+							<Switch
+								checked={sim.activeCorrection.useMatrix ?? false}
+								onCheckedChange={(checked) => sim.updateCorrection({ useMatrix: checked })}
+							/>
+						</label>
+						{#if sim.activeCorrection.useMatrix}
+							<div class="grid grid-cols-4 gap-1">
+								{#each activeMatrix as cell, i (i)}
+									<input
+										type="number"
+										step="0.001"
+										class={matrixInputClass}
+										value={cell}
+										oninput={(e) => updateMatrixCell(i, numberOf(e, IDENTITY_MATRIX[i]))}
+									/>
+								{/each}
+							</div>
+						{:else}
+							<div class="grid grid-cols-2 gap-2 text-sm">
+								<label class="space-y-1">
+									<span class="text-xs text-gray-500">Posun X (px)</span>
+									<input
+										type="number"
+										class={inputClass}
+										value={Math.round(sim.activeCorrection.offsetX * 10) / 10}
+										oninput={(e) => sim.updateCorrection({ offsetX: numberOf(e) })}
+									/>
+								</label>
+								<label class="space-y-1">
+									<span class="text-xs text-gray-500">Posun Y (px)</span>
+									<input
+										type="number"
+										class={inputClass}
+										value={Math.round(sim.activeCorrection.offsetY * 10) / 10}
+										oninput={(e) => sim.updateCorrection({ offsetY: numberOf(e) })}
+									/>
+								</label>
+								<label class="space-y-1">
+									<span class="text-xs text-gray-500">Měřítko X</span>
+									<input
+										type="number"
+										step="0.01"
+										class={inputClass}
+										value={sim.activeCorrection.scaleX}
+										oninput={(e) => sim.updateCorrection({ scaleX: numberOf(e, 1) || 1 })}
+									/>
+								</label>
+								<label class="space-y-1">
+									<span class="text-xs text-gray-500">Měřítko Y</span>
+									<input
+										type="number"
+										step="0.01"
+										class={inputClass}
+										value={sim.activeCorrection.scaleY}
+										oninput={(e) => sim.updateCorrection({ scaleY: numberOf(e, 1) || 1 })}
+									/>
+								</label>
+							</div>
 						{/if}
-						<div class="grid grid-cols-2 gap-2 text-sm">
-							<label class="space-y-1">
-								<span class="text-xs text-gray-500">Posun X (px)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={Math.round(sim.activeCorrection.offsetX * 10) / 10}
-									oninput={(e) => sim.updateCorrection({ offsetX: numberOf(e) })}
-								/>
-							</label>
-							<label class="space-y-1">
-								<span class="text-xs text-gray-500">Posun Y (px)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={Math.round(sim.activeCorrection.offsetY * 10) / 10}
-									oninput={(e) => sim.updateCorrection({ offsetY: numberOf(e) })}
-								/>
-							</label>
-							<label class="space-y-1">
-								<span class="text-xs text-gray-500">Měřítko X</span>
-								<input
-									type="number"
-									step="0.01"
-									class={inputClass}
-									value={sim.activeCorrection.scaleX}
-									oninput={(e) => sim.updateCorrection({ scaleX: numberOf(e, 1) || 1 })}
-								/>
-							</label>
-							<label class="space-y-1">
-								<span class="text-xs text-gray-500">Měřítko Y</span>
-								<input
-									type="number"
-									step="0.01"
-									class={inputClass}
-									value={sim.activeCorrection.scaleY}
-									oninput={(e) => sim.updateCorrection({ scaleY: numberOf(e, 1) || 1 })}
-								/>
-							</label>
-						</div>
 						<Button
 							size="sm"
 							variant="outline"
@@ -436,12 +479,11 @@
 					</Card.Content>
 				</Card.Root>
 
-				<Card.Root>
+				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Detekce fixací</Card.Title>
-						<Card.Description>IDT algoritmus shodný s živým sběrem.</Card.Description>
 					</Card.Header>
-					<Card.Content class="space-y-2">
+					<Card.Content class="space-y-3">
 						<div class="grid grid-cols-2 gap-2 text-sm">
 							<label class="space-y-1">
 								<span class="text-xs text-gray-500">Min. délka (ms)</span>
@@ -482,7 +524,7 @@
 								/>
 							</label>
 						</div>
-						<label class="space-y-1 text-sm">
+						<label class="block space-y-1 text-sm">
 							<span class="text-xs text-gray-500">Přiřazení AOI k fixaci</span>
 							<select
 								class={inputClass}
@@ -492,33 +534,101 @@
 									sim.scheduleRecompute();
 								}}
 							>
-								<option value="snapshot-at-start">Stav při začátku fixace (živé chování)</option>
-								<option value="centroid">Podle těžiště fixace</option>
+								<option value="snapshot-at-start">Při začátku fixace (živě)</option>
+								<option value="centroid">Podle těžiště</option>
 							</select>
 						</label>
-						<label class="flex items-center justify-between text-sm text-gray-700">
-							Zahodit nedokončenou fixaci
+						<label
+							class="flex items-center justify-between text-sm text-gray-700"
+							title="Syntetické AOI slide-N_end pro šipku dalšího slidu"
+						>
+							Doplnit AOI šipky
 							<Switch
-								bind:checked={sim.dropUnfinishedFinalFixation}
+								bind:checked={sim.synthesizeDwellArrow}
 								onCheckedChange={() => sim.scheduleRecompute()}
 							/>
 						</label>
-						<label class="flex items-center justify-between text-sm text-gray-700">
-							Doplnit AOI šipky (slide-N_end)
+						<label
+							class="flex items-center justify-between text-sm text-gray-700"
+							title="Syntetické AOI slide-N_initial pro úvodní oko"
+						>
+							Doplnit AOI oka
 							<Switch
-								bind:checked={sim.synthesizeDwellArrow}
+								bind:checked={sim.synthesizeDwellEye}
 								onCheckedChange={() => sim.scheduleRecompute()}
 							/>
 						</label>
 					</Card.Content>
 				</Card.Root>
 
-				<Card.Root>
+				<Card.Root class="gap-3">
+					<Card.Header>
+						<Card.Title>Pravidla přepočtu</Card.Title>
+						<Card.Description>Výchozí stav odpovídá živému záznamu.</Card.Description>
+					</Card.Header>
+					<Card.Content class="space-y-3">
+						<label
+							class="flex items-center justify-between gap-3 text-sm text-gray-700"
+							title="Fixace běžící na konci záznamu se živě nikdy neuloží"
+						>
+							Zahodit nedokončenou fixaci
+							<Switch
+								bind:checked={sim.dropUnfinishedFinalFixation}
+								onCheckedChange={() => sim.scheduleRecompute()}
+							/>
+						</label>
+						<label
+							class="flex items-center justify-between gap-3 text-sm text-gray-700"
+							title="Fixace běžící při dokončení slidu se živě nezapočítá nikam"
+						>
+							Počítat fixace přes konec slidu
+							<Switch
+								bind:checked={sim.countFixationsOpenAtWindowEnd}
+								onCheckedChange={() => sim.scheduleRecompute()}
+							/>
+						</label>
+						<label
+							class="block space-y-1 text-sm"
+							title="Bez resetu chybějící vzorky splynou v jednu dlouhou fixaci; 0 = vypnuto"
+						>
+							<span class="text-xs text-gray-500">Reset detektoru při mezeře (ms)</span>
+							<input
+								type="number"
+								min="0"
+								class={inputClass}
+								value={sim.gapResetMs}
+								oninput={(e) => {
+									sim.gapResetMs = numberOf(e, DEFAULT_GAP_RESET_MS);
+									sim.scheduleRecompute();
+								}}
+							/>
+						</label>
+						<label
+							class="flex items-center justify-between gap-3 text-sm text-gray-700"
+							title="Fixace běžící už při startu záznamu se živě neuložila"
+						>
+							Zahodit úvodní fixaci streamu
+							<Switch
+								bind:checked={sim.dropColdStartFixation}
+								onCheckedChange={() => sim.scheduleRecompute()}
+							/>
+						</label>
+						<label
+							class="flex items-center justify-between gap-3 text-sm text-gray-700"
+							title="Hlavní vlákno razítkuje vzorky pozdě a v dávkách; bridge čas je spojitý. Vzorky i fixace dostanou skutečné časy (fixace čas začátku)."
+						>
+							Opravit časy vzorků (bridge)
+							<Switch
+								bind:checked={sim.rebaseRawTimestamps}
+								onCheckedChange={() => sim.scheduleRecompute()}
+							/>
+						</label>
+					</Card.Content>
+				</Card.Root>
+
+				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Export</Card.Title>
-						<Card.Description>
-							Opravené CSV ve formátu exportu + corrections.json.
-						</Card.Description>
 					</Card.Header>
 					<Card.Content>
 						<Button
@@ -532,11 +642,11 @@
 					</Card.Content>
 				</Card.Root>
 
-				<Card.Root>
+				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Zobrazení</Card.Title>
 					</Card.Header>
-					<Card.Content class="space-y-2">
+					<Card.Content class="space-y-3">
 						<label class="flex items-center justify-between text-sm text-gray-700">
 							Trajektorie pohledu
 							<Switch bind:checked={showGaze} />
@@ -558,7 +668,9 @@
 			{/if}
 		</aside>
 
-		<main class="min-w-0 flex-1 space-y-4">
+		<main
+			class="sticky top-4 max-h-[calc(100vh-2rem)] min-w-0 flex-1 space-y-4 self-start overflow-y-auto"
+		>
 			<SimStage
 				bind:this={stage}
 				level={selectedResolved?.level ?? null}
@@ -569,15 +681,11 @@
 			/>
 
 			{#if sim.session}
-				<Card.Root>
+				<Card.Root class="gap-3">
 					<Card.Header>
-						<Card.Title>
-							Skóre – slide {sim.selectedSlide ?? '–'}
-						</Card.Title>
+						<Card.Title>Info o slidu {sim.selectedSlide ?? '–'}</Card.Title>
 						{#if !selectedWindow}
-							<Card.Description>
-								Slide nemá kompletní časové okno (chybí event markery).
-							</Card.Description>
+							<Card.Description>Chybí kompletní časové okno.</Card.Description>
 						{/if}
 					</Card.Header>
 					<Card.Content>

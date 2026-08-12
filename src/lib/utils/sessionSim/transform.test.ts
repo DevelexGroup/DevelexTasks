@@ -55,6 +55,32 @@ describe('applyCorrection', () => {
 		expect(applyCorrection(100, 100, correction)).toEqual({ x: 100, y: 100 });
 	});
 
+	it('matrix mode replaces offset/scale', () => {
+		const translate: SpatialCorrection = {
+			...identityCorrection(),
+			offsetX: 10,
+			useMatrix: true,
+			matrix: [1, 0, 0, 30, 0, 1, 0, -40, 0, 0, 1, 0, 0, 0, 0, 1]
+		};
+		expect(applyCorrection(100, 200, translate)).toEqual({ x: 130, y: 160 });
+
+		const projective: SpatialCorrection = {
+			...identityCorrection(),
+			useMatrix: true,
+			matrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2]
+		};
+		expect(applyCorrection(100, 200, projective)).toEqual({ x: 50, y: 100 });
+	});
+
+	it('disabled matrix is ignored', () => {
+		const correction: SpatialCorrection = {
+			...identityCorrection(),
+			offsetX: 10,
+			matrix: [1, 0, 0, 30, 0, 1, 0, -40, 0, 0, 1, 0, 0, 0, 0, 1]
+		};
+		expect(applyCorrection(100, 200, correction)).toEqual({ x: 110, y: 200 });
+	});
+
 	it('invertCorrection round-trips a point', () => {
 		const correction: SpatialCorrection = {
 			offsetX: 25,
@@ -76,6 +102,23 @@ describe('isIdentity', () => {
 		expect(isIdentity(identityCorrection(500, 500))).toBe(true);
 		expect(isIdentity({ ...identityCorrection(), offsetX: 1 })).toBe(false);
 		expect(isIdentity({ ...identityCorrection(), scaleY: 1.01 })).toBe(false);
+	});
+
+	it('matrix mode judges only the matrix', () => {
+		expect(isIdentity({ ...identityCorrection(), offsetX: 5, useMatrix: true })).toBe(true);
+		expect(
+			isIdentity({
+				...identityCorrection(),
+				useMatrix: true,
+				matrix: [1, 0, 0, 5, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
+			})
+		).toBe(false);
+		expect(
+			isIdentity({
+				...identityCorrection(),
+				matrix: [1, 0, 0, 5, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
+			})
+		).toBe(true);
 	});
 });
 

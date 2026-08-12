@@ -1,5 +1,5 @@
 import type { GazeSampleDataEntry } from '$lib/database/db.types';
-import { synthesizeDwellArrowAoi } from './aoi/syntheticAois';
+import { synthesizeDwellArrowAoi, synthesizeDwellEyeAoi } from './aoi/syntheticAois';
 import type { AoiRect, SlideCorrectionMap, SlideGeometry, SpatialCorrection } from './types';
 
 export function distinctSlides(gazeSamples: GazeSampleDataEntry[]): number[] {
@@ -12,15 +12,18 @@ export function buildGeometryMap(
 	capturedAois: Record<number, AoiRect[]>,
 	stimulusBySlide: Record<number, string>,
 	viewport: { width: number; height: number },
-	synthesizeDwellArrow: boolean
+	synthesize: { dwellArrow: boolean; dwellEye: boolean }
 ): Map<number, SlideGeometry> {
 	const map = new Map<number, SlideGeometry>();
 	for (const [slideKey, aois] of Object.entries(capturedAois)) {
 		const slide = Number(slideKey);
+		const combined = [...aois];
+		if (synthesize.dwellArrow) combined.push(synthesizeDwellArrowAoi(viewport, slide));
+		if (synthesize.dwellEye) combined.push(synthesizeDwellEyeAoi(slide));
 		map.set(slide, {
 			slideIndex: slide,
 			stimulusId: stimulusBySlide[slide] ?? 'null',
-			aois: synthesizeDwellArrow ? [...aois, synthesizeDwellArrowAoi(viewport, slide)] : [...aois],
+			aois: combined,
 			viewport,
 			approximate: false
 		});

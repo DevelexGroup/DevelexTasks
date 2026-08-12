@@ -13,10 +13,13 @@
 	});
 </script>
 
-<main class="flex h-screen flex-col bg-gray-50 font-lexend">
+<main class="flex min-h-screen flex-col bg-gray-50 font-lexend">
 	<nav class="flex w-full bg-white px-4 py-4 shadow-xl">
 		<div class="mx-auto flex w-full max-w-5xl items-center justify-between">
-			<button class="text-3xl font-black text-blue-600 cursor-pointer" onclick={() => goto(resolve('/'))}>DeveLex</button>
+			<button
+				class="cursor-pointer text-3xl font-black text-blue-600"
+				onclick={() => goto(resolve('/'))}>DeveLex</button
+			>
 
 			<div class="inline-flex items-center space-x-3">
 				<button
@@ -28,13 +31,12 @@
 					Nastavení
 				</button>
 
-
 				<UserSelect />
 			</div>
 		</div>
 	</nav>
 
-	<section class="mt-4 flex h-full w-full px-4 py-6">
+	<section class="mt-4 flex w-full flex-1 px-4 py-6">
 		<div class="mx-auto flex w-full max-w-5xl flex-col gap-6">
 			{@render children()}
 		</div>

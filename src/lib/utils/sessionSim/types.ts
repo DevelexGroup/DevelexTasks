@@ -7,6 +7,26 @@ import type {
 } from '$lib/database/db.types';
 import type { SlideTimeWindow } from '$lib/utils/scoreMetrics';
 
+/** Row-major 4×4 homogeneous matrix in viewport pixels, applied to (x, y, 0, 1). */
+export type CorrectionMatrix = [
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number
+];
+
 export interface SpatialCorrection {
 	offsetX: number;
 	offsetY: number;
@@ -14,6 +34,9 @@ export interface SpatialCorrection {
 	scaleY: number;
 	centerX: number;
 	centerY: number;
+	/** When true, `matrix` replaces offset/scale entirely. */
+	useMatrix?: boolean;
+	matrix?: CorrectionMatrix;
 }
 
 export interface SlideCorrectionMap {
@@ -84,12 +107,27 @@ export const DEFAULT_DETECTOR_PARAMS: DetectorParams = {
 	dpi: 96
 };
 
+/** A recomputed fixation; endTimestamp is the sample that closed it. */
+export interface ReplayFixation extends FixationDataEntry {
+	endTimestamp: number;
+}
+
 export interface FixationPostProcessor {
 	name: string;
-	apply(fixations: FixationDataEntry[]): FixationDataEntry[];
+	apply(fixations: ReplayFixation[]): ReplayFixation[];
 }
 
 export type AoiAttributionStrategy = 'snapshot-at-start' | 'centroid';
+
+/** Recording gap the live detector never saw (pause, lost slide-boundary samples). */
+export interface StreamGap {
+	from: number;
+	to: number;
+	durationMs: number;
+}
+
+/** Well above sampling jitter, below the shortest realistic pause. */
+export const DEFAULT_GAP_RESET_MS = 200;
 
 export interface ReplayOptions {
 	detectorParams: DetectorParams;
@@ -97,6 +135,21 @@ export interface ReplayOptions {
 	aoiAttribution: AoiAttributionStrategy;
 	/** Live sessions never persist the fixation still in progress at session end. */
 	dropUnfinishedFinalFixation: boolean;
+	/**
+	 * Live scores a slide in the tick that completes it, so a fixation still
+	 * running at that moment is stored too late to be counted anywhere.
+	 */
+	countFixationsOpenAtWindowEnd: boolean;
+	/** Restart the detector when consecutive samples are farther apart than this; 0 disables. */
+	gapResetMs: number;
+	/** The fixation already running when recording started was never logged live. */
+	dropColdStartFixation: boolean;
+	/**
+	 * Re-stamp raw samples with the bridge clock (median-offset aligned) and
+	 * record fixation onsets instead of confirmation times. Undoes main-thread
+	 * stamping bursts; timestamps then stop matching the live rows.
+	 */
+	rebaseRawTimestamps: boolean;
 }
 
 export function defaultReplayOptions(): ReplayOptions {
@@ -104,7 +157,11 @@ export function defaultReplayOptions(): ReplayOptions {
 		detectorParams: { ...DEFAULT_DETECTOR_PARAMS },
 		postProcessors: [],
 		aoiAttribution: 'snapshot-at-start',
-		dropUnfinishedFinalFixation: true
+		dropUnfinishedFinalFixation: true,
+		countFixationsOpenAtWindowEnd: false,
+		gapResetMs: DEFAULT_GAP_RESET_MS,
+		dropColdStartFixation: false,
+		rebaseRawTimestamps: false
 	};
 }
 
@@ -112,11 +169,11 @@ export type FluencyResolver = (metrics: Partial<SessionScoreMetrics>, stimulusId
 
 export interface ReplaySlideResult {
 	window: SlideTimeWindow | null;
-	fixations: FixationDataEntry[];
+	fixations: ReplayFixation[];
 }
 
 export interface ReplayResult {
-	fixations: FixationDataEntry[];
+	fixations: ReplayFixation[];
 	gazeSamples: GazeSampleDataEntry[];
 	rawGazeData: RawGazeDataEntry[];
 	sessionScores: SessionScoreDataEntry[];

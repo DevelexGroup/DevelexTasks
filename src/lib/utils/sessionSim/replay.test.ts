@@ -220,6 +220,139 @@ describe('runReplay', () => {
 		expect(result.fixations[0].aoi).toEqual([]);
 	});
 
+	// Slide completes at 250 ms while the fixation at (100,100) is still running.
+	function buildStraddlingSession(): LoadedSession {
+		const rawGazeData: RawGazeDataEntry[] = [];
+		for (let t = 0; t <= 400; t += 10) rawGazeData.push(rawAt(t, 100, 100));
+
+		const gazeSamples: GazeSampleDataEntry[] = [];
+		for (let t = 0; t <= 400; t += 10) {
+			gazeSamples.push(
+				rowAt(t, 100, 100, {
+					events: t === 0 ? ['dwell-finish_slide-1_initial'] : t === 250 ? ['complete-slide-1'] : []
+				})
+			);
+		}
+
+		return {
+			childId: 'child',
+			sessionId: 'session',
+			taskName: 'cibule-1',
+			gazeSamples,
+			fixationData: [],
+			sessionScores: [],
+			rawGazeData,
+			maxSlides: 1,
+			warnings: []
+		};
+	}
+
+	it('excludes a fixation still open when the slide completes, as live does', () => {
+		const options = { ...defaultReplayOptions(), dropUnfinishedFinalFixation: false };
+		const result = runReplay({
+			session: buildStraddlingSession(),
+			corrections: noCorrections(),
+			geometryBySlide: buildGeometry(),
+			options
+		});
+
+		expect(result.fixations).toHaveLength(1);
+		expect(result.fixations[0].timestamp).toBeLessThanOrEqual(BASE_MS + 250);
+		expect(result.fixations[0].endTimestamp).toBe(BASE_MS + 400);
+		expect(result.sessionScores[0].fix_count).toBe(0);
+		expect(result.perSlide.get(1)?.fixations).toHaveLength(0);
+	});
+
+	it('counts the straddling fixation when countFixationsOpenAtWindowEnd is on', () => {
+		const options = {
+			...defaultReplayOptions(),
+			dropUnfinishedFinalFixation: false,
+			countFixationsOpenAtWindowEnd: true
+		};
+		const result = runReplay({
+			session: buildStraddlingSession(),
+			corrections: noCorrections(),
+			geometryBySlide: buildGeometry(),
+			options
+		});
+
+		expect(result.sessionScores[0].fix_count).toBe(1);
+		expect(result.perSlide.get(1)?.fixations).toHaveLength(1);
+	});
+
+	// Gaze rests on one spot, the middle 2 s were never recorded.
+	function buildGappedSession(): LoadedSession {
+		const rawGazeData: RawGazeDataEntry[] = [];
+		for (let t = 0; t <= 300; t += 10) rawGazeData.push(rawAt(t, 100, 100));
+		for (let t = 2300; t <= 2600; t += 10) rawGazeData.push(rawAt(t, 100, 100));
+
+		const gazeSamples: GazeSampleDataEntry[] = [];
+		for (let t = 0; t <= 2600; t += 10) {
+			gazeSamples.push(
+				rowAt(t, 100, 100, {
+					events:
+						t === 0 ? ['dwell-finish_slide-1_initial'] : t === 2600 ? ['complete-slide-1'] : []
+				})
+			);
+		}
+
+		return {
+			childId: 'child',
+			sessionId: 'session',
+			taskName: 'cibule-1',
+			gazeSamples,
+			fixationData: [],
+			sessionScores: [],
+			rawGazeData,
+			maxSlides: 1,
+			warnings: []
+		};
+	}
+
+	it('restarts the detector across a recording gap instead of merging over it', () => {
+		const options = { ...defaultReplayOptions(), dropUnfinishedFinalFixation: false };
+		const result = runReplay({
+			session: buildGappedSession(),
+			corrections: noCorrections(),
+			geometryBySlide: buildGeometry(),
+			options
+		});
+
+		expect(result.fixations).toHaveLength(2);
+		for (const fixation of result.fixations) expect(fixation.duration).toBeLessThanOrEqual(300);
+		expect(result.warnings.some((w) => w.includes('mezer'))).toBe(true);
+	});
+
+	it('merges across the gap when gapResetMs is 0', () => {
+		const options = {
+			...defaultReplayOptions(),
+			dropUnfinishedFinalFixation: false,
+			gapResetMs: 0
+		};
+		const result = runReplay({
+			session: buildGappedSession(),
+			corrections: noCorrections(),
+			geometryBySlide: buildGeometry(),
+			options
+		});
+
+		expect(result.fixations).toHaveLength(1);
+		expect(result.fixations[0].duration).toBeGreaterThan(2000);
+	});
+
+	it('drops the fixation already running at stream start when asked', () => {
+		const options = { ...defaultReplayOptions(), dropColdStartFixation: true };
+		const result = runReplay({
+			session: buildSession(),
+			corrections: noCorrections(),
+			geometryBySlide: buildGeometry(),
+			options
+		});
+
+		expect(result.fixations).toHaveLength(0);
+		expect(result.sessionScores[0].fix_count).toBe(0);
+	});
+
 	it('runs a fixation post-processor stage', () => {
 		const options = defaultReplayOptions();
 		options.postProcessors = [

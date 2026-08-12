@@ -6,6 +6,7 @@ import { parseTaskName, type ParsedTaskName } from './taskName';
 import { resolveSlide, type ResolvedSlide } from './taskResolver';
 import {
 	DEFAULT_DETECTOR_PARAMS,
+	DEFAULT_GAP_RESET_MS,
 	type AoiAttributionStrategy,
 	type AoiRect,
 	type DetectorParams,
@@ -36,7 +37,12 @@ export class SessionSimState {
 	detectorParams = $state<DetectorParams>({ ...DEFAULT_DETECTOR_PARAMS });
 	aoiAttribution = $state<AoiAttributionStrategy>('snapshot-at-start');
 	dropUnfinishedFinalFixation = $state(true);
+	countFixationsOpenAtWindowEnd = $state(false);
+	gapResetMs = $state(DEFAULT_GAP_RESET_MS);
+	dropColdStartFixation = $state(false);
+	rebaseRawTimestamps = $state(false);
 	synthesizeDwellArrow = $state(true);
+	synthesizeDwellEye = $state(true);
 
 	capturedAois = $state<Record<number, AoiRect[]>>({});
 	result = $state<ReplayResult | null>(null);
@@ -120,11 +126,6 @@ export class SessionSimState {
 		this.scheduleRecompute();
 	}
 
-	nudgeOffset(dx: number, dy: number): void {
-		const current = this.activeCorrection;
-		this.updateCorrection({ offsetX: current.offsetX + dx, offsetY: current.offsetY + dy });
-	}
-
 	resetCorrection(): void {
 		if (this.editSlideOnly && this.selectedSlide !== null) {
 			const { [this.selectedSlide]: _removed, ...rest } = this.slideOverrides;
@@ -151,7 +152,7 @@ export class SessionSimState {
 			this.capturedAois,
 			this.stimulusBySlide,
 			{ width: this.viewportWidth, height: this.viewportHeight },
-			this.synthesizeDwellArrow
+			{ dwellArrow: this.synthesizeDwellArrow, dwellEye: this.synthesizeDwellEye }
 		);
 	}
 
@@ -175,7 +176,11 @@ export class SessionSimState {
 					detectorParams: { ...this.detectorParams },
 					postProcessors: [],
 					aoiAttribution: this.aoiAttribution,
-					dropUnfinishedFinalFixation: this.dropUnfinishedFinalFixation
+					dropUnfinishedFinalFixation: this.dropUnfinishedFinalFixation,
+					countFixationsOpenAtWindowEnd: this.countFixationsOpenAtWindowEnd,
+					gapResetMs: this.gapResetMs,
+					dropColdStartFixation: this.dropColdStartFixation,
+					rebaseRawTimestamps: this.rebaseRawTimestamps
 				},
 				fluency: this.fluency ?? undefined
 			});

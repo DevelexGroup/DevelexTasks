@@ -5,6 +5,7 @@ import { runReplay } from './replay';
 import { identityCorrection } from './transform';
 import {
 	DEFAULT_DETECTOR_PARAMS,
+	DEFAULT_GAP_RESET_MS,
 	defaultReplayOptions,
 	type LoadedSession,
 	type ReplayResult
@@ -51,8 +52,7 @@ function buildSession(): LoadedSession {
 			aoi: [],
 			mouse_x: 0,
 			mouse_y: 0,
-			events:
-				t === 0 ? ['dwell-finish_slide-1_initial'] : t === 400 ? ['complete-slide-1'] : [],
+			events: t === 0 ? ['dwell-finish_slide-1_initial'] : t === 400 ? ['complete-slide-1'] : [],
 			sound_name: [],
 			mistake_type: [],
 			task_result: null
@@ -89,7 +89,12 @@ function meta(session: LoadedSession) {
 		detectorParams: { ...DEFAULT_DETECTOR_PARAMS },
 		aoiAttribution: 'snapshot-at-start' as const,
 		dropUnfinishedFinalFixation: true,
-		synthesizeDwellArrow: true
+		countFixationsOpenAtWindowEnd: false,
+		gapResetMs: DEFAULT_GAP_RESET_MS,
+		dropColdStartFixation: false,
+		rebaseRawTimestamps: false,
+		synthesizeDwellArrow: true,
+		synthesizeDwellEye: true
 	};
 }
 

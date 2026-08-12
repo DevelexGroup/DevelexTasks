@@ -1,7 +1,14 @@
-import type { FixationDataEntry, RawGazeDataEntry } from '$lib/database/db.types';
+import type { RawGazeDataEntry } from '$lib/database/db.types';
 import { hitTestAll } from '../aoi/hitTest';
 import { transformRawEntry } from '../transform';
-import type { ReplayOptions, SlideCorrectionMap, SlideGeometry, FixationDetector } from '../types';
+import type {
+	ReplayOptions,
+	SlideCorrectionMap,
+	SlideGeometry,
+	FixationDetector,
+	ReplayFixation,
+	StreamGap
+} from '../types';
 import { IdtFixationDetector } from './idtAdapter';
 
 export interface FixationPipelineInput {
@@ -23,9 +30,16 @@ export interface AoiTimelineEntry {
 }
 
 export interface FixationPipelineResult {
-	fixations: FixationDataEntry[];
+	fixations: ReplayFixation[];
 	transformedRaw: RawGazeDataEntry[];
 	aoiTimeline: AoiTimelineEntry[];
+	gaps: StreamGap[];
+}
+
+/** The detector measures durations from device timestamps, so gaps are found there too. */
+function deviceMs(sample: RawGazeDataEntry): number {
+	const parsed = Date.parse(sample.deviceTimeStamp);
+	return Number.isNaN(parsed) ? sample.timestamp : parsed;
 }
 
 /**
@@ -36,27 +50,51 @@ export interface FixationPipelineResult {
  */
 export function runFixationPipeline(input: FixationPipelineInput): FixationPipelineResult {
 	const detector = input.detector ?? new IdtFixationDetector(input.options.detectorParams);
-	const pending = new Map<number, FixationDataEntry>();
-	const finished: FixationDataEntry[] = [];
+	const pending = new Map<number, ReplayFixation>();
+	const finished: ReplayFixation[] = [];
+	const gaps: StreamGap[] = [];
 
 	let currentSample: RawGazeDataEntry | null = null;
 	let currentSlide = -1;
 	let currentAoi: string[] | null = null;
 
+	let firstDeviceMs: number | null = null;
+	let sampleIntervalMs = 0;
+	let firstFixationSeen = false;
+	let coldStartFixationId: number | null = null;
+
 	detector.onFixationStart((fixation) => {
 		if (!currentSample) return;
+
+		if (!firstFixationSeen) {
+			firstFixationSeen = true;
+			// A window reaching the minimum duration this early still holds the very
+			// first sample, so the fixation really began before the recording did.
+			const headroom = input.options.detectorParams.minimumFixationDurationMs + sampleIntervalMs;
+			if (firstDeviceMs !== null && deviceMs(currentSample) <= firstDeviceMs + headroom) {
+				coldStartFixationId = fixation.fixationId;
+			}
+		}
+
+		// The start event fires once the window reaches the minimum duration, so
+		// in rebase mode the onset is that far back from the current sample.
+		const startedAt = input.options.rebaseRawTimestamps
+			? currentSample.timestamp - fixation.duration
+			: currentSample.timestamp;
+
 		pending.set(fixation.fixationId, {
 			child_id: currentSample.child_id,
 			session_id: currentSample.session_id,
 			task_name: currentSample.task_name,
 			slide_index: currentSlide,
 			stimulus_id: input.stimulusForSlide(currentSlide),
-			timestamp: currentSample.timestamp,
+			timestamp: startedAt,
 			eyetracker_x: fixation.x,
 			eyetracker_y: fixation.y,
 			duration: fixation.duration,
 			aoi: currentAoi ? [...currentAoi] : [],
-			fixation_index: fixation.fixationId
+			fixation_index: fixation.fixationId,
+			endTimestamp: currentSample.timestamp
 		});
 	});
 
@@ -65,6 +103,7 @@ export function runFixationPipeline(input: FixationPipelineInput): FixationPipel
 		if (!entry) return;
 		pending.delete(fixation.fixationId);
 		entry.duration = fixation.duration;
+		if (currentSample) entry.endTimestamp = currentSample.timestamp;
 
 		if (input.options.aoiAttribution === 'centroid') {
 			const geometry = input.geometryBySlide.get(entry.slide_index);
@@ -77,10 +116,31 @@ export function runFixationPipeline(input: FixationPipelineInput): FixationPipel
 	const transformedRaw: RawGazeDataEntry[] = [];
 	const aoiTimeline: AoiTimelineEntry[] = [];
 
+	let previousDeviceMs: number | null = null;
+	let previousTimestamp = 0;
+
 	for (const sample of input.rawGazeData) {
 		const slide = input.slideForTimestamp(sample.timestamp, sample.slide_index);
 		const correction = input.corrections.perSlide.get(slide) ?? input.corrections.sessionDefault;
 		const corrected = transformRawEntry(sample, correction);
+
+		const sampleDeviceMs = deviceMs(sample);
+		if (previousDeviceMs === null) {
+			firstDeviceMs = sampleDeviceMs;
+		} else {
+			const delta = sampleDeviceMs - previousDeviceMs;
+			if (delta > 0) {
+				sampleIntervalMs = sampleIntervalMs === 0 ? delta : Math.min(sampleIntervalMs, delta);
+			}
+			if (input.options.gapResetMs > 0 && delta > input.options.gapResetMs) {
+				gaps.push({ from: previousTimestamp, to: sample.timestamp, durationMs: delta });
+				// Closes the running fixation on the last sample before the gap instead
+				// of stitching the two sides into one over-long fixation.
+				detector.flush();
+			}
+		}
+		previousDeviceMs = sampleDeviceMs;
+		previousTimestamp = sample.timestamp;
 
 		currentSample = corrected;
 		currentSlide = slide;
@@ -102,9 +162,12 @@ export function runFixationPipeline(input: FixationPipelineInput): FixationPipel
 	let fixations = finished.sort(
 		(a, b) => a.timestamp - b.timestamp || a.fixation_index - b.fixation_index
 	);
+	if (input.options.dropColdStartFixation && coldStartFixationId !== null) {
+		fixations = fixations.filter((entry) => entry.fixation_index !== coldStartFixationId);
+	}
 	for (const postProcessor of input.options.postProcessors) {
 		fixations = postProcessor.apply(fixations);
 	}
 
-	return { fixations, transformedRaw, aoiTimeline };
+	return { fixations, transformedRaw, aoiTimeline, gaps };
 }

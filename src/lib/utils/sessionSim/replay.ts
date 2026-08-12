@@ -16,11 +16,13 @@ import {
 	getEffectiveTimeWindow
 } from '$lib/utils/scoreMetrics';
 import { runFixationPipeline } from './fixation/pipeline';
+import { rebaseOnBridgeClock } from './timebase';
 import { applyCorrection } from './transform';
 import type {
 	FixationDetector,
 	FluencyResolver,
 	LoadedSession,
+	ReplayFixation,
 	ReplayOptions,
 	ReplayResult,
 	ReplaySlideResult,
@@ -41,10 +43,35 @@ function byTimestamp<T extends { timestamp: number }>(entries: T[]): T[] {
 	return [...entries].sort((a, b) => a.timestamp - b.timestamp);
 }
 
+/**
+ * Live computes a slide's score in the tick that completes it, so a fixation
+ * still running at that moment is never part of it.
+ */
+function fixationsForWindow(
+	fixations: ReplayFixation[],
+	window: SlideTimeWindow,
+	options: ReplayOptions
+): ReplayFixation[] {
+	const started = filterFixationsInWindow(fixations, window);
+	if (options.countFixationsOpenAtWindowEnd) return started;
+	return started.filter((fixation) => fixation.endTimestamp <= window.endTime);
+}
+
 export function runReplay(input: ReplayInput): ReplayResult {
 	const warnings: string[] = [];
 	const gazeSamples = byTimestamp(input.session.gazeSamples);
-	const rawGazeData = byTimestamp(input.session.rawGazeData);
+
+	let rawSource = input.session.rawGazeData;
+	if (input.options.rebaseRawTimestamps) {
+		const rebase = rebaseOnBridgeClock(rawSource);
+		rawSource = rebase.rows;
+		if (rebase.skipped > 0) {
+			warnings.push(
+				`Přerazítkování: ${rebase.skipped} vzorků nemá platný bridge čas a zůstalo beze změny.`
+			);
+		}
+	}
+	const rawGazeData = byTimestamp(rawSource);
 
 	// Event-marker windows are the authoritative slide timeline
 	const slideIndices = [...new Set(gazeSamples.map((row) => row.slide_index))]
@@ -135,7 +162,7 @@ export function runReplay(input: ReplayInput): ReplayResult {
 	const sessionScores: SessionScoreDataEntry[] = [];
 	for (const window of orderedWindows) {
 		const windowedSamples = filterSamplesInWindow(regenerated, window);
-		const windowedFixations = filterFixationsInWindow(pipeline.fixations, window);
+		const windowedFixations = fixationsForWindow(pipeline.fixations, window, input.options);
 
 		const metrics: SessionScoreMetrics = {
 			error_rate: calculateErrorRate(windowedSamples),
@@ -165,8 +192,27 @@ export function runReplay(input: ReplayInput): ReplayResult {
 		const window = windows.get(slide) ?? null;
 		perSlide.set(slide, {
 			window,
-			fixations: window ? filterFixationsInWindow(pipeline.fixations, window) : []
+			fixations: window ? fixationsForWindow(pipeline.fixations, window, input.options) : []
 		});
+	}
+
+	if (pipeline.gaps.length > 0) {
+		const longest = Math.round(Math.max(...pipeline.gaps.map((gap) => gap.durationMs)));
+		warnings.push(
+			`Záznam má ${pipeline.gaps.length} mezer(y) delších než ${input.options.gapResetMs} ms (nejdelší ${longest} ms); detektor se na nich restartuje.`
+		);
+	}
+
+	const pausedSlides = new Set<number>();
+	for (const row of gazeSamples) {
+		if (row.events?.includes('pause_logging')) {
+			pausedSlides.add(slideForTimestamp(row.timestamp, row.slide_index));
+		}
+	}
+	if (pausedSlides.size > 0) {
+		warnings.push(
+			`Logování bylo pozastaveno na slidech ${[...pausedSlides].sort((a, b) => a - b).join(', ')} – vzorky z pauzy v datech nejsou.`
+		);
 	}
 
 	return {
