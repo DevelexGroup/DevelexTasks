@@ -132,7 +132,7 @@
 
 	@keyframes dwell-bar-fill {
 		0% {
-			clip-path: inset(0 100% 0 0 round 999px);
+			clip-path: inset(0 99.999% 0 0 round 999px);
 		}
 		100% {
 			clip-path: inset(0 20px 0 0 round 999px);
