@@ -7,11 +7,15 @@
 	import Icon from '@iconify/svelte';
 	import SimStage from './components/SimStage.svelte';
 	import SessionLoadDialog from './components/SessionLoadDialog.svelte';
-	import GazeOverlay from './components/GazeOverlay.svelte';
+	import GazeOverlay, {
+		type GazePoint,
+		type OverlayFixation
+	} from './components/GazeOverlay.svelte';
 	import ScoreComparison from './components/ScoreComparison.svelte';
 	import { captureAoiRects } from './components/aoiCapture';
 	import { downloadBlob, settleStimulus } from '$lib/utils/stimulusExport/capture';
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
+	import type { RawGazeDataEntry } from '$lib/database/db.types';
 	import { buildCorrectedZip, correctedZipName } from '$lib/utils/sessionSim/export';
 	import { SessionSimState } from '$lib/utils/sessionSim/simState.svelte';
 	import { IDENTITY_MATRIX } from '$lib/utils/sessionSim/transform';
@@ -110,34 +114,34 @@
 	);
 	const stageAois = $derived(sim.geometryFor(sim.selectedSlide)?.aois ?? []);
 
-	const gazeBefore = $derived.by(() => {
-		if (!sim.session || !selectedWindow) return [];
-		const { startTime, endTime } = selectedWindow;
-		return sim.session.rawGazeData
-			.filter(
-				(r) => (r.validityL || r.validityR) && r.timestamp >= startTime && r.timestamp <= endTime
-			)
+	// The preview shows everything recorded on the slide; the score only counts
+	// what falls inside the effective window, so the rest is drawn dimmed.
+	function slideGaze(rows: RawGazeDataEntry[]): GazePoint[] {
+		return rows
+			.filter((r) => r.slide_index === sim.selectedSlide && (r.validityL || r.validityR))
 			.map((r) => ({ x: r.x, y: r.y }));
+	}
+	const gazeBefore = $derived(sim.session ? slideGaze(sim.session.rawGazeData) : []);
+	const gazeAfter = $derived(sim.result ? slideGaze(sim.result.rawGazeData) : []);
+	const fixationsBefore = $derived.by((): OverlayFixation[] => {
+		if (!sim.session) return [];
+		return sim.session.fixationData
+			.filter((f) => f.slide_index === sim.selectedSlide)
+			.map((f) => ({
+				...f,
+				counted:
+					selectedWindow !== null &&
+					f.timestamp >= selectedWindow.startTime &&
+					f.timestamp <= selectedWindow.endTime
+			}));
 	});
-	const gazeAfter = $derived.by(() => {
-		if (!sim.result || !selectedWindow) return [];
-		const { startTime, endTime } = selectedWindow;
-		return sim.result.rawGazeData
-			.filter(
-				(r) => (r.validityL || r.validityR) && r.timestamp >= startTime && r.timestamp <= endTime
-			)
-			.map((r) => ({ x: r.x, y: r.y }));
+	const fixationsAfter = $derived.by((): OverlayFixation[] => {
+		const slideResult =
+			sim.selectedSlide !== null ? sim.result?.perSlide.get(sim.selectedSlide) : undefined;
+		if (!slideResult) return [];
+		const counted = new Set(slideResult.fixations.map((f) => f.fixation_index));
+		return slideResult.allFixations.map((f) => ({ ...f, counted: counted.has(f.fixation_index) }));
 	});
-	const fixationsBefore = $derived.by(() => {
-		if (!sim.session || !selectedWindow) return [];
-		const { startTime, endTime } = selectedWindow;
-		return sim.session.fixationData.filter(
-			(f) => f.timestamp >= startTime && f.timestamp <= endTime
-		);
-	});
-	const fixationsAfter = $derived(
-		sim.selectedSlide !== null ? (sim.result?.perSlide.get(sim.selectedSlide)?.fixations ?? []) : []
-	);
 	const recordedScore = $derived(
 		sim.session?.sessionScores.find((s) => s.slide_index === sim.selectedSlide) ?? null
 	);
@@ -485,7 +489,10 @@
 					</Card.Header>
 					<Card.Content class="space-y-3">
 						<div class="grid grid-cols-2 gap-2 text-sm">
-							<label class="space-y-1">
+							<label
+								class="space-y-1"
+								title="Zároveň práh ukončení: fixace končí, až když okno v toleranci klesne pod tuto délku. Nízké hodnoty fixace slučují."
+							>
 								<span class="text-xs text-gray-500">Min. délka (ms)</span>
 								<input
 									type="number"
@@ -651,11 +658,17 @@
 							Trajektorie pohledu
 							<Switch bind:checked={showGaze} />
 						</label>
-						<label class="flex items-center justify-between text-sm text-gray-700">
+						<label
+							class="flex items-center justify-between text-sm text-gray-700"
+							title="Čárkovaně = fixace mimo efektivní okno slidu, do skóre se nepočítá"
+						>
 							Původní data (šedě)
 							<Switch bind:checked={showBefore} />
 						</label>
-						<label class="flex items-center justify-between text-sm text-gray-700">
+						<label
+							class="flex items-center justify-between text-sm text-gray-700"
+							title="Čárkovaně = fixace mimo efektivní okno slidu, do skóre se nepočítá"
+						>
 							Přepočtená data (barevně)
 							<Switch bind:checked={showAfter} />
 						</label>

@@ -7,13 +7,16 @@
 		y: number;
 	}
 
+	/** counted = inside the slide's effective window, i.e. part of the score. */
+	export type OverlayFixation = FixationDataEntry & { counted: boolean };
+
 	interface Props {
 		width: number;
 		height: number;
 		gazeBefore: GazePoint[];
 		gazeAfter: GazePoint[];
-		fixationsBefore: FixationDataEntry[];
-		fixationsAfter: FixationDataEntry[];
+		fixationsBefore: OverlayFixation[];
+		fixationsAfter: OverlayFixation[];
 		aois: AoiRect[];
 		showGaze: boolean;
 		showBefore: boolean;
@@ -96,9 +99,10 @@
 					cx={fixation.eyetracker_x}
 					cy={fixation.eyetracker_y}
 					r={fixationRadius(fixation.duration)}
-					fill="rgb(107 114 128 / 0.25)"
+					fill="rgb(107 114 128 / {fixation.counted ? 0.25 : 0.1})"
 					stroke="rgb(107 114 128 / 0.8)"
 					stroke-width="2"
+					stroke-dasharray={fixation.counted ? undefined : '5 4'}
 				/>
 				<text
 					x={fixation.eyetracker_x}
@@ -119,9 +123,10 @@
 					cx={fixation.eyetracker_x}
 					cy={fixation.eyetracker_y}
 					r={fixationRadius(fixation.duration)}
-					fill="rgb(79 70 229 / 0.25)"
+					fill="rgb(79 70 229 / {fixation.counted ? 0.25 : 0.1})"
 					stroke="rgb(79 70 229 / 0.9)"
 					stroke-width="2"
+					stroke-dasharray={fixation.counted ? undefined : '5 4'}
 				/>
 				<text
 					x={fixation.eyetracker_x}

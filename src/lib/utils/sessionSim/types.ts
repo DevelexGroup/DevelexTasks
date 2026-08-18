@@ -169,7 +169,10 @@ export type FluencyResolver = (metrics: Partial<SessionScoreMetrics>, stimulusId
 
 export interface ReplaySlideResult {
 	window: SlideTimeWindow | null;
+	/** Fixations the slide score counts (inside the effective window). */
 	fixations: ReplayFixation[];
+	/** Every fixation attributed to the slide, including those outside the window. */
+	allFixations: ReplayFixation[];
 }
 
 export interface ReplayResult {

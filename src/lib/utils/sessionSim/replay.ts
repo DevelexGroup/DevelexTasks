@@ -192,7 +192,8 @@ export function runReplay(input: ReplayInput): ReplayResult {
 		const window = windows.get(slide) ?? null;
 		perSlide.set(slide, {
 			window,
-			fixations: window ? fixationsForWindow(pipeline.fixations, window, input.options) : []
+			fixations: window ? fixationsForWindow(pipeline.fixations, window, input.options) : [],
+			allFixations: pipeline.fixations.filter((fixation) => fixation.slide_index === slide)
 		});
 	}
 

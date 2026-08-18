@@ -24,31 +24,74 @@ přepočítávat – nástroj na obojí upozorní.
 2. **Fixace** – přesně stejný IDT detektor jako při živém sběru
    (`GazeFixationDetectorIDT` z develex-js-sdk), ale s nastavitelnými parametry
    (min. délka, disperze, vzdálenost, DPI). Detektor je čistě datový
-   (deviceTimestamp), proto běží okamžitě. Architektura počítá s budoucími
+   (deviceTimestamp), proto běží okamžitě. Pozor: SDK detektor je klouzavé
+   okno a min. délka je zároveň prahem ukončení – fixace končí, až když okno
+   vzorků v toleranci disperze klesne pod min. délku. Snížení (např. na 10 ms)
+   proto fixace nepřidá, ale slučuje je přes pomalé sakády a zkracuje hlášené
+   délky (délka = aktuální okno, ne čas od začátku). Architektura počítá s budoucími
    post-processing kroky (např. slučování fixací) – viz `FixationPostProcessor`
    v `src/lib/utils/sessionSim/types.ts`.
 3. **AOI geometrie** – stimul každého slidu se vykreslí ve screenshot režimu
    podle zaznamenaného `stimulus_id` (nikdy se znovu nespouští výběrová/náhodná
    logika) a přečtou se obdélníky `GazeArea` elementů. Rozlišení okna při
    nahrávání se neukládá, proto se zadává ručně.
-4. **Výstupy** – překreslené fixace/AOI/gaze nad stimulem (před/po), tabulka
+4. **Výstupy** – překreslené fixace/AOI/gaze nad stimulem (před/po) – náhled
+   ukazuje vše se `slide_index` slidu, fixace mimo efektivní okno (a tedy mimo
+   skóre) čárkovaně, tabulka
    skóre se rozdíly a export opravených CSV ve formátu `DatabaseExporter`
    (`*_corrected.csv` + `corrections.json` s použitými parametry). Export lze
    zpětně načíst přes záložku Soubory.
 
-## Očekávané odchylky proti živému záznamu
+## Parita s živým záznamem
 
-Při nulové korekci a stejných parametrech se výsledky blíží zaznamenaným, ale
-nejsou bit-přesné:
+Detektor i jeho výchozí parametry jsou shodné s živým sběrem, rozdíly v počtu a
+délce fixací dělá vstupní stream a okamžik, kdy se živě počítá skóre. Karta
+**Parita s živým záznamem** to řídí; výchozí hodnoty kopírují živé chování, takže
+při nulové korekci vycházejí stejná čísla jako zaznamenaná. Přepnutím dostanete
+správnější výsledek, který se ale se zaznamenaným neshodne.
 
-- **Nedokončená fixace** na konci streamu se živě nikdy neuloží; v nástroji ji
-  lze volitelně ponechat.
+- **Zahodit nedokončenou fixaci** (zapnuto) – fixace běžící na konci streamu se
+  živě nikdy neuloží.
+- **Počítat fixace přesahující konec slidu** (vypnuto) – živě se skóre slidu
+  počítá v ticku, který slide dokončí, a čte `db.fixationData`. Fixace, která v tu
+  chvíli ještě běží, se uloží až později a nezapočítá se do žádného slidu (do CSV
+  slidu se navíc nedostane vůbec, ten je nahrán dřív). Zapnutím se započítá tam,
+  kde začala – typicky +1 fixace na slide a posun průměrné délky.
+- **Reset detektoru při mezeře** (200 ms, 0 = vypnuto) – chybějící vzorky (pauza
+  úlohy, ztráta na přechodu slidu) živý detektor viděl, v záznamu nejsou. Bez
+  resetu měří IDT okno přes celou mezeru a slepí obě strany do jedné dlouhé
+  fixace. Mezery a pauzy nástroj hlásí ve varováních.
+- **Zahodit úvodní fixaci streamu** (vypnuto) – živý detektor běží v bridge
+  workeru nepřetržitě, záznam začíná až s `startLogging()`. Fixaci, která v tu
+  chvíli už běžela, živě zahodí (`fixation end for unknown index`), nástroj ji
+  detekuje znovu. Leží před oknem prvního slidu, do skóre se tedy obvykle
+  nepromítne; zapnutím zmizí i ze seznamu fixací. Při načtení dat jediného slidu
+  volbu nezapínejte – uřízla by platnou fixaci.
+- **Opravit časy vzorků (bridge)** (vypnuto) – vzorky v `rawGazeData` jsou
+  razítkované hlavním vláknem, které při zácpě razítkuje pozdě a v dávkách.
+  Zapnutím se vzorky přerazítkují spojitým bridge časem (posunutým o klidový
+  offset, zůstávají tedy ve stejném rámci jako event markery) a fixace dostanou
+  čas skutečného začátku (potvrzovací vzorek minus délka okna). Časy se pak
+  neshodují se zaznamenanými řádky, ale odpovídají realitě – fixace se mohou
+  přesunout mimo okno slidu, do kterého je živě zapsalo pozdní razítko.
+
+## Další očekávané odchylky
+
 - **`fixation_index`** začíná vždy od 1; živě je monotónní přes celé připojení
   bridge (může pokračovat z předchozí úlohy). Porovnávejte podle pořadí/času.
-- **Timestamp fixace** je čas vzorku, který ji spustil; živě přichází o jeden
-  worker-hop později (jednotky ms).
-- **AOI `slide-N_initial`** se nesyntetizuje – během efektivního okna slidu už
-  není namontovaný. Šipka `slide-N_end` se syntetizuje staticky (volitelné).
+- **Timestampy v CSV** jsou zaokrouhlené dolů na celé ms, takže na hranici okna
+  může fixace vypadnout/přibýt.
+- **Timestamp fixace** byl v záznamech do 2026-08 čas hlavního vlákna při
+  zpracování události fixationStart – nejméně o minimální délku fixace (100 ms)
+  později než skutečný začátek, při zácpě hlavního vlákna (přechod slidu) i
+  ~300 ms; vzorky se pak vylily v dávce a razítka fixací se nakupila k sobě.
+  Event markery (dwell-start apod.) jedou na řádcích vzorků s worker časem,
+  takže sedí – časy fixací z těchto záznamů s nimi proto nelze přímo srovnávat;
+  narovná je volba **Opravit časy vzorků**. Novější záznamy razítkují vzorky
+  bridge časem a fixace časem skutečného začátku přímo při sběru.
+- **AOI `slide-N_initial` a `slide-N_end`** se syntetizují staticky (obojí
+  volitelné, 125×75 px, buffer 50). Živě je každý namontovaný jen po část
+  slidu (oko před dwell-finish, šipka po něm); replay je drží po celé okno.
 - **AOI obdélníky** se čtou čerstvě z layoutu; živě jsou kešované přes rAF,
   takže se mohou lišit o subpixely.
 - Souhlas AOI závisí na správně zadaném rozlišení nahrávky (a 100% zoomu

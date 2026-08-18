@@ -261,6 +261,7 @@ describe('runReplay', () => {
 		expect(result.fixations[0].endTimestamp).toBe(BASE_MS + 400);
 		expect(result.sessionScores[0].fix_count).toBe(0);
 		expect(result.perSlide.get(1)?.fixations).toHaveLength(0);
+		expect(result.perSlide.get(1)?.allFixations).toHaveLength(1);
 	});
 
 	it('counts the straddling fixation when countFixationsOpenAtWindowEnd is on', () => {
