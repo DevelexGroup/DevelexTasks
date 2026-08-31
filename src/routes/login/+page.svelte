@@ -9,6 +9,7 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { login, register } from '$lib/api/auth';
 	import { ApiError } from '$lib/api/client';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 
 	// Check if session expired (from URL params)
 	const sessionExpired = $derived($page.url.searchParams.get('expired') === 'true');
@@ -356,11 +357,6 @@
 	</div>
 
 	<div class="absolute bottom-4 left-4">
-		<button
-			class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
-			onclick={() => goto(resolve(`/`))}
-		>
-			Zpět
-		</button>
+		<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
 	</div>
 </section>

@@ -4,6 +4,7 @@
 	import { resolve } from '$app/paths';
 	import Icon from '@iconify/svelte';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -46,23 +47,14 @@
 </script>
 
 <DefaultLayout>
-	<div>
-		<button
-			class="inline-flex cursor-pointer items-center space-x-3 rounded-md bg-gray-300 px-4 py-2 text-sm text-gray-800 hover:bg-gray-400"
-			onclick={() =>
-				goto(
-					resolve(
-						data.task.slug === 'dyslex' && data.mode === 'reeducation'
-							? '/'
-							: data.modeListPath
-					)
-				)}
-		>
-			<Icon icon="mdi:arrow-left" class="h-5 w-5" />
-
-			<span>Zpět</span>
-		</button>
-	</div>
+	<BackButton
+		onclick={() =>
+			goto(
+				resolve(
+					data.task.slug === 'dyslex' && data.mode === 'reeducation' ? '/' : data.modeListPath
+				)
+			)}
+	/>
 
 	<h1 class="text-2xl font-black text-gray-800">{data.modePageHeading}: {data.task.label}</h1>
 

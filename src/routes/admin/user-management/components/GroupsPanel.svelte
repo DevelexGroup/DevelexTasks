@@ -26,6 +26,8 @@
 	import { ApiError } from '$lib/api/client';
 	import IconButton from '$lib/components/IconButton.svelte';
 
+	let { detailOpen = $bindable(false) } = $props();
+
 	let groups = $state<GroupDTO[]>([]);
 	let members = $state<GroupMemberDTO[]>([]);
 	let selectedGroupId = $state('');
@@ -46,6 +48,10 @@
 	);
 
 	let selectedGroup = $derived(groups.find((g) => g.id === selectedGroupId) ?? null);
+
+	$effect(() => {
+		detailOpen = !!selectedGroup;
+	});
 
 	let canEditSelectedGroup = $derived(
 		!!selectedGroup && canEditOwnedGroups && (canManageAllGroups || selectedGroup.ownedByMe)

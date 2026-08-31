@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
@@ -187,9 +190,8 @@
 </svelte:head>
 
 <DefaultLayout>
-	<div class="flex items-center gap-3">
-		<a href="/admin" class="text-sm font-semibold text-blue-600 hover:underline">← Administrace</a>
-	</div>
+	<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
+
 	<h1 class="text-2xl font-black text-gray-800">Export stimulů</h1>
 
 	{#if !directorySupported}

@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import { Switch } from '$lib/components/ui/switch';
@@ -251,6 +254,8 @@
 {/snippet}
 
 <DefaultLayout>
+	<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
+
 	<div class="flex items-center justify-between">
 		<h1 class="text-2xl font-black text-gray-800">Simulace sezení</h1>
 		{#if sim.recomputeMs !== null}

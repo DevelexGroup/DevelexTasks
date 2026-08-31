@@ -1,8 +1,10 @@
 ﻿<script lang="ts">
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { resolveAny } from '$lib/utils/resolveAny';
 	import { onMount } from 'svelte';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 	import FonologieLevel1Data from '$lib/components/tasks/fonologie/data/level1.json';
 	import FonologieLevel4Data from '$lib/components/tasks/fonologie/data/level4.json';
 	import type {
@@ -216,14 +218,7 @@
 </svelte:head>
 
 <DefaultLayout>
-	<div class="mb-4 flex items-center gap-4">
-		<a
-			href={resolve('/admin')}
-			class="text-sm font-semibold text-blue-600 hover:underline"
-		>
-			← Zpět na administraci
-		</a>
-	</div>
+	<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
 
 	<h1 class="text-2xl font-black text-gray-800">Fonologie – Showcase obrázků a zvuků</h1>
 	<p class="text-sm text-gray-500">

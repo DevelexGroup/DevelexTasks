@@ -3,6 +3,7 @@
 	import type { PageProps } from './$types';
 	import { resolve } from '$app/paths';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 	import Icon from '@iconify/svelte';
 
 	let { data }: PageProps = $props();
@@ -14,16 +15,7 @@
 </svelte:head>
 
 <DefaultLayout>
-	<div>
-		<button
-			class="inline-flex cursor-pointer items-center space-x-3 rounded-md bg-gray-300 px-4 py-2 text-sm text-gray-800 hover:bg-gray-400"
-			onclick={() => goto(resolve(`/`))}
-		>
-			<Icon icon="mdi:arrow-left" class="h-5 w-5" />
-
-			<span>Zpět do hlavní nabídky</span>
-		</button>
-	</div>
+	<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
 
 	<h1 class="text-2xl font-black text-gray-800">Trénink čtenářských dovedností</h1>
 

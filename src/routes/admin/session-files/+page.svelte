@@ -4,6 +4,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { getAllUsers } from '$lib/api/user-management';
 	import { getMyGroupMembers } from '$lib/api/groups';
@@ -600,6 +601,12 @@
 
 <section class="min-h-screen overflow-auto bg-gray-100 pb-20">
 	<div class="mx-auto max-w-5xl px-4 py-6">
+		{#if !activeUser}
+			<div class="mb-4">
+				<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
+			</div>
+		{/if}
+
 		<h1 class="mb-6 text-2xl font-black text-gray-800">Soubory sezení</h1>
 
 		{#if error}
@@ -1236,16 +1243,6 @@
 		</div>
 	</div>
 {/if}
-
-<!-- Back button -->
-<div class="fixed bottom-4 left-4 flex gap-1">
-	<button
-		class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
-		onclick={() => goto(resolve('/'))}
-	>
-		Zpět
-	</button>
-</div>
 
 <!-- Delete confirmation dialog -->
 <Dialog.Root bind:open={deleteDialogOpen}>

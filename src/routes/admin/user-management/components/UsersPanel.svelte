@@ -20,6 +20,8 @@
 	import DeleteUserDialog from './DeleteUserDialog.svelte';
 	import SessionsDialog from './SessionsDialog.svelte';
 
+	let { detailOpen = $bindable(false) } = $props();
+
 	let users = $state<UserDTO[]>([]);
 	let selectedUserId = $state('');
 	let searchQuery = $state('');
@@ -41,6 +43,10 @@
 
 	let canManageUsers = $derived(hasCapability($authUser, 'USER_MANAGE_ALL'));
 	let selectedUser = $derived(users.find((u) => u.id === selectedUserId) ?? null);
+
+	$effect(() => {
+		detailOpen = !!selectedUser;
+	});
 
 	let filteredUsers = $derived.by(() => {
 		const query = searchQuery.toLowerCase();

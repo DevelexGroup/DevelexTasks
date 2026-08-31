@@ -4,6 +4,7 @@
 	} from './components/TaskSelectionWindow.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 	import Heatmap from './components/Heatmap.svelte';
 
 	let selectedTask: TaskSelectionResult | null = $state(null);
@@ -98,12 +99,7 @@
 	</div>
 
 	<div class="absolute bottom-4 left-4">
-		<button
-			class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
-			onclick={() => goto(resolve(`/`))}
-		>
-			Zpět
-		</button>
+		<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
 	</div>
 
 	<!-- center -->

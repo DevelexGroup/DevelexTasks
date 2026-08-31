@@ -9,6 +9,7 @@
 		DyslexVissDiffClicksDataEntry
 	} from '$lib/database/db.types';
 	import { untrack } from 'svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 	import ExportWindow from './components/ExportWindow.svelte';
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
 
@@ -388,6 +389,10 @@
 </svelte:head>
 
 <section class="absolute top-4 left-4 flex h-16 items-center gap-4">
+	<div class="mt-6">
+		<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
+	</div>
+
 	<div class="flex flex-col">
 		<label for="table" class="mb-1 text-sm font-medium text-gray-700">Table:</label>
 		<select
@@ -543,15 +548,6 @@
 		</div>
 	{/if}
 </section>
-
-<div class="fixed bottom-4 left-4 flex gap-1">
-	<button
-		class="rounded-md bg-gray-300 px-3 py-1.5 text-gray-800"
-		onclick={() => goto(resolve(`/`))}
-	>
-		Zpět
-	</button>
-</div>
 
 <div class="fixed right-4 bottom-4 flex gap-1">
 	{#if selectedTable && selectedChildId && (selectedTable === 'sessionScores' || selectedSessionId)}

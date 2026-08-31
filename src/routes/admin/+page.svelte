@@ -1,7 +1,9 @@
 ﻿<script lang="ts">
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import Icon from '@iconify/svelte';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 </script>
 
 <svelte:head>
@@ -10,6 +12,8 @@
 </svelte:head>
 
 <DefaultLayout>
+	<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
+
 	<h1 class="text-2xl font-black text-gray-800">Administrace</h1>
 
 	<div class="flex flex-wrap gap-6">

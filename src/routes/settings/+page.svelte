@@ -6,6 +6,7 @@
 	import { Switch } from '$lib/components/ui/switch';
 	import { Label } from '$lib/components/ui/label';
 	import { Lock } from '@lucide/svelte';
+	import BackButton from '$lib/components/layout/BackButton.svelte';
 
 	const versionParts = version.split('-');
 	const gitHash = versionParts.pop();
@@ -26,7 +27,11 @@
 	}
 </script>
 
-<div class="flex h-screen w-full flex-col items-center justify-center">
+<div class="relative flex h-screen w-full flex-col items-center justify-center">
+	<div class="absolute top-6 left-6">
+		<BackButton onclick={() => window.history.back()} />
+	</div>
+
 	<h3 class="text-lg text-shadow-gray-800">Nastavení</h3>
 
 	<div class="mt-8 flex flex-col">
@@ -67,13 +72,6 @@
 		DeveLex - v{appVersion}
 		<span class="font-mono">({gitHash})</span>
 	</p>
-
-	<button
-		class="rounded-md bg-blue-500 px-4 py-2 text-white"
-		onclick={() => window.history.back()}
-	>
-		Zpět
-	</button>
 </div>
 
 <DiagnosisDialog
