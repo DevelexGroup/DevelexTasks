@@ -6,6 +6,7 @@
 	import { Guards, hasCapability } from '$lib/utils/capabilityGuard';
 	import { authUser } from '$lib/stores/auth';
 	import { isDiagnosisMode } from '$lib/stores/diagnosis';
+	import { UserRole } from '$lib/types/api.types';
 </script>
 
 <svelte:head>
@@ -118,52 +119,22 @@
 		<h2 class="text-2xl font-black text-gray-800 mt-8">Administrace</h2>
 
 		<div class="flex flex-wrap gap-6">
-			<a
-				href={resolve('/admin/session-files')}
-				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
-			>
-				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-violet-100/40"></div>
-
-				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-violet-100">
-					<Icon icon="material-symbols:folder-zip" class="h-6 w-6 text-violet-700" />
-				</div>
-
-				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-					Session soubory
-				</span>
-			</a>
-
-			{#if hasCapability($authUser, ...Guards.viewAllResults)}
+			{#if hasCapability($authUser, ...Guards.viewResults)}
 				<a
-					href={resolve('/admin/database')}
+					href={resolve('/admin/session-files')}
 					class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
 				>
-					<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-sky-100/40"></div>
+					<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-violet-100/40"></div>
 
-					<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-sky-100">
-						<Icon icon="material-symbols:database" class="h-6 w-6 text-sky-700" />
+					<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-violet-100">
+						<Icon icon="material-symbols:folder-zip" class="h-6 w-6 text-violet-700" />
 					</div>
 
 					<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-						Lokální databáze
+						Session soubory
 					</span>
 				</a>
 			{/if}
-
-			<a
-				href={resolve('/admin/heatmap')}
-				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
-			>
-				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-orange-100/40"></div>
-
-				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-100">
-					<Icon icon="material-symbols:mode-heat" class="h-6 w-6 text-orange-700" />
-				</div>
-
-				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-					Heatmapa
-				</span>
-			</a>
 
 			{#if hasCapability($authUser, ...Guards.readAllUsers, ...Guards.viewGroups)}
 				<a
@@ -182,18 +153,37 @@
 				</a>
 			{/if}
 
-			<a
-				href={resolve('/admin')}
-				class="group relative flex w-44 flex-col overflow-hidden rounded-xl border-2 border-dashed border-gray-300 bg-white/50 p-5 transition-all hover:border-gray-400 hover:shadow-2xl"
-			>
-				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-gray-100">
-					<Icon icon="material-symbols:apps" class="h-6 w-6 text-gray-600" />
-				</div>
+			{#if hasCapability($authUser, ...Guards.viewResults)}
+				<a
+					href={resolve('/admin/heatmap')}
+					class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
+				>
+					<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-orange-100/40"></div>
 
-				<span class="mt-4 text-sm font-bold text-gray-600 group-hover:underline">
-					Více…
-				</span>
-			</a>
+					<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-100">
+						<Icon icon="material-symbols:mode-heat" class="h-6 w-6 text-orange-700" />
+					</div>
+
+					<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+						Heatmapa
+					</span>
+				</a>
+			{/if}
+
+			{#if hasCapability($authUser, ...Guards.viewAllResults) || $authUser?.role === UserRole.Admin}
+				<a
+					href={resolve('/admin')}
+					class="group relative flex w-44 flex-col overflow-hidden rounded-xl border-2 border-dashed border-gray-300 bg-white/50 p-5 transition-all hover:border-gray-400 hover:shadow-2xl"
+				>
+					<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-gray-100">
+						<Icon icon="material-symbols:apps" class="h-6 w-6 text-gray-600" />
+					</div>
+
+					<span class="mt-4 text-sm font-bold text-gray-600 group-hover:underline">
+						Více…
+					</span>
+				</a>
+			{/if}
 		</div>
 	</CapabilityGuard>
 </DefaultLayout>
