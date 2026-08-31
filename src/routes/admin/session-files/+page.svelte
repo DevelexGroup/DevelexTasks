@@ -11,14 +11,14 @@
 	import { getMyGroupMembers } from '$lib/api/groups';
 	import { hasCapability } from '$lib/utils/capabilityGuard';
 	import { authUser } from '$lib/stores/auth';
-	import { saveZipStream } from '$lib/utils/download';
+	import { triggerUrlDownload } from '$lib/utils/download';
 	import {
 		getTestSessions,
 		getTestSessionDetail,
 		getSessionCountsPerUser,
 		downloadTestSessionFile,
-		downloadSessionAsZip,
-		exportSessionsAsZip,
+		prepareSessionExport,
+		getExportDownloadUrl,
 		deleteTestSession
 	} from '$lib/api/test-sessions';
 	import { SortBy, SortDirection, UserRole, roleLabels } from '$lib/types/api.types';
@@ -359,15 +359,14 @@
 		error = '';
 		try {
 			const userIds = [...selectedUserIds];
-			const saved = await saveZipStream(
-				() => exportSessionsAsZip({ userIds }),
-				`develex_export_${dateStamp()}.zip`
-			);
-			if (saved) {
-				cancelUserSelection();
-				const n = userIds.length;
-				showSuccess(`Export dokončen (${n} ${n === 1 ? 'uživatel' : n < 5 ? 'uživatelé' : 'uživatelů'})`);
-			}
+			const prepared = await prepareSessionExport({
+				userIds,
+				fileName: `develex_export_${dateStamp()}.zip`
+			});
+			triggerUrlDownload(getExportDownloadUrl(prepared.token));
+			cancelUserSelection();
+			const n = userIds.length;
+			showSuccess(`Export zahájen (${n} ${n === 1 ? 'uživatel' : n < 5 ? 'uživatelé' : 'uživatelů'})`);
 		} catch {
 			error = 'Nepodařilo se exportovat vybraná data';
 		} finally {
@@ -381,14 +380,13 @@
 		error = '';
 		try {
 			const sessionIds = [...selectedSessionIds];
-			const saved = await saveZipStream(
-				() => exportSessionsAsZip({ sessionIds }),
-				`${activeUser.username}_export_${dateStamp()}.zip`
-			);
-			if (saved) {
-				cancelSessionSelection();
-				showSuccess(`Export dokončen (${sessionIds.length} sezení)`);
-			}
+			const prepared = await prepareSessionExport({
+				sessionIds,
+				fileName: `${activeUser.username}_export_${dateStamp()}.zip`
+			});
+			triggerUrlDownload(getExportDownloadUrl(prepared.token));
+			cancelSessionSelection();
+			showSuccess(`Export zahájen (${sessionIds.length} sezení)`);
 		} catch {
 			error = 'Nepodařilo se exportovat vybraná sezení';
 		} finally {
@@ -408,9 +406,12 @@
 						.slice(0, 19)
 				: 'unknown';
 			const zipName = `${activeUser.username}_${sessionDetail.testType}_${sessionStart}.zip`;
-			const sessionId = activeSessionId;
-			const saved = await saveZipStream(() => downloadSessionAsZip(sessionId), zipName);
-			if (saved) showSuccess('ZIP archiv uložen');
+			const prepared = await prepareSessionExport({
+				sessionIds: [activeSessionId],
+				fileName: zipName
+			});
+			triggerUrlDownload(getExportDownloadUrl(prepared.token));
+			showSuccess('Stahování zahájeno');
 		} catch {
 			error = 'Nepodařilo se stáhnout ZIP archiv';
 		} finally {

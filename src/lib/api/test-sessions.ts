@@ -7,7 +7,7 @@
 	type TestSessionPartDTO,
 	TestSessionStatus
 } from '$lib/types/api.types';
-import { apiClient } from '$lib/api/client';
+import { apiClient, BASE_URL } from '$lib/api/client';
 
 export async function createTestSession(testType: string): Promise<TestSessionDTO> {
 	return apiClient<TestSessionDTO>('/test-sessions', {
@@ -116,23 +116,28 @@ export async function downloadTestSessionFile(
 	});
 }
 
-export async function downloadSessionAsZip(sessionId: string): Promise<Response> {
-	return apiClient<Response>(`/test-sessions/${sessionId}/download`, {
-		responseType: 'stream'
-	});
-}
-
 export interface SessionExportRequest {
 	sessionIds?: string[];
 	userIds?: string[];
+	fileName?: string;
 }
 
-export async function exportSessionsAsZip(request: SessionExportRequest): Promise<Response> {
-	return apiClient<Response>('/test-sessions/export', {
+export interface PreparedSessionExport {
+	token: string;
+	fileName: string;
+}
+
+export async function prepareSessionExport(
+	request: SessionExportRequest
+): Promise<PreparedSessionExport> {
+	return apiClient<PreparedSessionExport>('/test-sessions/export/prepare', {
 		method: 'POST',
-		body: JSON.stringify(request),
-		responseType: 'stream'
+		body: JSON.stringify(request)
 	});
+}
+
+export function getExportDownloadUrl(token: string): string {
+	return `${BASE_URL}/public/export/${token}`;
 }
 
 export async function getSessionCountsPerUser(): Promise<Record<string, number>> {
