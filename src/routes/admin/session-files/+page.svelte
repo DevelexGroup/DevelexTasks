@@ -4,6 +4,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
+	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
 	import BackButton from '$lib/components/layout/BackButton.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { getAllUsers } from '$lib/api/user-management';
@@ -599,16 +600,14 @@
 
 <svelte:window onclick={handleWindowClick} onkeydown={handleWindowKey} />
 
-<section class="min-h-screen overflow-auto bg-gray-100 pb-20">
-	<div class="mx-auto max-w-5xl px-4 py-6">
-		{#if !activeUser}
-			<div class="mb-4">
-				<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
-			</div>
-		{/if}
+<DefaultLayout>
+	{#if !activeUser}
+		<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
+	{/if}
 
-		<h1 class="mb-6 text-2xl font-black text-gray-800">Soubory sezení</h1>
+	<h1 class="text-2xl font-black text-gray-800">Soubory sezení</h1>
 
+	<div>
 		{#if error}
 			<div
 				class="mb-4 flex items-center justify-between gap-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
@@ -1227,7 +1226,7 @@
 			{/if}
 		{/if}
 	</div>
-</section>
+</DefaultLayout>
 
 <!-- Success toast -->
 {#if successMessage}

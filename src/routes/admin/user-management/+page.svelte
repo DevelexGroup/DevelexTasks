@@ -7,6 +7,7 @@
 	import GroupsPanel from './components/GroupsPanel.svelte';
 	import { hasCapability } from '$lib/utils/capabilityGuard';
 	import { authUser } from '$lib/stores/auth';
+	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
 	import BackButton from '$lib/components/layout/BackButton.svelte';
 
 	let showUsers = $derived(hasCapability($authUser, 'USER_READ_ALL'));
@@ -33,16 +34,14 @@
 	<meta name="description" content="User and group management for DeveLex Tasks" />
 </svelte:head>
 
-<section class="min-h-screen overflow-auto bg-gray-100 pb-20">
-	<div class="mx-auto max-w-5xl px-4 py-6">
-		{#if !inDetail}
-			<div class="mb-4">
-				<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
-			</div>
-		{/if}
+<DefaultLayout>
+	{#if !inDetail}
+		<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
+	{/if}
 
-		<h1 class="mb-6 text-2xl font-black text-gray-800">Správa uživatelů</h1>
+	<h1 class="text-2xl font-black text-gray-800">Správa uživatelů</h1>
 
+	<div>
 		{#if showUsers && showGroups}
 			<Tabs.Root bind:value={activeTab} class="w-full">
 				<Tabs.List class="mb-4 grid w-full max-w-sm grid-cols-2">
@@ -63,4 +62,4 @@
 			<GroupsPanel bind:detailOpen={groupsDetailOpen} />
 		{/if}
 	</div>
-</section>
+</DefaultLayout>
