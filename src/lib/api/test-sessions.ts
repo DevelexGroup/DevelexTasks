@@ -116,10 +116,27 @@ export async function downloadTestSessionFile(
 	});
 }
 
-export async function downloadSessionAsZip(sessionId: string): Promise<Blob> {
-	return apiClient<Blob>(`/test-sessions/${sessionId}/download`, {
-		responseType: 'blob'
+export async function downloadSessionAsZip(sessionId: string): Promise<Response> {
+	return apiClient<Response>(`/test-sessions/${sessionId}/download`, {
+		responseType: 'stream'
 	});
+}
+
+export interface SessionExportRequest {
+	sessionIds?: string[];
+	userIds?: string[];
+}
+
+export async function exportSessionsAsZip(request: SessionExportRequest): Promise<Response> {
+	return apiClient<Response>('/test-sessions/export', {
+		method: 'POST',
+		body: JSON.stringify(request),
+		responseType: 'stream'
+	});
+}
+
+export async function getSessionCountsPerUser(): Promise<Record<string, number>> {
+	return apiClient<Record<string, number>>('/test-sessions/counts');
 }
 
 export async function streamTestSessionFile(
