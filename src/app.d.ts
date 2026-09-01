@@ -8,6 +8,10 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	/** Injected by vite.config.ts */
+	const __APP_VERSION__: string;
+	const __SDK_VERSION__: string;
 }
 
 export {};

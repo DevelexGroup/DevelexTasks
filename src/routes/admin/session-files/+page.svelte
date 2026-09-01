@@ -24,13 +24,15 @@
 		type I2mcRecalculationRequest,
 		type I2mcRecalculationResult
 	} from '$lib/api/test-sessions';
-	import { SortBy, SortDirection, UserRole, roleLabels } from '$lib/types/api.types';
+	import { PartType, SortBy, SortDirection, UserRole, roleLabels } from '$lib/types/api.types';
 	import type {
 		UserDTO,
 		TestSessionDTO,
 		TestSessionDetailDTO,
+		TestSessionPartDTO,
 		TestFileDTO
 	} from '$lib/types/api.types';
+	import { SESSION_META_FILE_NAME, type SessionMeta } from '$lib/utils/sessionMeta';
 
 	type SessionMode = 'reeducation' | 'evaluation' | 'intervention';
 
@@ -61,6 +63,14 @@
 	let sessionFilterMenuRef = $state<HTMLDivElement | null>(null);
 	let activeSessionId = $state('');
 	let sessionDetail = $state<TestSessionDetailDTO | null>(null);
+	let sessionMeta = $state<SessionMeta | null>(null);
+
+	const metaPart = $derived<TestSessionPartDTO | null>(
+		sessionDetail?.parts?.find((p) => p.partType === PartType.Meta) ?? null
+	);
+	const slideParts = $derived<TestSessionPartDTO[]>(
+		sessionDetail?.parts?.filter((p) => p.partType !== PartType.Meta) ?? []
+	);
 
 	let isLoadingUsers = $state(true);
 	let isLoadingSessions = $state(false);
@@ -252,13 +262,43 @@
 	async function loadSessionDetail(sessionId: string) {
 		isLoadingDetail = true;
 		error = '';
+		sessionMeta = null;
 		try {
 			sessionDetail = await getTestSessionDetail(sessionId);
+			loadSessionMeta(sessionId);
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se načíst detail sezení';
 		} finally {
 			isLoadingDetail = false;
 		}
+	}
+
+	/** meta.json is small; its contents drive the summary shown in the meta panel. */
+	async function loadSessionMeta(sessionId: string) {
+		const file = metaPart?.files?.find((f) => f.fileName === SESSION_META_FILE_NAME);
+		if (!file) return;
+		try {
+			const blob = await downloadTestSessionFile(sessionId, file.id);
+			const parsed = JSON.parse(await blob.text());
+			// Files written by an older or partial run stay unread rather than breaking the panel.
+			sessionMeta = isRenderableMeta(parsed) ? parsed : null;
+		} catch {
+			sessionMeta = null;
+		}
+	}
+
+	function isRenderableMeta(value: unknown): value is SessionMeta {
+		const meta = value as SessionMeta | null;
+		return (
+			!!meta &&
+			meta.metaVersion === 1 &&
+			!!meta.app &&
+			!!meta.session &&
+			!!meta.screen &&
+			!!meta.viewport &&
+			!!meta.browser &&
+			!!meta.tracker?.signal
+		);
 	}
 
 	function resetSessionFilters() {
@@ -297,6 +337,7 @@
 	function closeSession() {
 		activeSessionId = '';
 		sessionDetail = null;
+		sessionMeta = null;
 		error = '';
 	}
 
@@ -384,7 +425,9 @@
 			triggerUrlDownload(getExportDownloadUrl(prepared.token));
 			cancelUserSelection();
 			const n = userIds.length;
-			showSuccess(`Export zahájen (${n} ${n === 1 ? 'uživatel' : n < 5 ? 'uživatelé' : 'uživatelů'})`);
+			showSuccess(
+				`Export zahájen (${n} ${n === 1 ? 'uživatel' : n < 5 ? 'uživatelé' : 'uživatelů'})`
+			);
 		} catch {
 			error = 'Nepodařilo se exportovat vybraná data';
 		} finally {
@@ -418,10 +461,7 @@
 		error = '';
 		try {
 			const sessionStart = sessionDetail.sessionStartTime
-				? new Date(sessionDetail.sessionStartTime)
-						.toISOString()
-						.replace(/[:.]/g, '-')
-						.slice(0, 19)
+				? new Date(sessionDetail.sessionStartTime).toISOString().replace(/[:.]/g, '-').slice(0, 19)
 				: 'unknown';
 			const zipName = `${activeUser.username}_${sessionDetail.testType}_${sessionStart}.zip`;
 			const prepared = await prepareSessionExport({
@@ -590,6 +630,70 @@
 			year: 'numeric'
 		});
 		return label.charAt(0).toUpperCase() + label.slice(1);
+	}
+
+	function formatDuration(ms: number | null): string {
+		if (ms === null || ms <= 0) return '—';
+		const totalSeconds = Math.round(ms / 1000);
+		const minutes = Math.floor(totalSeconds / 60);
+		const seconds = totalSeconds % 60;
+		return minutes > 0 ? `${minutes} min ${seconds} s` : `${seconds} s`;
+	}
+
+	/**
+	 * The measured rate is the only one real hardware has — no tracker reports a
+	 * nominal rate through the bridge, so only the dummy input declares one.
+	 */
+	function formatFrequency(meta: SessionMeta): string {
+		const measured = meta.tracker.signal.measuredFrequencyHz;
+		if (measured !== null) return `${measured} Hz`;
+		const config = meta.tracker.config;
+		return config && 'frequency' in config ? `${config.frequency} Hz (nastaveno)` : '—';
+	}
+
+	function formatValidSamples(signal: SessionMeta['tracker']['signal']): string {
+		if (signal.sampleCount === 0) return '—';
+		const percent = Math.round((signal.validSampleCount / signal.sampleCount) * 100);
+		return `${percent} % z ${signal.sampleCount}`;
+	}
+
+	function browserLabel(meta: SessionMeta): string {
+		const brand = meta.browser.brands?.find((b) => !/Not.?A.?Brand/i.test(b));
+		const parts = [brand, meta.browser.platform].filter(Boolean);
+		return parts.length > 0 ? parts.join(' · ') : meta.browser.userAgent;
+	}
+
+	function sessionDuration(meta: SessionMeta): string {
+		if (!meta.session.startedAt) return '—';
+		return formatDuration(Date.parse(meta.session.endedAt) - Date.parse(meta.session.startedAt));
+	}
+
+	function metaFacts(meta: SessionMeta): { label: string; value: string }[] {
+		const dpr = meta.screen.devicePixelRatio;
+		const config = meta.tracker.config;
+		return [
+			{
+				label: 'Rozlišení monitoru',
+				value: `${meta.screen.width} × ${meta.screen.height}${dpr !== 1 ? ` @ ${dpr}×` : ''}`
+			},
+			{
+				label: 'Okno prohlížeče',
+				value: `${meta.viewport.innerWidth} × ${meta.viewport.innerHeight}`
+			},
+			{
+				label: 'Eyetracker',
+				value: config ? `${config.tracker} · ${config.fixationDetection}` : '—'
+			},
+			{ label: 'Frekvence', value: formatFrequency(meta) },
+			{ label: 'Platné vzorky', value: formatValidSamples(meta.tracker.signal) },
+			{
+				label: 'Kalibrace zařízení',
+				value: meta.tracker.deviceCalibratedAt ? formatDate(meta.tracker.deviceCalibratedAt) : '—'
+			},
+			{ label: 'Délka sezení', value: sessionDuration(meta) },
+			{ label: 'Prohlížeč', value: browserLabel(meta) },
+			{ label: 'Verze aplikace', value: `${meta.app.version} · SDK ${meta.app.sdkVersion}` }
+		];
 	}
 
 	function getFileIcon(fileType: string): string {
@@ -856,7 +960,9 @@
 									<div class="flex shrink-0 items-center gap-4">
 										{#if user.role !== UserRole.Student}
 											<span
-												class="rounded-full px-2 py-0.5 text-xs font-semibold {getRoleColor(user.role)}"
+												class="rounded-full px-2 py-0.5 text-xs font-semibold {getRoleColor(
+													user.role
+												)}"
 											>
 												{roleLabels[user.role]}
 											</span>
@@ -955,7 +1061,8 @@
 								>
 									<Icon icon="material-symbols:filter-alt-outline" class="h-5 w-5" />
 									{#if sessionFiltersActive}
-										<span class="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+										<span class="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-blue-500"
+										></span>
 									{/if}
 								</button>
 								{#if sessionFilterMenuOpen}
@@ -1079,13 +1186,13 @@
 					</div>
 				{/if}
 				{#each sessionGroups as group (group.label)}
-					{@const daySelectableIds = group.sessions
-						.filter((s) => s.fileCount > 0)
-						.map((s) => s.id)}
+					{@const daySelectableIds = group.sessions.filter((s) => s.fileCount > 0).map((s) => s.id)}
 					{@const dayAllSelected =
 						daySelectableIds.length > 0 &&
 						daySelectableIds.every((id) => selectedSessionIds.includes(id))}
-					<div class="mt-5 mb-2 flex items-center gap-2 text-xs font-semibold text-gray-500 uppercase">
+					<div
+						class="mt-5 mb-2 flex items-center gap-2 text-xs font-semibold text-gray-500 uppercase"
+					>
 						{#if sessionSelectMode}
 							<input
 								type="checkbox"
@@ -1108,7 +1215,8 @@
 											class="h-4 w-4 shrink-0 accent-blue-600"
 											checked={selectedSessionIds.includes(session.id)}
 											disabled={session.fileCount === 0}
-											onchange={() => (selectedSessionIds = toggleId(selectedSessionIds, session.id))}
+											onchange={() =>
+												(selectedSessionIds = toggleId(selectedSessionIds, session.id))}
 										/>
 									{/if}
 									<button
@@ -1127,11 +1235,15 @@
 											<span class="text-sm font-medium text-gray-900">
 												{taskLabel(session.testType)}
 											</span>
-											<span class="rounded-full px-2 py-0.5 text-xs font-semibold {modeColors[mode]}">
+											<span
+												class="rounded-full px-2 py-0.5 text-xs font-semibold {modeColors[mode]}"
+											>
 												{modeLabels[mode]}
 											</span>
 											<span
-												class="rounded-full px-2 py-0.5 text-xs font-semibold {getStatusColor(session.status)}"
+												class="rounded-full px-2 py-0.5 text-xs font-semibold {getStatusColor(
+													session.status
+												)}"
 											>
 												{getStatusLabel(session.status)}
 											</span>
@@ -1208,7 +1320,9 @@
 				<div class="mb-6 rounded-xl bg-white p-5 shadow-md shadow-gray-300/50">
 					<div class="flex flex-wrap items-center justify-between gap-4">
 						<div class="flex items-center gap-4">
-							<div class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-violet-100">
+							<div
+								class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-violet-100"
+							>
 								<Icon icon="material-symbols:lab-profile-outline" class="h-6 w-6 text-violet-700" />
 							</div>
 							<div>
@@ -1221,7 +1335,9 @@
 								{modeLabels[mode]}
 							</span>
 							<span
-								class="rounded-full px-3 py-1 text-xs font-semibold {getStatusColor(sessionDetail.status)}"
+								class="rounded-full px-3 py-1 text-xs font-semibold {getStatusColor(
+									sessionDetail.status
+								)}"
 							>
 								{getStatusLabel(sessionDetail.status)}
 							</span>
@@ -1298,11 +1414,16 @@
 								icon="material-symbols:layers-outline"
 								class="mr-1 inline h-4 w-4 align-text-bottom"
 							/>
-							{sessionDetail.partCount} {sessionDetail.partCount === 1 ? 'část' : 'částí'}
+							{sessionDetail.partCount}
+							{sessionDetail.partCount === 1 ? 'část' : 'částí'}
 						</span>
 						<span>
-							<Icon icon="material-symbols:attach-file" class="mr-1 inline h-4 w-4 align-text-bottom" />
-							{allFiles.length} {allFiles.length === 1 ? 'soubor' : 'souborů'}
+							<Icon
+								icon="material-symbols:attach-file"
+								class="mr-1 inline h-4 w-4 align-text-bottom"
+							/>
+							{allFiles.length}
+							{allFiles.length === 1 ? 'soubor' : 'souborů'}
 						</span>
 						{#if sessionDetail.sessionEndTime}
 							<span>
@@ -1316,20 +1437,91 @@
 					</div>
 				</div>
 
+				{#if metaPart}
+					<!-- Meta part: full-width row above the slide parts -->
+					<div class="mb-6 rounded-xl bg-white shadow-md shadow-gray-300/50">
+						<div class="flex items-center gap-3 border-b border-gray-100 px-4 py-3">
+							<div class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-slate-100">
+								<Icon icon="material-symbols:database-outline" class="h-5 w-5 text-slate-600" />
+							</div>
+							<div class="min-w-0 flex-1">
+								<span class="text-sm font-semibold text-gray-800">Metadata sezení</span>
+								<span class="ml-1 text-xs text-gray-400">prostředí, tracker a logy</span>
+							</div>
+							<span class="shrink-0 text-xs text-gray-400">
+								{(metaPart.files ?? []).length} souborů
+							</span>
+						</div>
+
+						{#if sessionMeta}
+							<dl
+								class="grid grid-cols-2 gap-x-6 gap-y-3 border-b border-gray-100 px-4 py-4 sm:grid-cols-3 lg:grid-cols-5"
+							>
+								{#each metaFacts(sessionMeta) as fact (fact.label)}
+									<div class="min-w-0">
+										<dt class="text-xs text-gray-400">{fact.label}</dt>
+										<dd class="truncate text-sm font-medium text-gray-800" title={fact.value}>
+											{fact.value}
+										</dd>
+									</div>
+								{/each}
+							</dl>
+						{/if}
+
+						{#if (metaPart.files ?? []).length === 0}
+							<div class="px-4 py-6 text-center text-sm text-gray-400">Žádné soubory</div>
+						{:else}
+							<div class="grid gap-1 p-2 sm:grid-cols-2 lg:grid-cols-3">
+								{#each metaPart.files as file (file.id)}
+									<div
+										class="group flex items-center gap-3 rounded-lg p-2.5 transition-colors hover:bg-gray-50"
+									>
+										<div
+											class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-500 group-hover:bg-blue-100 group-hover:text-blue-600"
+										>
+											<Icon icon={getFileIcon(file.fileType)} class="h-5 w-5" />
+										</div>
+										<div class="min-w-0 flex-1">
+											<p class="truncate text-sm font-medium text-gray-800" title={file.fileName}>
+												{file.fileName}
+											</p>
+											<div class="flex flex-wrap gap-x-3 text-xs text-gray-400">
+												<span>{formatFileSize(file.originalSize ?? file.fileSize)}</span>
+												{#if file.createdAt}
+													<span>{formatDate(file.createdAt)}</span>
+												{/if}
+											</div>
+										</div>
+										<button
+											class="inline-flex shrink-0 items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
+											onclick={() => downloadSingleFile(file.id, file.fileName)}
+										>
+											<Icon icon="material-symbols:download" class="h-4 w-4" />
+											Stáhnout
+										</button>
+									</div>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{/if}
+
 				{#if allFiles.length === 0}
 					<div
 						class="flex h-48 items-center justify-center rounded-xl bg-white shadow-md shadow-gray-300/50"
 					>
 						<p class="text-lg text-gray-400">Toto sezení nemá žádné soubory</p>
 					</div>
-				{:else}
+				{:else if slideParts.length > 0}
 					<!-- Parts side by side with wrapping, files stacked vertically -->
 					<div class="flex flex-wrap gap-5">
-						{#each sessionDetail.parts as part (part.id)}
+						{#each slideParts as part (part.id)}
 							<div class="flex w-80 flex-col rounded-xl bg-white shadow-md shadow-gray-300/50">
 								<!-- Part header -->
 								<div class="flex items-center gap-3 border-b border-gray-100 px-4 py-3">
-									<div class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-indigo-100">
+									<div
+										class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-indigo-100"
+									>
 										<span class="text-sm font-bold text-indigo-700">{part.partNumber}</span>
 									</div>
 									<div class="min-w-0 flex-1">
@@ -1358,7 +1550,10 @@
 													<Icon icon={getFileIcon(file.fileType)} class="h-5 w-5" />
 												</div>
 												<div class="min-w-0 flex-1">
-													<p class="truncate text-sm font-medium text-gray-800" title={file.fileName}>
+													<p
+														class="truncate text-sm font-medium text-gray-800"
+														title={file.fileName}
+													>
 														{file.fileName}
 													</p>
 													<div class="flex flex-wrap gap-x-3 text-xs text-gray-400">

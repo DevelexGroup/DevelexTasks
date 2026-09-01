@@ -217,9 +217,15 @@ export interface TestFileDTO {
 	createdAt: Date;
 }
 
+export enum PartType {
+	Slide = 'SLIDE',
+	Meta = 'META'
+}
+
 export interface TestSessionPartDTO {
 	id: string;
 	partNumber: number;
+	partType: PartType;
 	notes: string;
 	startTime: Date;
 	endTime: Date;
@@ -285,4 +291,3 @@ export interface UserSessionsDTO {
 	activeSessionCount: number;
 	hasActiveSession: boolean;
 }
-

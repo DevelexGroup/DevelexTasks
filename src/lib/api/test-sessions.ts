@@ -1,5 +1,6 @@
 ﻿import {
 	type Page,
+	PartType,
 	SortBy,
 	SortDirection,
 	type TestSessionDTO,
@@ -71,11 +72,12 @@ export async function abortTestSession(sessionId: string): Promise<TestSessionDT
 
 export async function addTestSessionPart(
 	sessionId: string,
-	partNumber: number
+	partNumber: number,
+	partType: PartType = PartType.Slide
 ): Promise<TestSessionPartDTO> {
 	return apiClient<TestSessionPartDTO>(`/test-sessions/${sessionId}/parts`, {
 		method: 'POST',
-		params: { partNumber }
+		params: { partNumber, partType }
 	});
 }
 
@@ -107,10 +109,7 @@ export async function addFilesToTestSessionPart(
 	});
 }
 
-export async function downloadTestSessionFile(
-	sessionId: string,
-	fileId: string
-): Promise<Blob> {
+export async function downloadTestSessionFile(sessionId: string, fileId: string): Promise<Blob> {
 	return apiClient<Blob>(`/test-sessions/${sessionId}/files/${fileId}/download`, {
 		responseType: 'blob'
 	});
@@ -165,10 +164,7 @@ export async function recalculateI2mcFixations(
 	});
 }
 
-export async function streamTestSessionFile(
-	sessionId: string,
-	fileId: string
-): Promise<Response> {
+export async function streamTestSessionFile(sessionId: string, fileId: string): Promise<Response> {
 	return apiClient<Response>(`/test-sessions/${sessionId}/files/${fileId}/stream`, {
 		responseType: 'stream'
 	});

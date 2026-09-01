@@ -1,13 +1,20 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { currentTask, remoteTestSessionId, taskStage, testSessionUploading, clientLogUploading } from '$lib/stores/task';
+	import {
+		currentTask,
+		remoteTestSessionId,
+		taskStage,
+		testSessionUploading,
+		clientLogUploading
+	} from '$lib/stores/task';
 	import { TaskResult, TaskStage } from '$lib/types/task.types';
 	import { getContext, onDestroy, onMount, untrack } from 'svelte';
 	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY } from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import type { GazeManager, GazeInputEventLog } from 'develex-js-sdk';
 	import {
-		abortTestSession, addFilesToTestSessionPart,
+		abortTestSession,
+		addFilesToTestSessionPart,
 		addTestSessionPart,
 		completeTestSession,
 		createTestSession
@@ -17,8 +24,11 @@
 	import { authUser } from '$lib/stores/auth';
 	import { bridgeLog, clientLog } from '$lib/utils/clientLogger';
 	import { formatTaskName } from '$lib/utils/taskMode';
+	import { buildSessionMeta, sessionMetaAsFile } from '$lib/utils/sessionMeta';
+	import { PartType } from '$lib/types/api.types';
 
 	const FIRST_SLIDE_INDEX = 1;
+	const META_PART_NUMBER = 0;
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
 	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
@@ -34,6 +44,7 @@
 	});
 
 	let previousSlideIndex = $state<number | undefined>(undefined);
+	let sessionStartedAt: Date | null = null;
 
 	// Async coordination: serializes all session operations to prevent race conditions on slow machines.
 	// Each operation (session/part creation, file upload, completion) chains onto this promise
@@ -57,6 +68,7 @@
 			// Set previousSlideIndex so the slide change effect won't duplicate the first part
 			previousSlideIndex = FIRST_SLIDE_INDEX;
 
+			sessionStartedAt = new Date();
 			operationChain = createTestSession(formatTaskName(task.slug, task.level, task.mode))
 				.then(async (session) => {
 					console.log('Test session created:', session);
@@ -75,7 +87,11 @@
 	$effect(() => {
 		const slideIndex = $currentTask?.currentSlideIndex;
 		const stage = $taskStage;
-		if (slideIndex !== undefined && slideIndex >= 0 && (stage === TaskStage.Task || stage === TaskStage.End)) {
+		if (
+			slideIndex !== undefined &&
+			slideIndex >= 0 &&
+			(stage === TaskStage.Task || stage === TaskStage.End)
+		) {
 			const prevSlideIndex = untrack(() => previousSlideIndex);
 			console.log(`Current slide: ${slideIndex}, Previous slide: ${prevSlideIndex}`);
 			clientLog.log(`Current slide: ${slideIndex}, Previous slide: ${prevSlideIndex}`);
@@ -86,7 +102,11 @@
 			operationChain = operationChain.then(() => {
 				const currentRemoteTestSessionId = get(remoteTestSessionId);
 				if (!currentRemoteTestSessionId) return;
-				return handleSlideChange(currentRemoteTestSessionId, prevSlideIndex, isEnd ? 'end' : slideIndex);
+				return handleSlideChange(
+					currentRemoteTestSessionId,
+					prevSlideIndex,
+					isEnd ? 'end' : slideIndex
+				);
 			});
 
 			previousSlideIndex = slideIndex;
@@ -106,50 +126,37 @@
 					// long enough for tickLogging to resolve any pending slide processing tokens.
 					// Calling it synchronously here would kill the timer and cause waitForSlideProcessing
 					// to hang indefinitely (the dyslex deadlock).
-					operationChain = operationChain.then(async () => {
-						analyticsManager.stopLogging(result);
+					operationChain = operationChain
+						.then(async () => {
+							analyticsManager.stopLogging(result);
 
-						const sessionId = get(remoteTestSessionId);
-						if (!sessionId) return;
+							const sessionId = get(remoteTestSessionId);
+							if (!sessionId) return;
 
-						// Upload client logs to the last part
-						const lastPartId = await currentPartCreationPromise;
-						if (lastPartId) {
-							$clientLogUploading = true;
-							try {
-								const logFiles = [clientLog.exportAsFile()];
-								if (!bridgeLog.isEmpty) {
-									logFiles.push(bridgeLog.exportAsFile('bridgeLogs.log'));
-								}
-								await addFilesToTestSessionPart(sessionId, lastPartId, logFiles);
-								console.log('Session logs uploaded to last part.');
-								clientLog.log('Session logs uploaded to last part.');
-							} catch (err) {
-								console.error('Failed to upload session logs:', err);
-								clientLog.error('Failed to upload session logs:', err);
-							} finally {
-								$clientLogUploading = false;
+							// Wait for the last slide's part so its files land before the meta part is added
+							await currentPartCreationPromise;
+							await uploadMetaPart(sessionId);
+
+							if (result === TaskResult.Natural) {
+								await completeTestSession(sessionId);
+								console.log('Test session completed successfully on task end.');
+								clientLog.log('Test session completed successfully on task end.');
+								$remoteTestSessionId = null;
+							} else {
+								await abortTestSession(sessionId);
+								console.log('Test session aborted on task end.');
+								clientLog.log('Test session aborted on task end.');
+								$remoteTestSessionId = null;
 							}
-						}
-
-						if (result === TaskResult.Natural) {
-							await completeTestSession(sessionId);
-							console.log('Test session completed successfully on task end.');
-							clientLog.log('Test session completed successfully on task end.');
-							$remoteTestSessionId = null;
-						} else {
-							await abortTestSession(sessionId);
-							console.log('Test session aborted on task end.');
-							clientLog.log('Test session aborted on task end.');
-							$remoteTestSessionId = null;
-						}
-					}).catch((err) => {
-						console.error('Failed to finalize test session on task end:', err);
-						clientLog.error('Failed to finalize test session on task end:', err);
-					}).finally(() => {
-						clientLog.stop();
-						$testSessionUploading = false;
-					});
+						})
+						.catch((err) => {
+							console.error('Failed to finalize test session on task end:', err);
+							clientLog.error('Failed to finalize test session on task end:', err);
+						})
+						.finally(() => {
+							clientLog.stop();
+							$testSessionUploading = false;
+						});
 				} else {
 					analyticsManager.stopLogging(result);
 					clientLog.stop();
@@ -157,6 +164,35 @@
 			}
 		}
 	});
+
+	// meta.json plus both logs go into a single META part, kept apart from the slide parts.
+	const uploadMetaPart = async (sessionId: string) => {
+		$clientLogUploading = true;
+		try {
+			const meta = await buildSessionMeta({
+				remoteSessionId: sessionId,
+				startedAt: sessionStartedAt,
+				gazeManager,
+				analyticsManager
+			});
+
+			const metaPart = await addTestSessionPart(sessionId, META_PART_NUMBER, PartType.Meta);
+
+			const metaFiles = [sessionMetaAsFile(meta), clientLog.exportAsFile()];
+			if (!bridgeLog.isEmpty) {
+				metaFiles.push(bridgeLog.exportAsFile('bridgeLogs.log'));
+			}
+
+			await addFilesToTestSessionPart(sessionId, metaPart.id, metaFiles);
+			console.log('Session meta part uploaded.');
+			clientLog.log('Session meta part uploaded.');
+		} catch (err) {
+			console.error('Failed to upload session meta part:', err);
+			clientLog.error('Failed to upload session meta part:', err);
+		} finally {
+			$clientLogUploading = false;
+		}
+	};
 
 	const getFilesForSlide = async (slideIndex: number): Promise<File[]> => {
 		const sessionId = $currentTask?.sessionId ?? undefined;
@@ -172,18 +208,25 @@
 			sessionId,
 			childId,
 			slideIndex: slideIndex
-		})
-	}
+		});
+	};
 
-	const uploadFilesForSlide = async (currentRemoteTestSessionId: string, partId: string, slideIndex: number) => {
+	const uploadFilesForSlide = async (
+		currentRemoteTestSessionId: string,
+		partId: string,
+		slideIndex: number
+	) => {
 		await analyticsManager.waitForSlideProcessing(slideIndex);
 		const testFiles = await getFilesForSlide(slideIndex);
 		await addFilesToTestSessionPart(currentRemoteTestSessionId, partId, testFiles);
 		console.log(`Logged file for slide ${slideIndex} to test session.`);
 		clientLog.log(`Logged file for slide ${slideIndex} to test session.`);
-	}
+	};
 
-	const createSessionPartForSlide = (currentRemoteTestSessionId: string, slideIndex: number): Promise<string | null> => {
+	const createSessionPartForSlide = (
+		currentRemoteTestSessionId: string,
+		slideIndex: number
+	): Promise<string | null> => {
 		const promise = addTestSessionPart(currentRemoteTestSessionId, slideIndex)
 			.then((testSessionPart) => {
 				console.log(`Logged slide ${slideIndex} to test session:`, testSessionPart);
@@ -197,9 +240,13 @@
 			});
 		currentPartCreationPromise = promise;
 		return promise;
-	}
+	};
 
-	const handleSlideChange = async (currentRemoteTestSessionId: string, previousSlideIndex: number | undefined, slideIndex: number | 'end') => {
+	const handleSlideChange = async (
+		currentRemoteTestSessionId: string,
+		previousSlideIndex: number | undefined,
+		slideIndex: number | 'end'
+	) => {
 		if (slideIndex === previousSlideIndex) {
 			return;
 		}
@@ -208,8 +255,12 @@
 			// even if addTestSessionPart hasn't resolved yet on slow machines
 			const partId = await currentPartCreationPromise;
 			if (partId) {
-				console.log(`Processing slide change from ${previousSlideIndex} to ${slideIndex}. Logging file for previous slide.`);
-				clientLog.log(`Processing slide change from ${previousSlideIndex} to ${slideIndex}. Logging file for previous slide.`);
+				console.log(
+					`Processing slide change from ${previousSlideIndex} to ${slideIndex}. Logging file for previous slide.`
+				);
+				clientLog.log(
+					`Processing slide change from ${previousSlideIndex} to ${slideIndex}. Logging file for previous slide.`
+				);
 				await uploadFilesForSlide(currentRemoteTestSessionId, partId, previousSlideIndex);
 			}
 		}
@@ -218,7 +269,7 @@
 		if (slideIndex !== 'end') {
 			await createSessionPartForSlide(currentRemoteTestSessionId, slideIndex);
 		}
-	}
+	};
 
 	onDestroy(() => {
 		if (!browser) return;

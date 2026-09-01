@@ -33,6 +33,17 @@ import {
 	calculateRegressionCount
 } from '$lib/utils/scoreMetrics';
 
+/** All timing here comes from the tracker's own clock, never the bridge or main-thread stamps. */
+export interface GazeSignalSummary {
+	sampleCount: number;
+	validSampleCount: number;
+	/** Samples that carried a parseable device timestamp; the rate is measured over these. */
+	timedSampleCount: number;
+	measuredFrequencyHz: number | null;
+	firstDeviceSampleAt: string | null;
+	lastDeviceSampleAt: string | null;
+}
+
 interface Deferred {
 	promise: Promise<void>;
 	resolve: () => void;
@@ -74,6 +85,17 @@ export class AnalyticsManager {
 	private activeAOI: Set<string> = new Set<string>();
 
 	private activeFixations: FixationDataEntry[] = [];
+
+	// Signal quality and device-clock timing observed over the session, for the meta file.
+	private gazeSignal = {
+		sampleCount: 0,
+		validSampleCount: 0,
+		timedSampleCount: 0,
+		firstDeviceMs: null as number | null,
+		lastDeviceMs: null as number | null,
+		firstDeviceTimestamp: null as string | null,
+		lastDeviceTimestamp: null as string | null
+	};
 
 	private eventBuffer = {
 		events: new Set<string>(),
@@ -209,6 +231,7 @@ export class AnalyticsManager {
 	public startLogging() {
 		if (this.timerWorker) return;
 
+		this.resetGazeSignal();
 		this.registerListeners();
 
 		this.loggingPaused = false;
@@ -387,6 +410,53 @@ export class AnalyticsManager {
 		this.logEvent(this.RESUME_LOGGING_EVENT);
 	}
 
+	private resetGazeSignal() {
+		this.gazeSignal = {
+			sampleCount: 0,
+			validSampleCount: 0,
+			timedSampleCount: 0,
+			firstDeviceMs: null,
+			lastDeviceMs: null,
+			firstDeviceTimestamp: null,
+			lastDeviceTimestamp: null
+		};
+	}
+
+	/**
+	 * The sampling rate actually observed over the session. No tracker reports its
+	 * nominal rate through the bridge, so the rate is measured from the spread of
+	 * device timestamps — the tracker's own clock, which ticks with the hardware.
+	 * Bridge and main-thread stamps carry transport and scheduling jitter and
+	 * would skew the rate.
+	 */
+	public getGazeSignal(): GazeSignalSummary {
+		const {
+			sampleCount,
+			validSampleCount,
+			timedSampleCount,
+			firstDeviceMs,
+			lastDeviceMs,
+			firstDeviceTimestamp,
+			lastDeviceTimestamp
+		} = this.gazeSignal;
+
+		const spanMs =
+			firstDeviceMs !== null && lastDeviceMs !== null ? lastDeviceMs - firstDeviceMs : 0;
+		const measuredFrequencyHz =
+			spanMs > 0 && timedSampleCount > 1
+				? Math.round(((timedSampleCount - 1) / spanMs) * 1000 * 10) / 10
+				: null;
+
+		return {
+			sampleCount,
+			validSampleCount,
+			timedSampleCount,
+			measuredFrequencyHz,
+			firstDeviceSampleAt: firstDeviceTimestamp,
+			lastDeviceSampleAt: lastDeviceTimestamp
+		};
+	}
+
 	public isLoggingPaused() {
 		return this.loggingPaused;
 	}
@@ -447,6 +517,20 @@ export class AnalyticsManager {
 		this.lastDeviceTimestamp = inputData.deviceTimestamp;
 		const bridgeMs = Date.parse(inputData.timestamp);
 		if (!Number.isNaN(bridgeMs)) this.lastSampleBridgeMs = bridgeMs;
+
+		this.gazeSignal.sampleCount++;
+		if (inputData.parseValidity) this.gazeSignal.validSampleCount++;
+
+		// The device clock ticks with the tracker, so the sampling rate is measured
+		// there rather than on the bridge stamps, which carry transport jitter.
+		const deviceMs = Date.parse(inputData.deviceTimestamp);
+		if (!Number.isNaN(deviceMs)) {
+			this.gazeSignal.timedSampleCount++;
+			this.gazeSignal.firstDeviceMs ??= deviceMs;
+			this.gazeSignal.lastDeviceMs = deviceMs;
+			this.gazeSignal.firstDeviceTimestamp ??= inputData.deviceTimestamp;
+			this.gazeSignal.lastDeviceTimestamp = inputData.deviceTimestamp;
+		}
 
 		// Write to SharedArrayBuffer so the worker can read position atomically
 		// at the exact scheduled tick moment (no message-passing delay).

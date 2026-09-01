@@ -1,6 +1,19 @@
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, type Plugin } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { readFileSync } from 'node:fs';
+
+// The SDK's exports map hides its package.json, so read both manifests from disk.
+const readVersion = (path: string): string => {
+	try {
+		return JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf-8')).version ?? 'unknown';
+	} catch {
+		return 'unknown';
+	}
+};
+
+const appVersion = readVersion('./package.json');
+const sdkVersion = readVersion('./node_modules/develex-js-sdk/package.json');
 
 // SharedArrayBuffer requires cross-origin isolation headers (COOP + COEP).
 // In production, these are set by nginx.  In development, we inject them via
@@ -28,6 +41,10 @@ function crossOriginIsolation(): Plugin {
 
 export default defineConfig({
 	plugins: [tailwindcss(), crossOriginIsolation(), sveltekit()],
+	define: {
+		__APP_VERSION__: JSON.stringify(appVersion),
+		__SDK_VERSION__: JSON.stringify(sdkVersion)
+	},
 	test: {
 		expect: { requireAssertions: true },
 		projects: [
