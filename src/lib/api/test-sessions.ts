@@ -158,7 +158,7 @@ export interface I2mcRecalculationResult {
 export async function recalculateI2mcFixations(
 	request: I2mcRecalculationRequest
 ): Promise<I2mcRecalculationResult> {
-	return apiClient<I2mcRecalculationResult>('/test-sessions/i2mc/recalculate', {
+	return apiClient<I2mcRecalculationResult>('/test-sessions/post-processing/i2mc/recalculate', {
 		method: 'POST',
 		body: JSON.stringify(request)
 	});
