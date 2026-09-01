@@ -69,7 +69,8 @@ function buildSession(): LoadedSession {
 		rawGazeData,
 		recordedGeometry: [],
 		meta: null,
-		maxSlides: 1,
+		metaRaw: null,
+		bridgeStamped: false,
 		warnings: []
 	};
 }
@@ -125,6 +126,25 @@ describe('buildCorrectedFiles', () => {
 		expect(corrections.source.sessionId).toBe(SESSION_ID);
 		expect(corrections.viewport).toEqual({ width: 1920, height: 1080 });
 		expect(corrections.detectorParams).toEqual(DEFAULT_DETECTOR_PARAMS);
+	});
+
+	it('carries recorded geometry and meta.json through unchanged', () => {
+		const session = buildSession();
+		session.recordedGeometry = [
+			{
+				slideIndex: 1,
+				stimulusId: '5',
+				viewport: { width: 1920, height: 1080 },
+				aois: [{ id: 'track', left: 0, top: 0, right: 100, bottom: 100, bufferSize: 50 }]
+			}
+		];
+		session.metaRaw = '{"metaVersion":1}';
+
+		const files = buildCorrectedFiles(buildResult(session), meta(session));
+		expect(files.map((f) => f.name).slice(0, 2)).toEqual(['aoiGeometry_slide1.json', 'meta.json']);
+		expect(files[1].content).toBe('{"metaVersion":1}');
+		expect(classifyFileName(files[0].name)).toBe('aoiGeometry');
+		expect(classifyFileName(files[1].name)).toBe('sessionMeta');
 	});
 });
 

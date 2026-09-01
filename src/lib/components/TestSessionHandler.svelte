@@ -222,6 +222,8 @@
 		slideIndex: number
 	) => {
 		await analyticsManager.waitForSlideProcessing(slideIndex);
+		// The raw buffer flushes on a 500 ms timer; without this the CSV misses the slide's tail
+		await analyticsManager.flushRawGazeBuffer();
 		const testFiles = await getFilesForSlide(slideIndex);
 		await addFilesToTestSessionPart(currentRemoteTestSessionId, partId, testFiles);
 		console.log(`Logged file for slide ${slideIndex} to test session.`);

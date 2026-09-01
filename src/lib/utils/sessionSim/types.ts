@@ -58,7 +58,14 @@ export interface LoadedSession {
 	recordedGeometry: RecordedSlideGeometry[];
 	/** Info extracted from the session's meta.json, if present. */
 	meta: RecordedSessionMeta | null;
-	maxSlides: number;
+	/** Verbatim meta.json content, for lossless re-export. */
+	metaRaw: string | null;
+	/**
+	 * True when raw samples are already stamped with bridge time (recordings
+	 * since 2026-08); live fixation rows are then stamped at onset, so replay
+	 * parity needs rebaseRawTimestamps on.
+	 */
+	bridgeStamped: boolean;
 	warnings: string[];
 }
 
@@ -97,7 +104,6 @@ export interface SlideGeometry {
 	stimulusId: string;
 	aois: AoiRect[];
 	viewport: { width: number; height: number };
-	approximate: boolean;
 }
 
 export interface ReplayFixationEvent {
@@ -105,8 +111,6 @@ export interface ReplayFixationEvent {
 	x: number;
 	y: number;
 	duration: number;
-	timestamp: string;
-	deviceTimestamp: string;
 }
 
 export interface FixationDetector {
@@ -171,9 +175,11 @@ export interface ReplayOptions {
 	/** The fixation already running when recording started was never logged live. */
 	dropColdStartFixation: boolean;
 	/**
-	 * Re-stamp raw samples with the bridge clock (median-offset aligned) and
-	 * record fixation onsets instead of confirmation times. Undoes main-thread
-	 * stamping bursts; timestamps then stop matching the live rows.
+	 * Re-stamp raw samples with the bridge clock (offset aligned) and record
+	 * fixation onsets instead of confirmation times. For bridge-stamped
+	 * recordings (2026-08+) this MATCHES the live rows and is the parity
+	 * setting; for older recordings it corrects main-thread stamping bursts
+	 * but the timestamps then stop matching the recorded rows.
 	 */
 	rebaseRawTimestamps: boolean;
 }

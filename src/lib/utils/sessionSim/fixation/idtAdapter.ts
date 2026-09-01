@@ -42,9 +42,7 @@ function toReplayEvent(fixation: FixationDataPoint): ReplayFixationEvent {
 		fixationId: fixation.fixationId,
 		x: fixation.x,
 		y: fixation.y,
-		duration: fixation.duration,
-		timestamp: fixation.timestamp,
-		deviceTimestamp: fixation.deviceTimestamp
+		duration: fixation.duration
 	};
 }
 

@@ -89,7 +89,8 @@ function buildSession(): LoadedSession {
 		rawGazeData,
 		recordedGeometry: [],
 		meta: null,
-		maxSlides: 1,
+		metaRaw: null,
+		bridgeStamped: false,
 		warnings: []
 	};
 }
@@ -102,7 +103,6 @@ function buildGeometry(): Map<number, SlideGeometry> {
 				slideIndex: 1,
 				stimulusId: '5',
 				viewport: { width: 1920, height: 1080 },
-				approximate: false,
 				aois: [
 					{ id: 'track', left: 50, top: 50, right: 150, bottom: 150, bufferSize: 0 },
 					{ id: 'hint', left: 350, top: 50, right: 450, bottom: 150, bufferSize: 0 }
@@ -248,7 +248,8 @@ describe('runReplay', () => {
 			rawGazeData,
 			recordedGeometry: [],
 			meta: null,
-			maxSlides: 1,
+			metaRaw: null,
+			bridgeStamped: false,
 			warnings: []
 		};
 	}
@@ -314,7 +315,8 @@ describe('runReplay', () => {
 			rawGazeData,
 			recordedGeometry: [],
 			meta: null,
-			maxSlides: 1,
+			metaRaw: null,
+			bridgeStamped: false,
 			warnings: []
 		};
 	}

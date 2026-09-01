@@ -31,6 +31,7 @@ interface SessionTables {
 	rawGazeData: RawGazeDataEntry[];
 	recordedGeometry: RecordedSlideGeometry[];
 	sessionMeta: RecordedSessionMeta | null;
+	sessionMetaRaw: string | null;
 }
 
 /** Minimal file shape shared by DOM File and test fixtures. */
@@ -60,7 +61,8 @@ function emptyTables(): SessionTables {
 		sessionScores: [],
 		rawGazeData: [],
 		recordedGeometry: [],
-		sessionMeta: null
+		sessionMeta: null,
+		sessionMetaRaw: null
 	};
 }
 
@@ -150,7 +152,11 @@ function parseInto(tables: SessionTables, kind: TableKind, text: string): void {
 		const geometry = parseAoiGeometryJson(text);
 		if (geometry) tables.recordedGeometry.push(geometry);
 	} else if (kind === 'sessionMeta') {
-		tables.sessionMeta = parseSessionMetaJson(text) ?? tables.sessionMeta;
+		const parsed = parseSessionMetaJson(text);
+		if (parsed) {
+			tables.sessionMeta = parsed;
+			tables.sessionMetaRaw = text;
+		}
 	} else tables.rawGazeData.push(...parseRawGazeDataCsv(text));
 }
 
@@ -160,10 +166,54 @@ interface SessionIdentity {
 	taskName?: string;
 }
 
+/** Full-content dedupe; overlapping exports (original + corrected) repeat rows. */
+function dedupeRows<T>(entries: T[]): { rows: T[]; removed: number } {
+	if (entries.length < 2) return { rows: entries, removed: 0 };
+	const seen = new Set<string>();
+	const rows: T[] = [];
+	for (const entry of entries) {
+		const key = JSON.stringify(entry);
+		if (seen.has(key)) continue;
+		seen.add(key);
+		rows.push(entry);
+	}
+	return { rows, removed: entries.length - rows.length };
+}
+
+/** Recordings since 2026-08 stamp raw rows directly with bridge time. */
+function isBridgeStamped(rows: RawGazeDataEntry[]): boolean {
+	let parseable = 0;
+	let matching = 0;
+	for (const row of rows) {
+		const bridgeMs = Date.parse(row.bridgeTimeStamp);
+		if (Number.isNaN(bridgeMs)) continue;
+		parseable++;
+		if (Math.abs(row.timestamp - bridgeMs) <= 1) matching++;
+	}
+	return parseable > 0 && matching / parseable >= 0.99;
+}
+
 function finalizeSession(tables: SessionTables, identity: SessionIdentity): LoadedSession {
 	const warnings: string[] = [];
 	const byTimestamp = <T extends { timestamp: number }>(entries: T[]) =>
 		entries.sort((a, b) => a.timestamp - b.timestamp);
+
+	let removedDuplicates = 0;
+	const dedupeTable = <T>(entries: T[]): T[] => {
+		const { rows, removed } = dedupeRows(entries);
+		removedDuplicates += removed;
+		return rows;
+	};
+	tables.gazeSamples = dedupeTable(tables.gazeSamples);
+	tables.fixationData = dedupeTable(tables.fixationData);
+	tables.i2mcFixationData = dedupeTable(tables.i2mcFixationData);
+	tables.sessionScores = dedupeTable(tables.sessionScores);
+	tables.rawGazeData = dedupeTable(tables.rawGazeData);
+	if (removedDuplicates > 0) {
+		warnings.push(
+			`Odstraněno ${removedDuplicates} duplicitních řádků – vstup zřejmě obsahoval překrývající se soubory.`
+		);
+	}
 
 	byTimestamp(tables.gazeSamples);
 	byTimestamp(tables.fixationData);
@@ -175,11 +225,6 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 		warnings.push('Chybí gazeSamples data – bez event markerů nelze určit časová okna slidů.');
 	if (tables.rawGazeData.length === 0)
 		warnings.push('Chybí rawGazeData – fixace není z čeho přepočítat.');
-
-	const maxSlides =
-		tables.gazeSamples.length > 0
-			? Math.max(...tables.gazeSamples.map((row) => row.slide_index))
-			: (anyRow?.slide_index ?? 0);
 
 	// The meta file records how many raw samples each slide had live
 	if (tables.sessionMeta) {
@@ -209,7 +254,8 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 		rawGazeData: tables.rawGazeData,
 		recordedGeometry: tables.recordedGeometry.sort((a, b) => a.slideIndex - b.slideIndex),
 		meta: tables.sessionMeta,
-		maxSlides,
+		metaRaw: tables.sessionMetaRaw,
+		bridgeStamped: isBridgeStamped(tables.rawGazeData),
 		warnings
 	};
 }
@@ -235,10 +281,13 @@ export async function loadRemoteSession(
 	collect(detail.files);
 
 	const tables = emptyTables();
-	for (const { fileId, kind } of csvFiles.values()) {
-		const blob = await downloadTestSessionFile(remoteSessionId, fileId);
-		parseInto(tables, kind, await blob.text());
-	}
+	const downloads = await Promise.all(
+		[...csvFiles.values()].map(async ({ fileId, kind }) => {
+			const blob = await downloadTestSessionFile(remoteSessionId, fileId);
+			return { kind, text: await blob.text() };
+		})
+	);
+	for (const { kind, text } of downloads) parseInto(tables, kind, text);
 
 	return finalizeSession(tables, {
 		childId,

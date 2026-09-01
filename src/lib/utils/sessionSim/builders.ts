@@ -28,8 +28,7 @@ export function buildGeometryMap(
 			slideIndex: slide,
 			stimulusId: stimulusBySlide[slide] ?? 'null',
 			aois: combined,
-			viewport,
-			approximate: false
+			viewport
 		});
 	}
 	return map;

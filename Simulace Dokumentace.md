@@ -39,15 +39,20 @@ přepočítávat – nástroj na obojí upozorní.
    zaznamenaného `stimulus_id` (nikdy se znovu nespouští výběrová/náhodná
    logika) a přečtou se obdélníky `GazeArea` elementů; rozlišení se pak vezme
    z `meta.json` (viewport při nahrávání), a teprve bez něj se zadává ručně.
-   Z `meta.json` se dále předvyplní frekvence pro serverové I2MC (naměřená
-   frekvence zaokrouhlená na běžnou vzorkovací frekvenci) a porovnají se počty
-   raw vzorků na slide se zaznamenanými – při ztrátě dat se zobrazí varování.
+   Zaznamenaná geometrie sdílí pixelový prostor s gaze daty, takže přežívá
+   i ruční změnu viewportu (ta zahodí jen DOM re-capture). Z `meta.json` se
+   dále předvyplní frekvence pro serverové I2MC (naměřená frekvence
+   zaokrouhlená na běžnou vzorkovací frekvenci) a porovnají se počty raw
+   vzorků na slide se zaznamenanými – při ztrátě dat se zobrazí varování.
+   Duplicitní řádky z překrývajících se souborů se při načtení odstraní
+   s varováním.
 4. **Výstupy** – překreslené fixace/AOI/gaze nad stimulem (před/po) – náhled
    ukazuje vše se `slide_index` slidu, fixace mimo efektivní okno (a tedy mimo
    skóre) čárkovaně, tabulka
    skóre se rozdíly a export opravených CSV ve formátu `DatabaseExporter`
-   (`*_corrected.csv` + `corrections.json` s použitými parametry). Export lze
-   zpětně načíst přes záložku Soubory.
+   (`*_corrected.csv` + `corrections.json` s použitými parametry; zaznamenaná
+   AOI geometrie a `meta.json` se přibalí beze změny). Export lze zpětně
+   načíst přes záložku Soubory.
 
 ## Parita s živým záznamem
 
@@ -74,13 +79,16 @@ správnější výsledek, který se ale se zaznamenaným neshodne.
   detekuje znovu. Leží před oknem prvního slidu, do skóre se tedy obvykle
   nepromítne; zapnutím zmizí i ze seznamu fixací. Při načtení dat jediného slidu
   volbu nezapínejte – uřízla by platnou fixaci.
-- **Opravit časy vzorků (bridge)** (vypnuto) – vzorky v `rawGazeData` jsou
-  razítkované hlavním vláknem, které při zácpě razítkuje pozdě a v dávkách.
-  Zapnutím se vzorky přerazítkují spojitým bridge časem (posunutým o klidový
-  offset, zůstávají tedy ve stejném rámci jako event markery) a fixace dostanou
-  čas skutečného začátku (potvrzovací vzorek minus délka okna). Časy se pak
-  neshodují se zaznamenanými řádky, ale odpovídají realitě – fixace se mohou
-  přesunout mimo okno slidu, do kterého je živě zapsalo pozdní razítko.
+- **Opravit časy vzorků (bridge)** (automaticky podle nahrávky) – u nahrávek
+  s bridge razítky (od 2026-08, detekuje se z dat) je zapnutí paritou: živý
+  záznam už razítkuje vzorky bridge časem a fixace časem skutečného začátku,
+  přerazítkování je no-op a fixace dostanou stejné časy jako živě; nástroj ho
+  proto zapne sám. U starších nahrávek (razítka hlavního vlákna, pozdě
+  a v dávkách) zapnutí vzorky přerazítkuje spojitým bridge časem (posunutým
+  o klidový offset, zůstávají ve stejném rámci jako event markery) a fixace
+  dostanou čas skutečného začátku – časy se pak neshodují se zaznamenanými
+  řádky, ale odpovídají realitě; fixace se mohou přesunout mimo okno slidu,
+  do kterého je živě zapsalo pozdní razítko.
 
 ## Další očekávané odchylky
 

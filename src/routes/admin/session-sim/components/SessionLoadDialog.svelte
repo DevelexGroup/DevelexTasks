@@ -166,7 +166,7 @@
 					: 'text-gray-500 hover:text-gray-700'}"
 				onclick={() => (dataSource = 'files')}
 			>
-				Soubory (CSV/ZIP)
+				Soubory (CSV/JSON/ZIP)
 			</button>
 		</div>
 
@@ -225,13 +225,14 @@
 						if (e.key === 'Enter') document.getElementById('sim-file-input')?.click();
 					}}
 				>
-					Přetáhněte sem CSV soubory nebo ZIP sezení, nebo klikněte pro výběr
+					Přetáhněte sem soubory sezení (CSV, aoiGeometry/meta JSON) nebo ZIP, nebo klikněte pro
+					výběr
 				</div>
 				<input
 					id="sim-file-input"
 					type="file"
 					multiple
-					accept=".csv,.zip"
+					accept=".csv,.zip,.json"
 					class="hidden"
 					onchange={handleFileInput}
 				/>

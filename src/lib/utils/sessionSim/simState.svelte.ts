@@ -45,7 +45,11 @@ export class SessionSimState {
 	synthesizeDwellArrow = $state(true);
 	synthesizeDwellEye = $state(true);
 
+	/** AOI rects captured by re-rendering the stimulus (legacy fallback). */
 	capturedAois = $state<Record<number, AoiRect[]>>({});
+	/** AOI rects recorded during the live session; immutable, wins over capture. */
+	recordedAois = $state<Record<number, AoiRect[]>>({});
+	viewportSource = $state<'geometry' | 'meta' | 'manual'>('manual');
 	result = $state<ReplayResult | null>(null);
 	recomputeMs = $state<number | null>(null);
 	error = $state('');
@@ -67,13 +71,17 @@ export class SessionSimState {
 		const slides = distinctSlides(session.gazeSamples);
 		this.slides = slides;
 
+		const geometryStimulus: Record<number, string> = {};
+		for (const geometry of session.recordedGeometry) {
+			if (geometry.stimulusId) geometryStimulus[geometry.slideIndex] ??= geometry.stimulusId;
+		}
 		const stimulusBySlide: Record<number, string> = {};
 		const resolvedBySlide: Record<number, ResolvedSlide | null> = {};
 		for (const slide of slides) {
 			const row = session.gazeSamples.find(
 				(sample) => sample.slide_index === slide && sample.stimulus_id !== 'null'
 			);
-			stimulusBySlide[slide] = row?.stimulus_id ?? 'null';
+			stimulusBySlide[slide] = row?.stimulus_id ?? geometryStimulus[slide] ?? 'null';
 			resolvedBySlide[slide] = this.parsedTask
 				? resolveSlide(this.parsedTask, stimulusBySlide[slide])
 				: null;
@@ -102,6 +110,7 @@ export class SessionSimState {
 			this.viewportWidth = viewport.width;
 			this.viewportHeight = viewport.height;
 		}
+		this.viewportSource = recordedViewport ? 'geometry' : session.meta?.viewport ? 'meta' : 'manual';
 		const recordedAois: Record<number, AoiRect[]> = {};
 		for (const geometry of recorded) {
 			recordedAois[geometry.slideIndex] = [
@@ -109,7 +118,10 @@ export class SessionSimState {
 				...geometry.aois
 			];
 		}
-		this.capturedAois = recordedAois;
+		this.recordedAois = recordedAois;
+		this.capturedAois = {};
+		// Bridge-stamped recordings store fixation onsets live; rebase reproduces that
+		this.rebaseRawTimestamps = session.bridgeStamped;
 		this.slideOverrides = {};
 		this.sessionCorrection = identityCorrection(this.viewportWidth / 2, this.viewportHeight / 2);
 		this.result = null;
@@ -126,7 +138,10 @@ export class SessionSimState {
 		if (width === this.viewportWidth && height === this.viewportHeight) return;
 		this.viewportWidth = width;
 		this.viewportHeight = height;
-		// Geometry was captured at the old viewport, AOI rects no longer apply
+		this.viewportSource = 'manual';
+		// DOM capture ran at the old viewport and no longer applies; recorded
+		// geometry shares the recording's pixel space with the gaze data and
+		// stays valid regardless of the stage viewport.
 		this.capturedAois = {};
 		this.sessionCorrection = { ...this.sessionCorrection, centerX: width / 2, centerY: height / 2 };
 		this.scheduleRecompute();
@@ -169,6 +184,10 @@ export class SessionSimState {
 		this.scheduleRecompute();
 	}
 
+	hasGeometry(slide: number): boolean {
+		return slide in this.recordedAois || slide in this.capturedAois;
+	}
+
 	geometryFor(slide: number | null): SlideGeometry | null {
 		if (slide === null) return null;
 		return this.buildGeometryMap().get(slide) ?? null;
@@ -176,7 +195,7 @@ export class SessionSimState {
 
 	private buildGeometryMap(): Map<number, SlideGeometry> {
 		return buildGeometryMap(
-			this.capturedAois,
+			{ ...this.capturedAois, ...this.recordedAois },
 			this.stimulusBySlide,
 			{ width: this.viewportWidth, height: this.viewportHeight },
 			{ dwellArrow: this.synthesizeDwellArrow, dwellEye: this.synthesizeDwellEye }

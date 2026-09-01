@@ -111,7 +111,6 @@ describe('loadFromFiles', () => {
 		expect(session.rawGazeData).toHaveLength(2);
 		expect(session.rawGazeData[0].timestamp).toBeLessThan(session.rawGazeData[1].timestamp);
 		expect(session.gazeSamples).toHaveLength(1);
-		expect(session.maxSlides).toBe(2);
 		expect(session.warnings).toEqual([]);
 	});
 
@@ -201,6 +200,35 @@ describe('loadFromFiles', () => {
 		]);
 		expect(session.meta).toBeNull();
 		expect(session.warnings.some((w) => w.includes('vzorků'))).toBe(false);
+	});
+
+	it('detects bridge-stamped recordings', async () => {
+		const bridgeMs = Date.parse('2024-08-11T12:00:00.100Z');
+		const csv = DatabaseExporter.createCsvContent(
+			[
+				rawEntry({ timestamp: bridgeMs }),
+				rawEntry({ timestamp: bridgeMs + 8, bridgeTimeStamp: '2024-08-11T12:00:00.108Z' })
+			],
+			'rawGazeData'
+		);
+		const session = await loadFromFiles([textFile('rawGazeData_slide1.csv', csv)]);
+		expect(session.bridgeStamped).toBe(true);
+	});
+
+	it('flags main-thread-stamped recordings as not bridge-stamped', async () => {
+		const { rawCsv } = buildCsvs();
+		const session = await loadFromFiles([textFile('rawGazeData_slide1.csv', rawCsv)]);
+		expect(session.bridgeStamped).toBe(false);
+	});
+
+	it('removes duplicated rows from overlapping files and warns', async () => {
+		const { rawCsv } = buildCsvs();
+		const session = await loadFromFiles([
+			textFile('rawGazeData_slide1.csv', rawCsv),
+			textFile('rawGazeData_slide1_copy.csv', rawCsv)
+		]);
+		expect(session.rawGazeData).toHaveLength(2);
+		expect(session.warnings.some((w) => w.includes('duplicitních'))).toBe(true);
 	});
 });
 

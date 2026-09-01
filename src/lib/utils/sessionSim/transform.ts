@@ -41,18 +41,6 @@ export function applyCorrection(
 	};
 }
 
-/** Inverts the affine part only; matrix mode is not supported. */
-export function invertCorrection(correction: SpatialCorrection): SpatialCorrection {
-	return {
-		offsetX: -correction.offsetX / correction.scaleX,
-		offsetY: -correction.offsetY / correction.scaleY,
-		scaleX: 1 / correction.scaleX,
-		scaleY: 1 / correction.scaleY,
-		centerX: correction.centerX,
-		centerY: correction.centerY
-	};
-}
-
 /**
  * Transforms the combined and per-eye coordinates of a raw sample.
  * Samples with both eyes invalid pass through untouched — their coordinates

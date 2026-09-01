@@ -39,13 +39,16 @@ export function buildCorrectedFiles(
 	result: ReplayResult,
 	meta: CorrectedExportMeta
 ): CorrectedFile[] {
-	// Carried over unchanged so the exported ZIP round-trips with real geometry
-	const geometryFiles = meta.session.recordedGeometry.map((geometry) => ({
+	// Carried over unchanged so the exported ZIP round-trips with real geometry and meta
+	const passthroughFiles: CorrectedFile[] = meta.session.recordedGeometry.map((geometry) => ({
 		name: `aoiGeometry_slide${geometry.slideIndex}.json`,
 		content: JSON.stringify(geometry, null, '\t')
 	}));
+	if (meta.session.metaRaw) {
+		passthroughFiles.push({ name: 'meta.json', content: meta.session.metaRaw });
+	}
 	return [
-		...geometryFiles,
+		...passthroughFiles,
 		{
 			name: 'gazeSamples_corrected.csv',
 			content: DatabaseExporter.createCsvContent([...result.gazeSamples], 'gazeSamples')

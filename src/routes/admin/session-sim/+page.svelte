@@ -55,6 +55,7 @@
 		viewportW = width;
 		viewportH = height;
 		sim.setViewport(width, height);
+		i2mcParams = { ...i2mcParams, xres: width, yres: height };
 		void captureAllGeometry();
 	}
 
@@ -63,7 +64,10 @@
 	let capturingAll = false;
 
 	const missingGeometry = $derived(
-		sim.slides.filter((slide) => sim.resolvedBySlide[slide] && !sim.capturedAois[slide])
+		sim.slides.filter((slide) => sim.resolvedBySlide[slide] && !sim.hasGeometry(slide))
+	);
+	const allSlidesRecorded = $derived(
+		sim.slides.length > 0 && sim.slides.every((slide) => sim.recordedAois[slide])
 	);
 
 	async function waitForStage(): Promise<HTMLElement | null> {
@@ -76,7 +80,7 @@
 	}
 
 	async function ensureGeometry(slide: number) {
-		if (!sim.resolvedBySlide[slide] || sim.capturedAois[slide]) return;
+		if (!sim.resolvedBySlide[slide] || sim.hasGeometry(slide)) return;
 		await tick();
 		const node = await waitForStage();
 		if (!node || sim.selectedSlide !== slide) return;
@@ -91,7 +95,7 @@
 		const original = sim.selectedSlide;
 		try {
 			for (const slide of sim.slides) {
-				if (sim.capturedAois[slide] || !sim.resolvedBySlide[slide]) continue;
+				if (sim.hasGeometry(slide) || !sim.resolvedBySlide[slide]) continue;
 				captureProgress = `Načítám geometrii slidu ${slide}…`;
 				sim.selectedSlide = slide;
 				await ensureGeometry(slide);
@@ -318,6 +322,7 @@
 		{fixationsAfter}
 		{fixationsI2mc}
 		aois={stageAois}
+		timeWindow={selectedWindow}
 		{showGaze}
 		{showBefore}
 		{showAfter}
@@ -378,6 +383,13 @@
 						<Card.Title>Viewport nahrávky</Card.Title>
 					</Card.Header>
 					<Card.Content class="space-y-3">
+						{#if sim.viewportSource !== 'manual'}
+							<div class="rounded-md bg-emerald-50 px-2 py-1.5 text-xs text-emerald-700">
+								Rozlišení {sim.viewportSource === 'geometry'
+									? 'ze zaznamenané AOI geometrie'
+									: 'z meta.json'} – ruční změna je obvykle zbytečná.
+							</div>
+						{/if}
 						<select
 							class={inputClass}
 							onchange={(e) => {
@@ -456,7 +468,12 @@
 								<span class="ml-1 rounded bg-amber-100 px-1 py-0.5 font-semibold text-amber-700">
 									nelze vykreslit
 								</span>
-							{:else if sim.selectedSlide !== null && !sim.capturedAois[sim.selectedSlide]}
+							{/if}
+							{#if sim.selectedSlide !== null && sim.recordedAois[sim.selectedSlide]}
+								<span class="ml-1 rounded bg-emerald-100 px-1 py-0.5 text-emerald-700">
+									geometrie z nahrávky
+								</span>
+							{:else if sim.selectedSlide !== null && !sim.hasGeometry(sim.selectedSlide)}
 								<span class="ml-1 rounded bg-gray-100 px-1 py-0.5 text-gray-500">
 									geometrie nenačtena
 								</span>
@@ -623,26 +640,28 @@
 								<option value="centroid">Podle těžiště</option>
 							</select>
 						</label>
-						<label
-							class="flex items-center justify-between text-sm text-gray-700"
-							title="Syntetické AOI slide-N_end pro šipku dalšího slidu"
-						>
-							Doplnit AOI šipky
-							<Switch
-								bind:checked={sim.synthesizeDwellArrow}
-								onCheckedChange={() => sim.scheduleRecompute()}
-							/>
-						</label>
-						<label
-							class="flex items-center justify-between text-sm text-gray-700"
-							title="Syntetické AOI slide-N_initial pro úvodní oko"
-						>
-							Doplnit AOI oka
-							<Switch
-								bind:checked={sim.synthesizeDwellEye}
-								onCheckedChange={() => sim.scheduleRecompute()}
-							/>
-						</label>
+						{#if !allSlidesRecorded}
+							<label
+								class="flex items-center justify-between text-sm text-gray-700"
+								title="Syntetické AOI slide-N_end pro šipku dalšího slidu; slidy se zaznamenanou geometrií mají skutečné"
+							>
+								Doplnit AOI šipky
+								<Switch
+									bind:checked={sim.synthesizeDwellArrow}
+									onCheckedChange={() => sim.scheduleRecompute()}
+								/>
+							</label>
+							<label
+								class="flex items-center justify-between text-sm text-gray-700"
+								title="Syntetické AOI slide-N_initial pro úvodní oko; slidy se zaznamenanou geometrií mají skutečné"
+							>
+								Doplnit AOI oka
+								<Switch
+									bind:checked={sim.synthesizeDwellEye}
+									onCheckedChange={() => sim.scheduleRecompute()}
+								/>
+							</label>
+						{/if}
 					</Card.Content>
 				</Card.Root>
 
@@ -700,7 +719,7 @@
 						</label>
 						<label
 							class="flex items-center justify-between gap-3 text-sm text-gray-700"
-							title="Hlavní vlákno razítkuje vzorky pozdě a v dávkách; bridge čas je spojitý. Vzorky i fixace dostanou skutečné časy (fixace čas začátku)."
+							title="U nahrávek s bridge časem (od 2026-08) odpovídá živému záznamu a zapíná se automaticky. U starších nahrávek opraví pozdní razítka hlavního vlákna, časy pak ale nesedí na zaznamenané řádky."
 						>
 							Opravit časy vzorků (bridge)
 							<Switch

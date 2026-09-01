@@ -620,7 +620,8 @@ export class AnalyticsManager {
 	 * 	Raw gaze data buffering
 	 * *************************** */
 
-	private flushRawGazeBuffer(): Promise<void> {
+	/** Public so per-slide export can persist the buffered tail before snapshotting the DB. */
+	public flushRawGazeBuffer(): Promise<void> {
 		if (this.rawGazeBuffer.length === 0) return Promise.resolve();
 		const batch = this.rawGazeBuffer;
 		this.rawGazeBuffer = [];

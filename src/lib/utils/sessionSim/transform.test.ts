@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { RawGazeDataEntry } from '$lib/database/db.types';
-import {
-	applyCorrection,
-	identityCorrection,
-	invertCorrection,
-	isIdentity,
-	transformRawEntry
-} from './transform';
+import { applyCorrection, identityCorrection, isIdentity, transformRawEntry } from './transform';
 import type { SpatialCorrection } from './types';
 
 function raw(overrides: Partial<RawGazeDataEntry> = {}): RawGazeDataEntry {
@@ -81,20 +75,6 @@ describe('applyCorrection', () => {
 		expect(applyCorrection(100, 200, correction)).toEqual({ x: 110, y: 200 });
 	});
 
-	it('invertCorrection round-trips a point', () => {
-		const correction: SpatialCorrection = {
-			offsetX: 25,
-			offsetY: -10,
-			scaleX: 1.2,
-			scaleY: 0.8,
-			centerX: 960,
-			centerY: 540
-		};
-		const forward = applyCorrection(123, 456, correction);
-		const back = applyCorrection(forward.x, forward.y, invertCorrection(correction));
-		expect(back.x).toBeCloseTo(123);
-		expect(back.y).toBeCloseTo(456);
-	});
 });
 
 describe('isIdentity', () => {
