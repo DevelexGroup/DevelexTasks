@@ -5,6 +5,7 @@ export enum AvaiableTracker {
 	GazePointBase = 'gazepoint_base',
 	GazePointIdt = 'gazepoint_idt',
 	EyeLogicIdt = 'eyelogic_idt',
+	MockBase = 'mock_base',
 	MouseIdt = 'mouse_idt'
 }
 
@@ -23,6 +24,11 @@ export const GAZE_INPUT_CONFIGS: Record<AvaiableTracker, GazeInputConfigWithFixa
 		tracker: 'eyelogic',
 		uri: 'ws://localhost:13892',
 		fixationDetection: 'idt'
+	},
+	mock_base: {
+		tracker: 'mock',
+		uri: 'ws://localhost:13892',
+		fixationDetection: 'device'
 	},
 	mouse_idt: {
 		tracker: 'dummy',

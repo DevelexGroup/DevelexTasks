@@ -25,6 +25,9 @@ interface LogEntry {
 class ClientLogger {
 	private logs: LogEntry[] = [];
 	private _active = false;
+
+	constructor(private readonly captureWindowErrors = true) {}
+
 	private onError = (e: ErrorEvent) => {
 		const err = e.error;
 		const stack = err instanceof Error ? err.stack : undefined;
@@ -40,19 +43,27 @@ class ClientLogger {
 	start(): void {
 		this._active = true;
 		this.logs = [];
-		window.addEventListener('error', this.onError);
-		window.addEventListener('unhandledrejection', this.onUnhandledRejection);
+		if (this.captureWindowErrors) {
+			window.addEventListener('error', this.onError);
+			window.addEventListener('unhandledrejection', this.onUnhandledRejection);
+		}
 	}
 
 	/** Disable buffering (entries are kept until `clear()` or next `start()`). */
 	stop(): void {
 		this._active = false;
-		window.removeEventListener('error', this.onError);
-		window.removeEventListener('unhandledrejection', this.onUnhandledRejection);
+		if (this.captureWindowErrors) {
+			window.removeEventListener('error', this.onError);
+			window.removeEventListener('unhandledrejection', this.onUnhandledRejection);
+		}
 	}
 
 	get active(): boolean {
 		return this._active;
+	}
+
+	get isEmpty(): boolean {
+		return this.logs.length === 0;
 	}
 
 	log(...args: unknown[]): void {
@@ -112,5 +123,6 @@ function formatArg(arg: unknown): string {
 	}
 }
 
-/** Singleton – import this throughout the app. */
+/** Singletons – import this throughout the app. */
 export const clientLog = new ClientLogger();
+export const bridgeLog = new ClientLogger(false);

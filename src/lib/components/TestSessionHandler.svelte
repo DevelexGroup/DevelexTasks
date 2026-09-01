@@ -2,9 +2,10 @@
 	import { browser } from '$app/environment';
 	import { currentTask, remoteTestSessionId, taskStage, testSessionUploading, clientLogUploading } from '$lib/stores/task';
 	import { TaskResult, TaskStage } from '$lib/types/task.types';
-	import { getContext, onDestroy, untrack } from 'svelte';
-	import { ANALYTICS_MANAGER_KEY } from '$lib/types/general.types';
+	import { getContext, onDestroy, onMount, untrack } from 'svelte';
+	import { ANALYTICS_MANAGER_KEY, GAZE_MANAGER_KEY } from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
+	import type { GazeManager, GazeInputEventLog } from 'develex-js-sdk';
 	import {
 		abortTestSession, addFilesToTestSessionPart,
 		addTestSessionPart,
@@ -14,12 +15,23 @@
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
 	import { get } from 'svelte/store';
 	import { authUser } from '$lib/stores/auth';
-	import { clientLog } from '$lib/utils/clientLogger';
+	import { bridgeLog, clientLog } from '$lib/utils/clientLogger';
 	import { formatTaskName } from '$lib/utils/taskMode';
 
 	const FIRST_SLIDE_INDEX = 1;
 
 	const analyticsManager = getContext<AnalyticsManager>(ANALYTICS_MANAGER_KEY);
+	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
+
+	const handleInputLog = (event: GazeInputEventLog) => {
+		bridgeLog[event.level](event.content);
+	};
+
+	// Capture from mount so the tracker connection phase is included, not just the task itself
+	onMount(() => {
+		bridgeLog.start();
+		gazeManager.on('inputLog', handleInputLog);
+	});
 
 	let previousSlideIndex = $state<number | undefined>(undefined);
 
@@ -105,13 +117,16 @@
 						if (lastPartId) {
 							$clientLogUploading = true;
 							try {
-								const logFile = clientLog.exportAsFile();
-								await addFilesToTestSessionPart(sessionId, lastPartId, [logFile]);
-								console.log('Client logs uploaded to last part.');
-								clientLog.log('Client logs uploaded to last part.');
+								const logFiles = [clientLog.exportAsFile()];
+								if (!bridgeLog.isEmpty) {
+									logFiles.push(bridgeLog.exportAsFile('bridgeLogs.log'));
+								}
+								await addFilesToTestSessionPart(sessionId, lastPartId, logFiles);
+								console.log('Session logs uploaded to last part.');
+								clientLog.log('Session logs uploaded to last part.');
 							} catch (err) {
-								console.error('Failed to upload client logs:', err);
-								clientLog.error('Failed to upload client logs:', err);
+								console.error('Failed to upload session logs:', err);
+								clientLog.error('Failed to upload session logs:', err);
 							} finally {
 								$clientLogUploading = false;
 							}
@@ -208,6 +223,8 @@
 	onDestroy(() => {
 		if (!browser) return;
 
+		gazeManager.off('inputLog', handleInputLog);
+		bridgeLog.stop();
 		clientLog.stop();
 		analyticsManager.stopLogging(TaskResult.Terminate);
 		if ($remoteTestSessionId) {
