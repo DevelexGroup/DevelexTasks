@@ -79,6 +79,12 @@ describe('classifyFileName', () => {
 		expect(classifyFileName('sessionScores.csv')).toBe('sessionScores');
 		expect(classifyFileName('clientLogs.log')).toBeNull();
 	});
+
+	it('separates I2MC fixation files from ICT fixationData', () => {
+		expect(classifyFileName('I2MC_fixationData_slide1.csv')).toBe('i2mcFixationData');
+		expect(classifyFileName('I2MC_fixationData.csv')).toBe('i2mcFixationData');
+		expect(classifyFileName('i2mc_notes.csv')).toBeNull();
+	});
 });
 
 describe('loadFromFiles', () => {

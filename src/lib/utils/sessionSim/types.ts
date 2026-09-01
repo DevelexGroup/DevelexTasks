@@ -50,6 +50,8 @@ export interface LoadedSession {
 	taskName: string;
 	gazeSamples: GazeSampleDataEntry[];
 	fixationData: FixationDataEntry[];
+	/** Server-side I2MC reference fixations (I2MC_fixationData_slideN.csv), if present. */
+	i2mcFixationData: FixationDataEntry[];
 	sessionScores: SessionScoreDataEntry[];
 	rawGazeData: RawGazeDataEntry[];
 	maxSlides: number;

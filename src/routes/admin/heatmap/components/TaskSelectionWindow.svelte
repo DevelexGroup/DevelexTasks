@@ -231,6 +231,8 @@
 			for (const part of detail.parts ?? []) {
 				for (const file of part.files ?? []) {
 					const lower = file.fileName.toLowerCase();
+					// I2MC files contain "fixationdata" but have a different schema
+					if (lower.includes('i2mc')) continue;
 					if (
 						lower.includes('gazesamples') ||
 						lower.includes('fixationdata') ||
@@ -244,6 +246,7 @@
 			// Also check top-level files
 			for (const file of detail.files ?? []) {
 				const lower = file.fileName.toLowerCase();
+				if (lower.includes('i2mc')) continue;
 				if (
 					lower.includes('gazesamples') ||
 					lower.includes('fixationdata') ||

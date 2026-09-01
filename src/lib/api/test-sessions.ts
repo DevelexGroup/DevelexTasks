@@ -144,6 +144,27 @@ export async function getSessionCountsPerUser(): Promise<Record<string, number>>
 	return apiClient<Record<string, number>>('/test-sessions/counts');
 }
 
+export interface I2mcRecalculationRequest {
+	sessionIds?: string[];
+	userIds?: string[];
+}
+
+export interface I2mcRecalculationResult {
+	queued: number;
+	alreadyProcessed: number;
+	skipped: number;
+}
+
+/** Queues server-side I2MC fixation detection; empty request targets all sessions. */
+export async function recalculateI2mcFixations(
+	request: I2mcRecalculationRequest
+): Promise<I2mcRecalculationResult> {
+	return apiClient<I2mcRecalculationResult>('/test-sessions/i2mc/recalculate', {
+		method: 'POST',
+		body: JSON.stringify(request)
+	});
+}
+
 export async function streamTestSessionFile(
 	sessionId: string,
 	fileId: string

@@ -145,6 +145,19 @@
 		const counted = new Set(slideResult.fixations.map((f) => f.fixation_index));
 		return slideResult.allFixations.map((f) => ({ ...f, counted: counted.has(f.fixation_index) }));
 	});
+	const fixationsI2mc = $derived.by((): OverlayFixation[] => {
+		if (!sim.session) return [];
+		return sim.session.i2mcFixationData
+			.filter((f) => f.slide_index === sim.selectedSlide)
+			.map((f) => ({
+				...f,
+				counted:
+					selectedWindow !== null &&
+					f.timestamp >= selectedWindow.startTime &&
+					f.timestamp <= selectedWindow.endTime
+			}));
+	});
+	const hasI2mcData = $derived((sim.session?.i2mcFixationData.length ?? 0) > 0);
 	const recordedScore = $derived(
 		sim.session?.sessionScores.find((s) => s.slide_index === sim.selectedSlide) ?? null
 	);
@@ -167,6 +180,7 @@
 	let showGaze = $state(true);
 	let showBefore = $state(true);
 	let showAfter = $state(true);
+	let showI2mc = $state(true);
 	let showAois = $state(true);
 
 	// ── Input helpers ──
@@ -245,10 +259,12 @@
 		{gazeAfter}
 		{fixationsBefore}
 		{fixationsAfter}
+		{fixationsI2mc}
 		aois={stageAois}
 		{showGaze}
 		{showBefore}
 		{showAfter}
+		showI2mc={showI2mc && hasI2mcData}
 		{showAois}
 	/>
 {/snippet}
@@ -677,6 +693,15 @@
 							Přepočtená data (barevně)
 							<Switch bind:checked={showAfter} />
 						</label>
+						{#if hasI2mcData}
+							<label
+								class="flex items-center justify-between text-sm text-gray-700"
+								title="Referenční fixace ze serverového I2MC (I2MC_fixationData_slideN.csv)"
+							>
+								I2MC fixace (oranžově)
+								<Switch bind:checked={showI2mc} />
+							</label>
+						{/if}
 						<label class="flex items-center justify-between text-sm text-gray-700">
 							AOI oblasti
 							<Switch bind:checked={showAois} />

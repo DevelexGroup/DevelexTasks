@@ -64,6 +64,7 @@ function buildSession(): LoadedSession {
 		taskName: 'cibule-1',
 		gazeSamples,
 		fixationData: [],
+		i2mcFixationData: [],
 		sessionScores: [],
 		rawGazeData,
 		maxSlides: 1,

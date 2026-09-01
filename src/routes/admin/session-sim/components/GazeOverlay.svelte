@@ -17,10 +17,12 @@
 		gazeAfter: GazePoint[];
 		fixationsBefore: OverlayFixation[];
 		fixationsAfter: OverlayFixation[];
+		fixationsI2mc: OverlayFixation[];
 		aois: AoiRect[];
 		showGaze: boolean;
 		showBefore: boolean;
 		showAfter: boolean;
+		showI2mc: boolean;
 		showAois: boolean;
 	}
 
@@ -31,10 +33,12 @@
 		gazeAfter,
 		fixationsBefore,
 		fixationsAfter,
+		fixationsI2mc,
 		aois,
 		showGaze,
 		showBefore,
 		showAfter,
+		showI2mc,
 		showAois
 	}: Props = $props();
 
@@ -109,6 +113,30 @@
 					y={fixation.eyetracker_y + 5}
 					text-anchor="middle"
 					class="fill-gray-600 text-[13px] font-bold"
+				>
+					{i + 1}
+				</text>
+			{/if}
+		{/each}
+	{/if}
+
+	{#if showI2mc}
+		{#each fixationsI2mc as fixation, i (`${fixation.fixation_index}-${fixation.timestamp}`)}
+			{#if fixation.eyetracker_x !== null && fixation.eyetracker_y !== null}
+				<circle
+					cx={fixation.eyetracker_x}
+					cy={fixation.eyetracker_y}
+					r={fixationRadius(fixation.duration)}
+					fill="rgb(217 119 6 / {fixation.counted ? 0.25 : 0.1})"
+					stroke="rgb(217 119 6 / 0.9)"
+					stroke-width="2"
+					stroke-dasharray={fixation.counted ? undefined : '5 4'}
+				/>
+				<text
+					x={fixation.eyetracker_x}
+					y={fixation.eyetracker_y + 5}
+					text-anchor="middle"
+					class="fill-amber-700 text-[13px] font-bold"
 				>
 					{i + 1}
 				</text>

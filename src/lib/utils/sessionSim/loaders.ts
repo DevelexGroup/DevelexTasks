@@ -14,11 +14,17 @@ import {
 } from '$lib/utils/csvParser';
 import type { LoadedSession } from './types';
 
-type TableKind = 'gazeSamples' | 'fixationData' | 'sessionScores' | 'rawGazeData';
+type TableKind =
+	| 'gazeSamples'
+	| 'fixationData'
+	| 'i2mcFixationData'
+	| 'sessionScores'
+	| 'rawGazeData';
 
 interface SessionTables {
 	gazeSamples: GazeSampleDataEntry[];
 	fixationData: FixationDataEntry[];
+	i2mcFixationData: FixationDataEntry[];
 	sessionScores: SessionScoreDataEntry[];
 	rawGazeData: RawGazeDataEntry[];
 }
@@ -33,18 +39,28 @@ export function classifyFileName(fileName: string): TableKind | null {
 	const lower = fileName.toLowerCase();
 	if (lower.includes('rawgazedata')) return 'rawGazeData';
 	if (lower.includes('gazesamples')) return 'gazeSamples';
+	// I2MC files contain "fixationdata" too, so this branch must come first
+	if (lower.includes('i2mc')) return lower.includes('fixationdata') ? 'i2mcFixationData' : null;
 	if (lower.includes('fixationdata')) return 'fixationData';
 	if (lower.includes('sessionscores')) return 'sessionScores';
 	return null;
 }
 
 function emptyTables(): SessionTables {
-	return { gazeSamples: [], fixationData: [], sessionScores: [], rawGazeData: [] };
+	return {
+		gazeSamples: [],
+		fixationData: [],
+		i2mcFixationData: [],
+		sessionScores: [],
+		rawGazeData: []
+	};
 }
 
 function parseInto(tables: SessionTables, kind: TableKind, csvText: string): void {
 	if (kind === 'gazeSamples') tables.gazeSamples.push(...parseGazeSamplesCsv(csvText));
 	else if (kind === 'fixationData') tables.fixationData.push(...parseFixationDataCsv(csvText));
+	else if (kind === 'i2mcFixationData')
+		tables.i2mcFixationData.push(...parseFixationDataCsv(csvText));
 	else if (kind === 'sessionScores') tables.sessionScores.push(...parseSessionScoresCsv(csvText));
 	else tables.rawGazeData.push(...parseRawGazeDataCsv(csvText));
 }
@@ -62,6 +78,7 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 
 	byTimestamp(tables.gazeSamples);
 	byTimestamp(tables.fixationData);
+	byTimestamp(tables.i2mcFixationData);
 	byTimestamp(tables.rawGazeData);
 
 	const anyRow = tables.rawGazeData[0] ?? tables.gazeSamples[0] ?? tables.fixationData[0];
@@ -81,6 +98,7 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 		taskName: identity.taskName ?? anyRow?.task_name ?? 'unknown',
 		gazeSamples: tables.gazeSamples,
 		fixationData: tables.fixationData,
+		i2mcFixationData: tables.i2mcFixationData,
 		sessionScores: tables.sessionScores,
 		rawGazeData: tables.rawGazeData,
 		maxSlides,

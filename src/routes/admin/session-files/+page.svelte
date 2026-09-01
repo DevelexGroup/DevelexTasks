@@ -19,7 +19,10 @@
 		downloadTestSessionFile,
 		prepareSessionExport,
 		getExportDownloadUrl,
-		deleteTestSession
+		deleteTestSession,
+		recalculateI2mcFixations,
+		type I2mcRecalculationRequest,
+		type I2mcRecalculationResult
 	} from '$lib/api/test-sessions';
 	import { SortBy, SortDirection, UserRole, roleLabels } from '$lib/types/api.types';
 	import type {
@@ -69,6 +72,11 @@
 	let dialogError = $state('');
 	let menuOpen = $state(false);
 	let menuRef = $state<HTMLDivElement | null>(null);
+	let globalMenuOpen = $state(false);
+	let globalMenuRef = $state<HTMLDivElement | null>(null);
+	let openUserMenuId = $state('');
+	let openSessionMenuId = $state('');
+	let isRecalculating = $state(false);
 	let error = $state('');
 	let successMessage = $state('');
 	let successTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -81,7 +89,7 @@
 
 	onDestroy(() => clearTimeout(successTimeout));
 
-	let canDeleteSessions = $derived(hasCapability($authUser, 'SESSION_MANAGE_ALL'));
+	let canManageSessions = $derived(hasCapability($authUser, 'SESSION_MANAGE_ALL'));
 
 	let filteredUsers = $derived.by(() => {
 		const query = userSearch.trim().toLowerCase();
@@ -156,9 +164,12 @@
 	});
 
 	function handleWindowClick(event: MouseEvent) {
-		const target = event.target as Node;
+		const target = event.target as HTMLElement;
 		if (menuOpen && menuRef && !menuRef.contains(target)) {
 			menuOpen = false;
+		}
+		if (globalMenuOpen && globalMenuRef && !globalMenuRef.contains(target)) {
+			globalMenuOpen = false;
 		}
 		if (filterMenuOpen && filterMenuRef && !filterMenuRef.contains(target)) {
 			filterMenuOpen = false;
@@ -166,13 +177,20 @@
 		if (sessionFilterMenuOpen && sessionFilterMenuRef && !sessionFilterMenuRef.contains(target)) {
 			sessionFilterMenuOpen = false;
 		}
+		if ((openUserMenuId || openSessionMenuId) && !target.closest('[data-row-menu]')) {
+			openUserMenuId = '';
+			openSessionMenuId = '';
+		}
 	}
 
 	function handleWindowKey(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
 			menuOpen = false;
+			globalMenuOpen = false;
 			filterMenuOpen = false;
 			sessionFilterMenuOpen = false;
+			openUserMenuId = '';
+			openSessionMenuId = '';
 		}
 	}
 
@@ -433,6 +451,31 @@
 			URL.revokeObjectURL(url);
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se stáhnout soubor';
+		}
+	}
+
+	function i2mcResultMessage(result: I2mcRecalculationResult): string {
+		if (result.queued === 0) {
+			return result.alreadyProcessed > 0
+				? 'I2MC: vše již přepočteno'
+				: 'I2MC: žádná sezení ke zpracování';
+		}
+		const parts = [`${result.queued} zařazeno`];
+		if (result.alreadyProcessed > 0) parts.push(`${result.alreadyProcessed} již hotovo`);
+		if (result.skipped > 0) parts.push(`${result.skipped} bez dat`);
+		return `I2MC přepočet: ${parts.join(', ')}`;
+	}
+
+	async function triggerI2mc(request: I2mcRecalculationRequest) {
+		if (isRecalculating) return;
+		isRecalculating = true;
+		error = '';
+		try {
+			showSuccess(i2mcResultMessage(await recalculateI2mcFixations(request)));
+		} catch (err) {
+			error = err instanceof Error ? err.message : 'Nepodařilo se spustit přepočet I2MC';
+		} finally {
+			isRecalculating = false;
 		}
 	}
 
@@ -708,6 +751,40 @@
 						Exportovat…
 					</button>
 				{/if}
+				{#if canManageSessions}
+					<div class="relative shrink-0" bind:this={globalMenuRef}>
+						<button
+							type="button"
+							aria-label="Další akce"
+							aria-haspopup="menu"
+							aria-expanded={globalMenuOpen}
+							class="inline-flex h-[38px] w-[38px] items-center justify-center rounded-md border border-gray-300 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+							onclick={() => (globalMenuOpen = !globalMenuOpen)}
+						>
+							<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
+						</button>
+						{#if globalMenuOpen}
+							<div
+								role="menu"
+								class="absolute right-0 z-20 mt-1 w-64 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+							>
+								<button
+									type="button"
+									role="menuitem"
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+									disabled={isRecalculating}
+									onclick={() => {
+										globalMenuOpen = false;
+										triggerI2mc({});
+									}}
+								>
+									<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
+									Přepočítat I2MC fixace (vše)
+								</button>
+							</div>
+						{/if}
+					</div>
+				{/if}
 			</div>
 
 			{#if isLoadingUsers}
@@ -796,6 +873,40 @@
 										</span>
 									</div>
 								</button>
+								{#if canManageSessions}
+									<div class="relative shrink-0" data-row-menu>
+										<button
+											type="button"
+											aria-label="Další akce"
+											aria-haspopup="menu"
+											aria-expanded={openUserMenuId === user.id}
+											class="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
+											onclick={() => (openUserMenuId = openUserMenuId === user.id ? '' : user.id)}
+										>
+											<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
+										</button>
+										{#if openUserMenuId === user.id}
+											<div
+												role="menu"
+												class="absolute right-0 z-20 mt-1 w-60 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+											>
+												<button
+													type="button"
+													role="menuitem"
+													class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+													disabled={isRecalculating}
+													onclick={() => {
+														openUserMenuId = '';
+														triggerI2mc({ userIds: [user.id] });
+													}}
+												>
+													<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
+													Přepočítat I2MC fixace
+												</button>
+											</div>
+										{/if}
+									</div>
+								{/if}
 							</div>
 						{/each}
 					</div>
@@ -1030,6 +1141,41 @@
 											<span>{formatTime(session.sessionStartTime)}</span>
 										</div>
 									</button>
+									{#if canManageSessions}
+										<div class="relative shrink-0" data-row-menu>
+											<button
+												type="button"
+												aria-label="Další akce"
+												aria-haspopup="menu"
+												aria-expanded={openSessionMenuId === session.id}
+												class="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
+												onclick={() =>
+													(openSessionMenuId = openSessionMenuId === session.id ? '' : session.id)}
+											>
+												<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
+											</button>
+											{#if openSessionMenuId === session.id}
+												<div
+													role="menu"
+													class="absolute right-0 z-20 mt-1 w-60 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+												>
+													<button
+														type="button"
+														role="menuitem"
+														class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+														disabled={isRecalculating}
+														onclick={() => {
+															openSessionMenuId = '';
+															triggerI2mc({ sessionIds: [session.id] });
+														}}
+													>
+														<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
+														Přepočítat I2MC fixace
+													</button>
+												</div>
+											{/if}
+										</div>
+									{/if}
 								</div>
 							{/each}
 						</div>
@@ -1094,7 +1240,7 @@
 									Stáhnout vše jako ZIP
 								{/if}
 							</button>
-							{#if canDeleteSessions}
+							{#if canManageSessions}
 								<div class="relative" bind:this={menuRef}>
 									<button
 										type="button"
@@ -1110,8 +1256,21 @@
 									{#if menuOpen}
 										<div
 											role="menu"
-											class="absolute right-0 z-20 mt-1 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+											class="absolute right-0 z-20 mt-1 w-60 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
 										>
+											<button
+												type="button"
+												role="menuitem"
+												class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+												disabled={isRecalculating}
+												onclick={() => {
+													menuOpen = false;
+													triggerI2mc({ sessionIds: [activeSessionId] });
+												}}
+											>
+												<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
+												Přepočítat I2MC fixace
+											</button>
 											<button
 												type="button"
 												role="menuitem"
