@@ -1,3 +1,4 @@
+import type { FixationDataEntry } from '$lib/database/db.types';
 import { buildCorrections, buildGeometryMap, distinctSlides } from './builders';
 import { createFluencyResolver } from './metrics/fluencyRegistry';
 import { runReplay } from './replay';
@@ -88,11 +89,37 @@ export class SessionSimState {
 			: null;
 
 		this.selectedSlide = slides[0] ?? null;
-		this.capturedAois = {};
+
+		// Geometry recorded during the live session beats DOM re-capture: it has
+		// real rects, lifetimes, and works even when the stimulus can't render.
+		const recorded = session.recordedGeometry.filter((geometry) => geometry.aois.length > 0);
+		const recordedViewport = recorded.find(
+			(geometry) => geometry.viewport.width > 0 && geometry.viewport.height > 0
+		)?.viewport;
+		// Viewport priority: recorded geometry > meta.json > manual entry
+		const viewport = recordedViewport ?? session.meta?.viewport;
+		if (viewport) {
+			this.viewportWidth = viewport.width;
+			this.viewportHeight = viewport.height;
+		}
+		const recordedAois: Record<number, AoiRect[]> = {};
+		for (const geometry of recorded) {
+			recordedAois[geometry.slideIndex] = [
+				...(recordedAois[geometry.slideIndex] ?? []),
+				...geometry.aois
+			];
+		}
+		this.capturedAois = recordedAois;
 		this.slideOverrides = {};
 		this.sessionCorrection = identityCorrection(this.viewportWidth / 2, this.viewportHeight / 2);
 		this.result = null;
 		this.scheduleRecompute();
+	}
+
+	/** Replaces the I2MC reference fixations, e.g. with a headless server run. */
+	setI2mcFixationData(entries: FixationDataEntry[]): void {
+		if (!this.session) return;
+		this.session.i2mcFixationData = [...entries].sort((a, b) => a.timestamp - b.timestamp);
 	}
 
 	setViewport(width: number, height: number): void {

@@ -107,7 +107,7 @@ export function runFixationPipeline(input: FixationPipelineInput): FixationPipel
 
 		if (input.options.aoiAttribution === 'centroid') {
 			const geometry = input.geometryBySlide.get(entry.slide_index);
-			if (geometry) entry.aoi = hitTestAll(fixation.x, fixation.y, geometry.aois);
+			if (geometry) entry.aoi = hitTestAll(fixation.x, fixation.y, geometry.aois, entry.timestamp);
 		}
 
 		finished.push(entry);
@@ -146,7 +146,9 @@ export function runFixationPipeline(input: FixationPipelineInput): FixationPipel
 		currentSlide = slide;
 
 		const geometry = input.geometryBySlide.get(slide);
-		currentAoi = geometry ? hitTestAll(corrected.x, corrected.y, geometry.aois) : null;
+		currentAoi = geometry
+			? hitTestAll(corrected.x, corrected.y, geometry.aois, sample.timestamp)
+			: null;
 
 		aoiTimeline.push({ timestamp: sample.timestamp, aoi: currentAoi });
 		transformedRaw.push(corrected);

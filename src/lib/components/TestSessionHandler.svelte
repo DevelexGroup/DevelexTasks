@@ -23,6 +23,7 @@
 	import { get } from 'svelte/store';
 	import { authUser } from '$lib/stores/auth';
 	import { bridgeLog, clientLog } from '$lib/utils/clientLogger';
+	import { aoiGeometryLog } from '$lib/utils/aoiGeometryLog';
 	import { formatTaskName } from '$lib/utils/taskMode';
 	import { buildSessionMeta, sessionMetaAsFile } from '$lib/utils/sessionMeta';
 	import { PartType } from '$lib/types/api.types';
@@ -57,6 +58,7 @@
 	$effect(() => {
 		if ($taskStage === TaskStage.Task) {
 			clientLog.start();
+			aoiGeometryLog.reset();
 			analyticsManager.startLogging();
 			const task = untrack(() => $currentTask);
 			if (!task) {
@@ -203,12 +205,15 @@
 			return [];
 		}
 		// Get from databaseExport
-		return await DatabaseExporter.exportToFiles({
+		const files = await DatabaseExporter.exportToFiles({
 			mode: 'session',
 			sessionId,
 			childId,
 			slideIndex: slideIndex
 		});
+		const geometryFile = aoiGeometryLog.exportSlideAsFile(slideIndex);
+		if (geometryFile) files.push(geometryFile);
+		return files;
 	};
 
 	const uploadFilesForSlide = async (

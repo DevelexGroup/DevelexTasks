@@ -85,6 +85,15 @@ describe('classifyFileName', () => {
 		expect(classifyFileName('I2MC_fixationData.csv')).toBe('i2mcFixationData');
 		expect(classifyFileName('i2mc_notes.csv')).toBeNull();
 	});
+
+	it('routes recorded AOI geometry files', () => {
+		expect(classifyFileName('aoiGeometry_slide3.json')).toBe('aoiGeometry');
+	});
+
+	it('routes the session meta file by exact name', () => {
+		expect(classifyFileName('meta.json')).toBe('sessionMeta');
+		expect(classifyFileName('somethingmeta.json')).toBeNull();
+	});
 });
 
 describe('loadFromFiles', () => {
@@ -110,6 +119,88 @@ describe('loadFromFiles', () => {
 		const { samplesCsv } = buildCsvs();
 		const session = await loadFromFiles([textFile('gazeSamples_slide2.csv', samplesCsv)]);
 		expect(session.warnings.some((w) => w.includes('rawGazeData'))).toBe(true);
+	});
+
+	it('parses recorded AOI geometry files and skips invalid ones', async () => {
+		const { rawCsv } = buildCsvs();
+		const geometry = {
+			version: 1,
+			slideIndex: 1,
+			stimulusId: '5',
+			viewport: { width: 1920, height: 1080 },
+			aois: [
+				{
+					id: 'track',
+					left: 10,
+					top: 20,
+					right: 110,
+					bottom: 120,
+					bufferSize: 50,
+					fromTs: 1723380000000,
+					toTs: 1723380002000
+				},
+				{ id: 'broken', left: 'x' }
+			]
+		};
+		const session = await loadFromFiles([
+			textFile('rawGazeData_slide1.csv', rawCsv),
+			textFile('aoiGeometry_slide1.json', JSON.stringify(geometry)),
+			textFile('aoiGeometry_slide2.json', 'not json')
+		]);
+
+		expect(session.recordedGeometry).toHaveLength(1);
+		expect(session.recordedGeometry[0]).toMatchObject({
+			slideIndex: 1,
+			stimulusId: '5',
+			viewport: { width: 1920, height: 1080 }
+		});
+		expect(session.recordedGeometry[0].aois).toEqual([
+			{
+				id: 'track',
+				left: 10,
+				top: 20,
+				right: 110,
+				bottom: 120,
+				bufferSize: 50,
+				fromTs: 1723380000000,
+				toTs: 1723380002000
+			}
+		]);
+	});
+
+	it('extracts viewport, frequency and sample counts from meta.json', async () => {
+		const { rawCsv } = buildCsvs();
+		const meta = {
+			metaVersion: 1,
+			session: { samplesPerSlide: { 1: 2, 2: 50 } },
+			viewport: { innerWidth: 1536, innerHeight: 864 },
+			tracker: { signal: { measuredFrequencyHz: 119.6 } }
+		};
+		const session = await loadFromFiles([
+			textFile('rawGazeData_slide1.csv', rawCsv),
+			textFile('meta.json', JSON.stringify(meta))
+		]);
+
+		expect(session.meta).toEqual({
+			viewport: { width: 1536, height: 864 },
+			measuredFrequencyHz: 119.6,
+			samplesPerSlide: { 1: 2, 2: 50 }
+		});
+		// Slide 1 has both recorded samples loaded; slide 2 lost all 50
+		expect(session.warnings.some((w) => w.includes('Slide 2: načteno 0 z 50 raw vzorků'))).toBe(
+			true
+		);
+		expect(session.warnings.some((w) => w.includes('Slide 1:'))).toBe(false);
+	});
+
+	it('tolerates a malformed meta.json', async () => {
+		const { rawCsv } = buildCsvs();
+		const session = await loadFromFiles([
+			textFile('rawGazeData_slide1.csv', rawCsv),
+			textFile('meta.json', 'not json')
+		]);
+		expect(session.meta).toBeNull();
+		expect(session.warnings.some((w) => w.includes('vzorků'))).toBe(false);
 	});
 });
 

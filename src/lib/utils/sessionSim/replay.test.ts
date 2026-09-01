@@ -87,6 +87,8 @@ function buildSession(): LoadedSession {
 		i2mcFixationData: [],
 		sessionScores: [],
 		rawGazeData,
+		recordedGeometry: [],
+		meta: null,
 		maxSlides: 1,
 		warnings: []
 	};
@@ -244,6 +246,8 @@ describe('runReplay', () => {
 			i2mcFixationData: [],
 			sessionScores: [],
 			rawGazeData,
+			recordedGeometry: [],
+			meta: null,
 			maxSlides: 1,
 			warnings: []
 		};
@@ -308,6 +312,8 @@ describe('runReplay', () => {
 			i2mcFixationData: [],
 			sessionScores: [],
 			rawGazeData,
+			recordedGeometry: [],
+			meta: null,
 			maxSlides: 1,
 			warnings: []
 		};

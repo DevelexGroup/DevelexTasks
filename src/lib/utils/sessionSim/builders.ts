@@ -18,8 +18,12 @@ export function buildGeometryMap(
 	for (const [slideKey, aois] of Object.entries(capturedAois)) {
 		const slide = Number(slideKey);
 		const combined = [...aois];
-		if (synthesize.dwellArrow) combined.push(synthesizeDwellArrowAoi(viewport, slide));
-		if (synthesize.dwellEye) combined.push(synthesizeDwellEyeAoi(slide));
+		// Recorded geometry already contains the real dwell AOIs
+		const ids = new Set(aois.map((aoi) => aoi.id));
+		if (synthesize.dwellArrow && !ids.has(`slide-${slide}_end`))
+			combined.push(synthesizeDwellArrowAoi(viewport, slide));
+		if (synthesize.dwellEye && !ids.has(`slide-${slide}_initial`))
+			combined.push(synthesizeDwellEyeAoi(slide));
 		map.set(slide, {
 			slideIndex: slide,
 			stimulusId: stimulusBySlide[slide] ?? 'null',

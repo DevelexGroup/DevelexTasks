@@ -12,14 +12,16 @@ import {
 	parseRawGazeDataCsv,
 	parseSessionScoresCsv
 } from '$lib/utils/csvParser';
-import type { LoadedSession } from './types';
+import type { AoiRect, LoadedSession, RecordedSessionMeta, RecordedSlideGeometry } from './types';
 
 type TableKind =
 	| 'gazeSamples'
 	| 'fixationData'
 	| 'i2mcFixationData'
 	| 'sessionScores'
-	| 'rawGazeData';
+	| 'rawGazeData'
+	| 'aoiGeometry'
+	| 'sessionMeta';
 
 interface SessionTables {
 	gazeSamples: GazeSampleDataEntry[];
@@ -27,6 +29,8 @@ interface SessionTables {
 	i2mcFixationData: FixationDataEntry[];
 	sessionScores: SessionScoreDataEntry[];
 	rawGazeData: RawGazeDataEntry[];
+	recordedGeometry: RecordedSlideGeometry[];
+	sessionMeta: RecordedSessionMeta | null;
 }
 
 /** Minimal file shape shared by DOM File and test fixtures. */
@@ -37,6 +41,8 @@ export interface NamedTextFile {
 
 export function classifyFileName(fileName: string): TableKind | null {
 	const lower = fileName.toLowerCase();
+	if (lower === 'meta.json') return 'sessionMeta';
+	if (lower.includes('aoigeometry')) return 'aoiGeometry';
 	if (lower.includes('rawgazedata')) return 'rawGazeData';
 	if (lower.includes('gazesamples')) return 'gazeSamples';
 	// I2MC files contain "fixationdata" too, so this branch must come first
@@ -52,17 +58,100 @@ function emptyTables(): SessionTables {
 		fixationData: [],
 		i2mcFixationData: [],
 		sessionScores: [],
-		rawGazeData: []
+		rawGazeData: [],
+		recordedGeometry: [],
+		sessionMeta: null
 	};
 }
 
-function parseInto(tables: SessionTables, kind: TableKind, csvText: string): void {
-	if (kind === 'gazeSamples') tables.gazeSamples.push(...parseGazeSamplesCsv(csvText));
-	else if (kind === 'fixationData') tables.fixationData.push(...parseFixationDataCsv(csvText));
-	else if (kind === 'i2mcFixationData')
-		tables.i2mcFixationData.push(...parseFixationDataCsv(csvText));
-	else if (kind === 'sessionScores') tables.sessionScores.push(...parseSessionScoresCsv(csvText));
-	else tables.rawGazeData.push(...parseRawGazeDataCsv(csvText));
+function parseSessionMetaJson(jsonText: string): RecordedSessionMeta | null {
+	let parsed: unknown;
+	try {
+		parsed = JSON.parse(jsonText);
+	} catch {
+		return null;
+	}
+	if (typeof parsed !== 'object' || parsed === null) return null;
+	const doc = parsed as Record<string, unknown>;
+
+	const viewportDoc = (doc.viewport ?? {}) as Record<string, unknown>;
+	const width = Number(viewportDoc.innerWidth);
+	const height = Number(viewportDoc.innerHeight);
+	const viewport = width > 0 && height > 0 ? { width, height } : null;
+
+	const tracker = (doc.tracker ?? {}) as Record<string, unknown>;
+	const signal = (tracker.signal ?? {}) as Record<string, unknown>;
+	const measured = Number(signal.measuredFrequencyHz);
+	const measuredFrequencyHz = Number.isFinite(measured) && measured > 0 ? measured : null;
+
+	const session = (doc.session ?? {}) as Record<string, unknown>;
+	const samplesPerSlide: Record<number, number> = {};
+	if (typeof session.samplesPerSlide === 'object' && session.samplesPerSlide !== null) {
+		for (const [slideKey, count] of Object.entries(session.samplesPerSlide)) {
+			const slide = Number(slideKey);
+			if (Number.isFinite(slide) && Number.isFinite(Number(count))) {
+				samplesPerSlide[slide] = Number(count);
+			}
+		}
+	}
+
+	return { viewport, measuredFrequencyHz, samplesPerSlide };
+}
+
+function parseAoiGeometryJson(jsonText: string): RecordedSlideGeometry | null {
+	let parsed: unknown;
+	try {
+		parsed = JSON.parse(jsonText);
+	} catch {
+		return null;
+	}
+	if (typeof parsed !== 'object' || parsed === null) return null;
+	const doc = parsed as Record<string, unknown>;
+	const slideIndex = Number(doc.slideIndex);
+	if (!Number.isFinite(slideIndex) || slideIndex < 0) return null;
+
+	const viewport = (doc.viewport ?? {}) as Record<string, unknown>;
+	const aois: AoiRect[] = [];
+	for (const raw of Array.isArray(doc.aois) ? doc.aois : []) {
+		const aoi = raw as Record<string, unknown>;
+		if (typeof aoi.id !== 'string') continue;
+		const numbers = [aoi.left, aoi.top, aoi.right, aoi.bottom].map(Number);
+		if (numbers.some((value) => !Number.isFinite(value))) continue;
+		const rect: AoiRect = {
+			id: aoi.id,
+			left: numbers[0],
+			top: numbers[1],
+			right: numbers[2],
+			bottom: numbers[3],
+			bufferSize: Number.isFinite(Number(aoi.bufferSize)) ? Number(aoi.bufferSize) : 0
+		};
+		if (Number.isFinite(Number(aoi.fromTs))) rect.fromTs = Number(aoi.fromTs);
+		if (Number.isFinite(Number(aoi.toTs))) rect.toTs = Number(aoi.toTs);
+		aois.push(rect);
+	}
+
+	return {
+		slideIndex,
+		stimulusId: typeof doc.stimulusId === 'string' ? doc.stimulusId : null,
+		viewport: {
+			width: Number.isFinite(Number(viewport.width)) ? Number(viewport.width) : 0,
+			height: Number.isFinite(Number(viewport.height)) ? Number(viewport.height) : 0
+		},
+		aois
+	};
+}
+
+function parseInto(tables: SessionTables, kind: TableKind, text: string): void {
+	if (kind === 'gazeSamples') tables.gazeSamples.push(...parseGazeSamplesCsv(text));
+	else if (kind === 'fixationData') tables.fixationData.push(...parseFixationDataCsv(text));
+	else if (kind === 'i2mcFixationData') tables.i2mcFixationData.push(...parseFixationDataCsv(text));
+	else if (kind === 'sessionScores') tables.sessionScores.push(...parseSessionScoresCsv(text));
+	else if (kind === 'aoiGeometry') {
+		const geometry = parseAoiGeometryJson(text);
+		if (geometry) tables.recordedGeometry.push(geometry);
+	} else if (kind === 'sessionMeta') {
+		tables.sessionMeta = parseSessionMetaJson(text) ?? tables.sessionMeta;
+	} else tables.rawGazeData.push(...parseRawGazeDataCsv(text));
 }
 
 interface SessionIdentity {
@@ -92,6 +181,23 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 			? Math.max(...tables.gazeSamples.map((row) => row.slide_index))
 			: (anyRow?.slide_index ?? 0);
 
+	// The meta file records how many raw samples each slide had live
+	if (tables.sessionMeta) {
+		const loadedPerSlide = new Map<number, number>();
+		for (const row of tables.rawGazeData) {
+			loadedPerSlide.set(row.slide_index, (loadedPerSlide.get(row.slide_index) ?? 0) + 1);
+		}
+		for (const [slideKey, recorded] of Object.entries(tables.sessionMeta.samplesPerSlide)) {
+			const slide = Number(slideKey);
+			const loaded = loadedPerSlide.get(slide) ?? 0;
+			if (loaded < recorded) {
+				warnings.push(
+					`Slide ${slide}: načteno ${loaded} z ${recorded} raw vzorků zaznamenaných při nahrávání.`
+				);
+			}
+		}
+	}
+
 	return {
 		childId: identity.childId ?? anyRow?.child_id ?? 'unknown',
 		sessionId: identity.sessionId ?? anyRow?.session_id ?? 'unknown',
@@ -101,6 +207,8 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 		i2mcFixationData: tables.i2mcFixationData,
 		sessionScores: tables.sessionScores,
 		rawGazeData: tables.rawGazeData,
+		recordedGeometry: tables.recordedGeometry.sort((a, b) => a.slideIndex - b.slideIndex),
+		meta: tables.sessionMeta,
 		maxSlides,
 		warnings
 	};

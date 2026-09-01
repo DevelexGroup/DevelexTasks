@@ -7,6 +7,7 @@
 	import { GAZE_MANAGER_KEY } from '$lib/types/general.types';
 	import type { AnalyticsManager } from '$lib/utils/analyticsManager';
 	import { debugMode, debugOptions } from '$lib/stores/debug';
+	import { aoiGeometryLog } from '$lib/utils/aoiGeometryLog';
 
 	const CANCEL_TIMEOUT_MS = 300;
 	const DWELL_TOLERANCE_MS = 100;
@@ -214,6 +215,8 @@
 				bufferSize: bufferSize
 			}
 		});
+
+		aoiGeometryLog.register(wrapperElement, id, bufferSize);
 	}
 
 	function unregisterDwellTarget() {
@@ -233,6 +236,8 @@
 			interaction: 'intersect',
 			element: wrapperElement
 		});
+
+		aoiGeometryLog.unregister(wrapperElement);
 	}
 </script>
 

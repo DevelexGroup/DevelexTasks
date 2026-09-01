@@ -31,10 +31,17 @@ přepočítávat – nástroj na obojí upozorní.
    délky (délka = aktuální okno, ne čas od začátku). Architektura počítá s budoucími
    post-processing kroky (např. slučování fixací) – viz `FixationPostProcessor`
    v `src/lib/utils/sessionSim/types.ts`.
-3. **AOI geometrie** – stimul každého slidu se vykreslí ve screenshot režimu
-   podle zaznamenaného `stimulus_id` (nikdy se znovu nespouští výběrová/náhodná
-   logika) a přečtou se obdélníky `GazeArea` elementů. Rozlišení okna při
-   nahrávání se neukládá, proto se zadává ručně.
+3. **AOI geometrie** – přednostně se načte geometrie zaznamenaná při sběru
+   (`aoiGeometry_slide{N}.json`): skutečné obdélníky, buffery a intervaly
+   platnosti všech AOI registrovaných v SDK (včetně dwell oka/šipky a
+   dwell-symbols), plus rozlišení okna při nahrávání. U starších sezení bez
+   těchto souborů se stimul každého slidu vykreslí ve screenshot režimu podle
+   zaznamenaného `stimulus_id` (nikdy se znovu nespouští výběrová/náhodná
+   logika) a přečtou se obdélníky `GazeArea` elementů; rozlišení se pak vezme
+   z `meta.json` (viewport při nahrávání), a teprve bez něj se zadává ručně.
+   Z `meta.json` se dále předvyplní frekvence pro serverové I2MC (naměřená
+   frekvence zaokrouhlená na běžnou vzorkovací frekvenci) a porovnají se počty
+   raw vzorků na slide se zaznamenanými – při ztrátě dat se zobrazí varování.
 4. **Výstupy** – překreslené fixace/AOI/gaze nad stimulem (před/po) – náhled
    ukazuje vše se `slide_index` slidu, fixace mimo efektivní okno (a tedy mimo
    skóre) čárkovaně, tabulka
@@ -89,19 +96,23 @@ správnější výsledek, který se ale se zaznamenaným neshodne.
   takže sedí – časy fixací z těchto záznamů s nimi proto nelze přímo srovnávat;
   narovná je volba **Opravit časy vzorků**. Novější záznamy razítkují vzorky
   bridge časem a fixace časem skutečného začátku přímo při sběru.
-- **AOI `slide-N_initial` a `slide-N_end`** se syntetizují staticky (obojí
-  volitelné, 125×75 px, buffer 50). Živě je každý namontovaný jen po část
-  slidu (oko před dwell-finish, šipka po něm); replay je drží po celé okno.
-- **AOI obdélníky** se čtou čerstvě z layoutu; živě jsou kešované přes rAF,
-  takže se mohou lišit o subpixely.
-- Souhlas AOI závisí na správně zadaném rozlišení nahrávky (a 100% zoomu
-  prohlížeče při nahrávání).
+- Následující odchylky platí jen pro sezení bez zaznamenané geometrie
+  (`aoiGeometry_slide{N}.json`); s ní se používají skutečné obdélníky
+  a intervaly platnosti:
+  - **AOI `slide-N_initial` a `slide-N_end`** se syntetizují staticky (obojí
+    volitelné, 125×75 px, buffer 50). Živě je každý namontovaný jen po část
+    slidu (oko před dwell-finish, šipka po něm); replay je drží po celé okno.
+  - **AOI obdélníky** se čtou čerstvě z layoutu; živě jsou kešované přes rAF,
+    takže se mohou lišit o subpixely.
+  - Souhlas AOI závisí na správně zadaném rozlišení nahrávky (a 100% zoomu
+    prohlížeče při nahrávání).
 
 ## Omezení
 
 - **dwell-symbols** – layout je za běhu náhodný a `stimulus_id` je konstantní,
-  geometrii nelze rekonstruovat; slide se přepočítá bez AOI (zachová se
-  zaznamenané `aoi`).
+  geometrii nelze rekonstruovat z DOM. Se zaznamenanou geometrií
+  (`aoiGeometry_slide{N}.json`) se přepočet povede; u starších sezení se slide
+  přepočítá bez AOI (zachová se zaznamenané `aoi`).
 - **paired-reading** – zatím není v registru stimulů (`stimulusExport/registry.ts`);
   po doplnění bude fungovat automaticky.
 - Fluency skóre se přepočítává jen pro úlohy, které ho definují (cibule,

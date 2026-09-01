@@ -21,6 +21,7 @@
 		getExportDownloadUrl,
 		deleteTestSession,
 		recalculateI2mcFixations,
+		I2MC_DEFAULT_PARAMETERS,
 		type I2mcRecalculationRequest,
 		type I2mcRecalculationResult
 	} from '$lib/api/test-sessions';
@@ -496,21 +497,19 @@
 
 	function i2mcResultMessage(result: I2mcRecalculationResult): string {
 		if (result.queued === 0) {
-			return result.alreadyProcessed > 0
-				? 'I2MC: vše již přepočteno'
-				: 'I2MC: žádná sezení ke zpracování';
+			return 'I2MC: žádná sezení ke zpracování';
 		}
 		const parts = [`${result.queued} zařazeno`];
-		if (result.alreadyProcessed > 0) parts.push(`${result.alreadyProcessed} již hotovo`);
 		if (result.skipped > 0) parts.push(`${result.skipped} bez dat`);
 		return `I2MC přepočet: ${parts.join(', ')}`;
 	}
 
-	async function triggerI2mc(request: I2mcRecalculationRequest) {
+	async function triggerI2mc(selection: Omit<I2mcRecalculationRequest, 'parameters'>) {
 		if (isRecalculating) return;
 		isRecalculating = true;
 		error = '';
 		try {
+			const request = { ...selection, parameters: I2MC_DEFAULT_PARAMETERS };
 			showSuccess(i2mcResultMessage(await recalculateI2mcFixations(request)));
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se spustit přepočet I2MC';

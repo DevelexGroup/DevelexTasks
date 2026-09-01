@@ -143,18 +143,53 @@ export async function getSessionCountsPerUser(): Promise<Record<string, number>>
 	return apiClient<Record<string, number>>('/test-sessions/counts');
 }
 
+export interface I2mcParameters {
+	xres: number;
+	yres: number;
+	/** Sampling rate in Hz; 0 = estimate from device timestamps. */
+	freq: number;
+	eyes: 'both' | 'average';
+	gapSplitMs: number;
+	minFixDur: number;
+	/** Screen size [widthCm, heightCm]; omitted = 24" 16:9 monitor (53.13 × 29.89 cm). */
+	scrSz?: [number, number];
+	dist: number;
+}
+
+/** Mirrors the server script's COMMON_RATES. */
+export const I2MC_COMMON_RATES = [30, 60, 75, 90, 120, 150, 200, 250, 300, 500, 600, 1000, 1200];
+
+/** Snaps a measured sampling rate to a common tracker rate within 5 %, like the server script. */
+export function snapToCommonRate(freq: number): number {
+	for (const rate of I2MC_COMMON_RATES) {
+		if (Math.abs(freq - rate) / rate <= 0.05) return rate;
+	}
+	return Math.max(1, Math.round(freq));
+}
+
+/** Mirrors the server script defaults: 24" 1920×1080 monitor at 65 cm, canonical I2MC 40 ms. */
+export const I2MC_DEFAULT_PARAMETERS: I2mcParameters = {
+	xres: 1920,
+	yres: 1080,
+	freq: 0,
+	eyes: 'both',
+	gapSplitMs: 200,
+	minFixDur: 40,
+	dist: 65
+};
+
 export interface I2mcRecalculationRequest {
 	sessionIds?: string[];
 	userIds?: string[];
+	parameters: I2mcParameters;
 }
 
 export interface I2mcRecalculationResult {
 	queued: number;
-	alreadyProcessed: number;
 	skipped: number;
 }
 
-/** Queues server-side I2MC fixation detection; empty request targets all sessions. */
+/** Queues server-side I2MC fixation detection; empty selection targets all sessions. Existing I2MC output is replaced. */
 export async function recalculateI2mcFixations(
 	request: I2mcRecalculationRequest
 ): Promise<I2mcRecalculationResult> {
@@ -162,6 +197,29 @@ export async function recalculateI2mcFixations(
 		method: 'POST',
 		body: JSON.stringify(request)
 	});
+}
+
+export interface PostProcessingOutputFile {
+	fileName: string;
+	content: string;
+}
+
+/** Runs I2MC over the given rawGazeData CSVs (plus optional aoiGeometry JSONs) and returns the fixation CSVs without storing anything. */
+export async function runI2mcHeadless(
+	inputFiles: { name: string; content: string }[],
+	parameters: I2mcParameters
+): Promise<PostProcessingOutputFile[]> {
+	const formData = new FormData();
+	for (const file of inputFiles) {
+		const type = file.name.toLowerCase().endsWith('.json') ? 'application/json' : 'text/csv';
+		formData.append('files', new File([file.content], file.name, { type }));
+	}
+	formData.append('parameters', new Blob([JSON.stringify(parameters)], { type: 'application/json' }));
+	const result = await apiClient<{ files: PostProcessingOutputFile[] }>(
+		'/test-sessions/post-processing/i2mc/run',
+		{ method: 'POST', body: formData }
+	);
+	return result.files;
 }
 
 export async function streamTestSessionFile(sessionId: string, fileId: string): Promise<Response> {

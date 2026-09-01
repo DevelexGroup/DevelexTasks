@@ -7,6 +7,7 @@
 	import type { GazeManager } from 'develex-js-sdk';
 	import { getContext, onDestroy, onMount, type Snippet } from 'svelte';
 	import { debugMode, debugOptions } from '$lib/stores/debug';
+	import { aoiGeometryLog } from '$lib/utils/aoiGeometryLog';
 
 	interface Props {
 		id: string;
@@ -82,6 +83,9 @@
 				settings: { bufferSize }
 			});
 		}
+		if (registerFixation || registerIntersect) {
+			aoiGeometryLog.register(element, id, bufferSize);
+		}
 
 		document.addEventListener('mousemove', handleMouseMove);
 	});
@@ -106,6 +110,7 @@
 				element
 			});
 		}
+		aoiGeometryLog.unregister(element);
 
 		document.removeEventListener('mousemove', handleMouseMove);
 

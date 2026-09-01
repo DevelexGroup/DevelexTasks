@@ -54,8 +54,21 @@ export interface LoadedSession {
 	i2mcFixationData: FixationDataEntry[];
 	sessionScores: SessionScoreDataEntry[];
 	rawGazeData: RawGazeDataEntry[];
+	/** AOI geometry recorded during the session (aoiGeometry_slideN.json), if present. */
+	recordedGeometry: RecordedSlideGeometry[];
+	/** Info extracted from the session's meta.json, if present. */
+	meta: RecordedSessionMeta | null;
 	maxSlides: number;
 	warnings: string[];
+}
+
+/** The sim-relevant subset of the recorded meta.json. */
+export interface RecordedSessionMeta {
+	/** Browser viewport (innerWidth × innerHeight) at recording time. */
+	viewport: { width: number; height: number } | null;
+	measuredFrequencyHz: number | null;
+	/** Raw sample counts per slide as recorded live. */
+	samplesPerSlide: Record<number, number>;
 }
 
 export interface AoiRect {
@@ -66,6 +79,17 @@ export interface AoiRect {
 	bottom: number;
 	bufferSize: number;
 	synthetic?: boolean;
+	/** Validity interval in epoch ms; missing bound = open-ended. */
+	fromTs?: number;
+	toTs?: number;
+}
+
+/** One aoiGeometry_slideN.json recorded during a live session. */
+export interface RecordedSlideGeometry {
+	slideIndex: number;
+	stimulusId: string | null;
+	viewport: { width: number; height: number };
+	aois: AoiRect[];
 }
 
 export interface SlideGeometry {

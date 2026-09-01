@@ -218,3 +218,25 @@ Surová data z eyetrackeru, logovaná pro každý příchozí vzorek zařízení
 - `Right Validity`: boolean (`true`/`false`) – validita vzorku pravého oka.
 
 - `Right Pupil Diameter`: číslo – průměr zornice pravého oka.
+
+### Soubor *aoiGeometry_slide{N}.json*
+
+Geometrie AOI zaznamenaná při sběru, jeden JSON na slide vedle CSV tabulek. Umožňuje spolehlivý přepočet AOI zásahů v postprocessingu (simulace sezení, serverové I2MC) včetně dynamických AOI (dwell oko/šipka, dwell-symbols).
+
+- `version`: číslo – verze formátu (aktuálně 1).
+
+- `slideIndex`: číslo – pořadí slidu.
+
+- `stimulusId`: text nebo `null` – stimulus slidu (viz *gazeSamples*).
+
+- `viewport`: objekt `{ width, height }` – rozměry okna prohlížeče v pixelech při nahrávání; souřadnice AOI platí jen pro tento viewport.
+
+- `aois`: seznam objektů, jeden na interval registrace AOI v SDK:
+
+  - `id`: text – ID AOI (viz seznam standardních AOI u *gazeSamples*).
+  - `left`, `top`, `right`, `bottom`: číslo – obdélník AOI v pixelech, relativní k oknu aplikace.
+  - `bufferSize`: číslo – rozšíření obdélníku v pixelech na všech stranách při vyhodnocení zásahu.
+  - `fromTs`: číslo – epoch ms začátku platnosti (registrace AOI); stejná časová osa jako `Timestamp` v tabulkách.
+  - `toTs`: číslo – epoch ms konce platnosti (odregistrace); chybí, pokud AOI zůstalo aktivní do konce slidu.
+
+  Stejné `id` se může opakovat s různými intervaly (např. dwell oko po přerušení dwellování, měnící se cíle v dwell-symbols).

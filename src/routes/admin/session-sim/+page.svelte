@@ -18,6 +18,13 @@
 	import { captureAoiRects } from './components/aoiCapture';
 	import { downloadBlob, settleStimulus } from '$lib/utils/stimulusExport/capture';
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
+	import {
+		runI2mcHeadless,
+		snapToCommonRate,
+		I2MC_DEFAULT_PARAMETERS,
+		type I2mcParameters
+	} from '$lib/api/test-sessions';
+	import { parseFixationDataCsv } from '$lib/utils/csvParser';
 	import type { RawGazeDataEntry } from '$lib/database/db.types';
 	import { buildCorrectedZip, correctedZipName } from '$lib/utils/sessionSim/export';
 	import { SessionSimState } from '$lib/utils/sessionSim/simState.svelte';
@@ -103,6 +110,16 @@
 
 	function handleSessionLoaded(session: LoadedSession) {
 		sim.loadSession(session);
+		// Recorded geometry and meta.json carry the real recording viewport
+		viewportW = sim.viewportWidth;
+		viewportH = sim.viewportHeight;
+		const measured = session.meta?.measuredFrequencyHz;
+		i2mcParams = {
+			...i2mcParams,
+			xres: sim.viewportWidth,
+			yres: sim.viewportHeight,
+			freq: measured ? snapToCommonRate(measured) : I2MC_DEFAULT_PARAMETERS.freq
+		};
 		void captureAllGeometry();
 	}
 
@@ -197,6 +214,46 @@
 	function formatSessionDate(sessionId: string): string {
 		const ms = parseFloat(sessionId);
 		return Number.isFinite(ms) ? DatabaseExporter.formatTimestamp(ms, 'simple') : sessionId;
+	}
+
+	// ── Server I2MC ──
+	let i2mcParams = $state<I2mcParameters>({ ...I2MC_DEFAULT_PARAMETERS });
+	let i2mcScrW = $state<number | null>(null);
+	let i2mcScrH = $state<number | null>(null);
+	let i2mcRunning = $state(false);
+	let i2mcStatus = $state('');
+	let i2mcError = $state('');
+
+	function nullableNumberOf(event: Event): number | null {
+		const value = parseFloat((event.currentTarget as HTMLInputElement).value);
+		return Number.isFinite(value) ? value : null;
+	}
+
+	async function runServerI2mc() {
+		if (!sim.session || sim.session.rawGazeData.length === 0 || i2mcRunning) return;
+		i2mcRunning = true;
+		i2mcStatus = '';
+		i2mcError = '';
+		try {
+			const csv = DatabaseExporter.createCsvContent([...sim.session.rawGazeData], 'rawGazeData');
+			const params: I2mcParameters = { ...i2mcParams };
+			if (i2mcScrW && i2mcScrH) params.scrSz = [i2mcScrW, i2mcScrH];
+			const files = [{ name: 'rawGazeData.csv', content: csv }];
+			for (const geometry of sim.session.recordedGeometry) {
+				files.push({
+					name: `aoiGeometry_slide${geometry.slideIndex}.json`,
+					content: JSON.stringify(geometry)
+				});
+			}
+			const outputs = await runI2mcHeadless(files, params);
+			const entries = outputs.flatMap((file) => parseFixationDataCsv(file.content));
+			sim.setI2mcFixationData(entries);
+			i2mcStatus = `Načteno ${entries.length} fixací (${outputs.length} slidů).`;
+		} catch (err) {
+			i2mcError = err instanceof Error ? err.message : 'Výpočet I2MC selhal';
+		} finally {
+			i2mcRunning = false;
+		}
 	}
 
 	// ── Matrix correction ──
@@ -651,6 +708,117 @@
 								onCheckedChange={() => sim.scheduleRecompute()}
 							/>
 						</label>
+					</Card.Content>
+				</Card.Root>
+
+				<Card.Root class="gap-3">
+					<Card.Header>
+						<Card.Title>I2MC (server)</Card.Title>
+						<Card.Description>Referenční fixace z kanonického detektoru.</Card.Description>
+					</Card.Header>
+					<Card.Content class="space-y-3">
+						<div class="grid grid-cols-2 gap-2 text-sm">
+							<label class="space-y-1">
+								<span class="text-xs text-gray-500">Šířka okna (px)</span>
+								<input
+									type="number"
+									class={inputClass}
+									value={i2mcParams.xres}
+									oninput={(e) => (i2mcParams.xres = numberOf(e, I2MC_DEFAULT_PARAMETERS.xres))}
+								/>
+							</label>
+							<label class="space-y-1">
+								<span class="text-xs text-gray-500">Výška okna (px)</span>
+								<input
+									type="number"
+									class={inputClass}
+									value={i2mcParams.yres}
+									oninput={(e) => (i2mcParams.yres = numberOf(e, I2MC_DEFAULT_PARAMETERS.yres))}
+								/>
+							</label>
+							<label class="space-y-1" title="0 = odhad z časových razítek zařízení">
+								<span class="text-xs text-gray-500">Frekvence (Hz)</span>
+								<input
+									type="number"
+									class={inputClass}
+									value={i2mcParams.freq}
+									oninput={(e) => (i2mcParams.freq = numberOf(e, 0))}
+								/>
+							</label>
+							<label class="space-y-1">
+								<span class="text-xs text-gray-500">Min. délka fixace (ms)</span>
+								<input
+									type="number"
+									class={inputClass}
+									value={i2mcParams.minFixDur}
+									oninput={(e) =>
+										(i2mcParams.minFixDur = numberOf(e, I2MC_DEFAULT_PARAMETERS.minFixDur))}
+								/>
+							</label>
+							<label class="space-y-1" title="Rozdělení segmentů při mezeře v datech; 0 = vypnuto">
+								<span class="text-xs text-gray-500">Mezera (ms)</span>
+								<input
+									type="number"
+									class={inputClass}
+									value={i2mcParams.gapSplitMs}
+									oninput={(e) =>
+										(i2mcParams.gapSplitMs = numberOf(e, I2MC_DEFAULT_PARAMETERS.gapSplitMs))}
+								/>
+							</label>
+							<label class="space-y-1" title="0 = vypne statistiky ve stupních">
+								<span class="text-xs text-gray-500">Vzdálenost (cm)</span>
+								<input
+									type="number"
+									class={inputClass}
+									value={i2mcParams.dist}
+									oninput={(e) => (i2mcParams.dist = numberOf(e, I2MC_DEFAULT_PARAMETERS.dist))}
+								/>
+							</label>
+							<label class="space-y-1" title="Prázdné = 53,13 cm (24&quot; 16:9 monitor)">
+								<span class="text-xs text-gray-500">Šířka obrazovky (cm)</span>
+								<input
+									type="number"
+									class={inputClass}
+									value={i2mcScrW ?? ''}
+									oninput={(e) => (i2mcScrW = nullableNumberOf(e))}
+								/>
+							</label>
+							<label class="space-y-1" title="Prázdné = 29,89 cm (24&quot; 16:9 monitor)">
+								<span class="text-xs text-gray-500">Výška obrazovky (cm)</span>
+								<input
+									type="number"
+									class={inputClass}
+									value={i2mcScrH ?? ''}
+									oninput={(e) => (i2mcScrH = nullableNumberOf(e))}
+								/>
+							</label>
+						</div>
+						<label class="block space-y-1 text-sm">
+							<span class="text-xs text-gray-500">Oči</span>
+							<select
+								class={inputClass}
+								value={i2mcParams.eyes}
+								onchange={(e) =>
+									(i2mcParams.eyes = e.currentTarget.value as 'both' | 'average')}
+							>
+								<option value="both">Obě zvlášť</option>
+								<option value="average">Průměr</option>
+							</select>
+						</label>
+						<Button
+							class="w-full"
+							disabled={!sim.session || sim.session.rawGazeData.length === 0 || i2mcRunning}
+							onclick={() => runServerI2mc()}
+						>
+							<Icon icon="material-symbols:calculate" class="mr-1 h-4 w-4" />
+							{i2mcRunning ? 'Počítám…' : 'Spustit I2MC'}
+						</Button>
+						{#if i2mcStatus}
+							<p class="text-xs text-emerald-700">{i2mcStatus}</p>
+						{/if}
+						{#if i2mcError}
+							<p class="text-xs text-red-600">{i2mcError}</p>
+						{/if}
 					</Card.Content>
 				</Card.Root>
 
