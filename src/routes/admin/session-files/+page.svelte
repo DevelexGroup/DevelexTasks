@@ -45,7 +45,7 @@
 	let sessionCounts = $state<Record<string, number>>({});
 	let countsLoaded = $state(false);
 	let userSearch = $state('');
-	let selectedRoles = $state<UserRole[]>([UserRole.Student]);
+	let selectedRoles = $state<UserRole[]>([...roleFilterOrder]);
 	let hideEmptyUsers = $state(false);
 	let filterMenuOpen = $state(false);
 	let filterMenuRef = $state<HTMLDivElement | null>(null);
@@ -114,9 +114,7 @@
 		);
 	});
 
-	let filtersActive = $derived(
-		hideEmptyUsers || selectedRoles.length !== 1 || selectedRoles[0] !== UserRole.Student
-	);
+	let filtersActive = $derived(hideEmptyUsers || selectedRoles.length !== roleFilterOrder.length);
 
 	let selectableUsers = $derived(
 		filteredUsers.filter((u) => !countsLoaded || (sessionCounts[u.id] ?? 0) > 0)
