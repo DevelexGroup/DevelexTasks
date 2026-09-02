@@ -98,4 +98,23 @@ describe('buildRecalculatedMeta', () => {
 		expect(meta.session.taskMode).toBe('reeducation');
 		expect(meta.session.result).toBeNull();
 	});
+
+	it('measures the sampling rate from device timestamp intervals', () => {
+		const rawGazeData = Array.from({ length: 31 }, (_, i) =>
+			rawEntry({
+				deviceTimeStamp: new Date(
+					Date.UTC(2024, 7, 11, 12, 0, 0, Math.round((i * 25) / 3))
+				).toISOString()
+			})
+		);
+		const meta = buildRecalculatedMeta({
+			detail,
+			rawGazeData,
+			gazeSamples: [],
+			viewport: { width: 1920, height: 1080 },
+			items: ['meta']
+		});
+		expect(meta.tracker.signal.timedSampleCount).toBe(31);
+		expect(meta.tracker.signal.measuredFrequencyHz).toBe(120);
+	});
 });

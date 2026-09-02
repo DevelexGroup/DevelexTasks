@@ -1,12 +1,12 @@
 import type { GazeSampleDataEntry, RawGazeDataEntry } from '$lib/database/db.types';
 import type { TestSessionDetailDTO } from '$lib/types/api.types';
-import type { GazeSignalSummary } from '$lib/utils/analyticsManager';
 import {
 	SESSION_META_FILE_NAME,
 	type RecalculatedItem,
 	type SessionMeta,
 	type SessionMetaRecalculated
 } from '$lib/utils/sessionMeta';
+import { GazeSignalAccumulator } from '$lib/utils/gazeSignal';
 import { parseTaskName } from '$lib/utils/sessionSim/taskName';
 
 export const RECALC_DEFAULT_VIEWPORT = { width: 1920, height: 1080 };
@@ -17,41 +17,11 @@ function ledger(items: RecalculatedItem[]): SessionMetaRecalculated {
 	return { at: new Date().toISOString(), appVersion: __APP_VERSION__, items };
 }
 
-/** Mirrors the live AnalyticsManager counters, replayed over recorded raw rows. */
-function signalFromRawRows(rows: RawGazeDataEntry[]): GazeSignalSummary {
-	let validSampleCount = 0;
-	let timedSampleCount = 0;
-	let firstDeviceMs: number | null = null;
-	let lastDeviceMs: number | null = null;
-	let firstDeviceTimestamp: string | null = null;
-	let lastDeviceTimestamp: string | null = null;
-
-	for (const row of rows) {
-		if (row.validityL || row.validityR) validSampleCount++;
-		const deviceMs = Date.parse(row.deviceTimeStamp);
-		if (!Number.isNaN(deviceMs)) {
-			timedSampleCount++;
-			firstDeviceMs ??= deviceMs;
-			lastDeviceMs = deviceMs;
-			firstDeviceTimestamp ??= row.deviceTimeStamp;
-			lastDeviceTimestamp = row.deviceTimeStamp;
-		}
-	}
-
-	const spanMs = firstDeviceMs !== null && lastDeviceMs !== null ? lastDeviceMs - firstDeviceMs : 0;
-	const measuredFrequencyHz =
-		spanMs > 0 && timedSampleCount > 1
-			? Math.round(((timedSampleCount - 1) / spanMs) * 1000 * 10) / 10
-			: null;
-
-	return {
-		sampleCount: rows.length,
-		validSampleCount,
-		timedSampleCount,
-		measuredFrequencyHz,
-		firstDeviceSampleAt: firstDeviceTimestamp,
-		lastDeviceSampleAt: lastDeviceTimestamp
-	};
+/** Replays the live AnalyticsManager bookkeeping over recorded raw rows. */
+function signalFromRawRows(rows: RawGazeDataEntry[]) {
+	const signal = new GazeSignalAccumulator();
+	for (const row of rows) signal.add(row.deviceTimeStamp, row.validityL || row.validityR);
+	return signal.summary();
 }
 
 function toIso(value: Date | string | null | undefined): string | null {

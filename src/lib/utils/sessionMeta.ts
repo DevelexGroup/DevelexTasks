@@ -1,5 +1,6 @@
 import type { GazeInputConfig, GazeManager } from 'develex-js-sdk';
-import type { AnalyticsManager, GazeSignalSummary } from '$lib/utils/analyticsManager';
+import type { AnalyticsManager } from '$lib/utils/analyticsManager';
+import type { GazeSignalSummary } from '$lib/utils/gazeSignal';
 import { GAZE_INPUT_CONFIGS, trackerConfig } from '$lib/stores/tracker';
 import { currentTask } from '$lib/stores/task';
 import { authUser } from '$lib/stores/auth';
