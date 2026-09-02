@@ -1,85 +1,109 @@
-import { describe, expect, it } from 'vitest';
-import type { GazeSampleDataEntry, RawGazeDataEntry } from '$lib/database/db.types';
-import { slideStartTimestamps, stimulusBySlide } from './sessionData';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { TestSessionDetailDTO } from '$lib/types/api.types';
+import { downloadTestSessionFile } from '$lib/api/test-sessions';
+import { loadRecalcSessionData } from './sessionData';
 
-function rawEntry(overrides: Partial<RawGazeDataEntry> = {}): RawGazeDataEntry {
-	return {
-		child_id: 'child',
-		session_id: 'local-1',
-		task_name: 'cibule-1',
-		slide_index: 1,
-		timestamp: 1723380000100,
-		bridgeTimeStamp: '2024-08-11T12:00:00.100Z',
-		deviceTimeStamp: '2024-08-11T12:00:00.000Z',
-		x: 100,
-		y: 200,
-		xL: 100,
-		yL: 200,
-		validityL: true,
-		pupilDiameterL: 3,
-		xR: 100,
-		yR: 200,
-		validityR: true,
-		pupilDiameterR: 3,
-		...overrides
-	};
+vi.mock('$lib/api/test-sessions', () => ({
+	downloadTestSessionFile: vi.fn()
+}));
+
+const RAW_HEADER =
+	'ID,Child ID,Session ID,Task,Slide Index,Timestamp,Bridge Timestamp,Device Timestamp,X,Y,Left X,Left Y,Left Validity,Left Pupil Diameter,Right X,Right Y,Right Validity,Right Pupil Diameter';
+const SAMPLES_HEADER =
+	'ID,Child ID,Session ID,Task,Slide Index,Stimulus ID,Timestamp,Device Timestamp,Eye X,Eye Y,AOI,Mouse X,Mouse Y,Event,Sound,Mistake Type,Result';
+
+function rawRow(timestamp: string): string {
+	return `1,child,2026-04-13T14:53:32Z,cibule-1,1,${timestamp},b,d,100,200,100,200,true,2,100,200,true,2`;
 }
 
-function sampleEntry(overrides: Partial<GazeSampleDataEntry> = {}): GazeSampleDataEntry {
-	return {
-		child_id: 'child',
-		session_id: 'local-1',
-		task_name: 'cibule-1',
-		slide_index: 1,
-		stimulus_id: 'stim-a',
-		timestamp: 1723380000200,
-		device_timestamp: '2024-08-11T12:00:00.000Z',
-		eyetracker_x: 100,
-		eyetracker_y: 200,
-		aoi: [],
-		mouse_x: 0,
-		mouse_y: 0,
-		events: [],
-		sound_name: [],
-		mistake_type: [],
-		task_result: null,
-		...overrides
-	};
+function sampleRow(timestamp: string): string {
+	return `1,child,2026-04-13T14:53:32Z,cibule-1,1,stim-a,${timestamp},d,100,200,,0,0,,,,`;
 }
 
-describe('stimulusBySlide', () => {
-	it('keeps the first real stimulus id per slide', () => {
-		const samples = [
-			sampleEntry({ slide_index: 1, stimulus_id: 'null' }),
-			sampleEntry({ slide_index: 1, stimulus_id: 'stim-a' }),
-			sampleEntry({ slide_index: 1, stimulus_id: 'stim-b' }),
-			sampleEntry({ slide_index: 2, stimulus_id: 'stim-c' })
-		];
-		expect(stimulusBySlide(samples)).toEqual({ 1: 'stim-a', 2: 'stim-c' });
-	});
-
-	it('leaves slides without a stimulus out', () => {
-		expect(stimulusBySlide([sampleEntry({ stimulus_id: 'null' })])).toEqual({});
-		expect(stimulusBySlide([])).toEqual({});
-	});
+const GEOMETRY = JSON.stringify({
+	version: 1,
+	slideIndex: 1,
+	stimulusId: 'stim-a',
+	viewport: { width: 1600, height: 900 },
+	aois: []
 });
+const META = JSON.stringify({ viewport: { innerWidth: 1280, innerHeight: 720 } });
 
-describe('slideStartTimestamps', () => {
-	it('takes the earliest timestamp per slide across raw gaze and samples', () => {
-		const raw = [
-			rawEntry({ slide_index: 1, timestamp: 1000 }),
-			rawEntry({ slide_index: 1, timestamp: 900 }),
-			rawEntry({ slide_index: 2, timestamp: 5000 })
-		];
-		const samples = [
-			sampleEntry({ slide_index: 1, timestamp: 950 }),
-			sampleEntry({ slide_index: 2, timestamp: 4800 }),
-			sampleEntry({ slide_index: 3, timestamp: 7000 })
-		];
-		expect(slideStartTimestamps(raw, samples)).toEqual({ 1: 900, 2: 4800, 3: 7000 });
+function detailWith(files: { id: string; fileName: string }[]): TestSessionDetailDTO {
+	return { id: 'remote-1', parts: [{ id: 'p1', files }] } as unknown as TestSessionDetailDTO;
+}
+
+function serveFiles(filesById: Record<string, string>) {
+	vi.mocked(downloadTestSessionFile).mockImplementation((_session, fileId) =>
+		Promise.resolve(new Blob([filesById[fileId] ?? '']))
+	);
+}
+
+describe('loadRecalcSessionData', () => {
+	beforeEach(() => {
+		vi.mocked(downloadTestSessionFile).mockReset();
 	});
 
-	it('handles empty input', () => {
-		expect(slideStartTimestamps([], [])).toEqual({});
+	it('downloads only raw, samples, geometry and meta files, skipping backups', async () => {
+		serveFiles({
+			raw: [RAW_HEADER, rawRow('2026-04-13T14:55:02.936Z')].join('\n'),
+			samples: [SAMPLES_HEADER, sampleRow('2026-04-13T14:55:02.936Z')].join('\n'),
+			geometry: GEOMETRY,
+			meta: META
+		});
+		const detail = detailWith([
+			{ id: 'raw', fileName: 'rawGazeData_slide1.csv' },
+			{ id: 'samples', fileName: 'gazeSamples_slide1.csv' },
+			{ id: 'fixations', fileName: 'fixationData_slide1.csv' },
+			{ id: 'scores', fileName: 'sessionScores.csv' },
+			{ id: 'backup', fileName: 'backup_20260901-120000_rawGazeData_slide1.csv' },
+			{ id: 'geometry', fileName: 'aoiGeometry_slide1.json' },
+			{ id: 'meta', fileName: 'meta.json' }
+		]);
+
+		const data = await loadRecalcSessionData(detail);
+
+		expect(vi.mocked(downloadTestSessionFile)).toHaveBeenCalledTimes(4);
+		expect(data.rawGazeData).toHaveLength(1);
+		expect(data.gazeSamples).toHaveLength(1);
+		expect(data.metaRaw).toBe(META);
+		expect(data.recordedViewport).toEqual({ width: 1600, height: 900 });
+	});
+
+	it('falls back to the meta.json viewport, then to none', async () => {
+		serveFiles({ raw: RAW_HEADER, meta: META });
+
+		const withMeta = await loadRecalcSessionData(
+			detailWith([
+				{ id: 'raw', fileName: 'rawGazeData_slide1.csv' },
+				{ id: 'meta', fileName: 'meta.json' }
+			])
+		);
+		expect(withMeta.recordedViewport).toEqual({ width: 1280, height: 720 });
+
+		const rawOnly = await loadRecalcSessionData(
+			detailWith([{ id: 'raw', fileName: 'rawGazeData_slide1.csv' }])
+		);
+		expect(rawOnly.recordedViewport).toBeNull();
+		expect(rawOnly.metaRaw).toBeNull();
+	});
+
+	it('sorts rows by timestamp', async () => {
+		serveFiles({
+			raw: [
+				RAW_HEADER,
+				rawRow('2026-04-13T14:55:03.000Z'),
+				rawRow('2026-04-13T14:55:02.000Z')
+			].join('\n')
+		});
+
+		const data = await loadRecalcSessionData(
+			detailWith([{ id: 'raw', fileName: 'rawGazeData_slide1.csv' }])
+		);
+
+		expect(data.rawGazeData.map((row) => row.timestamp)).toEqual([
+			Date.parse('2026-04-13T14:55:02.000Z'),
+			Date.parse('2026-04-13T14:55:03.000Z')
+		]);
 	});
 });

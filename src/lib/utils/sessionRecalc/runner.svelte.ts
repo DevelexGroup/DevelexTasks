@@ -3,17 +3,21 @@ import type { RecalculatedItem } from '$lib/utils/sessionMeta';
 import {
 	addFilesToTestSessionPart,
 	addTestSessionPart,
+	extendRecalculationLedger,
+	getRecalculationSlides,
 	getTestSessionDetail,
 	processSessionPostProcessor,
 	relocateSessionLogs,
 	I2MC_DEFAULT_PARAMETERS,
-	type RecalculationPreviewRow
+	type RecalculationPreviewRow,
+	type RecalculationSlide,
+	type RecalculationSlides
 } from '$lib/api/test-sessions';
-import { PartType, type TestSessionDetailDTO, type TestSessionPartDTO } from '$lib/types/api.types';
+import { PartType, type TestSessionDetailDTO } from '$lib/types/api.types';
 import { parseTaskName } from '$lib/utils/sessionSim/taskName';
 import { resolveSlide, type ResolvedSlide } from '$lib/utils/sessionSim/taskResolver';
-import { buildRecalculatedMeta, mergeRecalculatedLedger, metaAsUploadFile } from './metaRebuild';
-import { loadRecalcSessionData, slideStartTimestamps, stimulusBySlide } from './sessionData';
+import { buildRecalculatedMeta, metaAsUploadFile } from './metaRebuild';
+import { loadRecalcSessionData, type RecalcSessionData } from './sessionData';
 
 export interface RecalcItems {
 	i2mc: boolean;
@@ -180,18 +184,27 @@ export class RecalcRunner {
 		const rebuildGeometry = items.aoiGeometry && row.missingAoiGeometry;
 		const rebuildMeta = items.meta && row.missingMeta;
 
-		let data: Awaited<ReturnType<typeof loadRecalcSessionData>> | null = null;
-		if (rebuildGeometry || rebuildMeta) {
+		// Geometry needs only the server's per-slide summary; the meta rebuild still replays the CSVs
+		let slides: RecalculationSlides | null = null;
+		if (rebuildGeometry) {
+			try {
+				slides = await getRecalculationSlides(detail.id);
+			} catch (err) {
+				outcome.errors.push(`Načtení přehledu slidů selhalo: ${errorMessage(err)}`);
+			}
+		}
+		let data: RecalcSessionData | null = null;
+		if (rebuildMeta) {
 			try {
 				data = await loadRecalcSessionData(detail);
 			} catch (err) {
 				outcome.errors.push(`Stažení dat selhalo: ${errorMessage(err)}`);
 			}
 		}
-		const viewport = data?.recordedViewport ?? fallbackViewport;
+		const viewport = slides?.recordedViewport ?? data?.recordedViewport ?? fallbackViewport;
 
-		if (rebuildGeometry && data) {
-			await this.rebuildGeometry(detail, data, viewport, outcome);
+		if (rebuildGeometry && slides) {
+			await this.rebuildGeometry(detail, slides.slides, viewport, outcome);
 		}
 
 		if (this.stopping) return outcome;
@@ -217,15 +230,11 @@ export class RecalcRunner {
 			} catch (err) {
 				outcome.errors.push(`Vytvoření meta.json selhalo: ${errorMessage(err)}`);
 			}
-		} else if (outcome.geometryUploaded > 0 && data?.metaRaw) {
-			// Geometry changed under an existing meta.json — extend its ledger in place
+		} else if (outcome.geometryUploaded > 0 && !row.missingMeta) {
+			// Geometry changed under an existing meta.json — the server extends its ledger
 			try {
-				const metaPart = detail.parts?.find((part) => part.partType === PartType.Meta);
-				if (metaPart) {
-					const merged = mergeRecalculatedLedger(data.metaRaw, ['aoiGeometry']);
-					await addFilesToTestSessionPart(detail.id, metaPart.id, [metaAsUploadFile(merged)], true);
-					outcome.ledgerUpdated = true;
-				}
+				const result = await extendRecalculationLedger(detail.id, ['aoiGeometry']);
+				outcome.ledgerUpdated = result.updated;
 			} catch (err) {
 				outcome.errors.push(`Aktualizace meta.json selhala: ${errorMessage(err)}`);
 			}
@@ -266,37 +275,34 @@ export class RecalcRunner {
 
 	private async rebuildGeometry(
 		detail: TestSessionDetailDTO,
-		data: Awaited<ReturnType<typeof loadRecalcSessionData>>,
+		slides: RecalculationSlide[],
 		viewport: Viewport,
 		outcome: RecalcSessionOutcome
 	): Promise<void> {
 		const parsed = parseTaskName(detail.testType);
-		const stimuli = stimulusBySlide(data.gazeSamples);
-		const slideStarts = slideStartTimestamps(data.rawGazeData, data.gazeSamples);
 
-		const missingParts = (detail.parts ?? []).filter(
-			(part: TestSessionPartDTO) =>
-				part.partType !== PartType.Meta &&
-				(part.files ?? []).some((file) => file.fileName.startsWith('rawGazeData')) &&
-				!(part.files ?? []).some((file) => file.fileName.startsWith('aoiGeometry'))
-		);
-
-		for (const part of missingParts) {
+		for (const slide of slides) {
+			if (!slide.hasRawData || slide.hasAoiGeometry) continue;
 			if (this.stopping) return;
-			const slide = part.partNumber;
-			const stimulusId = stimuli[slide];
+			const stimulusId = slide.stimulusId;
 			const resolved = parsed && stimulusId ? resolveSlide(parsed, stimulusId) : null;
-			if (!resolved) {
+			if (!resolved || !stimulusId) {
 				outcome.geometrySkipped++;
 				continue;
 			}
 			try {
 				const aois = await this.capture(resolved, viewport);
-				const file = geometryUploadFile(slide, stimulusId, viewport, aois, slideStarts[slide]);
-				await addFilesToTestSessionPart(detail.id, part.id, [file]);
+				const file = geometryUploadFile(
+					slide.partNumber,
+					stimulusId,
+					viewport,
+					aois,
+					slide.startTimestamp ?? undefined
+				);
+				await addFilesToTestSessionPart(detail.id, slide.partId, [file]);
 				outcome.geometryUploaded++;
 			} catch (err) {
-				outcome.errors.push(`Geometrie slidu ${slide} selhala: ${errorMessage(err)}`);
+				outcome.errors.push(`Geometrie slidu ${slide.partNumber} selhala: ${errorMessage(err)}`);
 			}
 		}
 	}

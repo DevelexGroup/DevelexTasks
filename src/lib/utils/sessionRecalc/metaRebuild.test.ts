@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { GazeSampleDataEntry, RawGazeDataEntry } from '$lib/database/db.types';
 import { TaskResult } from '$lib/types/task.types';
 import type { TestSessionDetailDTO } from '$lib/types/api.types';
-import { buildRecalculatedMeta, mergeRecalculatedLedger } from './metaRebuild';
+import { buildRecalculatedMeta } from './metaRebuild';
 
 function rawEntry(overrides: Partial<RawGazeDataEntry> = {}): RawGazeDataEntry {
 	return {
@@ -97,20 +97,5 @@ describe('buildRecalculatedMeta', () => {
 		});
 		expect(meta.session.taskMode).toBe('reeducation');
 		expect(meta.session.result).toBeNull();
-	});
-});
-
-describe('mergeRecalculatedLedger', () => {
-	it('adds the ledger without touching other fields and unions items', () => {
-		const original = JSON.stringify({
-			metaVersion: 1,
-			session: { task: 'cibule-1' },
-			recalculated: { at: 'old', appVersion: 'old', items: ['meta'] }
-		});
-
-		const merged = JSON.parse(mergeRecalculatedLedger(original, ['aoiGeometry', 'meta']));
-		expect(merged.session).toEqual({ task: 'cibule-1' });
-		expect(merged.recalculated.items.sort()).toEqual(['aoiGeometry', 'meta']);
-		expect(merged.recalculated.at).not.toBe('old');
 	});
 });

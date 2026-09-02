@@ -142,14 +142,6 @@ export function buildRecalculatedMeta({
 	};
 }
 
-/** Adds/extends the `recalculated` ledger in an existing meta.json, leaving the rest verbatim. */
-export function mergeRecalculatedLedger(metaRaw: string, items: RecalculatedItem[]): string {
-	const doc = JSON.parse(metaRaw) as Record<string, unknown>;
-	const existing = doc.recalculated as SessionMetaRecalculated | undefined;
-	doc.recalculated = ledger([...new Set([...(existing?.items ?? []), ...items])]);
-	return JSON.stringify(doc, null, 2);
-}
-
 export function metaAsUploadFile(content: string): File {
 	return new File([content], SESSION_META_FILE_NAME, { type: 'application/json' });
 }

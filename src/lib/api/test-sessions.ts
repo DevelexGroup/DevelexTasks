@@ -227,6 +227,45 @@ export async function checkSessionViewport(
 	);
 }
 
+export interface RecalculationSlide {
+	partId: string;
+	partNumber: number;
+	stimulusId: string | null;
+	/** Earliest recorded timestamp of the slide in epoch ms. */
+	startTimestamp: number | null;
+	hasRawData: boolean;
+	hasAoiGeometry: boolean;
+}
+
+export interface RecalculationSlides {
+	recordedViewport: { width: number; height: number } | null;
+	slides: RecalculationSlide[];
+}
+
+/** Per-slide inputs for rebuilding AOI geometry, read from the stored CSVs on the server. */
+export async function getRecalculationSlides(sessionId: string): Promise<RecalculationSlides> {
+	return apiClient<RecalculationSlides>(
+		`/test-sessions/${sessionId}/post-processing/recalculate/slides`
+	);
+}
+
+export interface RecalculationLedgerResult {
+	/** False when the session has no meta.json to extend. */
+	updated: boolean;
+	items: string[];
+}
+
+/** Extends the recalculated ledger in meta.json on the server; the previous file is kept as a backup. */
+export async function extendRecalculationLedger(
+	sessionId: string,
+	items: string[]
+): Promise<RecalculationLedgerResult> {
+	return apiClient<RecalculationLedgerResult>(
+		`/test-sessions/${sessionId}/post-processing/recalculate/ledger`,
+		{ method: 'POST', body: JSON.stringify({ items }) }
+	);
+}
+
 export interface PostProcessingProcessResult {
 	status:
 		| 'PROCESSED'

@@ -19,9 +19,9 @@ export interface RecalcSessionData {
 }
 
 /**
- * Downloads just the files the recalculation needs (raw gaze + gaze samples
- * for stats and stimulus ids, meta.json and geometry for the recorded
- * viewport), skipping fixation and score CSVs.
+ * Downloads just the files the meta.json rebuild needs (raw gaze + gaze
+ * samples for stats and the task result, meta.json and geometry for the
+ * recorded viewport), skipping fixation and score CSVs.
  */
 export async function loadRecalcSessionData(
 	detail: TestSessionDetailDTO
@@ -77,27 +77,3 @@ export async function loadRecalcSessionData(
 
 /** Same tolerance as the sim's viewport warning; ET drifts slightly out of range. */
 export const OUTSIDE_SHARE_WARNING = 0.02;
-
-/** First recorded stimulus id per slide, mirroring the sim's resolution rule. */
-export function stimulusBySlide(gazeSamples: GazeSampleDataEntry[]): Record<number, string> {
-	const result: Record<number, string> = {};
-	for (const sample of gazeSamples) {
-		if (!(sample.slide_index in result) && sample.stimulus_id !== 'null') {
-			result[sample.slide_index] = sample.stimulus_id;
-		}
-	}
-	return result;
-}
-
-/** Earliest recorded timestamp per slide, used as the geometry interval start. */
-export function slideStartTimestamps(
-	rawGazeData: RawGazeDataEntry[],
-	gazeSamples: GazeSampleDataEntry[]
-): Record<number, number> {
-	const result: Record<number, number> = {};
-	for (const row of [...rawGazeData, ...gazeSamples]) {
-		const current = result[row.slide_index];
-		if (current === undefined || row.timestamp < current) result[row.slide_index] = row.timestamp;
-	}
-	return result;
-}
