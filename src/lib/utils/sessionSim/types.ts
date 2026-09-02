@@ -76,6 +76,8 @@ export interface RecordedSessionMeta {
 	measuredFrequencyHz: number | null;
 	/** Raw sample counts per slide as recorded live. */
 	samplesPerSlide: Record<number, number>;
+	/** Present when parts of the session were reconstructed by the admin recalculation. */
+	recalculated: { at: string | null; items: string[] } | null;
 }
 
 export interface AoiRect {

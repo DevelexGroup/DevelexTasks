@@ -94,6 +94,12 @@ describe('classifyFileName', () => {
 		expect(classifyFileName('meta.json')).toBe('sessionMeta');
 		expect(classifyFileName('somethingmeta.json')).toBeNull();
 	});
+
+	it('ignores backup copies of replaced files', () => {
+		expect(classifyFileName('backup_20260902-101530_meta.json')).toBeNull();
+		expect(classifyFileName('backup_20260902-101530_I2MC_fixationData_slide1.csv')).toBeNull();
+		expect(classifyFileName('backup_20260902-101530_aoiGeometry_slide1.json')).toBeNull();
+	});
 });
 
 describe('loadFromFiles', () => {
@@ -183,13 +189,37 @@ describe('loadFromFiles', () => {
 		expect(session.meta).toEqual({
 			viewport: { width: 1536, height: 864 },
 			measuredFrequencyHz: 119.6,
-			samplesPerSlide: { 1: 2, 2: 50 }
+			samplesPerSlide: { 1: 2, 2: 50 },
+			recalculated: null
 		});
 		// Slide 1 has both recorded samples loaded; slide 2 lost all 50
 		expect(session.warnings.some((w) => w.includes('Slide 2: načteno 0 z 50 raw vzorků'))).toBe(
 			true
 		);
 		expect(session.warnings.some((w) => w.includes('Slide 1:'))).toBe(false);
+	});
+
+	it('surfaces the recalculated ledger from meta.json as a warning', async () => {
+		const { rawCsv } = buildCsvs();
+		const meta = {
+			metaVersion: 1,
+			session: {},
+			recalculated: {
+				at: '2026-09-01T10:00:00.000Z',
+				appVersion: '1.2.3',
+				items: ['meta', 'aoiGeometry']
+			}
+		};
+		const session = await loadFromFiles([
+			textFile('rawGazeData_slide1.csv', rawCsv),
+			textFile('meta.json', JSON.stringify(meta))
+		]);
+
+		expect(session.meta?.recalculated).toEqual({
+			at: '2026-09-01T10:00:00.000Z',
+			items: ['meta', 'aoiGeometry']
+		});
+		expect(session.warnings.some((w) => w.includes('rekonstruována'))).toBe(true);
 	});
 
 	it('tolerates a malformed meta.json', async () => {

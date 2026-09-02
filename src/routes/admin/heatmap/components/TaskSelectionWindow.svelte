@@ -25,6 +25,7 @@
 		parseSessionScoresCsv
 	} from '$lib/utils/csvParser';
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
+	import { isBackupFileName } from '$lib/utils/sessionSim/loaders';
 
 	export interface TaskSelectionResult {
 		childId: string;
@@ -230,6 +231,7 @@
 			const csvFiles: { fileId: string; fileName: string }[] = [];
 			for (const part of detail.parts ?? []) {
 				for (const file of part.files ?? []) {
+					if (isBackupFileName(file.fileName)) continue;
 					const lower = file.fileName.toLowerCase();
 					// I2MC files contain "fixationdata" but have a different schema
 					if (lower.includes('i2mc')) continue;
@@ -245,6 +247,7 @@
 
 			// Also check top-level files
 			for (const file of detail.files ?? []) {
+				if (isBackupFileName(file.fileName)) continue;
 				const lower = file.fileName.toLowerCase();
 				if (lower.includes('i2mc')) continue;
 				if (

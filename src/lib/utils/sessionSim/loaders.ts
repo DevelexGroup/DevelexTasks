@@ -40,8 +40,16 @@ export interface NamedTextFile {
 	text(): Promise<string>;
 }
 
+/** Prefix the backend gives replaced files it keeps as backups; never load them as data. */
+export const BACKUP_FILE_PREFIX = 'backup_';
+
+export function isBackupFileName(fileName: string): boolean {
+	return fileName.toLowerCase().startsWith(BACKUP_FILE_PREFIX);
+}
+
 export function classifyFileName(fileName: string): TableKind | null {
 	const lower = fileName.toLowerCase();
+	if (lower.startsWith(BACKUP_FILE_PREFIX)) return null;
 	if (lower === 'meta.json') return 'sessionMeta';
 	if (lower.includes('aoigeometry')) return 'aoiGeometry';
 	if (lower.includes('rawgazedata')) return 'rawGazeData';
@@ -66,7 +74,7 @@ function emptyTables(): SessionTables {
 	};
 }
 
-function parseSessionMetaJson(jsonText: string): RecordedSessionMeta | null {
+export function parseSessionMetaJson(jsonText: string): RecordedSessionMeta | null {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(jsonText);
@@ -97,10 +105,21 @@ function parseSessionMetaJson(jsonText: string): RecordedSessionMeta | null {
 		}
 	}
 
-	return { viewport, measuredFrequencyHz, samplesPerSlide };
+	let recalculated: RecordedSessionMeta['recalculated'] = null;
+	if (typeof doc.recalculated === 'object' && doc.recalculated !== null) {
+		const ledger = doc.recalculated as Record<string, unknown>;
+		recalculated = {
+			at: typeof ledger.at === 'string' ? ledger.at : null,
+			items: Array.isArray(ledger.items)
+				? ledger.items.filter((item): item is string => typeof item === 'string')
+				: []
+		};
+	}
+
+	return { viewport, measuredFrequencyHz, samplesPerSlide, recalculated };
 }
 
-function parseAoiGeometryJson(jsonText: string): RecordedSlideGeometry | null {
+export function parseAoiGeometryJson(jsonText: string): RecordedSlideGeometry | null {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(jsonText);
@@ -225,6 +244,13 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 		warnings.push('Chybí gazeSamples data – bez event markerů nelze určit časová okna slidů.');
 	if (tables.rawGazeData.length === 0)
 		warnings.push('Chybí rawGazeData – fixace není z čeho přepočítat.');
+
+	if (tables.sessionMeta?.recalculated) {
+		const items = tables.sessionMeta.recalculated.items;
+		warnings.push(
+			`Metadata sezení byla dodatečně rekonstruována${items.length > 0 ? ` (${items.join(', ')})` : ''} – nemusí odpovídat skutečnému prostředí záznamu.`
+		);
+	}
 
 	// The meta file records how many raw samples each slide had live
 	if (tables.sessionMeta) {

@@ -64,6 +64,19 @@ interface SessionMetaSection {
 	samplesPerSlide: Record<number, number>;
 }
 
+export type RecalculatedItem = 'meta' | 'aoiGeometry';
+
+/**
+ * Ledger of artifacts reconstructed after the fact by the admin recalculation
+ * dialog. Consumers should treat the listed data as an approximation of the
+ * recording environment, not a live capture.
+ */
+export interface SessionMetaRecalculated {
+	at: string;
+	appVersion: string;
+	items: RecalculatedItem[];
+}
+
 export interface SessionMeta {
 	metaVersion: number;
 	app: { version: string; sdkVersion: string };
@@ -74,6 +87,7 @@ export interface SessionMeta {
 	viewportCalibration: unknown;
 	tracker: TrackerMeta;
 	browser: BrowserMeta;
+	recalculated?: SessionMetaRecalculated;
 }
 
 interface BuildSessionMetaOptions {

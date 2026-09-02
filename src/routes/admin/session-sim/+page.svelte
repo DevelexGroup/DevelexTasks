@@ -15,7 +15,7 @@
 		type OverlayFixation
 	} from './components/GazeOverlay.svelte';
 	import ScoreComparison from './components/ScoreComparison.svelte';
-	import { captureAoiRects } from './components/aoiCapture';
+	import { captureAoiRects } from '$lib/utils/sessionSim/aoiCapture';
 	import { downloadBlob, settleStimulus } from '$lib/utils/stimulusExport/capture';
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
 	import {
@@ -817,8 +817,7 @@
 							<select
 								class={inputClass}
 								value={i2mcParams.eyes}
-								onchange={(e) =>
-									(i2mcParams.eyes = e.currentTarget.value as 'both' | 'average')}
+								onchange={(e) => (i2mcParams.eyes = e.currentTarget.value as 'both' | 'average')}
 							>
 								<option value="both">Obě zvlášť</option>
 								<option value="average">Průměr</option>

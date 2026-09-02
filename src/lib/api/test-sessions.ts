@@ -96,7 +96,8 @@ export async function getTestSessionPart(
 export async function addFilesToTestSessionPart(
 	sessionId: string,
 	partId: string,
-	files: File[]
+	files: File[],
+	replaceExisting = false
 ): Promise<void> {
 	const formData = new FormData();
 	for (const file of files) {
@@ -105,7 +106,8 @@ export async function addFilesToTestSessionPart(
 
 	await apiClient<void>(`/test-sessions/${sessionId}/parts/${partId}/files`, {
 		method: 'POST',
-		body: formData
+		body: formData,
+		...(replaceExisting ? { params: { replaceExisting: true } } : {})
 	});
 }
 
@@ -178,25 +180,67 @@ export const I2MC_DEFAULT_PARAMETERS: I2mcParameters = {
 	dist: 65
 };
 
-export interface I2mcRecalculationRequest {
+export interface RecalculationScope {
 	sessionIds?: string[];
 	userIds?: string[];
-	parameters: I2mcParameters;
 }
 
-export interface I2mcRecalculationResult {
-	queued: number;
-	skipped: number;
+export interface RecalculationPreviewRow {
+	sessionId: string;
+	hasRawData: boolean;
+	missingI2mc: boolean;
+	missingMeta: boolean;
+	missingAoiGeometry: boolean;
+	misplacedLogs: boolean;
 }
 
-/** Queues server-side I2MC fixation detection; empty selection targets all sessions. Existing I2MC output is replaced. */
-export async function recalculateI2mcFixations(
-	request: I2mcRecalculationRequest
-): Promise<I2mcRecalculationResult> {
-	return apiClient<I2mcRecalculationResult>('/test-sessions/post-processing/i2mc/recalculate', {
-		method: 'POST',
-		body: JSON.stringify(request)
+/** Per-session breakdown of missing recalculable artifacts; empty scope targets all sessions. */
+export async function previewRecalculation(
+	scope: RecalculationScope
+): Promise<RecalculationPreviewRow[]> {
+	const result = await apiClient<{ sessions: RecalculationPreviewRow[] }>(
+		'/test-sessions/post-processing/recalculate/preview',
+		{ method: 'POST', body: JSON.stringify(scope) }
+	);
+	return result.sessions;
+}
+
+export interface PostProcessingProcessResult {
+	status:
+		| 'PROCESSED'
+		| 'NO_OUTPUT'
+		| 'SESSION_NOT_FOUND'
+		| 'SESSION_IN_PROGRESS'
+		| 'ALREADY_PROCESSED'
+		| 'NO_INPUT'
+		| 'ALREADY_QUEUED'
+		| 'FAILED';
+	message: string | null;
+}
+
+/** Runs one post-processor for one session on the server and waits for the outcome. */
+export async function processSessionPostProcessor(
+	sessionId: string,
+	processor: string,
+	parameters: Record<string, unknown>,
+	replaceExisting = false
+): Promise<PostProcessingProcessResult> {
+	return apiClient<PostProcessingProcessResult>(
+		`/test-sessions/${sessionId}/post-processing/${processor}/process`,
+		{
+			method: 'POST',
+			params: { replaceExisting },
+			body: JSON.stringify(parameters)
+		}
+	);
+}
+
+/** Moves clientLogs/bridgeLogs from slide parts into the META part; returns the moved count. */
+export async function relocateSessionLogs(sessionId: string): Promise<number> {
+	const result = await apiClient<{ moved: number }>(`/test-sessions/${sessionId}/relocate-logs`, {
+		method: 'POST'
 	});
+	return result.moved;
 }
 
 export interface PostProcessingOutputFile {
@@ -214,7 +258,10 @@ export async function runI2mcHeadless(
 		const type = file.name.toLowerCase().endsWith('.json') ? 'application/json' : 'text/csv';
 		formData.append('files', new File([file.content], file.name, { type }));
 	}
-	formData.append('parameters', new Blob([JSON.stringify(parameters)], { type: 'application/json' }));
+	formData.append(
+		'parameters',
+		new Blob([JSON.stringify(parameters)], { type: 'application/json' })
+	);
 	const result = await apiClient<{ files: PostProcessingOutputFile[] }>(
 		'/test-sessions/post-processing/i2mc/run',
 		{ method: 'POST', body: formData }

@@ -20,11 +20,10 @@
 		prepareSessionExport,
 		getExportDownloadUrl,
 		deleteTestSession,
-		recalculateI2mcFixations,
-		I2MC_DEFAULT_PARAMETERS,
-		type I2mcRecalculationRequest,
-		type I2mcRecalculationResult
+		snapToCommonRate,
+		type RecalculationScope
 	} from '$lib/api/test-sessions';
+	import RecalculateDialog from './components/RecalculateDialog.svelte';
 	import { PartType, SortBy, SortDirection, UserRole, roleLabels } from '$lib/types/api.types';
 	import type {
 		UserDTO,
@@ -87,7 +86,8 @@
 	let globalMenuRef = $state<HTMLDivElement | null>(null);
 	let openUserMenuId = $state('');
 	let openSessionMenuId = $state('');
-	let isRecalculating = $state(false);
+	let recalcDialogOpen = $state(false);
+	let recalcScope = $state<RecalculationScope>({});
 	let error = $state('');
 	let successMessage = $state('');
 	let successTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -495,27 +495,15 @@
 		}
 	}
 
-	function i2mcResultMessage(result: I2mcRecalculationResult): string {
-		if (result.queued === 0) {
-			return 'I2MC: žádná sezení ke zpracování';
-		}
-		const parts = [`${result.queued} zařazeno`];
-		if (result.skipped > 0) parts.push(`${result.skipped} bez dat`);
-		return `I2MC přepočet: ${parts.join(', ')}`;
+	function openRecalcDialog(scope: RecalculationScope) {
+		recalcScope = scope;
+		recalcDialogOpen = true;
 	}
 
-	async function triggerI2mc(selection: Omit<I2mcRecalculationRequest, 'parameters'>) {
-		if (isRecalculating) return;
-		isRecalculating = true;
-		error = '';
-		try {
-			const request = { ...selection, parameters: I2MC_DEFAULT_PARAMETERS };
-			showSuccess(i2mcResultMessage(await recalculateI2mcFixations(request)));
-		} catch (err) {
-			error = err instanceof Error ? err.message : 'Nepodařilo se spustit přepočet I2MC';
-		} finally {
-			isRecalculating = false;
-		}
+	function handleRecalcFinished() {
+		showSuccess('Doplnění souborů dokončeno');
+		if (activeSessionId) loadSessionDetail(activeSessionId);
+		else if (activeUser) loadSessions(activeUser.id);
 	}
 
 	async function handleDeleteSession() {
@@ -645,7 +633,10 @@
 	 */
 	function formatFrequency(meta: SessionMeta): string {
 		const measured = meta.tracker.signal.measuredFrequencyHz;
-		if (measured !== null) return `${measured} Hz`;
+		if (measured !== null) {
+			const nominal = snapToCommonRate(measured);
+			return nominal === measured ? `${nominal} Hz` : `${nominal} Hz (naměřeno ${measured})`;
+		}
 		const config = meta.tracker.config;
 		return config && 'frequency' in config ? `${config.frequency} Hz (nastaveno)` : '—';
 	}
@@ -874,15 +865,14 @@
 								<button
 									type="button"
 									role="menuitem"
-									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-									disabled={isRecalculating}
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
 									onclick={() => {
 										globalMenuOpen = false;
-										triggerI2mc({});
+										openRecalcDialog({});
 									}}
 								>
 									<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
-									Přepočítat I2MC fixace (vše)
+									Doplnit chybějící soubory (vše)…
 								</button>
 							</div>
 						{/if}
@@ -998,15 +988,14 @@
 												<button
 													type="button"
 													role="menuitem"
-													class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-													disabled={isRecalculating}
+													class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
 													onclick={() => {
 														openUserMenuId = '';
-														triggerI2mc({ userIds: [user.id] });
+														openRecalcDialog({ userIds: [user.id] });
 													}}
 												>
 													<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
-													Přepočítat I2MC fixace
+													Doplnit chybějící soubory…
 												</button>
 											</div>
 										{/if}
@@ -1273,15 +1262,14 @@
 													<button
 														type="button"
 														role="menuitem"
-														class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-														disabled={isRecalculating}
+														class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
 														onclick={() => {
 															openSessionMenuId = '';
-															triggerI2mc({ sessionIds: [session.id] });
+															openRecalcDialog({ sessionIds: [session.id] });
 														}}
 													>
 														<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
-														Přepočítat I2MC fixace
+														Doplnit chybějící soubory…
 													</button>
 												</div>
 											{/if}
@@ -1376,15 +1364,14 @@
 											<button
 												type="button"
 												role="menuitem"
-												class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-												disabled={isRecalculating}
+												class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
 												onclick={() => {
 													menuOpen = false;
-													triggerI2mc({ sessionIds: [activeSessionId] });
+													openRecalcDialog({ sessionIds: [activeSessionId] });
 												}}
 											>
 												<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
-												Přepočítat I2MC fixace
+												Doplnit chybějící soubory…
 											</button>
 											<button
 												type="button"
@@ -1446,6 +1433,18 @@
 							<div class="min-w-0 flex-1">
 								<span class="text-sm font-semibold text-gray-800">Metadata sezení</span>
 								<span class="ml-1 text-xs text-gray-400">prostředí, tracker a logy</span>
+								{#if sessionMeta?.recalculated}
+									<span
+										class="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700"
+										title="Rekonstruováno {formatDate(
+											sessionMeta.recalculated.at
+										)} ({sessionMeta.recalculated.items.join(
+											', '
+										)}) – nemusí odpovídat skutečnému prostředí záznamu"
+									>
+										Rekonstruováno
+									</span>
+								{/if}
 							</div>
 							<span class="shrink-0 text-xs text-gray-400">
 								{(metaPart.files ?? []).length} souborů
@@ -1596,6 +1595,13 @@
 		</div>
 	</div>
 {/if}
+
+<!-- Recalculation dialog -->
+<RecalculateDialog
+	bind:open={recalcDialogOpen}
+	scope={recalcScope}
+	onFinished={handleRecalcFinished}
+/>
 
 <!-- Delete confirmation dialog -->
 <Dialog.Root bind:open={deleteDialogOpen}>
