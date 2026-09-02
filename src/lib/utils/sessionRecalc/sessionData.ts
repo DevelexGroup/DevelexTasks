@@ -21,14 +21,11 @@ export interface RecalcSessionData {
 /**
  * Downloads just the files the recalculation needs (raw gaze + gaze samples
  * for stats and stimulus ids, meta.json and geometry for the recorded
- * viewport), skipping fixation and score CSVs. `samples: false` also skips
- * the gaze-sample CSVs, enough for the viewport verification.
+ * viewport), skipping fixation and score CSVs.
  */
 export async function loadRecalcSessionData(
-	detail: TestSessionDetailDTO,
-	options: { samples?: boolean } = {}
+	detail: TestSessionDetailDTO
 ): Promise<RecalcSessionData> {
-	const includeSamples = options.samples ?? true;
 	type Kind = 'raw' | 'samples' | 'meta' | 'geometry';
 	const wanted: { fileId: string; kind: Kind }[] = [];
 	for (const part of detail.parts ?? []) {
@@ -38,8 +35,7 @@ export async function loadRecalcSessionData(
 			if (lower === SESSION_META_FILE_NAME) wanted.push({ fileId: file.id, kind: 'meta' });
 			else if (lower.includes('aoigeometry')) wanted.push({ fileId: file.id, kind: 'geometry' });
 			else if (lower.includes('rawgazedata')) wanted.push({ fileId: file.id, kind: 'raw' });
-			else if (includeSamples && lower.includes('gazesamples'))
-				wanted.push({ fileId: file.id, kind: 'samples' });
+			else if (lower.includes('gazesamples')) wanted.push({ fileId: file.id, kind: 'samples' });
 		}
 	}
 
@@ -81,19 +77,6 @@ export async function loadRecalcSessionData(
 
 /** Same tolerance as the sim's viewport warning; ET drifts slightly out of range. */
 export const OUTSIDE_SHARE_WARNING = 0.02;
-
-/** Share of valid gaze points outside the viewport, mirroring the sim's check. */
-export function outsideViewportShare(
-	rawGazeData: RawGazeDataEntry[],
-	viewport: { width: number; height: number }
-): number {
-	const valid = rawGazeData.filter((row) => row.validityL || row.validityR);
-	if (valid.length === 0) return 0;
-	const outside = valid.filter(
-		(row) => row.x < 0 || row.y < 0 || row.x > viewport.width || row.y > viewport.height
-	).length;
-	return outside / valid.length;
-}
 
 /** First recorded stimulus id per slide, mirroring the sim's resolution rule. */
 export function stimulusBySlide(gazeSamples: GazeSampleDataEntry[]): Record<number, string> {

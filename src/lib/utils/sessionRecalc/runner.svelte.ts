@@ -73,10 +73,14 @@ function geometryUploadFile(
 	});
 }
 
-export function sessionLabel(detail: TestSessionDetailDTO): string {
-	const start = new Date(detail.sessionStartTime);
+export function sessionLabel(session: {
+	username: string;
+	testType: string;
+	sessionStartTime: Date | string;
+}): string {
+	const start = new Date(session.sessionStartTime);
 	const date = Number.isNaN(start.getTime()) ? '' : ` · ${start.toLocaleString('cs-CZ')}`;
-	return `${detail.username} · ${detail.testType}${date}`;
+	return `${session.username} · ${session.testType}${date}`;
 }
 
 function errorMessage(err: unknown): string {

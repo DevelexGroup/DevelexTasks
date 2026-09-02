@@ -205,6 +205,28 @@ export async function previewRecalculation(
 	return result.sessions;
 }
 
+export interface ViewportCheckResult {
+	username: string;
+	testType: string;
+	sessionStartTime: string;
+	/** Viewport found in a geometry file or meta.json; null when the fallback was used. */
+	recordedViewport: { width: number; height: number } | null;
+	viewport: { width: number; height: number };
+	validSamples: number;
+	outsideShare: number;
+}
+
+/** Share of valid raw gaze samples outside the recorded viewport, or the fallback when none was recorded. */
+export async function checkSessionViewport(
+	sessionId: string,
+	fallback: { width: number; height: number }
+): Promise<ViewportCheckResult> {
+	return apiClient<ViewportCheckResult>(
+		`/test-sessions/${sessionId}/post-processing/recalculate/viewport-check`,
+		{ params: { width: fallback.width, height: fallback.height } }
+	);
+}
+
 export interface PostProcessingProcessResult {
 	status:
 		| 'PROCESSED'

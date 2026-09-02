@@ -3,16 +3,12 @@
 	import Icon from '@iconify/svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import {
-		getTestSessionDetail,
+		checkSessionViewport,
 		previewRecalculation,
 		type RecalculationPreviewRow,
 		type RecalculationScope
 	} from '$lib/api/test-sessions';
-	import {
-		loadRecalcSessionData,
-		outsideViewportShare,
-		OUTSIDE_SHARE_WARNING
-	} from '$lib/utils/sessionRecalc/sessionData';
+	import { OUTSIDE_SHARE_WARNING } from '$lib/utils/sessionRecalc/sessionData';
 	import { captureAoiRects } from '$lib/utils/sessionSim/aoiCapture';
 	import type { AoiRect } from '$lib/utils/sessionSim/types';
 	import type { ResolvedSlide } from '$lib/utils/sessionSim/taskResolver';
@@ -42,10 +38,16 @@
 	let rows = $state<RecalculationPreviewRow[]>([]);
 
 	// ── Viewport verification before the run ──
+	interface VerifyWarning {
+		sessionId: string;
+		label: string;
+		message: string;
+	}
+	const VERIFY_CONCURRENCY = 4;
 	let verifyProcessed = $state(0);
 	let verifyTotal = $state(0);
 	let verifyLabel = $state('');
-	let verifyWarnings = $state<{ sessionId: string; label: string; message: string }[]>([]);
+	let verifyWarnings = $state<VerifyWarning[]>([]);
 	// Bumping the token cancels an in-flight verification loop
 	let verifyToken = 0;
 
@@ -180,44 +182,47 @@
 		verifyLabel = '';
 		verifyWarnings = [];
 
-		for (const row of toVerify) {
-			let label = row.sessionId;
-			try {
-				const detail = await getTestSessionDetail(row.sessionId);
+		const warnings: (VerifyWarning | null)[] = toVerify.map(() => null);
+		let next = 0;
+		const worker = async () => {
+			while (next < toVerify.length && token === verifyToken) {
+				const index = next++;
+				const warning = await verifySession(toVerify[index]);
 				if (token !== verifyToken) return;
-				label = sessionLabel(detail);
-				verifyLabel = label;
-				const data = await loadRecalcSessionData(detail, { samples: false });
-				if (token !== verifyToken) return;
-				const viewport = data.recordedViewport ?? { width: viewportWidth, height: viewportHeight };
-				const share = outsideViewportShare(data.rawGazeData, viewport);
-				if (share > OUTSIDE_SHARE_WARNING) {
-					verifyWarnings = [
-						...verifyWarnings,
-						{
-							sessionId: row.sessionId,
-							label,
-							message: `${Math.round(share * 100)} % pohledu mimo rozlišení ${viewport.width}×${viewport.height}`
-						}
-					];
-				}
-			} catch (err) {
-				if (token !== verifyToken) return;
-				verifyWarnings = [
-					...verifyWarnings,
-					{
-						sessionId: row.sessionId,
-						label,
-						message: `ověření selhalo: ${err instanceof Error ? err.message : String(err)}`
-					}
-				];
+				warnings[index] = warning;
+				verifyProcessed++;
 			}
-			verifyProcessed++;
-		}
+		};
+		await Promise.all(Array.from({ length: VERIFY_CONCURRENCY }, worker));
 
 		if (token !== verifyToken) return;
+		verifyWarnings = warnings.filter((warning) => warning !== null);
 		if (verifyWarnings.length > 0) phase = 'confirm';
 		else await launch();
+	}
+
+	/** The server scans the session's raw gaze against the viewport the run would use. */
+	async function verifySession(row: RecalculationPreviewRow): Promise<VerifyWarning | null> {
+		try {
+			const result = await checkSessionViewport(row.sessionId, {
+				width: viewportWidth,
+				height: viewportHeight
+			});
+			const label = sessionLabel(result);
+			verifyLabel = label;
+			if (result.outsideShare <= OUTSIDE_SHARE_WARNING) return null;
+			return {
+				sessionId: row.sessionId,
+				label,
+				message: `${Math.round(result.outsideShare * 100)} % pohledu mimo rozlišení ${result.viewport.width}×${result.viewport.height}`
+			};
+		} catch (err) {
+			return {
+				sessionId: row.sessionId,
+				label: row.sessionId,
+				message: `ověření selhalo: ${err instanceof Error ? err.message : String(err)}`
+			};
+		}
 	}
 
 	function cancelVerification() {
