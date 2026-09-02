@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { buildCorrectedFiles, buildCorrectedZip, correctedZipName } from './export';
-import { classifyFileName, loadFromZip } from './loaders';
+import {
+	buildCorrectedFiles,
+	buildCorrectedZip,
+	buildUnifiedExportFiles,
+	correctedZipName
+} from './export';
+import { classifyFileName, loadSessionsFromZip, sessionFolderOf } from './loaders';
 import { runReplay } from './replay';
 import { identityCorrection } from './transform';
 import {
@@ -15,7 +20,7 @@ import type { GazeSampleDataEntry, RawGazeDataEntry } from '$lib/database/db.typ
 const BASE_MS = Date.parse('2024-08-11T12:00:00.000Z');
 const SESSION_ID = String(BASE_MS);
 
-function buildSession(): LoadedSession {
+function buildSession(overrides: Partial<LoadedSession> = {}): LoadedSession {
 	const rawGazeData: RawGazeDataEntry[] = [];
 	const gazeSamples: GazeSampleDataEntry[] = [];
 	for (let t = 0; t <= 400; t += 10) {
@@ -71,7 +76,9 @@ function buildSession(): LoadedSession {
 		meta: null,
 		metaRaw: null,
 		bridgeStamped: false,
-		warnings: []
+		exportFolder: 'child/2024-08-11_14-00-00_cibule-1',
+		warnings: [],
+		...overrides
 	};
 }
 
@@ -103,70 +110,132 @@ function meta(session: LoadedSession) {
 }
 
 describe('buildCorrectedFiles', () => {
-	it('produces re-importable CSVs and a parseable corrections.json', () => {
+	it('lays the session out like the server export with original file names', () => {
 		const session = buildSession();
 		const files = buildCorrectedFiles(buildResult(session), meta(session));
 
+		// No fixation survived the replay, so like the live upload there is no fixationData file
 		expect(files.map((f) => f.name)).toEqual([
-			'gazeSamples_corrected.csv',
-			'fixationData_corrected.csv',
-			'sessionScores_corrected.csv',
-			'rawGazeData_corrected.csv',
-			'corrections.json'
+			'part_1/gazeSamples_slide1.csv',
+			'part_1/sessionScores_slide1.csv',
+			'part_1/rawGazeData_slide1.csv',
+			'meta/corrections.json'
 		]);
 
-		// Each CSV name routes back to its table in the file-drop loader
-		expect(classifyFileName(files[0].name)).toBe('gazeSamples');
-		expect(classifyFileName(files[1].name)).toBe('fixationData');
-		expect(classifyFileName(files[2].name)).toBe('sessionScores');
-		expect(classifyFileName(files[3].name)).toBe('rawGazeData');
-		expect(classifyFileName(files[4].name)).toBeNull();
+		// Each CSV routes back to its table and session folder in the loader
+		const baseName = (path: string) => path.split('/').pop() ?? path;
+		expect(classifyFileName(baseName(files[0].name))).toBe('gazeSamples');
+		expect(classifyFileName(baseName(files[1].name))).toBe('sessionScores');
+		expect(classifyFileName(baseName(files[2].name))).toBe('rawGazeData');
+		expect(classifyFileName(baseName(files[3].name))).toBeNull();
+		expect(files.every((f) => sessionFolderOf(f.name) === '')).toBe(true);
 
-		const corrections = JSON.parse(files[4].content);
+		const corrections = JSON.parse(files[3].content);
 		expect(corrections.source.sessionId).toBe(SESSION_ID);
 		expect(corrections.viewport).toEqual({ width: 1920, height: 1080 });
 		expect(corrections.detectorParams).toEqual(DEFAULT_DETECTOR_PARAMS);
 	});
 
-	it('carries recorded geometry and meta.json through unchanged', () => {
+	it('splits every table by slide into its part folder', () => {
 		const session = buildSession();
-		session.recordedGeometry = [
-			{
-				slideIndex: 1,
-				stimulusId: '5',
-				viewport: { width: 1920, height: 1080 },
-				aois: [{ id: 'track', left: 0, top: 0, right: 100, bottom: 100, bufferSize: 50 }]
-			}
-		];
-		session.metaRaw = '{"metaVersion":1}';
+		const result = buildResult(session);
+		result.rawGazeData = result.rawGazeData.map((row, i) => ({
+			...row,
+			slide_index: i % 2 === 0 ? 1 : 3
+		}));
+
+		const names = buildCorrectedFiles(result, meta(session)).map((f) => f.name);
+		expect(names).toContain('part_1/rawGazeData_slide1.csv');
+		expect(names).toContain('part_3/rawGazeData_slide3.csv');
+		expect(names.filter((n) => n.includes('gazeSamples'))).toEqual([
+			'part_1/gazeSamples_slide1.csv'
+		]);
+	});
+
+	it('carries recorded geometry and meta.json through unchanged', () => {
+		const session = buildSession({
+			recordedGeometry: [
+				{
+					slideIndex: 1,
+					stimulusId: '5',
+					viewport: { width: 1920, height: 1080 },
+					aois: [{ id: 'track', left: 0, top: 0, right: 100, bottom: 100, bufferSize: 50 }]
+				}
+			],
+			metaRaw: '{"metaVersion":1}'
+		});
 
 		const files = buildCorrectedFiles(buildResult(session), meta(session));
-		expect(files.map((f) => f.name).slice(0, 2)).toEqual(['aoiGeometry_slide1.json', 'meta.json']);
-		expect(files[1].content).toBe('{"metaVersion":1}');
-		expect(classifyFileName(files[0].name)).toBe('aoiGeometry');
-		expect(classifyFileName(files[1].name)).toBe('sessionMeta');
+		expect(files.map((f) => f.name).slice(0, 2)).toEqual([
+			'meta/meta.json',
+			'part_1/aoiGeometry_slide1.json'
+		]);
+		expect(files[0].content).toBe('{"metaVersion":1}');
+	});
+});
+
+describe('buildUnifiedExportFiles', () => {
+	it('prefixes each session with its folder and suffixes repeated folders', () => {
+		const a = buildSession();
+		const b = buildSession({
+			childId: 'other',
+			exportFolder: 'other/2024-08-11_14-00-00_cibule-1'
+		});
+		const c = buildSession();
+		const files = buildUnifiedExportFiles([
+			{ result: buildResult(a), meta: meta(a) },
+			{ result: buildResult(b), meta: meta(b) },
+			{ result: buildResult(c), meta: meta(c) }
+		]);
+
+		const folders = [...new Set(files.map((f) => sessionFolderOf(f.name)))];
+		expect(folders).toEqual([
+			'child/2024-08-11_14-00-00_cibule-1',
+			'other/2024-08-11_14-00-00_cibule-1',
+			'child/2024-08-11_14-00-00_cibule-1_2'
+		]);
+		expect(files.map((f) => f.name)).toContain(
+			'child/2024-08-11_14-00-00_cibule-1/part_1/rawGazeData_slide1.csv'
+		);
 	});
 });
 
 describe('buildCorrectedZip', () => {
-	it('round-trips through the file-drop loader', async () => {
-		const session = buildSession();
-		const result = buildResult(session);
-		const blob = await buildCorrectedZip(result, meta(session));
+	it('round-trips every session through the file-drop loader', async () => {
+		const a = buildSession();
+		const b = buildSession({
+			childId: 'other',
+			exportFolder: 'other/2024-08-11_14-00-00_cibule-1',
+			rawGazeData: buildSession().rawGazeData.map((row) => ({ ...row, child_id: 'other' })),
+			gazeSamples: buildSession().gazeSamples.map((row) => ({ ...row, child_id: 'other' }))
+		});
+		const resultA = buildResult(a);
+		const blob = await buildCorrectedZip([
+			{ result: resultA, meta: meta(a) },
+			{ result: buildResult(b), meta: meta(b) }
+		]);
 
-		const reimported = await loadFromZip(await blob.arrayBuffer());
-		expect(reimported.sessionId).toBe(SESSION_ID);
-		expect(reimported.taskName).toBe('cibule-1');
-		expect(reimported.rawGazeData).toHaveLength(session.rawGazeData.length);
-		expect(reimported.gazeSamples).toHaveLength(session.gazeSamples.length);
-		expect(reimported.fixationData).toHaveLength(result.fixations.length);
+		const reimported = await loadSessionsFromZip(await blob.arrayBuffer());
+		expect(reimported.map((s) => s.exportFolder)).toEqual([a.exportFolder, b.exportFolder]);
+		expect(reimported[0].sessionId).toBe(SESSION_ID);
+		expect(reimported[0].taskName).toBe('cibule-1');
+		expect(reimported[0].rawGazeData).toHaveLength(a.rawGazeData.length);
+		expect(reimported[0].gazeSamples).toHaveLength(a.gazeSamples.length);
+		expect(reimported[0].fixationData).toHaveLength(resultA.fixations.length);
+		expect(reimported[1].childId).toBe('other');
 	});
 });
 
 describe('correctedZipName', () => {
 	it('stamps child, task and session date with a corrected marker', () => {
-		expect(correctedZipName(buildSession())).toBe(
+		expect(correctedZipName([buildSession()])).toBe(
 			'session-sim_child_cibule-1_2024-08-11_12-00-00_corrected.zip'
+		);
+	});
+
+	it('names a batch export generically', () => {
+		expect(correctedZipName([buildSession(), buildSession()])).toMatch(
+			/^session-sim_export_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}_corrected\.zip$/
 		);
 	});
 });

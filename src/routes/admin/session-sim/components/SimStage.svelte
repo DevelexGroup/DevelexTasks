@@ -37,16 +37,6 @@
 		frameWidth > 0 ? Math.min(frameWidth / width, (windowHeight * 0.75) / height, 1) : 0
 	);
 
-	let captureNode = $state<HTMLElement | null>(null);
-
-	export function getCaptureNode(): HTMLElement | null {
-		return captureNode;
-	}
-
-	export function getFitScale(): number {
-		return fit;
-	}
-
 	// ── Pan & zoom ──
 	const MAX_ZOOM = 8;
 	let zoom = $state(1);
@@ -148,11 +138,7 @@
 				style="transform: translate({panX}px, {panY}px) scale({fit *
 					zoom}); transform-origin: top left;"
 			>
-				<div
-					bind:this={captureNode}
-					class="relative overflow-hidden"
-					style="width: {width}px; height: {height}px;"
-				>
+				<div class="relative overflow-hidden" style="width: {width}px; height: {height}px;">
 					{#if level && stimulus && stimulusProps}
 						{#key `${level.taskSlug}/${level.levelId}/${stimulus.id}`}
 							<level.component {...stimulusProps} />

@@ -66,8 +66,22 @@ export interface LoadedSession {
 	 * parity needs rebaseRawTimestamps on.
 	 */
 	bridgeStamped: boolean;
+	/** Folder of the session in the unified export layout: `<username>/<yyyy-MM-dd_HH-mm-ss>_<testType>`. */
+	exportFolder: string;
 	warnings: string[];
 }
+
+/** A session picked for simulation; remote sources download on first use. */
+export interface SessionSource {
+	key: string;
+	username: string;
+	testType: string;
+	sessionStartTime: Date | null;
+	load(): Promise<LoadedSession>;
+}
+
+/** auto = follow each recording's bridge stamping (live parity). */
+export type RebaseMode = 'auto' | 'on' | 'off';
 
 /** The sim-relevant subset of the recorded meta.json. */
 export interface RecordedSessionMeta {

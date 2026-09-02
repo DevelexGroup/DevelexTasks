@@ -23,6 +23,10 @@ type TableKind =
 	| 'aoiGeometry'
 	| 'sessionMeta';
 
+type RowKind = Exclude<TableKind, 'aoiGeometry' | 'sessionMeta'>;
+
+type TableRow = GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry | RawGazeDataEntry;
+
 interface SessionTables {
 	gazeSamples: GazeSampleDataEntry[];
 	fixationData: FixationDataEntry[];
@@ -162,27 +166,55 @@ export function parseAoiGeometryJson(jsonText: string): RecordedSlideGeometry | 
 	};
 }
 
-function parseInto(tables: SessionTables, kind: TableKind, text: string): void {
-	if (kind === 'gazeSamples') tables.gazeSamples.push(...parseGazeSamplesCsv(text));
-	else if (kind === 'fixationData') tables.fixationData.push(...parseFixationDataCsv(text));
-	else if (kind === 'i2mcFixationData') tables.i2mcFixationData.push(...parseFixationDataCsv(text));
-	else if (kind === 'sessionScores') tables.sessionScores.push(...parseSessionScoresCsv(text));
-	else if (kind === 'aoiGeometry') {
+function parseRows(kind: RowKind, text: string): TableRow[] {
+	if (kind === 'gazeSamples') return parseGazeSamplesCsv(text);
+	if (kind === 'fixationData' || kind === 'i2mcFixationData') return parseFixationDataCsv(text);
+	if (kind === 'sessionScores') return parseSessionScoresCsv(text);
+	return parseRawGazeDataCsv(text);
+}
+
+function pushRows(tables: SessionTables, kind: RowKind, rows: TableRow[]): void {
+	(tables[kind] as TableRow[]).push(...rows);
+}
+
+function parseAuxiliary(tables: SessionTables, kind: 'aoiGeometry' | 'sessionMeta', text: string) {
+	if (kind === 'aoiGeometry') {
 		const geometry = parseAoiGeometryJson(text);
 		if (geometry) tables.recordedGeometry.push(geometry);
-	} else if (kind === 'sessionMeta') {
-		const parsed = parseSessionMetaJson(text);
-		if (parsed) {
-			tables.sessionMeta = parsed;
-			tables.sessionMetaRaw = text;
-		}
-	} else tables.rawGazeData.push(...parseRawGazeDataCsv(text));
+		return;
+	}
+	const parsed = parseSessionMetaJson(text);
+	if (parsed) {
+		tables.sessionMeta = parsed;
+		tables.sessionMetaRaw = text;
+	}
 }
 
 interface SessionIdentity {
 	childId?: string;
 	sessionId?: string;
 	taskName?: string;
+	exportFolder?: string;
+}
+
+/** `yyyy-MM-dd_HH-mm-ss` in local time, the stamp the server puts in session folder names. */
+export function sessionFolderStamp(date: Date): string {
+	const pad = (value: number) => String(value).padStart(2, '0');
+	const day = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+	const time = `${pad(date.getHours())}-${pad(date.getMinutes())}-${pad(date.getSeconds())}`;
+	return `${day}_${time}`;
+}
+
+export function sessionExportFolder(
+	username: string,
+	sessionStartTime: Date | string | number,
+	testType: string
+): string {
+	const start = new Date(sessionStartTime);
+	const stamp = Number.isNaN(start.getTime())
+		? String(sessionStartTime)
+		: sessionFolderStamp(start);
+	return `${username}/${stamp}_${testType}`;
 }
 
 /** Full-content dedupe; overlapping exports (original + corrected) repeat rows. */
@@ -212,8 +244,12 @@ function isBridgeStamped(rows: RawGazeDataEntry[]): boolean {
 	return parseable > 0 && matching / parseable >= 0.99;
 }
 
-function finalizeSession(tables: SessionTables, identity: SessionIdentity): LoadedSession {
-	const warnings: string[] = [];
+function finalizeSession(
+	tables: SessionTables,
+	identity: SessionIdentity,
+	extraWarnings: string[] = []
+): LoadedSession {
+	const warnings: string[] = [...extraWarnings];
 	const byTimestamp = <T extends { timestamp: number }>(entries: T[]) =>
 		entries.sort((a, b) => a.timestamp - b.timestamp);
 
@@ -269,10 +305,15 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 		}
 	}
 
+	const childId = identity.childId ?? anyRow?.child_id ?? 'unknown';
+	const sessionId = identity.sessionId ?? anyRow?.session_id ?? 'unknown';
+	const taskName = identity.taskName ?? anyRow?.task_name ?? 'unknown';
+	const sessionMs = parseFloat(sessionId);
+
 	return {
-		childId: identity.childId ?? anyRow?.child_id ?? 'unknown',
-		sessionId: identity.sessionId ?? anyRow?.session_id ?? 'unknown',
-		taskName: identity.taskName ?? anyRow?.task_name ?? 'unknown',
+		childId,
+		sessionId,
+		taskName,
 		gazeSamples: tables.gazeSamples,
 		fixationData: tables.fixationData,
 		i2mcFixationData: tables.i2mcFixationData,
@@ -282,19 +323,26 @@ function finalizeSession(tables: SessionTables, identity: SessionIdentity): Load
 		meta: tables.sessionMeta,
 		metaRaw: tables.sessionMetaRaw,
 		bridgeStamped: isBridgeStamped(tables.rawGazeData),
+		exportFolder:
+			identity.exportFolder ??
+			sessionExportFolder(childId, Number.isFinite(sessionMs) ? sessionMs : sessionId, taskName),
 		warnings
 	};
+}
+
+export interface RemoteSessionRef {
+	id: string;
+	username: string;
+	testType: string;
+	sessionStartTime: Date | string;
 }
 
 /**
  * Downloads and parses all table CSVs of a remote test session, including the
  * rawGazeData files the heatmap loader skips.
  */
-export async function loadRemoteSession(
-	remoteSessionId: string,
-	childId?: string
-): Promise<LoadedSession> {
-	const detail = await getTestSessionDetail(remoteSessionId);
+export async function loadRemoteSession(ref: RemoteSessionRef): Promise<LoadedSession> {
+	const detail = await getTestSessionDetail(ref.id);
 
 	const csvFiles = new Map<string, { fileId: string; kind: TableKind }>();
 	const collect = (files: { id: string; fileName: string }[] | undefined) => {
@@ -309,48 +357,155 @@ export async function loadRemoteSession(
 	const tables = emptyTables();
 	const downloads = await Promise.all(
 		[...csvFiles.values()].map(async ({ fileId, kind }) => {
-			const blob = await downloadTestSessionFile(remoteSessionId, fileId);
+			const blob = await downloadTestSessionFile(ref.id, fileId);
 			return { kind, text: await blob.text() };
 		})
 	);
-	for (const { kind, text } of downloads) parseInto(tables, kind, text);
+	for (const { kind, text } of downloads) {
+		if (kind === 'aoiGeometry' || kind === 'sessionMeta') parseAuxiliary(tables, kind, text);
+		else pushRows(tables, kind, parseRows(kind, text));
+	}
 
+	const testType = detail.testType ?? ref.testType;
 	return finalizeSession(tables, {
-		childId,
+		childId: ref.username,
 		sessionId: tables.rawGazeData[0]?.session_id ?? tables.gazeSamples[0]?.session_id,
-		taskName: detail.testType ?? undefined
+		taskName: testType,
+		exportFolder: sessionExportFolder(ref.username, ref.sessionStartTime, testType)
 	});
 }
 
-/** Loads a session from an exported/downloaded ZIP (nested folders tolerated). */
-export async function loadFromZip(data: Blob | ArrayBuffer | Uint8Array): Promise<LoadedSession> {
-	const zip = await JSZip.loadAsync(data);
-	const tables = emptyTables();
+// ── File input ──
 
-	for (const entry of Object.values(zip.files)) {
-		if (entry.dir) continue;
-		const baseName = entry.name.split('/').pop() ?? entry.name;
-		const kind = classifyFileName(baseName);
-		if (!kind) continue;
-		parseInto(tables, kind, await entry.async('string'));
-	}
-
-	return finalizeSession(tables, {});
+interface InputEntry {
+	path: string;
+	kind: TableKind;
+	text(): Promise<string>;
 }
 
-/** Loads a session from loose CSV files (and/or a single dropped ZIP). */
-export async function loadFromFiles(files: NamedTextFile[]): Promise<LoadedSession> {
-	const zipFile = files.find((file) => file.name.toLowerCase().endsWith('.zip'));
-	if (zipFile && 'arrayBuffer' in zipFile) {
-		return loadFromZip(await (zipFile as unknown as Blob).arrayBuffer());
-	}
+const PART_FOLDER = /^(meta|part_-?\d+)$/i;
 
-	const tables = emptyTables();
+/**
+ * Directory a file's session occupies: its path minus the file name and a
+ * trailing `meta`/`part_N` segment of the server layout. Flat input yields ''.
+ */
+export function sessionFolderOf(path: string): string {
+	const segments = path.split('/').filter(Boolean);
+	segments.pop();
+	if (segments.length > 0 && PART_FOLDER.test(segments[segments.length - 1])) segments.pop();
+	return segments.join('/');
+}
+
+/** `<username>/<sessionFolder>` from an input directory; the child id stands in for a missing username. */
+function exportFolderFromInput(folder: string, childId: string): string | undefined {
+	const segments = folder.split('/').filter(Boolean);
+	if (segments.length >= 2) return segments.slice(-2).join('/');
+	if (segments.length === 1) return `${childId}/${segments[0]}`;
+	return undefined;
+}
+
+async function expandInputs(files: NamedTextFile[]): Promise<InputEntry[]> {
+	const entries: InputEntry[] = [];
 	for (const file of files) {
-		const kind = classifyFileName(file.name);
-		if (!kind) continue;
-		parseInto(tables, kind, await file.text());
+		if (file.name.toLowerCase().endsWith('.zip') && 'arrayBuffer' in file) {
+			const zip = await JSZip.loadAsync(await (file as unknown as Blob).arrayBuffer());
+			for (const entry of Object.values(zip.files)) {
+				if (entry.dir) continue;
+				const kind = classifyFileName(entry.name.split('/').pop() ?? entry.name);
+				if (kind) entries.push({ path: entry.name, kind, text: () => entry.async('string') });
+			}
+		} else {
+			const kind = classifyFileName(file.name);
+			if (kind) entries.push({ path: file.name, kind, text: () => file.text() });
+		}
+	}
+	return entries;
+}
+
+/**
+ * Loads every session found in one input directory. Table rows are keyed by
+ * their own child/session id, so a flat folder holding several sessions still
+ * splits; geometry and meta files are only attributed when the folder holds a
+ * single session.
+ */
+async function loadFolderGroup(folder: string, entries: InputEntry[]): Promise<LoadedSession[]> {
+	const buckets = new Map<string, SessionTables>();
+	const auxiliary = emptyTables();
+
+	for (const entry of entries) {
+		const text = await entry.text();
+		if (entry.kind === 'aoiGeometry' || entry.kind === 'sessionMeta') {
+			parseAuxiliary(auxiliary, entry.kind, text);
+			continue;
+		}
+		const byIdentity = new Map<string, TableRow[]>();
+		for (const row of parseRows(entry.kind, text)) {
+			const key = `${row.child_id}|${row.session_id}`;
+			const rows = byIdentity.get(key) ?? [];
+			rows.push(row);
+			byIdentity.set(key, rows);
+		}
+		for (const [key, rows] of byIdentity) {
+			const tables = buckets.get(key) ?? emptyTables();
+			pushRows(tables, entry.kind, rows);
+			buckets.set(key, tables);
+		}
 	}
 
-	return finalizeSession(tables, {});
+	const hasAuxiliary = auxiliary.recordedGeometry.length > 0 || auxiliary.sessionMeta !== null;
+	const sessions: LoadedSession[] = [];
+	for (const tables of buckets.values()) {
+		const warnings: string[] = [];
+		if (buckets.size === 1) {
+			tables.recordedGeometry = auxiliary.recordedGeometry;
+			tables.sessionMeta = auxiliary.sessionMeta;
+			tables.sessionMetaRaw = auxiliary.sessionMetaRaw;
+		} else if (hasAuxiliary) {
+			warnings.push(
+				'Soubory aoiGeometry/meta.json nelze přiřadit – vstup obsahuje více sezení ve stejné složce.'
+			);
+		}
+		const anyRow = tables.rawGazeData[0] ?? tables.gazeSamples[0] ?? tables.fixationData[0];
+		sessions.push(
+			finalizeSession(
+				tables,
+				{ exportFolder: exportFolderFromInput(folder, anyRow?.child_id ?? 'unknown') },
+				warnings
+			)
+		);
+	}
+	return sessions;
+}
+
+/**
+ * Loads all sessions from dropped files: server-layout ZIPs
+ * (`<username>/<session>/part_N/…`), local exports, flat ZIPs and loose CSVs,
+ * in any combination.
+ */
+export async function loadSessionsFromFiles(files: NamedTextFile[]): Promise<LoadedSession[]> {
+	const groups = new Map<string, InputEntry[]>();
+	for (const entry of await expandInputs(files)) {
+		const folder = sessionFolderOf(entry.path);
+		const group = groups.get(folder) ?? [];
+		group.push(entry);
+		groups.set(folder, group);
+	}
+
+	const sessions: LoadedSession[] = [];
+	for (const [folder, entries] of groups) {
+		sessions.push(...(await loadFolderGroup(folder, entries)));
+	}
+	return sessions.sort((a, b) => a.exportFolder.localeCompare(b.exportFolder));
+}
+
+export async function loadSessionsFromZip(
+	data: Blob | ArrayBuffer | Uint8Array
+): Promise<LoadedSession[]> {
+	const blob = data instanceof Blob ? data : new Blob([data as BlobPart]);
+	const file = {
+		name: 'input.zip',
+		text: () => blob.text(),
+		arrayBuffer: () => blob.arrayBuffer()
+	};
+	return loadSessionsFromFiles([file]);
 }

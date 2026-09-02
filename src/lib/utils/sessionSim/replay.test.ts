@@ -91,6 +91,7 @@ function buildSession(): LoadedSession {
 		meta: null,
 		metaRaw: null,
 		bridgeStamped: false,
+		exportFolder: 'child/2024-08-11_14-00-00_cibule-1',
 		warnings: []
 	};
 }
@@ -250,6 +251,7 @@ describe('runReplay', () => {
 			meta: null,
 			metaRaw: null,
 			bridgeStamped: false,
+			exportFolder: 'child/2024-08-11_14-00-00_cibule-1',
 			warnings: []
 		};
 	}
@@ -317,6 +319,7 @@ describe('runReplay', () => {
 			meta: null,
 			metaRaw: null,
 			bridgeStamped: false,
+			exportFolder: 'child/2024-08-11_14-00-00_cibule-1',
 			warnings: []
 		};
 	}

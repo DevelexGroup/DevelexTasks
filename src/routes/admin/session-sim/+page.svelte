@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { tick } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
 	import BackButton from '$lib/components/layout/BackButton.svelte';
+	import OffscreenStimulusStage from '$lib/components/OffscreenStimulusStage.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import { Switch } from '$lib/components/ui/switch';
@@ -15,8 +15,7 @@
 		type OverlayFixation
 	} from './components/GazeOverlay.svelte';
 	import ScoreComparison from './components/ScoreComparison.svelte';
-	import { captureAoiRects } from '$lib/utils/sessionSim/aoiCapture';
-	import { downloadBlob, settleStimulus } from '$lib/utils/stimulusExport/capture';
+	import { downloadBlob } from '$lib/utils/stimulusExport/capture';
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
 	import {
 		runI2mcHeadless,
@@ -26,19 +25,56 @@
 	} from '$lib/api/test-sessions';
 	import { parseFixationDataCsv } from '$lib/utils/csvParser';
 	import type { RawGazeDataEntry } from '$lib/database/db.types';
-	import { buildCorrectedZip, correctedZipName } from '$lib/utils/sessionSim/export';
-	import { SessionSimState } from '$lib/utils/sessionSim/simState.svelte';
+	import {
+		buildCorrectedZip,
+		correctedZipName,
+		type ExportedSession
+	} from '$lib/utils/sessionSim/export';
+	import { SessionWorkspace, type SessionSimState } from '$lib/utils/sessionSim/simState.svelte';
 	import { IDENTITY_MATRIX } from '$lib/utils/sessionSim/transform';
 	import {
 		DEFAULT_GAP_RESET_MS,
 		type CorrectionMatrix,
-		type LoadedSession
+		type RebaseMode,
+		type SessionSource
 	} from '$lib/utils/sessionSim/types';
 
-	const sim = new SessionSimState();
+	const workspace = new SessionWorkspace();
+	const settings = workspace.settings;
+	const sim = $derived(workspace.active);
 
 	let loadDialogOpen = $state(true);
-	let stage = $state<SimStage | null>(null);
+	let captureStage = $state<OffscreenStimulusStage | null>(null);
+
+	function errorMessage(err: unknown): string {
+		return err instanceof Error ? err.message : String(err);
+	}
+
+	// ── Sessions ──
+	const slotPosition = $derived(
+		workspace.slots.findIndex((slot) => slot.key === workspace.activeKey)
+	);
+
+	function handleSourcesPicked(sources: SessionSource[]) {
+		workspace.setSources(sources);
+		if (workspace.activeKey) void activate(workspace.activeKey);
+	}
+
+	/** Makes a session current, downloading it on first use. */
+	async function activate(key: string) {
+		workspace.activeKey = key;
+		const slot = workspace.active;
+		if (!slot) return;
+		try {
+			await slot.ensureLoaded();
+		} catch {
+			return;
+		}
+		if (workspace.active !== slot) return;
+		syncInputsFrom(slot);
+		if (slot.isStale) slot.recomputeNow();
+		void ensureGeometry(slot);
+	}
 
 	// ── Viewport ──
 	const RESOLUTION_PRESETS = [
@@ -51,104 +87,89 @@
 	let viewportW = $state(1920);
 	let viewportH = $state(1080);
 
+	// Recorded geometry and meta.json carry the real recording viewport and rate
+	function syncInputsFrom(slot: SessionSimState) {
+		viewportW = slot.viewportWidth;
+		viewportH = slot.viewportHeight;
+		const measured = slot.session?.meta?.measuredFrequencyHz;
+		i2mcParams = {
+			...i2mcParams,
+			xres: slot.viewportWidth,
+			yres: slot.viewportHeight,
+			freq: measured ? snapToCommonRate(measured) : I2MC_DEFAULT_PARAMETERS.freq
+		};
+	}
+
 	function applyViewport(width = viewportW, height = viewportH) {
+		if (!sim) return;
 		viewportW = width;
 		viewportH = height;
 		sim.setViewport(width, height);
 		i2mcParams = { ...i2mcParams, xres: width, yres: height };
-		void captureAllGeometry();
+		void ensureGeometry(sim);
 	}
 
 	// ── Geometry capture ──
 	let captureProgress = $state<string | null>(null);
-	let capturingAll = false;
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	const captureRuns = new Map<string, Promise<void>>();
 
 	const missingGeometry = $derived(
-		sim.slides.filter((slide) => sim.resolvedBySlide[slide] && !sim.hasGeometry(slide))
+		sim ? sim.slides.filter((slide) => sim.resolvedBySlide[slide] && !sim.hasGeometry(slide)) : []
 	);
 	const allSlidesRecorded = $derived(
-		sim.slides.length > 0 && sim.slides.every((slide) => sim.recordedAois[slide])
+		!!sim && sim.slides.length > 0 && sim.slides.every((slide) => sim.recordedAois[slide])
 	);
 
-	async function waitForStage(): Promise<HTMLElement | null> {
-		for (let i = 0; i < 120; i++) {
-			const node = stage?.getCaptureNode();
-			if (node && (stage?.getFitScale() ?? 0) > 0) return node;
-			await new Promise(requestAnimationFrame);
-		}
-		return null;
+	/** Captures AOI geometry offscreen for every renderable slide that lacks it; one run per session at a time. */
+	function ensureGeometry(slot: SessionSimState): Promise<void> {
+		const running = captureRuns.get(slot.key);
+		if (running) return running;
+		const run = captureGeometry(slot).finally(() => captureRuns.delete(slot.key));
+		captureRuns.set(slot.key, run);
+		return run;
 	}
 
-	async function ensureGeometry(slide: number) {
-		if (!sim.resolvedBySlide[slide] || sim.hasGeometry(slide)) return;
-		await tick();
-		const node = await waitForStage();
-		if (!node || sim.selectedSlide !== slide) return;
-		await settleStimulus(node);
-		if (sim.selectedSlide !== slide) return;
-		sim.registerGeometry(slide, captureAoiRects(node));
-	}
-
-	async function captureAllGeometry() {
-		if (!sim.session || capturingAll) return;
-		capturingAll = true;
-		const original = sim.selectedSlide;
+	async function captureGeometry(slot: SessionSimState) {
+		if (!slot.session || !captureStage) return;
 		try {
-			for (const slide of sim.slides) {
-				if (sim.hasGeometry(slide) || !sim.resolvedBySlide[slide]) continue;
-				captureProgress = `Načítám geometrii slidu ${slide}…`;
-				sim.selectedSlide = slide;
-				await ensureGeometry(slide);
+			for (const slide of slot.slides) {
+				const resolved = slot.resolvedBySlide[slide];
+				if (!resolved || slot.hasGeometry(slide)) continue;
+				if (slot === workspace.active) captureProgress = `Načítám geometrii slidu ${slide}…`;
+				const viewport = { width: slot.viewportWidth, height: slot.viewportHeight };
+				const rects = await captureStage.capture(resolved, viewport);
+				slot.registerGeometry(slide, rects);
 			}
 		} finally {
-			if (original !== null) sim.selectedSlide = original;
-			captureProgress = null;
-			capturingAll = false;
+			if (slot === workspace.active) captureProgress = null;
 		}
-	}
-
-	function selectSlide(slide: number) {
-		sim.selectedSlide = slide;
-		void ensureGeometry(slide);
-	}
-
-	function handleSessionLoaded(session: LoadedSession) {
-		sim.loadSession(session);
-		// Recorded geometry and meta.json carry the real recording viewport
-		viewportW = sim.viewportWidth;
-		viewportH = sim.viewportHeight;
-		const measured = session.meta?.measuredFrequencyHz;
-		i2mcParams = {
-			...i2mcParams,
-			xres: sim.viewportWidth,
-			yres: sim.viewportHeight,
-			freq: measured ? snapToCommonRate(measured) : I2MC_DEFAULT_PARAMETERS.freq
-		};
-		void captureAllGeometry();
 	}
 
 	// ── Derived per-slide view data ──
 	const selectedResolved = $derived(
-		sim.selectedSlide !== null ? (sim.resolvedBySlide[sim.selectedSlide] ?? null) : null
+		sim && sim.selectedSlide !== null ? (sim.resolvedBySlide[sim.selectedSlide] ?? null) : null
 	);
 	const selectedWindow = $derived(
-		sim.selectedSlide !== null
+		sim && sim.selectedSlide !== null
 			? (sim.result?.perSlide.get(sim.selectedSlide)?.window ?? null)
 			: null
 	);
-	const stageAois = $derived(sim.geometryFor(sim.selectedSlide)?.aois ?? []);
+	const stageAois = $derived(sim?.geometryFor(sim.selectedSlide)?.aois ?? []);
+	const stageWidth = $derived(sim?.viewportWidth ?? 1920);
+	const stageHeight = $derived(sim?.viewportHeight ?? 1080);
 
 	// The preview shows everything recorded on the slide; the score only counts
 	// what falls inside the effective window, so the rest is drawn dimmed.
 	function slideGaze(rows: RawGazeDataEntry[]): GazePoint[] {
 		return rows
-			.filter((r) => r.slide_index === sim.selectedSlide && (r.validityL || r.validityR))
+			.filter((r) => r.slide_index === sim?.selectedSlide && (r.validityL || r.validityR))
 			.map((r) => ({ x: r.x, y: r.y }));
 	}
-	const gazeBefore = $derived(sim.session ? slideGaze(sim.session.rawGazeData) : []);
-	const gazeAfter = $derived(sim.result ? slideGaze(sim.result.rawGazeData) : []);
+	const gazeBefore = $derived(sim?.session ? slideGaze(sim.session.rawGazeData) : []);
+	const gazeAfter = $derived(sim?.result ? slideGaze(sim.result.rawGazeData) : []);
 	const fixationsBefore = $derived.by((): OverlayFixation[] => {
-		if (!sim.session) return [];
+		if (!sim?.session) return [];
 		return sim.session.fixationData
 			.filter((f) => f.slide_index === sim.selectedSlide)
 			.map((f) => ({
@@ -161,13 +182,13 @@
 	});
 	const fixationsAfter = $derived.by((): OverlayFixation[] => {
 		const slideResult =
-			sim.selectedSlide !== null ? sim.result?.perSlide.get(sim.selectedSlide) : undefined;
+			sim && sim.selectedSlide !== null ? sim.result?.perSlide.get(sim.selectedSlide) : undefined;
 		if (!slideResult) return [];
 		const counted = new Set(slideResult.fixations.map((f) => f.fixation_index));
 		return slideResult.allFixations.map((f) => ({ ...f, counted: counted.has(f.fixation_index) }));
 	});
 	const fixationsI2mc = $derived.by((): OverlayFixation[] => {
-		if (!sim.session) return [];
+		if (!sim?.session) return [];
 		return sim.session.i2mcFixationData
 			.filter((f) => f.slide_index === sim.selectedSlide)
 			.map((f) => ({
@@ -178,17 +199,17 @@
 					f.timestamp <= selectedWindow.endTime
 			}));
 	});
-	const hasI2mcData = $derived((sim.session?.i2mcFixationData.length ?? 0) > 0);
+	const hasI2mcData = $derived((sim?.session?.i2mcFixationData.length ?? 0) > 0);
 	const recordedScore = $derived(
-		sim.session?.sessionScores.find((s) => s.slide_index === sim.selectedSlide) ?? null
+		sim?.session?.sessionScores.find((s) => s.slide_index === sim.selectedSlide) ?? null
 	);
 	const recomputedScore = $derived(
-		sim.result?.sessionScores.find((s) => s.slide_index === sim.selectedSlide) ?? null
+		sim?.result?.sessionScores.find((s) => s.slide_index === sim.selectedSlide) ?? null
 	);
 	const outsideShare = $derived.by(() => {
 		if (gazeAfter.length === 0) return 0;
 		const outside = gazeAfter.filter(
-			(p) => p.x < 0 || p.y < 0 || p.x > sim.viewportWidth || p.y > sim.viewportHeight
+			(p) => p.x < 0 || p.y < 0 || p.x > stageWidth || p.y > stageHeight
 		).length;
 		return outside / gazeAfter.length;
 	});
@@ -210,9 +231,9 @@
 		return Number.isFinite(value) ? value : fallback;
 	}
 
-	function updateDetector(patch: Partial<typeof sim.detectorParams>) {
-		sim.detectorParams = { ...sim.detectorParams, ...patch };
-		sim.scheduleRecompute();
+	function updateDetector(patch: Partial<typeof settings.detectorParams>) {
+		settings.detectorParams = { ...settings.detectorParams, ...patch };
+		workspace.settingsChanged();
 	}
 
 	function formatSessionDate(sessionId: string): string {
@@ -234,16 +255,17 @@
 	}
 
 	async function runServerI2mc() {
-		if (!sim.session || sim.session.rawGazeData.length === 0 || i2mcRunning) return;
+		const slot = sim;
+		if (!slot?.session || slot.session.rawGazeData.length === 0 || i2mcRunning) return;
 		i2mcRunning = true;
 		i2mcStatus = '';
 		i2mcError = '';
 		try {
-			const csv = DatabaseExporter.createCsvContent([...sim.session.rawGazeData], 'rawGazeData');
+			const csv = DatabaseExporter.createCsvContent([...slot.session.rawGazeData], 'rawGazeData');
 			const params: I2mcParameters = { ...i2mcParams };
 			if (i2mcScrW && i2mcScrH) params.scrSz = [i2mcScrW, i2mcScrH];
 			const files = [{ name: 'rawGazeData.csv', content: csv }];
-			for (const geometry of sim.session.recordedGeometry) {
+			for (const geometry of slot.session.recordedGeometry) {
 				files.push({
 					name: `aoiGeometry_slide${geometry.slideIndex}.json`,
 					content: JSON.stringify(geometry)
@@ -251,7 +273,7 @@
 			}
 			const outputs = await runI2mcHeadless(files, params);
 			const entries = outputs.flatMap((file) => parseFixationDataCsv(file.content));
-			sim.setI2mcFixationData(entries);
+			slot.setI2mcFixationData(entries);
 			i2mcStatus = `Načteno ${entries.length} fixací (${outputs.length} slidů).`;
 		} catch (err) {
 			i2mcError = err instanceof Error ? err.message : 'Výpočet I2MC selhal';
@@ -261,45 +283,55 @@
 	}
 
 	// ── Matrix correction ──
-	const activeMatrix = $derived(sim.activeCorrection.matrix ?? IDENTITY_MATRIX);
+	const activeMatrix = $derived(sim?.activeCorrection.matrix ?? IDENTITY_MATRIX);
 
 	function updateMatrixCell(index: number, value: number) {
 		const next = [...activeMatrix] as CorrectionMatrix;
 		next[index] = value;
-		sim.updateCorrection({ matrix: next });
+		sim?.updateCorrection({ matrix: next });
 	}
 
 	// ── Export ──
 	let exporting = $state(false);
+	let exportProgress = $state('');
+	let exportErrors = $state<string[]>([]);
 
+	/** Downloads, replays and packs every picked session; sessions never opened get the shared rules with no correction. */
 	async function exportCorrected() {
-		if (!sim.session || !sim.result || exporting) return;
+		if (exporting || workspace.slots.length === 0) return;
 		exporting = true;
+		exportErrors = [];
+		const entries: ExportedSession[] = [];
 		try {
-			sim.recomputeNow();
-			const blob = await buildCorrectedZip(sim.result, {
-				session: sim.session,
-				viewport: { width: sim.viewportWidth, height: sim.viewportHeight },
-				sessionCorrection: sim.sessionCorrection,
-				slideOverrides: sim.slideOverrides,
-				detectorParams: sim.detectorParams,
-				aoiAttribution: sim.aoiAttribution,
-				dropUnfinishedFinalFixation: sim.dropUnfinishedFinalFixation,
-				countFixationsOpenAtWindowEnd: sim.countFixationsOpenAtWindowEnd,
-				gapResetMs: sim.gapResetMs,
-				dropColdStartFixation: sim.dropColdStartFixation,
-				rebaseRawTimestamps: sim.rebaseRawTimestamps,
-				synthesizeDwellArrow: sim.synthesizeDwellArrow,
-				synthesizeDwellEye: sim.synthesizeDwellEye
-			});
-			downloadBlob(blob, correctedZipName(sim.session));
+			const slots = workspace.slots;
+			for (const [index, slot] of slots.entries()) {
+				const prefix = `${index + 1}/${slots.length} ${slot.label}`;
+				try {
+					exportProgress = `${prefix}: stahuji…`;
+					await slot.ensureLoaded();
+					exportProgress = `${prefix}: geometrie…`;
+					await ensureGeometry(slot);
+					exportProgress = `${prefix}: přepočet…`;
+					slot.recomputeNow();
+					if (!slot.result) throw new Error(slot.error || 'Bez rawGazeData nelze přepočítat');
+					entries.push({ result: slot.result, meta: slot.exportMeta() });
+				} catch (err) {
+					exportErrors = [...exportErrors, `${slot.label}: ${errorMessage(err)}`];
+				}
+			}
+			if (entries.length > 0) {
+				exportProgress = 'Vytvářím ZIP…';
+				const blob = await buildCorrectedZip(entries);
+				downloadBlob(blob, correctedZipName(entries.map((entry) => entry.meta.session)));
+			}
 		} finally {
 			exporting = false;
+			exportProgress = '';
 		}
 	}
 
 	const slidePosition = $derived(
-		sim.selectedSlide !== null ? sim.slides.indexOf(sim.selectedSlide) : -1
+		sim && sim.selectedSlide !== null ? sim.slides.indexOf(sim.selectedSlide) : -1
 	);
 
 	const inputClass =
@@ -314,8 +346,8 @@
 
 {#snippet overlay()}
 	<GazeOverlay
-		width={sim.viewportWidth}
-		height={sim.viewportHeight}
+		width={stageWidth}
+		height={stageHeight}
 		{gazeBefore}
 		{gazeAfter}
 		{fixationsBefore}
@@ -336,7 +368,7 @@
 
 	<div class="flex items-center justify-between">
 		<h1 class="text-2xl font-black text-gray-800">Simulace sezení</h1>
-		{#if sim.recomputeMs !== null}
+		{#if sim?.recomputeMs !== null && sim?.recomputeMs !== undefined}
 			<span class="text-xs text-gray-400">přepočet {sim.recomputeMs.toFixed(0)} ms</span>
 		{/if}
 	</div>
@@ -348,7 +380,50 @@
 					<Card.Title>Sezení</Card.Title>
 				</Card.Header>
 				<Card.Content class="space-y-3">
-					{#if sim.session}
+					{#if workspace.slots.length > 0}
+						<div class="flex items-center gap-2">
+							<Button
+								size="sm"
+								variant="outline"
+								disabled={slotPosition <= 0}
+								onclick={() => activate(workspace.slots[slotPosition - 1].key)}
+							>
+								<Icon icon="material-symbols:chevron-left" class="h-4 w-4" />
+							</Button>
+							<select
+								class={inputClass}
+								value={workspace.activeKey}
+								onchange={(e) => activate(e.currentTarget.value)}
+							>
+								{#each workspace.slots as slot (slot.key)}
+									<option value={slot.key}>
+										{slot.label}{slot.status === 'ready' ? '' : ' (nenačteno)'}
+									</option>
+								{/each}
+							</select>
+							<Button
+								size="sm"
+								variant="outline"
+								disabled={slotPosition < 0 || slotPosition >= workspace.slots.length - 1}
+								onclick={() => activate(workspace.slots[slotPosition + 1].key)}
+							>
+								<Icon icon="material-symbols:chevron-right" class="h-4 w-4" />
+							</Button>
+						</div>
+						{#if workspace.slots.length > 1}
+							<div class="text-xs text-gray-400">
+								{workspace.loadedCount} z {workspace.slots.length} sezení staženo
+							</div>
+						{/if}
+					{/if}
+					{#if sim?.status === 'loading'}
+						<div class="text-xs text-blue-600">Stahuji data sezení…</div>
+					{:else if sim?.status === 'error'}
+						<div class="rounded-md bg-red-50 px-2 py-1.5 text-xs text-red-600">{sim.loadError}</div>
+						<Button size="sm" variant="outline" class="w-full" onclick={() => activate(sim.key)}>
+							Zkusit znovu
+						</Button>
+					{:else if sim?.session}
 						<div class="text-sm text-gray-700">
 							<div><span class="text-gray-400">Dítě:</span> {sim.session.childId}</div>
 							<div><span class="text-gray-400">Úloha:</span> {sim.session.taskName}</div>
@@ -368,16 +443,16 @@
 						<Icon icon="material-symbols:folder-open" class="mr-1 h-4 w-4" />
 						Načíst sezení
 					</Button>
-					{#if sim.error}
+					{#if sim?.error}
 						<div class="rounded-md bg-red-50 px-2 py-1.5 text-xs text-red-600">{sim.error}</div>
 					{/if}
-					{#each sim.warnings as warning (warning)}
+					{#each sim?.warnings ?? [] as warning (warning)}
 						<div class="rounded-md bg-amber-50 px-2 py-1.5 text-xs text-amber-700">{warning}</div>
 					{/each}
 				</Card.Content>
 			</Card.Root>
 
-			{#if sim.session}
+			{#if sim?.session}
 				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Viewport nahrávky</Card.Title>
@@ -437,14 +512,14 @@
 								size="sm"
 								variant="outline"
 								disabled={slidePosition <= 0}
-								onclick={() => selectSlide(sim.slides[slidePosition - 1])}
+								onclick={() => (sim.selectedSlide = sim.slides[slidePosition - 1])}
 							>
 								<Icon icon="material-symbols:chevron-left" class="h-4 w-4" />
 							</Button>
 							<select
 								class={inputClass}
 								value={sim.selectedSlide}
-								onchange={(e) => selectSlide(Number(e.currentTarget.value))}
+								onchange={(e) => (sim.selectedSlide = Number(e.currentTarget.value))}
 							>
 								{#each sim.slides as slide (slide)}
 									<option value={slide}>Slide {slide}</option>
@@ -454,7 +529,7 @@
 								size="sm"
 								variant="outline"
 								disabled={slidePosition < 0 || slidePosition >= sim.slides.length - 1}
-								onclick={() => selectSlide(sim.slides[slidePosition + 1])}
+								onclick={() => (sim.selectedSlide = sim.slides[slidePosition + 1])}
 							>
 								<Icon icon="material-symbols:chevron-right" class="h-4 w-4" />
 							</Button>
@@ -486,7 +561,7 @@
 								size="sm"
 								variant="outline"
 								class="w-full"
-								onclick={() => captureAllGeometry()}
+								onclick={() => ensureGeometry(sim)}
 							>
 								Načíst chybějící geometrii ({missingGeometry.length})
 							</Button>
@@ -497,6 +572,9 @@
 				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Prostorová korekce</Card.Title>
+						{#if workspace.slots.length > 1}
+							<Card.Description>Platí jen pro toto sezení.</Card.Description>
+						{/if}
 					</Card.Header>
 					<Card.Content class="space-y-3">
 						<label class="flex items-center justify-between text-sm text-gray-700">
@@ -575,12 +653,26 @@
 						>
 							Vynulovat korekci
 						</Button>
+						{#if workspace.slots.length > 1}
+							<Button
+								size="sm"
+								variant="outline"
+								class="w-full"
+								title="Zkopíruje korekci sezení (bez úprav slidů) do všech ostatních načtených sezení"
+								onclick={() => workspace.applyCorrectionToAll()}
+							>
+								Použít na všechna sezení
+							</Button>
+						{/if}
 					</Card.Content>
 				</Card.Root>
 
 				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Detekce fixací</Card.Title>
+						{#if workspace.slots.length > 1}
+							<Card.Description>Společné pro všechna sezení.</Card.Description>
+						{/if}
 					</Card.Header>
 					<Card.Content class="space-y-3">
 						<div class="grid grid-cols-2 gap-2 text-sm">
@@ -592,7 +684,7 @@
 								<input
 									type="number"
 									class={inputClass}
-									value={sim.detectorParams.minimumFixationDurationMs}
+									value={settings.detectorParams.minimumFixationDurationMs}
 									oninput={(e) => updateDetector({ minimumFixationDurationMs: numberOf(e, 100) })}
 								/>
 							</label>
@@ -602,7 +694,7 @@
 									type="number"
 									step="0.05"
 									class={inputClass}
-									value={sim.detectorParams.maximumFixationDispersionDeg}
+									value={settings.detectorParams.maximumFixationDispersionDeg}
 									oninput={(e) =>
 										updateDetector({ maximumFixationDispersionDeg: numberOf(e, 1.35) })}
 								/>
@@ -612,7 +704,7 @@
 								<input
 									type="number"
 									class={inputClass}
-									value={sim.detectorParams.distanceFromScreenCm}
+									value={settings.detectorParams.distanceFromScreenCm}
 									oninput={(e) => updateDetector({ distanceFromScreenCm: numberOf(e, 70) })}
 								/>
 							</label>
@@ -621,7 +713,7 @@
 								<input
 									type="number"
 									class={inputClass}
-									value={sim.detectorParams.dpi}
+									value={settings.detectorParams.dpi}
 									oninput={(e) => updateDetector({ dpi: numberOf(e, 96) })}
 								/>
 							</label>
@@ -630,10 +722,10 @@
 							<span class="text-xs text-gray-500">Přiřazení AOI k fixaci</span>
 							<select
 								class={inputClass}
-								value={sim.aoiAttribution}
+								value={settings.aoiAttribution}
 								onchange={(e) => {
-									sim.aoiAttribution = e.currentTarget.value as typeof sim.aoiAttribution;
-									sim.scheduleRecompute();
+									settings.aoiAttribution = e.currentTarget.value as typeof settings.aoiAttribution;
+									workspace.settingsChanged();
 								}}
 							>
 								<option value="snapshot-at-start">Při začátku fixace (živě)</option>
@@ -647,8 +739,8 @@
 							>
 								Doplnit AOI šipky
 								<Switch
-									bind:checked={sim.synthesizeDwellArrow}
-									onCheckedChange={() => sim.scheduleRecompute()}
+									bind:checked={settings.synthesizeDwellArrow}
+									onCheckedChange={() => workspace.settingsChanged()}
 								/>
 							</label>
 							<label
@@ -657,8 +749,8 @@
 							>
 								Doplnit AOI oka
 								<Switch
-									bind:checked={sim.synthesizeDwellEye}
-									onCheckedChange={() => sim.scheduleRecompute()}
+									bind:checked={settings.synthesizeDwellEye}
+									onCheckedChange={() => workspace.settingsChanged()}
 								/>
 							</label>
 						{/if}
@@ -677,8 +769,8 @@
 						>
 							Zahodit nedokončenou fixaci
 							<Switch
-								bind:checked={sim.dropUnfinishedFinalFixation}
-								onCheckedChange={() => sim.scheduleRecompute()}
+								bind:checked={settings.dropUnfinishedFinalFixation}
+								onCheckedChange={() => workspace.settingsChanged()}
 							/>
 						</label>
 						<label
@@ -687,8 +779,8 @@
 						>
 							Počítat fixace přes konec slidu
 							<Switch
-								bind:checked={sim.countFixationsOpenAtWindowEnd}
-								onCheckedChange={() => sim.scheduleRecompute()}
+								bind:checked={settings.countFixationsOpenAtWindowEnd}
+								onCheckedChange={() => workspace.settingsChanged()}
 							/>
 						</label>
 						<label
@@ -700,10 +792,10 @@
 								type="number"
 								min="0"
 								class={inputClass}
-								value={sim.gapResetMs}
+								value={settings.gapResetMs}
 								oninput={(e) => {
-									sim.gapResetMs = numberOf(e, DEFAULT_GAP_RESET_MS);
-									sim.scheduleRecompute();
+									settings.gapResetMs = numberOf(e, DEFAULT_GAP_RESET_MS);
+									workspace.settingsChanged();
 								}}
 							/>
 						</label>
@@ -713,19 +805,29 @@
 						>
 							Zahodit úvodní fixaci streamu
 							<Switch
-								bind:checked={sim.dropColdStartFixation}
-								onCheckedChange={() => sim.scheduleRecompute()}
+								bind:checked={settings.dropColdStartFixation}
+								onCheckedChange={() => workspace.settingsChanged()}
 							/>
 						</label>
 						<label
-							class="flex items-center justify-between gap-3 text-sm text-gray-700"
-							title="U nahrávek s bridge časem (od 2026-08) odpovídá živému záznamu a zapíná se automaticky. U starších nahrávek opraví pozdní razítka hlavního vlákna, časy pak ale nesedí na zaznamenané řádky."
+							class="block space-y-1 text-sm"
+							title="U nahrávek s bridge časem (od 2026-08) odpovídá živému záznamu; automatika to pozná podle nahrávky. U starších nahrávek opraví pozdní razítka hlavního vlákna, časy pak ale nesedí na zaznamenané řádky."
 						>
-							Opravit časy vzorků (bridge)
-							<Switch
-								bind:checked={sim.rebaseRawTimestamps}
-								onCheckedChange={() => sim.scheduleRecompute()}
-							/>
+							<span class="text-xs text-gray-500">Opravit časy vzorků (bridge)</span>
+							<select
+								class={inputClass}
+								value={settings.rebaseMode}
+								onchange={(e) => {
+									settings.rebaseMode = e.currentTarget.value as RebaseMode;
+									workspace.settingsChanged();
+								}}
+							>
+								<option value="auto">
+									Automaticky ({sim.session.bridgeStamped ? 'zapnuto' : 'vypnuto'} pro toto sezení)
+								</option>
+								<option value="on">Zapnuto</option>
+								<option value="off">Vypnuto</option>
+							</select>
 						</label>
 					</Card.Content>
 				</Card.Root>
@@ -825,7 +927,7 @@
 						</label>
 						<Button
 							class="w-full"
-							disabled={!sim.session || sim.session.rawGazeData.length === 0 || i2mcRunning}
+							disabled={sim.session.rawGazeData.length === 0 || i2mcRunning}
 							onclick={() => runServerI2mc()}
 						>
 							<Icon icon="material-symbols:calculate" class="mr-1 h-4 w-4" />
@@ -839,23 +941,39 @@
 						{/if}
 					</Card.Content>
 				</Card.Root>
+			{/if}
 
+			{#if workspace.slots.length > 0}
 				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Export</Card.Title>
+						{#if workspace.slots.length > 1}
+							<Card.Description>
+								Neotevřená sezení se stáhnou a přepočítají bez korekce. ZIP má strukturu serverového
+								exportu.
+							</Card.Description>
+						{/if}
 					</Card.Header>
-					<Card.Content>
-						<Button
-							class="w-full"
-							disabled={!sim.result || exporting}
-							onclick={() => exportCorrected()}
-						>
+					<Card.Content class="space-y-2">
+						<Button class="w-full" disabled={exporting} onclick={() => exportCorrected()}>
 							<Icon icon="material-symbols:download" class="mr-1 h-4 w-4" />
-							{exporting ? 'Exportuji…' : 'Stáhnout opravená data (ZIP)'}
+							{exporting
+								? 'Exportuji…'
+								: workspace.slots.length > 1
+									? `Stáhnout opravená data (${workspace.slots.length} sezení)`
+									: 'Stáhnout opravená data (ZIP)'}
 						</Button>
+						{#if exportProgress}
+							<p class="text-xs text-blue-600">{exportProgress}</p>
+						{/if}
+						{#each exportErrors as exportError (exportError)}
+							<div class="rounded-md bg-red-50 px-2 py-1.5 text-xs text-red-600">{exportError}</div>
+						{/each}
 					</Card.Content>
 				</Card.Root>
+			{/if}
 
+			{#if sim?.session}
 				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Zobrazení</Card.Title>
@@ -901,15 +1019,14 @@
 			class="sticky top-4 max-h-[calc(100vh-2rem)] min-w-0 flex-1 space-y-4 self-start overflow-y-auto"
 		>
 			<SimStage
-				bind:this={stage}
 				level={selectedResolved?.level ?? null}
 				stimulus={selectedResolved?.stimulus ?? null}
-				width={sim.viewportWidth}
-				height={sim.viewportHeight}
+				width={stageWidth}
+				height={stageHeight}
 				{overlay}
 			/>
 
-			{#if sim.session}
+			{#if sim?.session}
 				<Card.Root class="gap-3">
 					<Card.Header>
 						<Card.Title>Info o slidu {sim.selectedSlide ?? '–'}</Card.Title>
@@ -926,4 +1043,5 @@
 	</div>
 </DefaultLayout>
 
-<SessionLoadDialog bind:open={loadDialogOpen} onConfirm={handleSessionLoaded} />
+<OffscreenStimulusStage bind:this={captureStage} />
+<SessionLoadDialog bind:open={loadDialogOpen} onConfirm={handleSourcesPicked} />

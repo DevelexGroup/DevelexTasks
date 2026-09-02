@@ -8,9 +8,27 @@ nepřehrává v reálném čase – zaznamenané event markery (`dwell-finish_sl
 
 ## Zdroje dat
 
-- **Vzdálený server** – stáhne všechny CSV soubory test-session (včetně
-  `rawGazeData_slideN.csv`, které heatmapa ignoruje).
-- **Soubory** – přetažení volných CSV nebo celého ZIPu sezení.
+Nástroj pracuje s **více sezeními najednou**. Dialog Načíst sezení má dvě
+záložky, které lze kombinovat:
+
+- **Vzdálený server** – dvoupanelový výběr: vlevo uživatelé s vyhledáváním
+  (jméno / username) a počtem sezení, vpravo sezení vybraného uživatele
+  seskupená po dnech se zaškrtávátky; výběr může zahrnovat více uživatelů
+  a zobrazuje se jako štítky pod seznamem. Data sezení se stahují až při
+  prvním otevření (nebo při exportu), stažená zůstávají v paměti.
+- **Soubory** – přetažení volných CSV/JSON nebo ZIPů. Vstup se rozdělí na
+  sezení podle složek serverového exportu
+  (`<uživatel>/<yyyy-MM-dd_HH-mm-ss>_<úloha>/part_N/…`, `meta/…`); ploché
+  ZIPy, lokální exporty i volné soubory se dělí podle `child_id` +
+  `session_id` v řádcích. `aoiGeometry`/`meta.json` se přiřadí jen tam, kde
+  složka obsahuje jediné sezení.
+
+Načtená sezení se přepínají v kartě Sezení (výběr + šipky). Prostorová
+korekce, viewport a přepsání slidů jsou **per sezení** (tlačítko „Použít na
+všechna sezení“ zkopíruje korekci ostatním); parametry detekce, pravidla
+přepočtu a I2MC parametry jsou společné. Volba „Opravit časy vzorků
+(bridge)“ má režim *Automaticky* – řídí se tím, zda je nahrávka
+razítkovaná bridge časem.
 
 Bez `gazeSamples` nelze určit časová okna, bez `rawGazeData` není z čeho
 přepočítávat – nástroj na obojí upozorní.
@@ -49,10 +67,14 @@ přepočítávat – nástroj na obojí upozorní.
 4. **Výstupy** – překreslené fixace/AOI/gaze nad stimulem (před/po) – náhled
    ukazuje vše se `slide_index` slidu, fixace mimo efektivní okno (a tedy mimo
    skóre) čárkovaně, tabulka
-   skóre se rozdíly a export opravených CSV ve formátu `DatabaseExporter`
-   (`*_corrected.csv` + `corrections.json` s použitými parametry; zaznamenaná
-   AOI geometrie a `meta.json` se přibalí beze změny). Export lze zpětně
-   načíst přes záložku Soubory.
+   skóre se rozdíly a export opravených CSV. ZIP má **strukturu serverového
+   exportu** (`<uživatel>/<yyyy-MM-dd_HH-mm-ss>_<úloha>/part_N/<tabulka>_slideN.csv`,
+   `meta/meta.json`) s původními názvy souborů, takže ho čte cokoli, co čte
+   serverový export; použité parametry jsou v `meta/corrections.json` a
+   zaznamenaná AOI geometrie a `meta.json` se přibalí beze změny. Exportují
+   se všechna vybraná sezení – neotevřená se při exportu stáhnou, chybějící
+   geometrie se dorenderuje mimo obrazovku a přepočítají se se společnými
+   pravidly bez korekce. Export lze zpětně načíst přes záložku Soubory.
 
 ## Parita s živým záznamem
 

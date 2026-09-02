@@ -2,7 +2,15 @@ import { describe, expect, it, vi } from 'vitest';
 import JSZip from 'jszip';
 import type { GazeSampleDataEntry, RawGazeDataEntry } from '$lib/database/db.types';
 import { DatabaseExporter } from '$lib/utils/databaseExport';
-import { classifyFileName, loadFromFiles, loadFromZip, loadRemoteSession } from './loaders';
+import {
+	classifyFileName,
+	loadRemoteSession,
+	loadSessionsFromFiles,
+	loadSessionsFromZip,
+	sessionExportFolder,
+	sessionFolderOf,
+	sessionFolderStamp
+} from './loaders';
 import { downloadTestSessionFile, getTestSessionDetail } from '$lib/api/test-sessions';
 
 vi.mock('$lib/api/test-sessions', () => ({
@@ -71,6 +79,12 @@ function textFile(name: string, content: string) {
 	return { name, text: () => Promise.resolve(content) };
 }
 
+async function loadSingle(files: { name: string; text(): Promise<string> }[]) {
+	const sessions = await loadSessionsFromFiles(files);
+	expect(sessions).toHaveLength(1);
+	return sessions[0];
+}
+
 describe('classifyFileName', () => {
 	it('routes table files and ignores the rest', () => {
 		expect(classifyFileName('rawGazeData_slide1.csv')).toBe('rawGazeData');
@@ -102,10 +116,32 @@ describe('classifyFileName', () => {
 	});
 });
 
-describe('loadFromFiles', () => {
+describe('session folders', () => {
+	it('strips the file name and the server part folder', () => {
+		expect(sessionFolderOf('anna/2026-09-01_10-15-30_cibule-1/part_3/rawGazeData_slide3.csv')).toBe(
+			'anna/2026-09-01_10-15-30_cibule-1'
+		);
+		expect(sessionFolderOf('anna/2026-09-01_10-15-30_cibule-1/meta/meta.json')).toBe(
+			'anna/2026-09-01_10-15-30_cibule-1'
+		);
+		expect(sessionFolderOf('part_2/gazeSamples_slide2.csv')).toBe('');
+		expect(sessionFolderOf('gazeSamples_corrected.csv')).toBe('');
+		expect(sessionFolderOf('child/2024-08-11_cibule-1/gazeSamples.csv')).toBe(
+			'child/2024-08-11_cibule-1'
+		);
+	});
+
+	it('stamps session folders in local time like the server', () => {
+		const date = new Date(2026, 8, 1, 10, 15, 30);
+		expect(sessionFolderStamp(date)).toBe('2026-09-01_10-15-30');
+		expect(sessionExportFolder('anna', date, 'cibule-1')).toBe('anna/2026-09-01_10-15-30_cibule-1');
+	});
+});
+
+describe('loadSessionsFromFiles', () => {
 	it('assembles a session from loose CSVs, sorted and with derived identity', async () => {
 		const { rawCsv, samplesCsv } = buildCsvs();
-		const session = await loadFromFiles([
+		const session = await loadSingle([
 			textFile('rawGazeData_slide1.csv', rawCsv),
 			textFile('gazeSamples_slide2.csv', samplesCsv),
 			textFile('clientLogs.log', 'noise')
@@ -118,12 +154,41 @@ describe('loadFromFiles', () => {
 		expect(session.rawGazeData[0].timestamp).toBeLessThan(session.rawGazeData[1].timestamp);
 		expect(session.gazeSamples).toHaveLength(1);
 		expect(session.warnings).toEqual([]);
+		expect(session.exportFolder).toBe(
+			`child/${sessionFolderStamp(new Date(Number(SESSION_ID)))}_cibule-1`
+		);
+	});
+
+	it('splits loose files holding several sessions by their row identity', async () => {
+		const rawA = DatabaseExporter.createCsvContent([rawEntry()], 'rawGazeData');
+		const rawB = DatabaseExporter.createCsvContent(
+			[rawEntry({ child_id: 'other', session_id: '1723390000000', task_name: 'slabiky-2' })],
+			'rawGazeData'
+		);
+		const sessions = await loadSessionsFromFiles([
+			textFile('rawGazeData_a.csv', rawA),
+			textFile('rawGazeData_b.csv', rawB),
+			textFile('meta.json', JSON.stringify({ metaVersion: 1, session: {} }))
+		]);
+
+		expect(sessions.map((s) => s.childId).sort()).toEqual(['child', 'other']);
+		// meta.json can't be attributed when the folder holds two sessions
+		expect(sessions.every((s) => s.meta === null)).toBe(true);
+		expect(sessions.every((s) => s.warnings.some((w) => w.includes('nelze přiřadit')))).toBe(true);
 	});
 
 	it('warns when raw gaze data is missing', async () => {
 		const { samplesCsv } = buildCsvs();
-		const session = await loadFromFiles([textFile('gazeSamples_slide2.csv', samplesCsv)]);
+		const session = await loadSingle([textFile('gazeSamples_slide2.csv', samplesCsv)]);
 		expect(session.warnings.some((w) => w.includes('rawGazeData'))).toBe(true);
+	});
+
+	it('returns nothing for input without table rows', async () => {
+		const sessions = await loadSessionsFromFiles([
+			textFile('meta.json', '{}'),
+			textFile('clientLogs.log', 'noise')
+		]);
+		expect(sessions).toEqual([]);
 	});
 
 	it('parses recorded AOI geometry files and skips invalid ones', async () => {
@@ -147,7 +212,7 @@ describe('loadFromFiles', () => {
 				{ id: 'broken', left: 'x' }
 			]
 		};
-		const session = await loadFromFiles([
+		const session = await loadSingle([
 			textFile('rawGazeData_slide1.csv', rawCsv),
 			textFile('aoiGeometry_slide1.json', JSON.stringify(geometry)),
 			textFile('aoiGeometry_slide2.json', 'not json')
@@ -181,7 +246,7 @@ describe('loadFromFiles', () => {
 			viewport: { innerWidth: 1536, innerHeight: 864 },
 			tracker: { signal: { measuredFrequencyHz: 119.6 } }
 		};
-		const session = await loadFromFiles([
+		const session = await loadSingle([
 			textFile('rawGazeData_slide1.csv', rawCsv),
 			textFile('meta.json', JSON.stringify(meta))
 		]);
@@ -210,7 +275,7 @@ describe('loadFromFiles', () => {
 				items: ['meta', 'aoiGeometry']
 			}
 		};
-		const session = await loadFromFiles([
+		const session = await loadSingle([
 			textFile('rawGazeData_slide1.csv', rawCsv),
 			textFile('meta.json', JSON.stringify(meta))
 		]);
@@ -224,7 +289,7 @@ describe('loadFromFiles', () => {
 
 	it('tolerates a malformed meta.json', async () => {
 		const { rawCsv } = buildCsvs();
-		const session = await loadFromFiles([
+		const session = await loadSingle([
 			textFile('rawGazeData_slide1.csv', rawCsv),
 			textFile('meta.json', 'not json')
 		]);
@@ -241,19 +306,19 @@ describe('loadFromFiles', () => {
 			],
 			'rawGazeData'
 		);
-		const session = await loadFromFiles([textFile('rawGazeData_slide1.csv', csv)]);
+		const session = await loadSingle([textFile('rawGazeData_slide1.csv', csv)]);
 		expect(session.bridgeStamped).toBe(true);
 	});
 
 	it('flags main-thread-stamped recordings as not bridge-stamped', async () => {
 		const { rawCsv } = buildCsvs();
-		const session = await loadFromFiles([textFile('rawGazeData_slide1.csv', rawCsv)]);
+		const session = await loadSingle([textFile('rawGazeData_slide1.csv', rawCsv)]);
 		expect(session.bridgeStamped).toBe(false);
 	});
 
 	it('removes duplicated rows from overlapping files and warns', async () => {
 		const { rawCsv } = buildCsvs();
-		const session = await loadFromFiles([
+		const session = await loadSingle([
 			textFile('rawGazeData_slide1.csv', rawCsv),
 			textFile('rawGazeData_slide1_copy.csv', rawCsv)
 		]);
@@ -262,8 +327,8 @@ describe('loadFromFiles', () => {
 	});
 });
 
-describe('loadFromZip', () => {
-	it('loads table CSVs from nested folders', async () => {
+describe('loadSessionsFromZip', () => {
+	it('loads a flat local export as one session', async () => {
 		const { rawCsv, samplesCsv } = buildCsvs();
 		const zip = new JSZip();
 		zip.file('child/2024-08-11_cibule-1/rawGazeData_slide1.csv', rawCsv);
@@ -271,10 +336,55 @@ describe('loadFromZip', () => {
 		zip.file('child/2024-08-11_cibule-1/clientLogs.log', 'noise');
 		const data = await zip.generateAsync({ type: 'uint8array' });
 
-		const session = await loadFromZip(data);
-		expect(session.rawGazeData).toHaveLength(2);
-		expect(session.gazeSamples).toHaveLength(1);
-		expect(session.sessionId).toBe(SESSION_ID);
+		const sessions = await loadSessionsFromZip(data);
+		expect(sessions).toHaveLength(1);
+		expect(sessions[0].rawGazeData).toHaveLength(2);
+		expect(sessions[0].gazeSamples).toHaveLength(1);
+		expect(sessions[0].sessionId).toBe(SESSION_ID);
+		expect(sessions[0].exportFolder).toBe('child/2024-08-11_cibule-1');
+	});
+
+	it('splits a server export into its sessions and keeps their folders', async () => {
+		const rawA = DatabaseExporter.createCsvContent([rawEntry()], 'rawGazeData');
+		const rawB = DatabaseExporter.createCsvContent(
+			[rawEntry({ child_id: 'other', session_id: '1723390000000', task_name: 'slabiky-2' })],
+			'rawGazeData'
+		);
+		const geometry = JSON.stringify({
+			slideIndex: 1,
+			stimulusId: '5',
+			viewport: { width: 1920, height: 1080 },
+			aois: []
+		});
+		const zip = new JSZip();
+		zip.file('child/2024-08-11_14-00-00_cibule-1/part_1/rawGazeData_slide1.csv', rawA);
+		zip.file('child/2024-08-11_14-00-00_cibule-1/part_1/aoiGeometry_slide1.json', geometry);
+		zip.file('child/2024-08-11_14-00-00_cibule-1/meta/meta.json', '{"metaVersion":1}');
+		zip.file('child/2024-08-11_14-00-00_cibule-1/meta/clientLogs.log', 'noise');
+		zip.file('other/2024-08-11_16-46-40_slabiky-2/part_1/rawGazeData_slide1.csv', rawB);
+		zip.file('missing_files.txt', 'nothing');
+		const data = await zip.generateAsync({ type: 'uint8array' });
+
+		const sessions = await loadSessionsFromZip(data);
+		expect(sessions.map((s) => s.exportFolder)).toEqual([
+			'child/2024-08-11_14-00-00_cibule-1',
+			'other/2024-08-11_16-46-40_slabiky-2'
+		]);
+		expect(sessions[0].recordedGeometry).toHaveLength(1);
+		expect(sessions[0].metaRaw).toBe('{"metaVersion":1}');
+		expect(sessions[1].childId).toBe('other');
+		expect(sessions[1].recordedGeometry).toEqual([]);
+	});
+
+	it('uses the last two path segments as the session folder', async () => {
+		const { rawCsv } = buildCsvs();
+		const zip = new JSZip();
+		zip.file(
+			'develex_export/child/2024-08-11_14-00-00_cibule-1/part_1/rawGazeData_slide1.csv',
+			rawCsv
+		);
+		const sessions = await loadSessionsFromZip(await zip.generateAsync({ type: 'uint8array' }));
+		expect(sessions[0].exportFolder).toBe('child/2024-08-11_14-00-00_cibule-1');
 	});
 });
 
@@ -305,7 +415,12 @@ describe('loadRemoteSession', () => {
 			Promise.resolve(new Blob([filesById[fileId as string] ?? '']))
 		);
 
-		const session = await loadRemoteSession('remote-1', 'child');
+		const session = await loadRemoteSession({
+			id: 'remote-1',
+			username: 'child',
+			testType: 'cibule-1',
+			sessionStartTime: '2024-08-11T14:00:00'
+		});
 
 		expect(vi.mocked(downloadTestSessionFile)).toHaveBeenCalledTimes(2);
 		expect(session.childId).toBe('child');
@@ -313,5 +428,6 @@ describe('loadRemoteSession', () => {
 		expect(session.taskName).toBe('cibule-1');
 		expect(session.rawGazeData).toHaveLength(2);
 		expect(session.gazeSamples).toHaveLength(1);
+		expect(session.exportFolder).toBe('child/2024-08-11_14-00-00_cibule-1');
 	});
 });

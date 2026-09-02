@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick, untrack } from 'svelte';
+	import { untrack } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import {
@@ -9,10 +9,8 @@
 		type RecalculationScope
 	} from '$lib/api/test-sessions';
 	import { OUTSIDE_SHARE_WARNING } from '$lib/utils/sessionRecalc/sessionData';
-	import { captureAoiRects } from '$lib/utils/sessionSim/aoiCapture';
 	import type { AoiRect } from '$lib/utils/sessionSim/types';
 	import type { ResolvedSlide } from '$lib/utils/sessionSim/taskResolver';
-	import { settleStimulus } from '$lib/utils/stimulusExport/capture';
 	import { RECALC_DEFAULT_VIEWPORT } from '$lib/utils/sessionRecalc/metaRebuild';
 	import {
 		RecalcRunner,
@@ -20,7 +18,7 @@
 		type RecalcItems,
 		type Viewport
 	} from '$lib/utils/sessionRecalc/runner.svelte';
-	import RecalcCaptureStage from './RecalcCaptureStage.svelte';
+	import OffscreenStimulusStage from '$lib/components/OffscreenStimulusStage.svelte';
 
 	interface Props {
 		open: boolean;
@@ -62,29 +60,11 @@
 	let viewportHeight = $state(RECALC_DEFAULT_VIEWPORT.height);
 
 	// ── Offscreen stimulus capture ──
-	let stage = $state<RecalcCaptureStage | null>(null);
-	let captureRequest = $state<{ slide: ResolvedSlide; viewport: Viewport } | null>(null);
+	let stage = $state<OffscreenStimulusStage | null>(null);
 
-	async function waitForStage(): Promise<HTMLElement | null> {
-		for (let i = 0; i < 120; i++) {
-			const node = stage?.getCaptureNode();
-			if (node) return node;
-			await new Promise(requestAnimationFrame);
-		}
-		return null;
-	}
-
-	async function captureSlide(resolved: ResolvedSlide, viewport: Viewport): Promise<AoiRect[]> {
-		captureRequest = { slide: resolved, viewport };
-		try {
-			await tick();
-			const node = await waitForStage();
-			if (!node) throw new Error('Stimul se nepodařilo vykreslit');
-			await settleStimulus(node);
-			return captureAoiRects(node);
-		} finally {
-			captureRequest = null;
-		}
+	function captureSlide(resolved: ResolvedSlide, viewport: Viewport): Promise<AoiRect[]> {
+		if (!stage) return Promise.reject(new Error('Stimul se nepodařilo vykreslit'));
+		return stage.capture(resolved, viewport);
 	}
 
 	const runner = new RecalcRunner(captureSlide);
@@ -534,13 +514,6 @@
 			</Dialog.Footer>
 		{/if}
 
-		{#if captureRequest}
-			<RecalcCaptureStage
-				bind:this={stage}
-				slide={captureRequest.slide}
-				width={captureRequest.viewport.width}
-				height={captureRequest.viewport.height}
-			/>
-		{/if}
+		<OffscreenStimulusStage bind:this={stage} />
 	</Dialog.Content>
 </Dialog.Root>
