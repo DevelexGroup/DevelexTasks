@@ -3,10 +3,13 @@
 	import { resolve } from '$app/paths';
 	import Icon from '@iconify/svelte';
 	import UserSelect from '../UserSelect.svelte';
+	import SettingsDialog from '../SettingsDialog.svelte';
 	import { validateAuthStatus } from '$lib/api/auth';
 	import { onMount } from 'svelte';
 
 	let { children } = $props();
+
+	let showSettings = $state(false);
 
 	onMount(() => {
 		validateAuthStatus();
@@ -24,7 +27,7 @@
 			<div class="inline-flex items-center space-x-3">
 				<button
 					class="inline-flex cursor-pointer items-center rounded-md bg-blue-100 px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-blue-200"
-					onclick={() => goto(resolve('/settings'))}
+					onclick={() => (showSettings = true)}
 				>
 					<Icon icon="material-symbols:settings" class="mr-2 h-4.5 w-4.5" />
 
@@ -42,3 +45,5 @@
 		</div>
 	</section>
 </main>
+
+<SettingsDialog open={showSettings} onOpenChange={(v) => (showSettings = v)} />
