@@ -7,7 +7,7 @@
 	import { validateAuthStatus } from '$lib/api/auth';
 	import { onMount } from 'svelte';
 
-	let { children } = $props();
+	let { children, wide = false } = $props();
 
 	let showSettings = $state(false);
 
@@ -18,7 +18,9 @@
 
 <main class="flex min-h-screen flex-col bg-gray-50 font-lexend">
 	<nav class="flex w-full bg-white px-4 py-4 shadow-xl">
-		<div class="mx-auto flex w-full max-w-5xl items-center justify-between">
+		<div
+			class="mx-auto flex w-full items-center justify-between {wide ? 'max-w-7xl' : 'max-w-5xl'}"
+		>
 			<button
 				class="cursor-pointer text-3xl font-black text-blue-600"
 				onclick={() => goto(resolve('/'))}>DeveLex</button
@@ -40,7 +42,7 @@
 	</nav>
 
 	<section class="mt-4 flex w-full flex-1 px-4 py-6">
-		<div class="mx-auto flex w-full max-w-5xl flex-col gap-6">
+		<div class="mx-auto flex w-full flex-col gap-6 {wide ? 'max-w-7xl' : 'max-w-5xl'}">
 			{@render children()}
 		</div>
 	</section>

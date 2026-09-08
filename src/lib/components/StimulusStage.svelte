@@ -14,9 +14,11 @@
 		width: number;
 		height: number;
 		overlay?: Snippet;
+		/** Caps the displayed height in px; defaults to 75 % of the window height. */
+		maxHeight?: number;
 	}
 
-	let { level, stimulus, width, height, overlay }: Props = $props();
+	let { level, stimulus, width, height, overlay, maxHeight }: Props = $props();
 
 	// Same context contract as the stimulus-export stage: its presence switches
 	// task components into screenshot mode (no gaze registration, no dwell targets).
@@ -34,7 +36,9 @@
 	let frameWidth = $state(0);
 	let windowHeight = $state(typeof window !== 'undefined' ? window.innerHeight : 1080);
 	const fit = $derived(
-		frameWidth > 0 ? Math.min(frameWidth / width, (windowHeight * 0.75) / height, 1) : 0
+		frameWidth > 0
+			? Math.min(frameWidth / width, (maxHeight ?? windowHeight * 0.75) / height, 1)
+			: 0
 	);
 
 	// ── Pan & zoom ──
@@ -43,6 +47,7 @@
 	let panX = $state(0);
 	let panY = $state(0);
 	let frameEl = $state<HTMLElement | null>(null);
+	let contentEl = $state<HTMLElement | null>(null);
 	let panning = $state(false);
 	let lastClient = { x: 0, y: 0 };
 
@@ -52,6 +57,11 @@
 	function clampPan() {
 		panX = Math.min(0, Math.max(frameW * (1 - zoom), panX));
 		panY = Math.min(0, Math.max(frameH * (1 - zoom), panY));
+	}
+
+	/** The unscaled stimulus + overlay node, e.g. for rasterizing the stage. */
+	export function getContentNode(): HTMLElement | null {
+		return contentEl;
 	}
 
 	function resetView() {
@@ -123,7 +133,8 @@
 	{:else}
 		<div
 			bind:this={frameEl}
-			class="relative overflow-hidden rounded-md border border-gray-200 bg-task-background {zoom > 1
+			class="relative mx-auto overflow-hidden rounded-md border border-gray-200 bg-task-background {zoom >
+			1
 				? panning
 					? 'cursor-grabbing'
 					: 'cursor-grab'
@@ -138,7 +149,11 @@
 				style="transform: translate({panX}px, {panY}px) scale({fit *
 					zoom}); transform-origin: top left;"
 			>
-				<div class="relative overflow-hidden" style="width: {width}px; height: {height}px;">
+				<div
+					bind:this={contentEl}
+					class="relative overflow-hidden"
+					style="width: {width}px; height: {height}px;"
+				>
 					{#if level && stimulus && stimulusProps}
 						{#key `${level.taskSlug}/${level.levelId}/${stimulus.id}`}
 							<level.component {...stimulusProps} />

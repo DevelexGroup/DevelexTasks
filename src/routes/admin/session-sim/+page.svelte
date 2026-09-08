@@ -8,8 +8,8 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Switch } from '$lib/components/ui/switch';
 	import Icon from '@iconify/svelte';
-	import SimStage from './components/SimStage.svelte';
-	import SessionLoadDialog from './components/SessionLoadDialog.svelte';
+	import StimulusStage from '$lib/components/StimulusStage.svelte';
+	import SessionLoadDialog from '$lib/components/SessionLoadDialog.svelte';
 	import GazeOverlay, {
 		type GazePoint,
 		type OverlayFixation
@@ -1021,7 +1021,7 @@
 		<main
 			class="sticky top-4 max-h-[calc(100vh-2rem)] min-w-0 flex-1 space-y-4 self-start overflow-y-auto"
 		>
-			<SimStage
+			<StimulusStage
 				level={selectedResolved?.level ?? null}
 				stimulus={selectedResolved?.stimulus ?? null}
 				width={stageWidth}

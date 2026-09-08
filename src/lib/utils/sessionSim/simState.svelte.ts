@@ -1,10 +1,11 @@
 import type { FixationDataEntry } from '$lib/database/db.types';
-import { buildCorrections, buildGeometryMap, distinctSlides } from './builders';
+import { buildCorrections, buildGeometryMap } from './builders';
 import type { CorrectedExportMeta } from './export';
 import { createFluencyResolver } from './metrics/fluencyRegistry';
 import { runReplay } from './replay';
 import { identityCorrection } from './transform';
-import { parseTaskName, type ParsedTaskName } from './taskName';
+import { describeSession } from './sessionView';
+import type { ParsedTaskName } from './taskName';
 import { resolveSlide, type ResolvedSlide } from './taskResolver';
 import {
 	DEFAULT_DETECTOR_PARAMS,
@@ -142,31 +143,14 @@ export class SessionSimState {
 		this.session = session;
 		this.status = 'ready';
 		this.loadError = '';
-		this.parsedTask = parseTaskName(session.taskName);
+		const view = describeSession(session);
+		this.parsedTask = view.parsedTask;
 		this.error = this.parsedTask
 			? ''
 			: `Neznámý název úlohy "${session.taskName}" – stimuly nelze vykreslit.`;
-
-		const slides = distinctSlides(session.gazeSamples);
-		this.slides = slides;
-
-		const geometryStimulus: Record<number, string> = {};
-		for (const geometry of session.recordedGeometry) {
-			if (geometry.stimulusId) geometryStimulus[geometry.slideIndex] ??= geometry.stimulusId;
-		}
-		const stimulusBySlide: Record<number, string> = {};
-		const resolvedBySlide: Record<number, ResolvedSlide | null> = {};
-		for (const slide of slides) {
-			const row = session.gazeSamples.find(
-				(sample) => sample.slide_index === slide && sample.stimulus_id !== 'null'
-			);
-			stimulusBySlide[slide] = row?.stimulus_id ?? geometryStimulus[slide] ?? 'null';
-			resolvedBySlide[slide] = this.parsedTask
-				? resolveSlide(this.parsedTask, stimulusBySlide[slide])
-				: null;
-		}
-		this.stimulusBySlide = stimulusBySlide;
-		this.resolvedBySlide = resolvedBySlide;
+		this.slides = view.slides;
+		this.stimulusBySlide = view.stimulusBySlide;
+		this.resolvedBySlide = view.resolvedBySlide;
 
 		this.fluency = this.parsedTask
 			? createFluencyResolver(this.parsedTask.slug, (stimulusId) => {
@@ -175,33 +159,14 @@ export class SessionSimState {
 				})
 			: null;
 
-		this.selectedSlide = slides[0] ?? null;
+		this.selectedSlide = view.slides[0] ?? null;
 
-		// Geometry recorded during the live session beats DOM re-capture: it has
-		// real rects, lifetimes, and works even when the stimulus can't render.
-		const recorded = session.recordedGeometry.filter((geometry) => geometry.aois.length > 0);
-		const recordedViewport = recorded.find(
-			(geometry) => geometry.viewport.width > 0 && geometry.viewport.height > 0
-		)?.viewport;
-		// Viewport priority: recorded geometry > meta.json > manual entry
-		const viewport = recordedViewport ?? session.meta?.viewport;
-		if (viewport) {
-			this.viewportWidth = viewport.width;
-			this.viewportHeight = viewport.height;
+		if (view.viewport) {
+			this.viewportWidth = view.viewport.width;
+			this.viewportHeight = view.viewport.height;
 		}
-		this.viewportSource = recordedViewport
-			? 'geometry'
-			: session.meta?.viewport
-				? 'meta'
-				: 'manual';
-		const recordedAois: Record<number, AoiRect[]> = {};
-		for (const geometry of recorded) {
-			recordedAois[geometry.slideIndex] = [
-				...(recordedAois[geometry.slideIndex] ?? []),
-				...geometry.aois
-			];
-		}
-		this.recordedAois = recordedAois;
+		this.viewportSource = view.viewportSource;
+		this.recordedAois = view.recordedAois;
 		this.capturedAois = {};
 		this.slideOverrides = {};
 		this.sessionCorrection = identityCorrection(this.viewportWidth / 2, this.viewportHeight / 2);
