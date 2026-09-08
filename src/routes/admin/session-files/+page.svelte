@@ -24,6 +24,7 @@
 		type RecalculationScope
 	} from '$lib/api/test-sessions';
 	import RecalculateDialog from './components/RecalculateDialog.svelte';
+	import PostProcessingDialog from './components/PostProcessingDialog.svelte';
 	import { PartType, SortBy, SortDirection, UserRole, roleLabels } from '$lib/types/api.types';
 	import type {
 		UserDTO,
@@ -99,6 +100,8 @@
 	let openSessionMenuId = $state('');
 	let recalcDialogOpen = $state(false);
 	let recalcScope = $state<RecalculationScope>({});
+	let postProcessDialogOpen = $state(false);
+	let postProcessScope = $state<RecalculationScope>({});
 	let error = $state('');
 	let successMessage = $state('');
 	let successTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -515,6 +518,17 @@
 		else if (activeUser) loadSessions(activeUser.id);
 	}
 
+	function openPostProcessDialog(scope: RecalculationScope) {
+		postProcessScope = scope;
+		postProcessDialogOpen = true;
+	}
+
+	function handlePostProcessFinished() {
+		showSuccess('Post-processing dokončen');
+		if (activeSessionId) loadSessionDetail(activeSessionId);
+		else if (activeUser) loadSessions(activeUser.id);
+	}
+
 	async function handleDeleteSession() {
 		if (!activeSessionId) return;
 		isDeleting = true;
@@ -797,6 +811,18 @@
 									<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
 									Doplnit chybějící soubory (vše)…
 								</button>
+								<button
+									type="button"
+									role="menuitem"
+									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+									onclick={() => {
+										globalMenuOpen = false;
+										openPostProcessDialog({});
+									}}
+								>
+									<Icon icon="material-symbols:play-circle-outline" class="h-4 w-4" />
+									Spustit post-processing (vše)…
+								</button>
 							</div>
 						{/if}
 					</div>
@@ -919,6 +945,18 @@
 												>
 													<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
 													Doplnit chybějící soubory…
+												</button>
+												<button
+													type="button"
+													role="menuitem"
+													class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+													onclick={() => {
+														openUserMenuId = '';
+														openPostProcessDialog({ userIds: [user.id] });
+													}}
+												>
+													<Icon icon="material-symbols:play-circle-outline" class="h-4 w-4" />
+													Spustit post-processing…
 												</button>
 											</div>
 										{/if}
@@ -1194,6 +1232,18 @@
 														<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
 														Doplnit chybějící soubory…
 													</button>
+													<button
+														type="button"
+														role="menuitem"
+														class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+														onclick={() => {
+															openSessionMenuId = '';
+															openPostProcessDialog({ sessionIds: [session.id] });
+														}}
+													>
+														<Icon icon="material-symbols:play-circle-outline" class="h-4 w-4" />
+														Spustit post-processing…
+													</button>
 												</div>
 											{/if}
 										</div>
@@ -1295,6 +1345,18 @@
 											>
 												<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
 												Doplnit chybějící soubory…
+											</button>
+											<button
+												type="button"
+												role="menuitem"
+												class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+												onclick={() => {
+													menuOpen = false;
+													openPostProcessDialog({ sessionIds: [activeSessionId] });
+												}}
+											>
+												<Icon icon="material-symbols:play-circle-outline" class="h-4 w-4" />
+												Spustit post-processing…
 											</button>
 											<button
 												type="button"
@@ -1524,6 +1586,13 @@
 	bind:open={recalcDialogOpen}
 	scope={recalcScope}
 	onFinished={handleRecalcFinished}
+/>
+
+<!-- Post-processing dialog -->
+<PostProcessingDialog
+	bind:open={postProcessDialogOpen}
+	scope={postProcessScope}
+	onFinished={handlePostProcessFinished}
 />
 
 <!-- Delete confirmation dialog -->

@@ -263,7 +263,10 @@
 		try {
 			const csv = DatabaseExporter.createCsvContent([...slot.session.rawGazeData], 'rawGazeData');
 			const params: I2mcParameters = { ...i2mcParams };
-			if (i2mcScrW && i2mcScrH) params.scrSz = [i2mcScrW, i2mcScrH];
+			if (i2mcScrW && i2mcScrH) {
+				params.scrWidthCm = i2mcScrW;
+				params.scrHeightCm = i2mcScrH;
+			}
 			const files = [{ name: 'rawGazeData.csv', content: csv }];
 			for (const geometry of slot.session.recordedGeometry) {
 				files.push({

@@ -6,9 +6,7 @@ import {
 	extendRecalculationLedger,
 	getRecalculationSlides,
 	getTestSessionDetail,
-	processSessionPostProcessor,
 	relocateSessionLogs,
-	I2MC_DEFAULT_PARAMETERS,
 	type RecalculationPreviewRow,
 	type RecalculationSlide,
 	type RecalculationSlides
@@ -20,9 +18,6 @@ import { buildRecalculatedMeta, metaAsUploadFile } from './metaRebuild';
 import { loadRecalcSessionData, type RecalcSessionData } from './sessionData';
 
 export interface RecalcItems {
-	i2mc: boolean;
-	/** Also reprocess sessions that already have I2MC output. */
-	forceI2mc: boolean;
 	meta: boolean;
 	aoiGeometry: boolean;
 	logs: boolean;
@@ -35,7 +30,6 @@ export interface RecalcSessionOutcome {
 	geometrySkipped: number;
 	metaCreated: boolean;
 	ledgerUpdated: boolean;
-	i2mcStatus: string | null;
 	logsMoved: number;
 	errors: string[];
 }
@@ -94,7 +88,7 @@ function errorMessage(err: unknown): string {
 /**
  * Drives the session-by-session recalculation: per session it regenerates the
  * selected missing artifacts in dependency order (AOI geometry → meta.json
- * with its `recalculated` ledger → server-side I2MC → log relocation).
+ * with its `recalculated` ledger → log relocation).
  * Stopping finishes the current session's in-flight step and halts, leaving
  * only complete, re-runnable state behind.
  */
@@ -114,7 +108,6 @@ export class RecalcRunner {
 
 	static sessionNeedsWork(row: RecalculationPreviewRow, items: RecalcItems): boolean {
 		return (
-			(items.i2mc && row.hasRawData && (row.missingI2mc || items.forceI2mc)) ||
 			(items.meta && row.missingMeta) ||
 			(items.aoiGeometry && row.missingAoiGeometry) ||
 			(items.logs && row.misplacedLogs)
@@ -166,7 +159,6 @@ export class RecalcRunner {
 			geometrySkipped: 0,
 			metaCreated: false,
 			ledgerUpdated: false,
-			i2mcStatus: null,
 			logsMoved: 0,
 			errors: []
 		};
@@ -237,26 +229,6 @@ export class RecalcRunner {
 				outcome.ledgerUpdated = result.updated;
 			} catch (err) {
 				outcome.errors.push(`Aktualizace meta.json selhala: ${errorMessage(err)}`);
-			}
-		}
-
-		if (this.stopping) return outcome;
-
-		if (items.i2mc && row.hasRawData && (row.missingI2mc || items.forceI2mc)) {
-			try {
-				const result = await processSessionPostProcessor(
-					detail.id,
-					'i2mc',
-					{ ...I2MC_DEFAULT_PARAMETERS },
-					items.forceI2mc
-				);
-				outcome.i2mcStatus = result.status;
-				if (result.status === 'FAILED') {
-					outcome.errors.push(`I2MC selhalo: ${result.message ?? 'neznámá chyba'}`);
-				}
-			} catch (err) {
-				outcome.i2mcStatus = 'FAILED';
-				outcome.errors.push(`I2MC selhalo: ${errorMessage(err)}`);
 			}
 		}
 

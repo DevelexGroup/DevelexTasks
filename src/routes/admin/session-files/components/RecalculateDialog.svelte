@@ -50,8 +50,6 @@
 	let verifyToken = 0;
 
 	let items = $state<RecalcItems>({
-		i2mc: false,
-		forceI2mc: false,
 		meta: false,
 		aoiGeometry: false,
 		logs: false
@@ -70,8 +68,6 @@
 	const runner = new RecalcRunner(captureSlide);
 
 	// ── Preview counts ──
-	const i2mcAll = $derived(rows.filter((r) => r.hasRawData).length);
-	const i2mcMissing = $derived(rows.filter((r) => r.hasRawData && r.missingI2mc).length);
 	const metaMissing = $derived(rows.filter((r) => r.missingMeta).length);
 	const geometryMissing = $derived(rows.filter((r) => r.missingAoiGeometry).length);
 	const logsMisplaced = $derived(rows.filter((r) => r.misplacedLogs).length);
@@ -90,7 +86,6 @@
 			geometrySkipped: outcomes.reduce((sum, o) => sum + o.geometrySkipped, 0),
 			metasCreated: outcomes.filter((o) => o.metaCreated).length,
 			ledgersUpdated: outcomes.filter((o) => o.ledgerUpdated).length,
-			i2mcProcessed: outcomes.filter((o) => o.i2mcStatus === 'PROCESSED').length,
 			logsMoved: outcomes.reduce((sum, o) => sum + o.logsMoved, 0),
 			failed: outcomes.filter((o) => o.errors.length > 0)
 		};
@@ -99,7 +94,6 @@
 		summary.geometryUploaded > 0 ||
 			summary.metasCreated > 0 ||
 			summary.ledgersUpdated > 0 ||
-			summary.i2mcProcessed > 0 ||
 			summary.logsMoved > 0
 	);
 
@@ -131,8 +125,6 @@
 		try {
 			rows = await previewRecalculation(scope);
 			items = {
-				i2mc: rows.some((r) => r.hasRawData && r.missingI2mc),
-				forceI2mc: false,
 				meta: rows.some((r) => r.missingMeta),
 				aoiGeometry: rows.some((r) => r.missingAoiGeometry),
 				logs: rows.some((r) => r.misplacedLogs)
@@ -255,33 +247,6 @@
 					<p class="text-sm text-gray-500">
 						V rozsahu je {rows.length} sezení. Vyberte, co se má doplnit:
 					</p>
-
-					<div class="rounded-lg border border-gray-200 p-3">
-						<label class="flex items-start gap-3">
-							<input
-								type="checkbox"
-								class="mt-0.5 h-4 w-4 accent-blue-600"
-								bind:checked={items.i2mc}
-								disabled={i2mcMissing === 0 && !items.forceI2mc}
-							/>
-							<span class="min-w-0 flex-1 text-sm">
-								<span class="font-medium text-gray-800">I2MC fixace</span>
-								<span class="ml-1 text-gray-400">chybí u {i2mcMissing} sezení</span>
-							</span>
-						</label>
-						<label class="mt-1.5 ml-7 flex items-center gap-2 text-xs text-gray-500">
-							<input
-								type="checkbox"
-								class="h-3.5 w-3.5 accent-blue-600"
-								bind:checked={items.forceI2mc}
-								disabled={i2mcAll === 0}
-								onchange={() => {
-									if (items.forceI2mc) items.i2mc = true;
-								}}
-							/>
-							Přepočítat i existující ({i2mcAll} sezení s raw daty) – původní soubory zůstanou jako záloha
-						</label>
-					</div>
 
 					<label class="flex items-start gap-3 rounded-lg border border-gray-200 p-3">
 						<input
@@ -476,8 +441,6 @@
 					<span class="font-medium text-gray-800">{summary.metasCreated}</span>
 					<span class="text-gray-500">Aktualizované meta.json</span>
 					<span class="font-medium text-gray-800">{summary.ledgersUpdated}</span>
-					<span class="text-gray-500">I2MC přepočty</span>
-					<span class="font-medium text-gray-800">{summary.i2mcProcessed}</span>
 					<span class="text-gray-500">Přesunuté logy</span>
 					<span class="font-medium text-gray-800">{summary.logsMoved}</span>
 				</div>

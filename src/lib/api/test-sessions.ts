@@ -153,8 +153,9 @@ export interface I2mcParameters {
 	eyes: 'both' | 'average';
 	gapSplitMs: number;
 	minFixDur: number;
-	/** Screen size [widthCm, heightCm]; omitted = 24" 16:9 monitor (53.13 × 29.89 cm). */
-	scrSz?: [number, number];
+	/** Screen size in cm, both or neither; omitted = 24" 16:9 monitor (53.13 × 29.89 cm). */
+	scrWidthCm?: number;
+	scrHeightCm?: number;
 	dist: number;
 }
 
@@ -187,8 +188,6 @@ export interface RecalculationScope {
 
 export interface RecalculationPreviewRow {
 	sessionId: string;
-	hasRawData: boolean;
-	missingI2mc: boolean;
 	missingMeta: boolean;
 	missingAoiGeometry: boolean;
 	misplacedLogs: boolean;
@@ -264,6 +263,55 @@ export async function extendRecalculationLedger(
 		`/test-sessions/${sessionId}/post-processing/recalculate/ledger`,
 		{ method: 'POST', body: JSON.stringify({ items }) }
 	);
+}
+
+export type PostProcessorParameterType = 'NUMBER' | 'INTEGER' | 'BOOLEAN' | 'STRING' | 'SELECT';
+
+export interface PostProcessorParameter {
+	key: string;
+	type: PostProcessorParameterType;
+	label: string;
+	description: string | null;
+	defaultValue: unknown;
+	required: boolean;
+	min: number | null;
+	max: number | null;
+	options: { value: string; label: string }[] | null;
+}
+
+export interface PostProcessor {
+	name: string;
+	label: string;
+	description: string;
+	inputFilePrefix: string;
+	outputFilePrefix: string;
+	parameters: PostProcessorParameter[];
+}
+
+/** Enabled post-processors with the parameters they accept. */
+export async function getPostProcessors(): Promise<PostProcessor[]> {
+	return apiClient<PostProcessor[]>('/test-sessions/post-processing/processors');
+}
+
+export interface PostProcessingPreviewRow {
+	sessionId: string;
+	username: string;
+	testType: string;
+	sessionStartTime: string;
+	hasInput: boolean;
+	hasOutput: boolean;
+}
+
+/** Per-session input and output presence for one processor; empty scope targets all sessions. */
+export async function previewPostProcessor(
+	processor: string,
+	scope: RecalculationScope
+): Promise<PostProcessingPreviewRow[]> {
+	const result = await apiClient<{ sessions: PostProcessingPreviewRow[] }>(
+		`/test-sessions/post-processing/${processor}/preview`,
+		{ method: 'POST', body: JSON.stringify(scope) }
+	);
+	return result.sessions;
 }
 
 export interface PostProcessingProcessResult {
