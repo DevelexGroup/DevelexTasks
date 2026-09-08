@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import Icon from '@iconify/svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import {
@@ -25,12 +26,13 @@
 	} from '$lib/types/api.types';
 	import { ApiError } from '$lib/api/client';
 	import IconButton from '$lib/components/IconButton.svelte';
+	import { backToParams, dropParams, pushParams } from '$lib/utils/urlState';
 
 	let { detailOpen = $bindable(false) } = $props();
 
 	let groups = $state<GroupDTO[]>([]);
 	let members = $state<GroupMemberDTO[]>([]);
-	let selectedGroupId = $state('');
+	let selectedGroupId = $derived(page.url.searchParams.get('group') ?? '');
 	let searchQuery = $state('');
 
 	let isLoadingGroups = $state(true);
@@ -114,7 +116,7 @@
 			const raw = canManageAllGroups ? await getAllGroups() : await getMyGroups();
 			groups = raw.slice().sort((a, b) => a.name.localeCompare(b.name, 'cs'));
 			if (selectedGroupId && !groups.some((g) => g.id === selectedGroupId)) {
-				selectedGroupId = '';
+				dropParams({ group: null });
 			}
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se načíst skupiny';
@@ -195,7 +197,6 @@
 		try {
 			await deleteGroup(selectedGroup.id);
 			deleteGroupOpen = false;
-			selectedGroupId = '';
 			await loadGroups();
 		} catch {
 			dialogError = 'Nepodařilo se smazat skupinu';
@@ -326,7 +327,6 @@
 			const removedSelf = removeMemberTarget.userUuid === $authUser?.userId;
 			removeMemberTarget = null;
 			if (removedSelf && !canManageAllGroups) {
-				selectedGroupId = '';
 				await loadGroups();
 			} else {
 				await loadMembers(selectedGroupId);
@@ -434,7 +434,7 @@
 				<button
 					type="button"
 					class="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-3 text-left transition-colors hover:bg-gray-50"
-					onclick={() => (selectedGroupId = group.id)}
+					onclick={() => pushParams({ group: group.id })}
 				>
 					<div class="min-w-0">
 						<div class="flex items-center gap-2">
@@ -458,7 +458,7 @@
 	<div class="mb-4">
 		<button
 			class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline"
-			onclick={() => (selectedGroupId = '')}
+			onclick={() => backToParams({ group: null })}
 		>
 			<Icon icon="mdi:arrow-left" class="h-4 w-4" />
 			Zpět na seznam

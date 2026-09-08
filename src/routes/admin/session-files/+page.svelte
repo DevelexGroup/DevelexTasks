@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { onMount, onDestroy } from 'svelte';
+	import { page } from '$app/state';
+	import { onMount, onDestroy, untrack } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
@@ -12,6 +13,7 @@
 	import { hasCapability } from '$lib/utils/capabilityGuard';
 	import { authUser } from '$lib/stores/auth';
 	import { triggerUrlDownload } from '$lib/utils/download';
+	import { backToParams, dropParams, pushParams } from '$lib/utils/urlState';
 	import {
 		getTestSessions,
 		getTestSessionDetail,
@@ -368,6 +370,33 @@
 		error = '';
 	}
 
+	let urlUserId = $derived(page.url.searchParams.get('user') ?? '');
+	let urlSessionId = $derived(page.url.searchParams.get('session') ?? '');
+
+	$effect(() => {
+		const userId = urlUserId;
+		const sessionId = urlSessionId;
+		if (isLoadingUsers) return;
+		untrack(() => syncSelection(userId, sessionId));
+	});
+
+	function syncSelection(userId: string, sessionId: string) {
+		if (userId !== (activeUser?.id ?? '')) {
+			const user = users.find((u) => u.id === userId);
+			if (userId && !user) {
+				dropParams({ user: null, session: null });
+				return;
+			}
+			if (user) openUser(user);
+			else closeUser();
+		}
+		const wantedSessionId = userId ? sessionId : '';
+		if (wantedSessionId !== activeSessionId) {
+			if (wantedSessionId) openSession(wantedSessionId);
+			else closeSession();
+		}
+	}
+
 	function retry() {
 		error = '';
 		if (activeSessionId) loadSessionDetail(activeSessionId);
@@ -566,7 +595,7 @@
 			const deletedId = activeSessionId;
 			await deleteTestSession(deletedId);
 			deleteDialogOpen = false;
-			closeSession();
+			backToParams({ session: null });
 			sessions = sessions.filter((s) => s.id !== deletedId);
 			selectedSessionIds = selectedSessionIds.filter((id) => id !== deletedId);
 			if (activeUser) {
@@ -960,7 +989,7 @@
 										if (userSelectMode) {
 											if (selectable) selectedUserIds = toggleId(selectedUserIds, user.id);
 										} else {
-											openUser(user);
+											pushParams({ user: user.id });
 										}
 									}}
 								>
@@ -1045,7 +1074,7 @@
 			<div class="mb-4">
 				<button
 					class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline"
-					onclick={closeUser}
+					onclick={() => backToParams({ user: null })}
 				>
 					<Icon icon="mdi:arrow-left" class="h-4 w-4" />
 					Zpět na seznam
@@ -1310,7 +1339,7 @@
 												if (session.fileCount > 0)
 													selectedSessionIds = toggleId(selectedSessionIds, session.id);
 											} else {
-												openSession(session.id);
+												pushParams({ session: session.id });
 											}
 										}}
 									>
@@ -1393,7 +1422,7 @@
 			<div class="mb-4">
 				<button
 					class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline"
-					onclick={closeSession}
+					onclick={() => backToParams({ session: null })}
 				>
 					<Icon icon="mdi:arrow-left" class="h-4 w-4" />
 					Zpět na sezení

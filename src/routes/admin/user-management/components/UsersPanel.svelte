@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import Icon from '@iconify/svelte';
 	import {
 		getAllUsers,
@@ -19,11 +20,12 @@
 	import CapabilitiesDialog from './CapabilitiesDialog.svelte';
 	import DeleteUserDialog from './DeleteUserDialog.svelte';
 	import SessionsDialog from './SessionsDialog.svelte';
+	import { backToParams, dropParams, pushParams } from '$lib/utils/urlState';
 
 	let { detailOpen = $bindable(false) } = $props();
 
 	let users = $state<UserDTO[]>([]);
-	let selectedUserId = $state('');
+	let selectedUserId = $derived(page.url.searchParams.get('user') ?? '');
 	let searchQuery = $state('');
 	let isLoading = $state(true);
 	let error = $state('');
@@ -88,6 +90,9 @@
 		try {
 			const raw = await getAllUsers();
 			users = raw.slice().sort((a, b) => a.username.localeCompare(b.username, 'cs'));
+			if (selectedUserId && !users.some((u) => u.id === selectedUserId)) {
+				dropParams({ user: null });
+			}
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Nepodařilo se načíst uživatele';
 		} finally {
@@ -404,12 +409,12 @@
 					class="flex cursor-pointer items-center justify-between gap-4 px-5 py-3 transition-colors hover:bg-gray-50"
 					onclick={(event) => {
 						if ((event.target as HTMLElement).closest('[data-row-actions]')) return;
-						selectedUserId = user.id;
+						pushParams({ user: user.id });
 					}}
 					onkeydown={(event) => {
 						if (event.key === 'Enter' || event.key === ' ') {
 							event.preventDefault();
-							selectedUserId = user.id;
+							pushParams({ user: user.id });
 						}
 					}}
 				>
@@ -471,7 +476,7 @@
 	<div class="mb-4">
 		<button
 			class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline"
-			onclick={() => (selectedUserId = '')}
+			onclick={() => backToParams({ user: null })}
 		>
 			<Icon icon="mdi:arrow-left" class="h-4 w-4" />
 			Zpět na seznam

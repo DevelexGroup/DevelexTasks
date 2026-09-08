@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import { get } from 'svelte/store';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import UsersPanel from './components/UsersPanel.svelte';
@@ -9,11 +10,20 @@
 	import { authUser } from '$lib/stores/auth';
 	import DefaultLayout from '$lib/components/layout/DefaultLayout.svelte';
 	import BackButton from '$lib/components/layout/BackButton.svelte';
+	import { switchParams } from '$lib/utils/urlState';
 
 	let showUsers = $derived(hasCapability($authUser, 'USER_READ_ALL'));
 	let showGroups = $derived(hasCapability($authUser, 'GROUP_READ_OWN', 'GROUP_READ_ALL'));
 
-	let activeTab = $state(hasCapability(get(authUser), 'USER_READ_ALL') ? 'users' : 'groups');
+	const defaultTab = hasCapability(get(authUser), 'USER_READ_ALL') ? 'users' : 'groups';
+	let activeTab = $derived.by(() => {
+		const tab = page.url.searchParams.get('tab');
+		return tab === 'users' || tab === 'groups' ? tab : defaultTab;
+	});
+
+	function switchTab(tab: string) {
+		switchParams({ tab, user: null, group: null });
+	}
 
 	let usersDetailOpen = $state(false);
 	let groupsDetailOpen = $state(false);
@@ -43,7 +53,7 @@
 
 	<div>
 		{#if showUsers && showGroups}
-			<Tabs.Root bind:value={activeTab} class="w-full">
+			<Tabs.Root value={activeTab} onValueChange={switchTab} class="w-full">
 				<Tabs.List class="mb-4 grid w-full max-w-sm grid-cols-2">
 					<Tabs.Trigger value="users">Uživatelé</Tabs.Trigger>
 					<Tabs.Trigger value="groups">Skupiny</Tabs.Trigger>
