@@ -46,6 +46,7 @@
 	let canCreateStudent = $derived(
 		hasCapability($authUser, 'USER_CREATE_STUDENT_IN_GROUP', 'USER_CREATE_ANY')
 	);
+	let showOwnerBadge = $derived(canEditOwnedGroups || canManageMembers);
 
 	let selectedGroup = $derived(groups.find((g) => g.id === selectedGroupId) ?? null);
 
@@ -438,7 +439,7 @@
 					<div class="min-w-0">
 						<div class="flex items-center gap-2">
 							<span class="text-sm font-medium text-gray-900">{group.name}</span>
-							{#if group.ownedByMe && !canManageAllGroups}
+							{#if group.ownedByMe && showOwnerBadge && !canManageAllGroups}
 								<span class="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800">
 									Vlastník
 								</span>
@@ -473,7 +474,7 @@
 				<div>
 					<div class="flex items-center gap-2">
 						<h2 class="text-lg font-bold text-gray-800">{selectedGroup.name}</h2>
-						{#if selectedGroup.ownedByMe}
+						{#if selectedGroup.ownedByMe && showOwnerBadge}
 							<span class="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800">
 								Vlastník
 							</span>
