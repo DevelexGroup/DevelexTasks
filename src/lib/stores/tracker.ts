@@ -1,3 +1,4 @@
+import { dev } from '$app/environment';
 import type { GazeInputConfigWithFixations } from 'develex-js-sdk';
 import { session } from '../utils/persistedStore';
 
@@ -9,7 +10,11 @@ export enum AvaiableTracker {
 	MouseIdt = 'mouse_idt'
 }
 
-export const GAZE_INPUT_CONFIGS: Record<AvaiableTracker, GazeInputConfigWithFixations> = {
+export type TrackerConfig = GazeInputConfigWithFixations & {
+	developmentOnly?: boolean;
+}
+
+export const GAZE_INPUT_CONFIGS: Record<AvaiableTracker, TrackerConfig> = {
 	gazepoint_base: {
 		tracker: 'gazepoint',
 		uri: 'ws://localhost:13892',
@@ -28,7 +33,8 @@ export const GAZE_INPUT_CONFIGS: Record<AvaiableTracker, GazeInputConfigWithFixa
 	mock_base: {
 		tracker: 'mock',
 		uri: 'ws://localhost:13892',
-		fixationDetection: 'device'
+		fixationDetection: 'device',
+		developmentOnly: true
 	},
 	mouse_idt: {
 		tracker: 'dummy',
@@ -39,5 +45,9 @@ export const GAZE_INPUT_CONFIGS: Record<AvaiableTracker, GazeInputConfigWithFixa
 		precisionMaximumError: 1.5
 	}
 };
+
+export const SELECTABLE_GAZE_INPUT_CONFIGS = Object.fromEntries(
+	Object.entries(GAZE_INPUT_CONFIGS).filter(([, config]) => dev || !config.developmentOnly)
+) as Record<string, TrackerConfig>;
 
 export const trackerConfig = session<AvaiableTracker>('tracker_config', AvaiableTracker.MouseIdt);

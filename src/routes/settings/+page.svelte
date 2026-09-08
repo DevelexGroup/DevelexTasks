@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { version } from '$app/environment';
-	import { GAZE_INPUT_CONFIGS, trackerConfig } from '$lib/stores/tracker';
+	import { SELECTABLE_GAZE_INPUT_CONFIGS, trackerConfig } from '$lib/stores/tracker';
 	import { isDiagnosisMode } from '$lib/stores/diagnosis';
 	import DiagnosisDialog from '$lib/components/DiagnosisDialog.svelte';
 	import { Switch } from '$lib/components/ui/switch';
@@ -46,7 +46,7 @@
 		>
 			<option value="" disabled class="normal-case">Vyber si možnost</option>
 
-			{#each Object.entries(GAZE_INPUT_CONFIGS) as [key, value] (key)}
+			{#each Object.entries(SELECTABLE_GAZE_INPUT_CONFIGS) as [key, value] (key)}
 				<option value={key} class="capitalize" selected={key === $trackerConfig}>
 					{value.tracker} - {value.fixationDetection}
 				</option>
