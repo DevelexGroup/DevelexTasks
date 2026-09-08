@@ -102,6 +102,10 @@
 	let recalcScope = $state<RecalculationScope>({});
 	let postProcessDialogOpen = $state(false);
 	let postProcessScope = $state<RecalculationScope>({});
+	let sessionActionsMenuOpen = $state(false);
+	let sessionActionsMenuRef = $state<HTMLDivElement | null>(null);
+	let exportAllDialogOpen = $state(false);
+	let exportAllTarget = $state<'users' | 'sessions'>('users');
 	let error = $state('');
 	let successMessage = $state('');
 	let successTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -200,6 +204,13 @@
 		if (sessionFilterMenuOpen && sessionFilterMenuRef && !sessionFilterMenuRef.contains(target)) {
 			sessionFilterMenuOpen = false;
 		}
+		if (
+			sessionActionsMenuOpen &&
+			sessionActionsMenuRef &&
+			!sessionActionsMenuRef.contains(target)
+		) {
+			sessionActionsMenuOpen = false;
+		}
 		if ((openUserMenuId || openSessionMenuId) && !target.closest('[data-row-menu]')) {
 			openUserMenuId = '';
 			openSessionMenuId = '';
@@ -212,6 +223,7 @@
 			globalMenuOpen = false;
 			filterMenuOpen = false;
 			sessionFilterMenuOpen = false;
+			sessionActionsMenuOpen = false;
 			openUserMenuId = '';
 			openSessionMenuId = '';
 		}
@@ -326,6 +338,7 @@
 		sessions = [];
 		sessionSelectMode = false;
 		selectedSessionIds = [];
+		sessionActionsMenuOpen = false;
 		resetSessionFilters();
 		activeSessionId = '';
 		sessionDetail = null;
@@ -337,6 +350,7 @@
 		sessions = [];
 		sessionSelectMode = false;
 		selectedSessionIds = [];
+		sessionActionsMenuOpen = false;
 		resetSessionFilters();
 		error = '';
 	}
@@ -413,11 +427,13 @@
 	function cancelUserSelection() {
 		userSelectMode = false;
 		selectedUserIds = [];
+		globalMenuOpen = false;
 	}
 
 	function cancelSessionSelection() {
 		sessionSelectMode = false;
 		selectedSessionIds = [];
+		sessionActionsMenuOpen = false;
 	}
 
 	// Export
@@ -425,18 +441,16 @@
 		return new Date().toISOString().slice(0, 10);
 	}
 
-	async function exportSelectedUsers() {
-		if (selectedUserIds.length === 0 || isExporting) return;
+	async function exportUsers(userIds: string[]) {
+		if (userIds.length === 0 || isExporting) return;
 		isExporting = true;
 		error = '';
 		try {
-			const userIds = [...selectedUserIds];
 			const prepared = await prepareSessionExport({
 				userIds,
 				fileName: `develex_export_${dateStamp()}.zip`
 			});
 			triggerUrlDownload(getExportDownloadUrl(prepared.token));
-			cancelUserSelection();
 			const n = userIds.length;
 			showSuccess(
 				`Export zahájen (${n} ${n === 1 ? 'uživatel' : n < 5 ? 'uživatelé' : 'uživatelů'})`
@@ -448,24 +462,39 @@
 		}
 	}
 
-	async function exportSelectedSessions() {
-		if (selectedSessionIds.length === 0 || isExporting || !activeUser) return;
+	async function exportSessions(sessionIds: string[]) {
+		if (sessionIds.length === 0 || isExporting || !activeUser) return;
 		isExporting = true;
 		error = '';
 		try {
-			const sessionIds = [...selectedSessionIds];
 			const prepared = await prepareSessionExport({
 				sessionIds,
 				fileName: `${activeUser.username}_export_${dateStamp()}.zip`
 			});
 			triggerUrlDownload(getExportDownloadUrl(prepared.token));
-			cancelSessionSelection();
 			showSuccess(`Export zahájen (${sessionIds.length} sezení)`);
 		} catch {
 			error = 'Nepodařilo se exportovat vybraná sezení';
 		} finally {
 			isExporting = false;
 		}
+	}
+
+	// Export without a selection covers everything currently listed
+	let exportAllCount = $derived(
+		exportAllTarget === 'users' ? selectableUsers.length : selectableSessions.length
+	);
+
+	function openExportAllDialog(target: 'users' | 'sessions') {
+		exportAllTarget = target;
+		exportAllDialogOpen = true;
+	}
+
+	async function exportAll() {
+		const target = exportAllTarget;
+		exportAllDialogOpen = false;
+		if (target === 'users') await exportUsers(selectableUsers.map((u) => u.id));
+		else await exportSessions(selectableSessions.map((s) => s.id));
 	}
 
 	async function downloadDetailZip() {
@@ -763,7 +792,7 @@
 					<button
 						class="inline-flex shrink-0 items-center gap-2 rounded-md bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
 						disabled={selectedUserIds.length === 0 || isExporting}
-						onclick={exportSelectedUsers}
+						onclick={() => exportUsers([...selectedUserIds])}
 					>
 						{#if isExporting}
 							<Icon icon="mdi:loading" class="h-4 w-4 animate-spin" />
@@ -775,18 +804,33 @@
 					</button>
 				{:else}
 					<button
-						class="inline-flex shrink-0 items-center gap-2 rounded-md bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-600"
+						class="inline-flex shrink-0 items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+						title="Vybrat uživatele pro export nebo hromadné akce"
+						disabled={selectableUsers.length === 0}
 						onclick={() => (userSelectMode = true)}
 					>
-						<Icon icon="material-symbols:download" class="h-4 w-4" />
-						Exportovat…
+						<Icon icon="material-symbols:checklist" class="h-4 w-4" />
+						Vybrat…
+					</button>
+					<button
+						class="inline-flex shrink-0 items-center gap-2 rounded-md bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
+						disabled={selectableUsers.length === 0 || isExporting}
+						onclick={() => openExportAllDialog('users')}
+					>
+						{#if isExporting}
+							<Icon icon="mdi:loading" class="h-4 w-4 animate-spin" />
+							Exportuji…
+						{:else}
+							<Icon icon="material-symbols:download" class="h-4 w-4" />
+							Exportovat vše
+						{/if}
 					</button>
 				{/if}
 				{#if canManageSessions}
 					<div class="relative shrink-0" bind:this={globalMenuRef}>
 						<button
 							type="button"
-							aria-label="Další akce"
+							aria-label={userSelectMode ? 'Akce s výběrem' : 'Další akce'}
 							aria-haspopup="menu"
 							aria-expanded={globalMenuOpen}
 							class="inline-flex h-[38px] w-[38px] items-center justify-center rounded-md border border-gray-300 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
@@ -799,30 +843,59 @@
 								role="menu"
 								class="absolute right-0 z-20 mt-1 w-64 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
 							>
-								<button
-									type="button"
-									role="menuitem"
-									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
-									onclick={() => {
-										globalMenuOpen = false;
-										openRecalcDialog({});
-									}}
-								>
-									<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
-									Doplnit chybějící soubory (vše)…
-								</button>
-								<button
-									type="button"
-									role="menuitem"
-									class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
-									onclick={() => {
-										globalMenuOpen = false;
-										openPostProcessDialog({});
-									}}
-								>
-									<Icon icon="material-symbols:play-circle-outline" class="h-4 w-4" />
-									Spustit post-processing (vše)…
-								</button>
+								{#if userSelectMode}
+									<button
+										type="button"
+										role="menuitem"
+										class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+										disabled={selectedUserIds.length === 0}
+										onclick={() => {
+											globalMenuOpen = false;
+											openRecalcDialog({ userIds: [...selectedUserIds] });
+										}}
+									>
+										<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
+										Doplnit chybějící soubory ({selectedUserIds.length})…
+									</button>
+									<button
+										type="button"
+										role="menuitem"
+										class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+										disabled={selectedUserIds.length === 0}
+										onclick={() => {
+											globalMenuOpen = false;
+											openPostProcessDialog({ userIds: [...selectedUserIds] });
+										}}
+									>
+										<Icon icon="material-symbols:play-circle-outline" class="h-4 w-4" />
+										Spustit post-processing ({selectedUserIds.length})…
+									</button>
+								{:else}
+									<button
+										type="button"
+										role="menuitem"
+										class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+										onclick={() => {
+											globalMenuOpen = false;
+											openRecalcDialog({});
+										}}
+									>
+										<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
+										Doplnit chybějící soubory (vše)…
+									</button>
+									<button
+										type="button"
+										role="menuitem"
+										class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+										onclick={() => {
+											globalMenuOpen = false;
+											openPostProcessDialog({});
+										}}
+									>
+										<Icon icon="material-symbols:play-circle-outline" class="h-4 w-4" />
+										Spustit post-processing (vše)…
+									</button>
+								{/if}
 							</div>
 						{/if}
 					</div>
@@ -1072,7 +1145,7 @@
 							<button
 								class="inline-flex items-center gap-2 rounded-md bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
 								disabled={selectedSessionIds.length === 0 || isExporting}
-								onclick={exportSelectedSessions}
+								onclick={() => exportSessions([...selectedSessionIds])}
 							>
 								{#if isExporting}
 									<Icon icon="mdi:loading" class="h-4 w-4 animate-spin" />
@@ -1084,14 +1157,75 @@
 										: ''}
 								{/if}
 							</button>
+							{#if canManageSessions}
+								<div class="relative shrink-0" bind:this={sessionActionsMenuRef}>
+									<button
+										type="button"
+										aria-label="Akce s výběrem"
+										aria-haspopup="menu"
+										aria-expanded={sessionActionsMenuOpen}
+										class="inline-flex h-[38px] w-[38px] items-center justify-center rounded-md border border-gray-300 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+										onclick={() => (sessionActionsMenuOpen = !sessionActionsMenuOpen)}
+									>
+										<Icon icon="material-symbols:more-vert" class="h-5 w-5" />
+									</button>
+									{#if sessionActionsMenuOpen}
+										<div
+											role="menu"
+											class="absolute right-0 z-20 mt-1 w-64 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+										>
+											<button
+												type="button"
+												role="menuitem"
+												class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+												disabled={selectedSessionIds.length === 0}
+												onclick={() => {
+													sessionActionsMenuOpen = false;
+													openRecalcDialog({ sessionIds: [...selectedSessionIds] });
+												}}
+											>
+												<Icon icon="material-symbols:autorenew" class="h-4 w-4" />
+												Doplnit chybějící soubory ({selectedSessionIds.length})…
+											</button>
+											<button
+												type="button"
+												role="menuitem"
+												class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+												disabled={selectedSessionIds.length === 0}
+												onclick={() => {
+													sessionActionsMenuOpen = false;
+													openPostProcessDialog({ sessionIds: [...selectedSessionIds] });
+												}}
+											>
+												<Icon icon="material-symbols:play-circle-outline" class="h-4 w-4" />
+												Spustit post-processing ({selectedSessionIds.length})…
+											</button>
+										</div>
+									{/if}
+								</div>
+							{/if}
 						{:else}
 							<button
-								class="inline-flex items-center gap-2 rounded-md bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
+								class="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+								title="Vybrat sezení pro export nebo hromadné akce"
 								disabled={selectableSessions.length === 0}
 								onclick={() => (sessionSelectMode = true)}
 							>
-								<Icon icon="material-symbols:download" class="h-4 w-4" />
-								Exportovat…
+								<Icon icon="material-symbols:checklist" class="h-4 w-4" />
+								Vybrat…
+							</button>
+							<button
+								class="inline-flex items-center gap-2 rounded-md bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
+								disabled={selectableSessions.length === 0 || isExporting}
+								onclick={() => openExportAllDialog('sessions')}
+							>
+								{#if isExporting}
+									<Icon icon="mdi:loading" class="h-4 w-4 animate-spin" />
+									Exportuji…
+								{:else}
+									<Icon icon="material-symbols:download" class="h-4 w-4" />
+									Exportovat vše
+								{/if}
 							</button>
 						{/if}
 					</div>
@@ -1594,6 +1728,40 @@
 	scope={postProcessScope}
 	onFinished={handlePostProcessFinished}
 />
+
+<!-- Export all confirmation dialog -->
+<Dialog.Root bind:open={exportAllDialogOpen}>
+	<Dialog.Content class="sm:max-w-[460px]">
+		<Dialog.Header>
+			<Dialog.Title>Exportovat vše</Dialog.Title>
+			<Dialog.Description>
+				{#if exportAllTarget === 'users'}
+					Exportují se všichni zobrazení uživatelé se sezeními ({exportAllCount}). Pro užší výběr
+					použijte tlačítko Vybrat.
+				{:else}
+					Exportují se všechna zobrazená sezení se soubory ({exportAllCount}). Pro užší výběr
+					použijte tlačítko Vybrat.
+				{/if}
+			</Dialog.Description>
+		</Dialog.Header>
+		<Dialog.Footer>
+			<button
+				type="button"
+				class="rounded-md bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300"
+				onclick={() => (exportAllDialogOpen = false)}
+			>
+				Zrušit
+			</button>
+			<button
+				type="button"
+				class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+				onclick={exportAll}
+			>
+				Exportovat
+			</button>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
 
 <!-- Delete confirmation dialog -->
 <Dialog.Root bind:open={deleteDialogOpen}>
