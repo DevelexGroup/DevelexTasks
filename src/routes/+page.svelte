@@ -70,10 +70,7 @@
 				<div class="absolute -top-6 -right-6 h-22 w-22 rounded-full bg-amber-100/40"></div>
 
 				<div class="inline-flex h-14 w-14 items-center justify-center rounded-md bg-amber-100">
-					<Icon
-						icon="material-symbols:assignment-outline-rounded"
-						class="h-7 w-7 text-amber-700"
-					/>
+					<Icon icon="material-symbols:assignment-outline-rounded" class="h-7 w-7 text-amber-700" />
 				</div>
 
 				<span class="mt-5 text-xl font-bold text-gray-800">Evaluace reedukace dyslexie</span>
@@ -94,10 +91,7 @@
 				<div class="absolute -top-6 -right-6 h-22 w-22 rounded-full bg-cyan-100/40"></div>
 
 				<div class="inline-flex h-14 w-14 items-center justify-center rounded-md bg-cyan-100">
-					<Icon
-						icon="material-symbols:chair"
-						class="h-7 w-7 text-cyan-700"
-					/>
+					<Icon icon="material-symbols:chair" class="h-7 w-7 text-cyan-700" />
 				</div>
 
 				<span class="mt-5 text-xl font-bold text-gray-800">Intervenční sezení</span>
@@ -112,13 +106,29 @@
 				</a>
 			</div>
 		{/if}
-
 	</div>
 
 	<CapabilityGuard caps={Guards.adminArea}>
-		<h2 class="text-2xl font-black text-gray-800 mt-8">Administrace</h2>
+		<h2 class="mt-8 text-2xl font-black text-gray-800">Administrace</h2>
 
 		<div class="flex flex-wrap gap-6">
+			{#if hasCapability($authUser, ...Guards.viewResults)}
+				<a
+					href={resolve('/admin/heatmap')}
+					class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
+				>
+					<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-orange-100/40"></div>
+
+					<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-100">
+						<Icon icon="material-symbols:insights" class="h-6 w-6 text-orange-700" />
+					</div>
+
+					<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+						Vizualizace sezení
+					</span>
+				</a>
+			{/if}
+
 			{#if hasCapability($authUser, ...Guards.viewResults)}
 				<a
 					href={resolve('/admin/session-files')}
@@ -131,7 +141,7 @@
 					</div>
 
 					<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-						Session soubory
+						Export sezení
 					</span>
 				</a>
 			{/if}
@@ -153,23 +163,6 @@
 				</a>
 			{/if}
 
-			{#if hasCapability($authUser, ...Guards.viewResults)}
-				<a
-					href={resolve('/admin/heatmap')}
-					class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
-				>
-					<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-orange-100/40"></div>
-
-					<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-100">
-						<Icon icon="material-symbols:mode-heat" class="h-6 w-6 text-orange-700" />
-					</div>
-
-					<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-						Heatmapa
-					</span>
-				</a>
-			{/if}
-
 			{#if hasCapability($authUser, ...Guards.viewAllResults) || $authUser?.role === UserRole.Admin}
 				<a
 					href={resolve('/admin')}
@@ -179,9 +172,7 @@
 						<Icon icon="material-symbols:apps" class="h-6 w-6 text-gray-600" />
 					</div>
 
-					<span class="mt-4 text-sm font-bold text-gray-600 group-hover:underline">
-						Více…
-					</span>
+					<span class="mt-4 text-sm font-bold text-gray-600 group-hover:underline"> Více… </span>
 				</a>
 			{/if}
 		</div>

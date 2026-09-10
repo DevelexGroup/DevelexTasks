@@ -22,6 +22,23 @@
 	<div class="flex flex-wrap gap-6">
 		{#if hasCapability($authUser, ...Guards.viewResults)}
 			<a
+				href={resolve('/admin/heatmap')}
+				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
+			>
+				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-orange-100/40"></div>
+
+				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-100">
+					<Icon icon="material-symbols:insights" class="h-6 w-6 text-orange-700" />
+				</div>
+
+				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+					Vizualizace sezení
+				</span>
+			</a>
+		{/if}
+
+		{#if hasCapability($authUser, ...Guards.viewResults)}
+			<a
 				href={resolve('/admin/session-files')}
 				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
 			>
@@ -32,7 +49,7 @@
 				</div>
 
 				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-					Soubory sezení
+					Export sezení
 				</span>
 			</a>
 		{/if}
@@ -54,18 +71,20 @@
 			</a>
 		{/if}
 
-		{#if hasCapability($authUser, ...Guards.viewResults)}
+		{#if hasCapability($authUser, ...Guards.viewAllResults)}
 			<a
-				href={resolve('/admin/heatmap')}
+				href={resolve('/admin/session-sim')}
 				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
 			>
-				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-orange-100/40"></div>
+				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-indigo-100/40"></div>
 
-				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-100">
-					<Icon icon="material-symbols:mode-heat" class="h-6 w-6 text-orange-700" />
+				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-indigo-100">
+					<Icon icon="material-symbols:replay" class="h-6 w-6 text-indigo-700" />
 				</div>
 
-				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline"> Heatmap </span>
+				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+					Simulace sezení
+				</span>
 			</a>
 		{/if}
 
@@ -96,22 +115,7 @@
 				</div>
 
 				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-					Export stimulů
-				</span>
-			</a>
-
-			<a
-				href={resolve('/admin/session-sim')}
-				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
-			>
-				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-indigo-100/40"></div>
-
-				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-indigo-100">
-					<Icon icon="material-symbols:replay" class="h-6 w-6 text-indigo-700" />
-				</div>
-
-				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-					Simulace sezení
+					Zobrazovač stimulů
 				</span>
 			</a>
 		{/if}

@@ -185,14 +185,14 @@
 </script>
 
 <svelte:head>
-	<title>Export stimulů - DeveLex Tasks</title>
-	<meta name="description" content="Export stimulů úloh jako obrázky" />
+	<title>Zobrazovač stimulů - DeveLex Tasks</title>
+	<meta name="description" content="Zobrazovač stimulů úloh" />
 </svelte:head>
 
 <DefaultLayout>
 	<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
 
-	<h1 class="text-2xl font-black text-gray-800">Export stimulů</h1>
+	<h1 class="text-2xl font-black text-gray-800">Zobrazovač stimulů</h1>
 
 	{#if !directorySupported}
 		<div class="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">

@@ -204,11 +204,18 @@
 	// A spot collecting about 4 % of the slide's samples saturates the gradient.
 	const heatMax = $derived(Math.min(100, Math.max(5, Math.round(heatPoints.length / 25))));
 
+
 	const gazePath = $derived.by((): GazePoint[] => {
 		const points: GazePoint[] = [];
 		for (const sample of windowSamples) {
-			if (sample.eyetracker_x === null || sample.eyetracker_y === null) continue;
-			points.push({ x: sample.eyetracker_x, y: sample.eyetracker_y });
+			if (heatSource === 'mouse') {
+				if (sample.mouse_x === null || sample.mouse_y === null) continue;
+				points.push({ x: sample.mouse_x, y: sample.mouse_y });
+			}
+			else if (heatSource === 'eyetracker') {
+				if (sample.eyetracker_x === null || sample.eyetracker_y === null) continue;
+				points.push({ x: sample.eyetracker_x, y: sample.eyetracker_y });
+			}
 		}
 		return points;
 	});
@@ -352,7 +359,7 @@
 </script>
 
 <svelte:head>
-	<title>Heatmapa - DeveLex Tasks</title>
+	<title>Vizualizace sezení - DeveLex Tasks</title>
 </svelte:head>
 
 <svelte:window bind:innerHeight={windowHeight} onkeydown={handleKeydown} />
@@ -388,7 +395,7 @@
 <DefaultLayout wide>
 	<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
 
-	<h1 class="text-2xl font-black text-gray-800">Heatmapa</h1>
+	<h1 class="text-2xl font-black text-gray-800">Vizualizace sezení</h1>
 
 	<div
 		bind:this={workspaceEl}
@@ -561,44 +568,6 @@
 
 				<Card.Root class="gap-3">
 					<Card.Header>
-						<Card.Title>Vrstvy</Card.Title>
-					</Card.Header>
-					<Card.Content class="space-y-3">
-						<label class={switchRowClass}>
-							Stimul
-							<Switch bind:checked={showStimulus} />
-						</label>
-						<label class={switchRowClass}>
-							Heatmapa
-							<Switch bind:checked={showHeatmap} />
-						</label>
-						<label class={switchRowClass}>
-							Trajektorie pohledu
-							<Switch bind:checked={showPath} />
-						</label>
-						<label class={switchRowClass} title="Velikost kruhu odpovídá délce fixace">
-							Fixace
-							<Switch bind:checked={showFixations} />
-						</label>
-						{#if hasI2mc}
-							<label class={switchRowClass} title="Referenční fixace ze serverového I2MC">
-								I2MC fixace (oranžově)
-								<Switch bind:checked={showI2mc} />
-							</label>
-						{/if}
-						<label class={switchRowClass} title="Události select_ na pozici myši">
-							Kliknutí
-							<Switch bind:checked={showClicks} />
-						</label>
-						<label class={switchRowClass}>
-							AOI oblasti
-							<Switch bind:checked={showAois} />
-						</label>
-					</Card.Content>
-				</Card.Root>
-
-				<Card.Root class="gap-3">
-					<Card.Header>
 						<Card.Title>Heatmapa</Card.Title>
 					</Card.Header>
 					<Card.Content class="space-y-3">
@@ -623,6 +592,44 @@
 							</div>
 							<Slider type="single" bind:value={heatOpacity} min={0.1} max={1} step={0.05} />
 						</div>
+					</Card.Content>
+				</Card.Root>
+
+				<Card.Root class="gap-3">
+					<Card.Header>
+						<Card.Title>Vrstvy</Card.Title>
+					</Card.Header>
+					<Card.Content class="space-y-3">
+						<label class={switchRowClass}>
+							Stimul
+							<Switch bind:checked={showStimulus} />
+						</label>
+						<label class={switchRowClass}>
+							Heatmapa
+							<Switch bind:checked={showHeatmap} />
+						</label>
+						<label class={switchRowClass}>
+							Trajektorie zdroje
+							<Switch bind:checked={showPath} />
+						</label>
+						<label class={switchRowClass} title="Velikost kruhu odpovídá délce fixace">
+							Fixace
+							<Switch bind:checked={showFixations} />
+						</label>
+						{#if hasI2mc}
+							<label class={switchRowClass} title="Referenční fixace ze serverového I2MC">
+								I2MC fixace (oranžově)
+								<Switch bind:checked={showI2mc} />
+							</label>
+						{/if}
+						<label class={switchRowClass} title="Události select_ na pozici myši">
+							Kliknutí
+							<Switch bind:checked={showClicks} />
+						</label>
+						<label class={switchRowClass}>
+							AOI oblasti
+							<Switch bind:checked={showAois} />
+						</label>
 					</Card.Content>
 				</Card.Root>
 

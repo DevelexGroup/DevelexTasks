@@ -728,7 +728,7 @@
 </script>
 
 <svelte:head>
-	<title>Soubory sezení - DeveLex Tasks</title>
+	<title>Export sezení - DeveLex Tasks</title>
 </svelte:head>
 
 <svelte:window onclick={handleWindowClick} onkeydown={handleWindowKey} />
@@ -738,7 +738,7 @@
 		<BackButton label="Zpět do hlavní nabídky" onclick={() => goto(resolve(`/`))} />
 	{/if}
 
-	<h1 class="text-2xl font-black text-gray-800">Soubory sezení</h1>
+	<h1 class="text-2xl font-black text-gray-800">Export sezení</h1>
 
 	<div>
 		{#if error}
