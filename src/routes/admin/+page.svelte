@@ -32,7 +32,7 @@
 				</div>
 
 				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
-					Dyslex evaluation
+					Dyslex klasifikace
 				</span>
 			</a>
 		{/if}
