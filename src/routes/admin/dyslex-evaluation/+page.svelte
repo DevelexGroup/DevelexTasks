@@ -809,21 +809,15 @@
 								<div class="mt-6 grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)]">
 									<div class="rounded-xl bg-blue-50 p-5 text-blue-950">
 										<p class="text-sm font-semibold">
-											Souhrn {evaluationDetail.summary.totalVotes} hlasů modelů
+											Souhrn {evaluationDetail.summary.totalVotes} hlasů
 										</p>
 										<p class="mt-2 text-2xl font-black tracking-[-0.025em]">
 											Souhrnný výsledek: {outcomeLabel(evaluationDetail.summary.outcome)}
-										</p>
-										<p class="mt-2 text-xs leading-5 text-blue-900">
-											Jde o většinu hlasů modelů, nikoli o klinickou diagnózu.
 										</p>
 										<div class="mt-4 flex gap-4 text-sm tabular-nums">
 											<span>D: <strong>{evaluationDetail.summary.dyslexicVotes}</strong></span>
 											<span>I: <strong>{evaluationDetail.summary.intactVotes}</strong></span>
 										</div>
-										<p class="mt-3 text-xs leading-5 text-blue-900">
-											Nejde o další samostatný model.
-										</p>
 									</div>
 
 									<section
@@ -840,21 +834,21 @@
 											<Icon icon="material-symbols:arrow-forward" class="h-4 w-4" />
 										</button>
 										<table
-											class="w-full min-w-[42rem] border-collapse text-left text-xs tabular-nums"
+											class="w-full min-w-2xl border-collapse text-left text-xs tabular-nums"
 										>
 											<thead>
 												<tr class="border-b border-gray-200 text-gray-500">
 													<th class="px-3 py-2 font-semibold">Úloha</th>
-													{#each modelOrder as model}
+													{#each modelOrder as model (model)}
 														<th class="px-3 py-2 font-semibold">{model}</th>
 													{/each}
 												</tr>
 											</thead>
 											<tbody>
-												{#each taskResultOrder as [taskId, taskLabel]}
+												{#each taskResultOrder as [taskId, taskLabel] (taskId)}
 													<tr class="border-b border-gray-100 last:border-0">
 														<th class="px-3 py-3 font-semibold text-gray-800">{taskLabel}</th>
-														{#each modelOrder as model}
+														{#each modelOrder as model (model)}
 															{@const modelResult =
 																evaluationDetail.result.tasks[taskId]?.models[model]}
 															<td class="px-3 py-3 text-gray-600">
