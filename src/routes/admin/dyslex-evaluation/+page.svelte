@@ -380,7 +380,7 @@
 </script>
 
 <svelte:head>
-	<title>Dyslex výpočty – DeveLex Tasks</title>
+	<title>Dyslex klasifikace – DeveLex Tasks</title>
 	<meta
 		name="description"
 		content="Spouštění a kontrola výpočtů dyslexie ze zaznamenaných dat pohledu."
@@ -391,7 +391,7 @@
 	<BackButton label="Zpět do administrace" onclick={() => goto(resolve('/admin'))} />
 
 	<header class="max-w-3xl">
-		<h1 class="text-3xl font-black tracking-[-0.025em] text-gray-900">Dyslex výpočty</h1>
+		<h1 class="text-3xl font-black tracking-[-0.025em] text-gray-900">Dyslex klasifikace</h1>
 		<p class="mt-2 text-sm leading-6 text-gray-600">
 			Pro každou úlohu vyberte jedno platné sezení. Poté můžete sledovat průběh zpracování a
 			zkontrolovat uložený výsledek.
