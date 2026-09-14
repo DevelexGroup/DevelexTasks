@@ -20,6 +20,23 @@
 	<h1 class="text-2xl font-black text-gray-800">Administrace</h1>
 
 	<div class="flex flex-wrap gap-6">
+		{#if hasCapability($authUser, ...Guards.manageSessions)}
+			<a
+				href={resolve('/admin/dyslex-evaluation')}
+				class="group relative flex w-44 flex-col overflow-hidden rounded-xl bg-white p-5 shadow-xl shadow-gray-300/50 transition-shadow hover:shadow-2xl"
+			>
+				<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-blue-100/50"></div>
+
+				<div class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-blue-100">
+					<Icon icon="material-symbols:neurology-outline" class="h-6 w-6 text-blue-700" />
+				</div>
+
+				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline">
+					Dyslex evaluation
+				</span>
+			</a>
+		{/if}
+
 		{#if hasCapability($authUser, ...Guards.viewResults)}
 			<a
 				href={resolve('/admin/heatmap')}
