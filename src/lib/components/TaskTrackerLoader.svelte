@@ -3,6 +3,7 @@
 	import { GAZE_MANAGER_KEY, LoadState } from '$lib/types/general.types';
 	import { extractError } from '$lib/utils/error';
 	import { waitForStoreCondition, waitForTimeout } from '$lib/utils/waitFor';
+	import { waitForTrackerTeardown } from '$lib/utils/trackerTeardown';
 	import { type GazeManager } from 'develex-js-sdk';
 	import { getContext, onMount } from 'svelte';
 	import { get, writable } from 'svelte/store';
@@ -104,6 +105,8 @@
 	};
 
 	onMount(async () => {
+		await waitForTrackerTeardown();
+
 		if (!(await handleViewportCalibration())) {
 			markRemainingAsSkipped(1);
 			return;

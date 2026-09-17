@@ -17,6 +17,7 @@
 	import { GazeManager } from 'develex-js-sdk';
 	import TestSessionHandler from '$lib/components/TestSessionHandler.svelte';
 	import { isDiagnosisMode } from '$lib/stores/diagnosis';
+	import { teardownTracker } from '$lib/utils/trackerTeardown';
 
 	const DEFAULT_TIMEOUT_INTERVAL = 180000; // 3 minutes in milliseconds
 	const TIMEOUT_EVENT_LOG = 'inactivity_timeout';
@@ -44,11 +45,7 @@
 		window.removeEventListener('mouseup', resetTimeoutOnInteraction);
 		window.removeEventListener('keydown', resetTimeoutOnInteraction);
 
-		if (gazeManager.input) {
-			gazeManager.stop();
-			gazeManager.disconnect();
-			gazeManager.close();
-		}
+		teardownTracker(gazeManager);
 
 		// Clear timeout if exists
 		if (timeoutHandle) {
