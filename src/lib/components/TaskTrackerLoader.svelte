@@ -19,6 +19,8 @@
 
 	let { onCompleted }: Props = $props();
 
+	const STALE_TRACKER_STATUSES = ['trackerConnected', 'trackerEmitting', 'trackerCalibrating'];
+
 	const gazeManager = getContext<GazeManager>(GAZE_MANAGER_KEY);
 
 	let showCalibration = writable(false);
@@ -62,8 +64,18 @@
 		}
 	};
 
+	// A refreshed or killed page never disconnects, and Bridge cannot connect over the tracker it left behind.
+	const releaseStaleTracker = async () => {
+		const status = (await gazeManager.status()).lastStatus?.tracker.status;
+
+		if (status && STALE_TRACKER_STATUSES.includes(status)) {
+			await gazeManager.disconnect();
+		}
+	};
+
 	const handleTrackerConnection = async (): Promise<boolean> => {
 		try {
+			await releaseStaleTracker();
 			await gazeManager.connect();
 
 			trackerState = LoadState.Loaded;
