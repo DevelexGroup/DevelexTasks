@@ -337,7 +337,7 @@
 			requestedDetailId = evaluation.id;
 			await switchParams({ evaluation: evaluation.id });
 		} catch (cause) {
-			error = errorMessage(cause, 'The evaluation could not be submitted.');
+			error = errorMessage(cause, 'Výpočet se nepodařilo odeslat.');
 		} finally {
 			isSubmitting = false;
 		}
@@ -361,8 +361,8 @@
 		if (unavailableSources > 0) {
 			error =
 				unavailableSources === 1
-					? 'One previously used source session is unavailable. Select a replacement before submitting.'
-					: `${unavailableSources} previously used source sessions are unavailable. Select replacements before submitting.`;
+					? 'Jedno dříve použité zdrojové sezení již není dostupné. Před odesláním vyberte náhradu.'
+					: `${unavailableSources} dříve použitá zdrojová sezení již nejsou dostupná. Před odesláním vyberte náhradu.`;
 			failedOperation = '';
 		}
 		window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -401,8 +401,8 @@
 	<header class="max-w-3xl">
 		<h1 class="text-3xl font-black tracking-[-0.025em] text-gray-900">Dyslex klasifikace</h1>
 		<p class="mt-2 text-sm leading-6 text-gray-600">
-			Select an available session for at least one task. You can then follow progress and review the
-			saved result.
+			Pro alespoň jednu úlohu vyberte jedno platné sezení. Poté můžete sledovat průběh zpracování a
+			zkontrolovat uložený výsledek.
 		</p>
 	</header>
 
@@ -528,9 +528,9 @@
 											{task.label}
 										</h3>
 										<p class="mt-0.5 text-xs text-gray-500">
-											{task.requiredSlides.length === 1 ? 'Required slide' : 'Required slides'}: {task.requiredSlides.join(
-												', '
-											)}
+											{task.requiredSlides.length === 1
+												? 'Požadovaný snímek'
+												: 'Požadované snímky'}: {task.requiredSlides.join(', ')}
 										</p>
 									</div>
 									{#if selectedSessions[task.key]}
@@ -542,7 +542,7 @@
 									for={`session-${task.key}`}
 									class="mt-4 mb-1.5 block text-xs font-semibold text-gray-700"
 								>
-									Source session
+									Zdrojové sezení
 								</label>
 								<select
 									id={`session-${task.key}`}
@@ -550,23 +550,23 @@
 									class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-3 focus:ring-blue-100 disabled:bg-gray-100"
 									disabled={!task.sessions.some((session) => session.available)}
 								>
-									<option value="">No session selected</option>
+									<option value="">Nevybráno žádné sezení</option>
 									{#each task.sessions as session (session.sessionId)}
 										<option value={session.sessionId} disabled={!session.available}>
 											{formatDate(session.sessionStartTime)}{session.available
 												? ''
-												: ' — unavailable'}
+												: ' — nedostupné'}
 										</option>
 									{/each}
 								</select>
 
 								{#if task.sessions.length === 0}
 									<p class="mt-2 text-xs leading-5 text-amber-800">
-										No matching sessions were recorded.
+										Nebyla zaznamenána žádná odpovídající sezení.
 									</p>
 								{:else if !task.sessions.some((session) => session.available)}
 									<p class="mt-2 text-xs leading-5 text-amber-800">
-										No session currently passes input validation.
+										Žádné sezení nyní nesplňuje kontrolu vstupních dat.
 									</p>
 								{/if}
 								{#each task.sessions.filter((session) => !session.available) as session (session.sessionId)}
@@ -661,15 +661,15 @@
 						class="mt-5 flex flex-col gap-4 border-t border-gray-100 pt-5 sm:flex-row sm:items-end sm:justify-between"
 					>
 						<div>
-							<p class="text-sm font-bold text-gray-900">Selection summary</p>
+							<p class="text-sm font-bold text-gray-900">Souhrn výběru</p>
 							<p class="mt-1 text-xs leading-5 text-gray-600">
-								Selected tasks: {DYSLEX_TASK_KEYS.filter((key) => selectedSessions[key]).length}
-								of 4 · {settings.frequencyHz} Hz · {settings.screenWidthPx} × {settings.screenHeightPx}
+								Vybrané úlohy: {DYSLEX_TASK_KEYS.filter((key) => selectedSessions[key]).length}
+								ze 4 · {settings.frequencyHz} Hz · {settings.screenWidthPx} × {settings.screenHeightPx}
 								px
 							</p>
 							{#if hasPendingEvaluation}
 								<p class="mt-1 text-xs text-amber-800">
-									Wait for the active evaluation to finish before starting another.
+									Před spuštěním dalšího výpočtu počkejte na dokončení aktivního výpočtu.
 								</p>
 							{/if}
 						</div>
@@ -681,10 +681,10 @@
 						>
 							{#if isSubmitting}
 								<Icon icon="mdi:loading" class="h-4 w-4 animate-spin" />
-								Submitting…
+								Odesílání…
 							{:else}
 								<Icon icon="material-symbols:play-arrow" class="h-5 w-5" />
-								Start evaluation
+								Spustit výpočet
 							{/if}
 						</button>
 					</div>
@@ -710,7 +710,7 @@
 						<div class="rounded-xl bg-white px-6 py-12 text-center shadow-md shadow-gray-300/50">
 							<p class="text-sm font-semibold text-gray-700">Zatím nebyl spuštěn žádný výpočet.</p>
 							<p class="mt-1 text-xs text-gray-500">
-								Select at least one task above to start the first evaluation.
+								Vyplňte alespoň jednu úlohu výše a spusťte první výpočet.
 							</p>
 						</div>
 					{:else}
@@ -736,7 +736,7 @@
 									<div class="flex items-center gap-3">
 										{#if isDyslexEvaluationActive(evaluation.status)}
 											<span class="text-xs text-gray-500"
-												>{evaluation.completedTasks}/{evaluation.totalTasks} slides</span
+												>{evaluation.completedTasks}/{evaluation.totalTasks} úloh</span
 											>
 										{:else if evaluation.summary}
 											<span class="text-xs font-semibold text-gray-600"
@@ -784,13 +784,13 @@
 											)}</span
 										>
 										<span
-											>{evaluationDetail.completedTasks} of {evaluationDetail.totalTasks} slides</span
+											>{evaluationDetail.completedTasks} of {evaluationDetail.totalTasks} úloh</span
 										>
 									</div>
 									<section
 										class="h-2 overflow-hidden rounded-full bg-gray-100"
 										role="progressbar"
-										aria-label="Evaluation progress"
+										aria-label="Průběh výpočtu"
 										aria-valuemin="0"
 										aria-valuemax={evaluationDetail.totalTasks}
 										aria-valuenow={evaluationDetail.completedTasks}
@@ -817,11 +817,11 @@
 								<div class="mt-6 grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)]">
 									<div class="rounded-xl bg-blue-50 p-5 text-blue-950">
 										<p class="text-sm font-semibold">
-											Summary of {evaluationDetail.summary.totalVotes} votes · {evaluationDetail
-												.sources.length} of 4 tasks
+											Souhrn: {evaluationDetail.summary.totalVotes} hlasů · {evaluationDetail
+												.sources.length} ze 4 úloh
 										</p>
 										<p class="mt-2 text-2xl font-black tracking-[-0.025em]">
-											Overall result: {outcomeLabel(evaluationDetail.summary.outcome)}
+											Souhrnný výsledek: {outcomeLabel(evaluationDetail.summary.outcome)}
 										</p>
 										<div class="mt-4 flex gap-4 text-sm tabular-nums">
 											<span>D: <strong>{evaluationDetail.summary.dyslexicVotes}</strong></span>
@@ -832,7 +832,7 @@
 									<section
 										bind:this={resultsScroll}
 										class="min-w-0 overflow-x-auto focus-visible:ring-3 focus-visible:ring-blue-200 focus-visible:outline-none"
-										aria-label="Probabilities by task and model"
+										aria-label="Pravděpodobnosti podle úloh a modelů"
 									>
 										<button
 											type="button"
@@ -845,7 +845,7 @@
 										<table class="w-full min-w-2xl border-collapse text-left text-xs tabular-nums">
 											<thead>
 												<tr class="border-b border-gray-200 text-gray-500">
-													<th class="px-3 py-2 font-semibold">Task</th>
+													<th class="px-3 py-2 font-semibold">Úloha</th>
 													{#each modelOrder as model (model)}
 														<th class="px-3 py-2 font-semibold">{model}</th>
 													{/each}
@@ -892,7 +892,7 @@
 
 							<div class="mt-6 grid gap-6 border-t border-gray-100 pt-6 md:grid-cols-2">
 								<div>
-									<h3 class="text-sm font-bold text-gray-900">Source sessions</h3>
+									<h3 class="text-sm font-bold text-gray-900">Zdrojová sezení</h3>
 									<dl class="mt-3 space-y-3">
 										{#each evaluationDetail.sources as source (source.key)}
 											<div>
@@ -902,7 +902,7 @@
 												<dd class="mt-0.5 text-xs break-all text-gray-500">
 													{source.folderName}{source.sessionId
 														? ` · ${source.sessionId}`
-														: ' · session was deleted'}
+														: ' · sezení bylo smazáno'}
 												</dd>
 											</div>
 										{/each}
