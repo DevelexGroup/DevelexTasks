@@ -176,13 +176,13 @@
 
 	const outcomeLabel = (outcome: string): string => {
 		if (outcome === 'DYSLEXIC') {
-			return 'Dyslexic';
+			return 'Dyslektik';
 		}
 		if (outcome === 'INTACT') {
-			return 'Intact';
+			return 'Intaktní';
 		}
 
-		return 'Inconclusive';
+		return 'Nerozhodné';
 	};
 
 	const currentTaskLabel = (task: string | null, status: DyslexEvaluationStatus): string =>
