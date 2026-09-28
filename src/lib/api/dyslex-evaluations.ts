@@ -67,7 +67,7 @@ export interface DyslexTaskResult {
 export interface DyslexPipelineResult {
 	job_id: string;
 	status: string;
-	tasks: Record<string, DyslexTaskResult>;
+	tasks: Partial<Record<string, DyslexTaskResult>>;
 }
 
 export interface DyslexEvaluation {
@@ -93,10 +93,10 @@ export interface DyslexEvaluation {
 
 export interface CreateDyslexEvaluationRequest {
 	userId: string;
-	syllablesSessionId: string;
-	meantextSessionId: string;
-	pseudotextSessionId: string;
-	visdiffSessionId: string;
+	syllablesSessionId?: string;
+	meantextSessionId?: string;
+	pseudotextSessionId?: string;
+	visdiffSessionId?: string;
 	preprocessingSettings: DyslexPreprocessingSettings;
 }
 
