@@ -30,11 +30,11 @@
 	import { pushParams, switchParams } from '$lib/utils/urlState';
 
 	const taskResultOrder = [
-		['T1_Syllables', 'Syllables'],
+		['T1_Syllables', 'Slabiky'],
 		['T4_Meaningful_Text', 'Meaningful text'],
 		['T5_Pseudo_Text', 'Pseudotext'],
-		['T6_Visual_Diff_1', 'Visual difference · slide 1'],
-		['T6_Visual_Diff_2', 'Visual difference · slide 2']
+		['T6_Visual_Diff_1', 'Zraková diferenciace · slide 1'],
+		['T6_Visual_Diff_2', 'Zraková diferenciace · slide 2']
 	] as const;
 	const modelOrder = ['3NN', 'MLP', 'CNN-RN18', 'CNN-RN50'];
 	const statusLabels: Record<DyslexEvaluationStatus, string> = {
