@@ -30,6 +30,7 @@
 	let chart: Chart<'line'> | undefined;
 	let ready = $state(false);
 	let hidden = $state<Set<string>>(new Set());
+	let activeRow = $state<string | null>(null);
 	const colors = ['#2563eb', '#0f766e', '#7c3aed', '#b45309', '#be185d', '#0369a1'];
 	const shapes: PointStyle[] = ['circle', 'rectRot', 'triangle', 'rect', 'crossRot', 'star'];
 	const series = $derived.by(() => {
@@ -64,6 +65,36 @@
 			'en-GB',
 			compact ? { day: 'numeric', month: 'short' } : { dateStyle: 'medium', timeStyle: 'short' }
 		);
+	const clearPoint = () => {
+		activeRow = null;
+
+		if (chart) {
+			chart.setActiveElements([]);
+			chart.tooltip?.setActiveElements([], { x: 0, y: 0 });
+			chart.update('none');
+		}
+	};
+	const highlightPoint = (sessionId: string, seriesKey: string) => {
+		if (!chart) {
+			return;
+		}
+
+		const datasetIndex = series.findIndex((item) => item.key === seriesKey);
+		const index = sessions.findIndex((session) => session.id === sessionId);
+		const value = chart.data.datasets[datasetIndex]?.data[index];
+
+		if (index < 0 || value === null || value === undefined || hidden.has(seriesKey)) {
+			clearPoint();
+			return;
+		}
+
+		const point = chart.getDatasetMeta(datasetIndex).data[index];
+		const active = [{ datasetIndex, index }];
+		activeRow = JSON.stringify([sessionId, seriesKey]);
+		chart.setActiveElements(active);
+		chart.tooltip?.setActiveElements(active, { x: point.x, y: point.y });
+		chart.update('none');
+	};
 	const toggle = (key: string) => {
 		const next = new SvelteSet(hidden);
 
@@ -97,6 +128,7 @@
 		}
 
 		const selectedMetric = metric;
+		clearPoint();
 		const selectedSessions = sessions;
 		const selectedResults = results;
 		const datasets: ChartDataset<'line'>[] = series.map((item) => ({
@@ -114,7 +146,9 @@
 			borderDash: item.dash,
 			pointStyle: item.shape,
 			pointRadius: 3,
-			pointHoverRadius: 5,
+			pointHoverRadius: 7,
+			pointHoverBorderWidth: 2,
+			pointHoverBorderColor: '#ffffff',
 			pointHitRadius: 12,
 			tension: 0,
 			fill: false,
@@ -149,6 +183,7 @@
 			},
 			plugins: {
 				tooltip: {
+					animations: false as const,
 					backgroundColor: '#ffffff',
 					titleColor: '#111827',
 					bodyColor: '#374151',
@@ -197,6 +232,13 @@
 		}
 	});
 </script>
+
+{#if rows.some(({ slide }) => slide.reasons[metric]?.startsWith('Partial reading metrics'))}
+	<p class="mt-3 text-xs leading-5 text-amber-900">
+		Some reading values are partial. Unassigned fixations and recording gaps are excluded; see exact
+		values for coverage.
+	</p>
+{/if}
 
 <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Visible slides">
 	{#each series as item (item.key)}
@@ -262,15 +304,18 @@
 </div>
 
 {#if rows.length}
-	<details class="mt-6 border-t border-gray-100 pt-4">
+	<details class="mt-6 border-t border-gray-100 pt-4" ontoggle={clearPoint}>
 		<summary
 			class="cursor-pointer rounded text-sm font-semibold text-gray-700 outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
 			>Exact values <span class="ml-1 font-normal text-gray-500">({rows.length})</span></summary
 		>
-		<div class="mt-4 overflow-x-auto">
+		<p class="mt-3 text-xs text-gray-600">
+			Hover a row or focus its value to highlight the corresponding point in the chart.
+		</p>
+		<div class="mt-4 max-h-80 overflow-auto">
 			<table class="w-full text-left text-sm">
 				<caption class="sr-only">{METRICS[metric].label} by session and slide</caption>
-				<thead
+				<thead class="sticky top-0 bg-white"
 					><tr class="border-b border-gray-200 text-xs text-gray-600"
 						><th scope="col" class="py-3 pr-4 font-medium">Session</th><th
 							scope="col"
@@ -282,14 +327,29 @@
 				>
 				<tbody
 					>{#each rows as { session, slide } (JSON.stringify([session.id, slide.seriesKey]))}<tr
-							class="border-b border-gray-100 last:border-0"
+							class="border-b border-gray-100 last:border-0 {activeRow ===
+							JSON.stringify([session.id, slide.seriesKey])
+								? 'bg-blue-50'
+								: ''}"
+							onpointerenter={() => highlightPoint(session.id, slide.seriesKey)}
+							onpointerleave={clearPoint}
 							><td class="py-3 pr-4 whitespace-nowrap text-gray-600"
 								>{dateLabel(session)}<span class="mt-1 block text-xs text-gray-500"
 									>{session.id.slice(0, 8)}</span
 								></td
 							><td class="max-w-64 py-3 pr-4 break-words text-gray-800">{slide.label}</td><td
 								class="py-3 pr-4 text-right font-medium whitespace-nowrap text-gray-900 tabular-nums"
-								>{formatMetric(slide.values[metric], metric)}</td
+								>{#if slide.values[metric] !== null}
+									<button
+										type="button"
+										class="rounded px-1 underline decoration-gray-300 decoration-dotted underline-offset-4 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+										aria-label={`Highlight ${slide.label}, ${dateLabel(session)}: ${formatMetric(slide.values[metric], metric)} ${METRICS[metric].unit}`}
+										onfocus={() => highlightPoint(session.id, slide.seriesKey)}
+										onblur={clearPoint}
+										onclick={() => highlightPoint(session.id, slide.seriesKey)}
+										>{formatMetric(slide.values[metric], metric)}</button
+									>
+								{:else}{formatMetric(null, metric)}{/if}</td
 							><td class="max-w-80 py-3 text-xs leading-5 text-gray-600"
 								>{slide.error ??
 									slide.reasons[metric] ??

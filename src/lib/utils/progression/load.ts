@@ -251,7 +251,8 @@ export const analyzeSession = async (
 				? calculateMetrics(
 						uniqueRows(entries),
 						slideRaw,
-						geometry.filter((item) => item.slideIndex === slideIndex).flatMap((item) => item.aois)
+						geometry.filter((item) => item.slideIndex === slideIndex).flatMap((item) => item.aois),
+						samples.filter((sample) => sample.slide_index === slideIndex)
 					)
 				: { values: emptyMetrics(), reasons: {} };
 

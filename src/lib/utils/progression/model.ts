@@ -1,4 +1,4 @@
-import type { RawGazeDataEntry } from '$lib/database/db.types';
+import type { GazeSampleDataEntry, RawGazeDataEntry } from '$lib/database/db.types';
 import type { I2mcFixationEntry } from '$lib/utils/csvParser';
 import type { AoiRect } from '$lib/utils/sessionSim/types';
 import { hitTest } from '$lib/utils/sessionSim/aoi/hitTest';
@@ -44,12 +44,12 @@ export const METRICS = {
 	firstVisit: {
 		label: 'Mean first-visit fixation time',
 		unit: 'ms',
-		description: 'Average first-visit fixation time across visited words or syllables.'
+		description: 'Average observed first-visit fixation time across identified words or syllables.'
 	},
 	revisits: {
 		label: 'Revisit count',
 		unit: '',
-		description: 'Returns to a word or syllable after visiting another one.'
+		description: 'Observed returns to an identified word or syllable after visiting another one.'
 	},
 	rereading: {
 		label: 'Rereading fixation time',
@@ -135,25 +135,82 @@ const resolveRegion = (fixation: I2mcFixationEntry, geometry: AoiRect[]) => {
 	};
 };
 
-const readingMetrics = (fixations: I2mcFixationEntry[], geometry: AoiRect[]) => {
-	const resolved = fixations.map((fixation) => resolveRegion(fixation, geometry));
+const readingMetrics = (
+	fixations: I2mcFixationEntry[],
+	geometry: AoiRect[],
+	gazeSamples: GazeSampleDataEntry[]
+) => {
+	const samples = gazeSamples.slice().sort((a, b) => a.timestamp - b.timestamp);
+	let sampleStart = 0;
+	let recovered = 0;
+	const resolved = fixations.map((fixation) => {
+		const direct = resolveRegion(fixation, geometry).region;
 
-	if (!resolved.some(({ region }) => region) || resolved.some(({ ambiguous }) => ambiguous)) {
+		if (direct) {
+			return direct;
+		}
+
+		while (sampleStart < samples.length && samples[sampleStart].timestamp < fixation.timestamp) {
+			sampleStart++;
+		}
+
+		const votes = new Map<string, number>();
+		let total = 0;
+		let lastTimestamp: number | undefined;
+
+		for (
+			let i = sampleStart;
+			i < samples.length && samples[i].timestamp <= fixationEnd(fixation);
+			i++
+		) {
+			const sample = samples[i];
+
+			if (
+				sample.slide_index !== fixation.slide_index ||
+				sample.timestamp === lastTimestamp ||
+				!Number.isFinite(sample.eyetracker_x) ||
+				!Number.isFinite(sample.eyetracker_y)
+			) {
+				continue;
+			}
+
+			lastTimestamp = sample.timestamp;
+			total++;
+			const ids = [...new Set(sample.aoi.filter((id) => readingRegion(id)))];
+
+			if (ids.length === 1) {
+				votes.set(ids[0], (votes.get(ids[0]) ?? 0) + 1);
+			}
+		}
+
+		const majority = [...votes].find(([, count]) => count >= 2 && count > total / 2);
+
+		if (majority) {
+			recovered++;
+
+			return readingRegion(majority[0]);
+		}
+
+		return null;
+	});
+	const identified = resolved.filter((region) => region !== null).length;
+
+	if (!identified) {
 		return null;
 	}
 
 	const firstVisits = new Map<string, number>();
 	let currentRegion: string | null = null;
-	let returning = false;
+	let returning: boolean | null = null;
 	let backward = 0;
 	let revisits = 0;
 	let rereading = 0;
-	let continuityLost = false;
+	let gaps = 0;
 
 	for (let i = 0; i < fixations.length; i++) {
 		const fixation = fixations[i];
 		const previous = fixations[i - 1];
-		const region = resolved[i].region;
+		const region = resolved[i];
 		const gap =
 			previous &&
 			(fixation.segment !== undefined && previous.segment !== undefined
@@ -161,26 +218,23 @@ const readingMetrics = (fixations: I2mcFixationEntry[], geometry: AoiRect[]) => 
 				: fixation.timestamp - fixationEnd(previous) > 200);
 
 		if (gap) {
-			continuityLost = true;
+			gaps++;
 			currentRegion = null;
 		}
 
 		if (!region) {
+			currentRegion = null;
+			returning = null;
 			continue;
 		}
 
-		if (continuityLost && firstVisits.has(region.id)) {
-			return null;
-		}
-
 		if (region.id !== currentRegion) {
-			returning = firstVisits.has(region.id);
-			revisits += Number(returning);
+			returning = firstVisits.has(region.id) ? (currentRegion !== null ? true : null) : false;
+			revisits += Number(returning === true);
 			currentRegion = region.id;
-			continuityLost = false;
 		}
 
-		const previousRegion = resolved[i - 1]?.region;
+		const previousRegion = resolved[i - 1];
 
 		if (
 			!gap &&
@@ -193,16 +247,34 @@ const readingMetrics = (fixations: I2mcFixationEntry[], geometry: AoiRect[]) => 
 
 		if (returning) {
 			rereading += fixation.duration;
-		} else {
+		} else if (returning === false) {
 			firstVisits.set(region.id, (firstVisits.get(region.id) ?? 0) + fixation.duration);
 		}
 	}
 
+	const notes: string[] = [];
+
+	if (identified < fixations.length || gaps) {
+		notes.push(
+			`Partial reading metrics: ${identified} of ${fixations.length} fixations have identifiable reading regions. Unassigned fixations and recording gaps break visit continuity; only observed transitions and visit durations are included.`
+		);
+	}
+
+	if (recovered) {
+		notes.push(
+			`Reading regions for ${recovered} fixations were recovered from recorded gaze samples.`
+		);
+	}
+
 	return {
-		backward,
-		revisits,
-		rereading,
-		firstVisit: [...firstVisits.values()].reduce((sum, value) => sum + value, 0) / firstVisits.size
+		values: {
+			backward,
+			revisits,
+			rereading,
+			firstVisit:
+				[...firstVisits.values()].reduce((sum, value) => sum + value, 0) / firstVisits.size
+		},
+		note: notes.join(' ')
 	};
 };
 
@@ -282,7 +354,8 @@ export const calculateDispersion = (
 export const calculateMetrics = (
 	input: I2mcFixationEntry[],
 	raw: RawGazeDataEntry[] = [],
-	geometry: AoiRect[] = []
+	geometry: AoiRect[] = [],
+	gazeSamples: GazeSampleDataEntry[] = []
 ): { values: MetricValues; reasons: MetricReasons } => {
 	const fixations = input
 		.filter(
@@ -311,10 +384,16 @@ export const calculateMetrics = (
 			fixations.reduce((end, fixation) => Math.max(end, fixationEnd(fixation)), 0) -
 			fixations[0].timestamp;
 		values.dispersion = calculateDispersion(fixations, raw);
-		const reading = readingMetrics(fixations, geometry);
+		const reading = readingMetrics(fixations, geometry, gazeSamples);
 
 		if (reading) {
-			Object.assign(values, reading);
+			Object.assign(values, reading.values);
+
+			if (reading.note) {
+				for (const key of ['backward', 'revisits', 'rereading', 'firstVisit'] as const) {
+					reasons[key] = reading.note;
+				}
+			}
 		}
 	}
 
@@ -325,7 +404,7 @@ export const calculateMetrics = (
 					? 'No fixations were detected.'
 					: key === 'dispersion'
 						? 'Not enough consecutive valid raw gaze samples within fixation boundaries.'
-						: 'Recorded reading regions are missing, ambiguous, or interrupted by a recording gap.';
+						: 'No word or syllable regions could be identified. These reading metrics require recorded reading regions; they are unavailable for tasks without them.';
 		}
 	}
 
