@@ -332,28 +332,15 @@ export const calculateMetrics = (
 	return { values, reasons };
 };
 
-export const assignSeries = (sessionId: string, slides: ProgressionSlide[]): ProgressionSlide[] => {
-	const occurrences = new Map<string, number>();
-
-	return slides
+export const assignSeries = (slides: ProgressionSlide[]): ProgressionSlide[] =>
+	slides
 		.slice()
 		.sort((a, b) => a.slideIndex - b.slideIndex)
-		.map((slide) => {
-			const id = slide.stimulusId;
-			const occurrence = (occurrences.get(id ?? '') ?? 0) + 1;
-			occurrences.set(id ?? '', occurrence);
-
-			return {
-				...slide,
-				seriesKey: id
-					? JSON.stringify([id, occurrence])
-					: JSON.stringify([sessionId, slide.slideIndex]),
-				label: id
-					? `${id}${occurrence > 1 ? ` · occurrence ${occurrence}` : ''}`
-					: `Unidentified stimulus · slide ${slide.slideIndex}`
-			};
-		});
-};
+		.map((slide) => ({
+			...slide,
+			seriesKey: `slide:${slide.slideIndex}`,
+			label: `Slide ${slide.slideIndex}`
+		}));
 
 export const formatMetric = (value: number | null, key: MetricKey): string =>
 	value === null

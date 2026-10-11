@@ -315,8 +315,7 @@
 	<div>
 		<h1 class="text-2xl font-black text-gray-800">Participant progression</h1>
 		<p class="mt-2 max-w-2xl text-sm leading-6 text-gray-600">
-			Follow fixation and reading patterns over time. Compare the same task, level, and stimulus
-			across recorded sessions.
+			Choose a participant, task, level, and metric to compare all slides across selected sessions.
 		</p>
 	</div>
 
@@ -502,7 +501,7 @@
 						<div>
 							<h2 class="text-lg font-bold text-gray-900">Session progression</h2>
 							<p class="mt-1 text-xs text-gray-600">
-								One series per stimulus · complete recorded slides
+								One line per slide · sessions from oldest to newest
 							</p>
 						</div>
 						<button
@@ -539,7 +538,13 @@
 					<p class="mt-2 max-w-2xl text-xs leading-5 text-gray-600">
 						{METRICS[metric].description}
 					</p>
-					<ProgressionChart sessions={selectedSessions} {results} {metric} />
+					<p class="mt-1 max-w-2xl text-xs leading-5 text-gray-600">
+						Each point summarizes all fixations on one slide in one session. Click a slide below to
+						show or hide its line.
+					</p>
+					{#key JSON.stringify([userId, task, level, mode])}
+						<ProgressionChart sessions={selectedSessions} {results} {metric} />
+					{/key}
 					{#if !selectedSessions.length}<p class="mt-3 text-sm text-gray-600">
 							Select at least one finished session with files.
 						</p>{/if}

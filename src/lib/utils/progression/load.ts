@@ -272,7 +272,7 @@ export const analyzeSession = async (
 
 	return {
 		sessionId: session.id,
-		slides: assignSeries(session.id, slides),
+		slides: assignSeries(slides),
 		warnings,
 		settingsDescription: `${parameters.xres} × ${parameters.yres} px (${options.useRecordedViewport && viewport ? 'recorded viewport' : 'configured fallback'}); ${parameters.freq ? `${parameters.freq} Hz` : 'automatic sampling rate'}; ${parameters.minFixDur} ms minimum fixation; ${parameters.gapSplitMs} ms gap split. Saved I2MC settings may differ.`
 	};

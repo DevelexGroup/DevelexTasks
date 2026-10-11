@@ -33,22 +33,22 @@
 	const colors = ['#2563eb', '#0f766e', '#7c3aed', '#b45309', '#be185d', '#0369a1'];
 	const shapes: PointStyle[] = ['circle', 'rectRot', 'triangle', 'rect', 'crossRot', 'star'];
 	const series = $derived.by(() => {
-		const entries = new SvelteMap<string, string>();
+		const entries = new SvelteMap<string, { label: string; slideIndex: number }>();
 
 		for (const session of sessions) {
 			for (const slide of results[session.id]?.slides ?? []) {
-				entries.set(slide.seriesKey, slide.label);
+				entries.set(slide.seriesKey, { label: slide.label, slideIndex: slide.slideIndex });
 			}
 		}
 
 		return [...entries]
-			.sort(([a], [b]) => a.localeCompare(b))
-			.map(([key, label], i) => ({
+			.sort(([, a], [, b]) => a.slideIndex - b.slideIndex)
+			.map(([key, { label, slideIndex }]) => ({
 				key,
 				label,
-				color: colors[i % colors.length],
-				shape: shapes[i % shapes.length],
-				dash: i >= colors.length ? [5, 4] : []
+				color: colors[(slideIndex + colors.length - 1) % colors.length],
+				shape: shapes[(slideIndex + shapes.length - 1) % shapes.length],
+				dash: slideIndex > colors.length ? [5, 4] : []
 			}));
 	});
 	const rows = $derived(
@@ -198,7 +198,7 @@
 	});
 </script>
 
-<div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Visible stimuli">
+<div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Visible slides">
 	{#each series as item (item.key)}
 		<button
 			type="button"
@@ -255,7 +255,7 @@
 		>
 			<p class="max-w-sm text-sm leading-6 text-gray-600">
 				{series.length
-					? 'No values are available for this metric and the visible stimuli. See the table for details.'
+					? 'No values are available for this metric and the visible slides. See the table for details.'
 					: 'Analyze selected sessions to display their progression.'}
 			</p>
 		</div>{/if}
@@ -269,14 +269,15 @@
 		>
 		<div class="mt-4 overflow-x-auto">
 			<table class="w-full text-left text-sm">
-				<caption class="sr-only">{METRICS[metric].label} by session and stimulus</caption>
+				<caption class="sr-only">{METRICS[metric].label} by session and slide</caption>
 				<thead
 					><tr class="border-b border-gray-200 text-xs text-gray-600"
-						><th class="py-3 pr-4 font-medium">Session</th><th class="py-3 pr-4 font-medium"
-							>Stimulus</th
-						><th class="py-3 pr-4 text-right font-medium"
+						><th scope="col" class="py-3 pr-4 font-medium">Session</th><th
+							scope="col"
+							class="py-3 pr-4 font-medium">Slide</th
+						><th scope="col" class="py-3 pr-4 text-right font-medium"
 							>{METRICS[metric].label} {METRICS[metric].unit ? `(${METRICS[metric].unit})` : ''}</th
-						><th class="py-3 font-medium">Source / availability</th></tr
+						><th scope="col" class="py-3 font-medium">Source / availability</th></tr
 					></thead
 				>
 				<tbody
@@ -284,7 +285,7 @@
 							class="border-b border-gray-100 last:border-0"
 							><td class="py-3 pr-4 whitespace-nowrap text-gray-600"
 								>{dateLabel(session)}<span class="mt-1 block text-xs text-gray-500"
-									>{session.id.slice(0, 8)} · slide {slide.slideIndex}</span
+									>{session.id.slice(0, 8)}</span
 								></td
 							><td class="max-w-64 py-3 pr-4 break-words text-gray-800">{slide.label}</td><td
 								class="py-3 pr-4 text-right font-medium whitespace-nowrap text-gray-900 tabular-nums"
