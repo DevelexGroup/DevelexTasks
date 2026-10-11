@@ -39,22 +39,25 @@ export const METRICS = {
 		label: 'Backward transitions',
 		unit: '',
 		description:
-			'Observed transitions to an earlier word or syllable in reading order. Normal next-line movements are forward.'
+			'Observed transitions to an earlier word, syllable, or symbol group in task order. Normal next-line movements are forward.'
 	},
 	firstVisit: {
 		label: 'Mean first-visit fixation time',
 		unit: 'ms',
-		description: 'Average observed first-visit fixation time across identified words or syllables.'
+		description:
+			'Average observed first-visit fixation time across identified words, syllables, or symbol groups.'
 	},
 	revisits: {
 		label: 'Revisit count',
 		unit: '',
-		description: 'Observed returns to an identified word or syllable after visiting another one.'
+		description:
+			'Observed returns to an identified word, syllable, or symbol group after visiting another one.'
 	},
 	rereading: {
-		label: 'Rereading fixation time',
+		label: 'Return-visit fixation time',
 		unit: 'ms',
-		description: 'Total fixation time during observed return visits to words or syllables.'
+		description:
+			'Total fixation time during observed return visits to words, syllables, or symbol groups.'
 	},
 	dispersion: {
 		label: 'Within-fixation variability',
@@ -94,29 +97,31 @@ export const fixationEnd = (fixation: I2mcFixationEntry): number =>
 		? fixation.endTimestamp!
 		: fixation.timestamp + fixation.duration;
 
-const readingRegion = (id: string): { id: string; row: number; column: number } | null => {
+const orderedRegion = (id: string): { id: string; row: number; column: number } | null => {
 	const match =
 		/^(?:meantext-(?:content|practice)|pseudotext-(?:content|practice)|syllable)-(\d+)-(\d+)-/.exec(
 			id
 		);
 
-	if (!match) {
-		return null;
+	if (match) {
+		return { id, row: Number(match[1]), column: Number(match[2]) };
 	}
 
-	return { id, row: Number(match[1]), column: Number(match[2]) };
+	const group = /^(?:target-)?group-(\d+)$/.exec(id);
+
+	return group ? { id, row: 0, column: Number(group[1]) } : null;
 };
 
 const resolveRegion = (fixation: I2mcFixationEntry, geometry: AoiRect[]) => {
-	const ids = [...new Set(fixation.aoi.filter((id) => readingRegion(id)))];
+	const ids = [...new Set(fixation.aoi.filter((id) => orderedRegion(id)))];
 
 	if (ids.length === 1) {
-		return { region: readingRegion(ids[0]), ambiguous: false };
+		return { region: orderedRegion(ids[0]), ambiguous: false };
 	}
 
 	const matches = geometry.filter(
 		(rect) =>
-			readingRegion(rect.id) &&
+			orderedRegion(rect.id) &&
 			(ids.length === 0 || ids.includes(rect.id)) &&
 			fixation.eyetracker_x !== null &&
 			fixation.eyetracker_y !== null &&
@@ -130,12 +135,12 @@ const resolveRegion = (fixation: I2mcFixationEntry, geometry: AoiRect[]) => {
 	const distinct = [...new Set(matches.map((rect) => rect.id))];
 
 	return {
-		region: distinct.length === 1 ? readingRegion(distinct[0]) : null,
+		region: distinct.length === 1 ? orderedRegion(distinct[0]) : null,
 		ambiguous: distinct.length > 1 || (ids.length > 1 && distinct.length !== 1)
 	};
 };
 
-const readingMetrics = (
+const regionMetrics = (
 	fixations: I2mcFixationEntry[],
 	geometry: AoiRect[],
 	gazeSamples: GazeSampleDataEntry[]
@@ -176,7 +181,7 @@ const readingMetrics = (
 
 			lastTimestamp = sample.timestamp;
 			total++;
-			const ids = [...new Set(sample.aoi.filter((id) => readingRegion(id)))];
+			const ids = [...new Set(sample.aoi.filter((id) => orderedRegion(id)))];
 
 			if (ids.length === 1) {
 				votes.set(ids[0], (votes.get(ids[0]) ?? 0) + 1);
@@ -188,7 +193,7 @@ const readingMetrics = (
 		if (majority) {
 			recovered++;
 
-			return readingRegion(majority[0]);
+			return orderedRegion(majority[0]);
 		}
 
 		return null;
@@ -256,13 +261,13 @@ const readingMetrics = (
 
 	if (identified < fixations.length || gaps) {
 		notes.push(
-			`Partial reading metrics: ${identified} of ${fixations.length} fixations have identifiable reading regions. Unassigned fixations and recording gaps break visit continuity; only observed transitions and visit durations are included.`
+			`Partial region metrics: ${identified} of ${fixations.length} fixations have identifiable task regions. Unassigned fixations and recording gaps break visit continuity; only observed transitions and visit durations are included.`
 		);
 	}
 
 	if (recovered) {
 		notes.push(
-			`Reading regions for ${recovered} fixations were recovered from recorded gaze samples.`
+			`Task regions for ${recovered} fixations were recovered from recorded gaze samples.`
 		);
 	}
 
@@ -384,14 +389,14 @@ export const calculateMetrics = (
 			fixations.reduce((end, fixation) => Math.max(end, fixationEnd(fixation)), 0) -
 			fixations[0].timestamp;
 		values.dispersion = calculateDispersion(fixations, raw);
-		const reading = readingMetrics(fixations, geometry, gazeSamples);
+		const regions = regionMetrics(fixations, geometry, gazeSamples);
 
-		if (reading) {
-			Object.assign(values, reading.values);
+		if (regions) {
+			Object.assign(values, regions.values);
 
-			if (reading.note) {
+			if (regions.note) {
 				for (const key of ['backward', 'revisits', 'rereading', 'firstVisit'] as const) {
-					reasons[key] = reading.note;
+					reasons[key] = regions.note;
 				}
 			}
 		}
@@ -404,7 +409,7 @@ export const calculateMetrics = (
 					? 'No fixations were detected.'
 					: key === 'dispersion'
 						? 'Not enough consecutive valid raw gaze samples within fixation boundaries.'
-						: 'No word or syllable regions could be identified. These reading metrics require recorded reading regions; they are unavailable for tasks without them.';
+						: 'No ordered task regions could be identified. These metrics need recorded word, syllable, or symbol-group regions; track and hint regions alone are not sufficient.';
 		}
 	}
 

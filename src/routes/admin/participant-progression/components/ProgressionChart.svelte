@@ -233,10 +233,10 @@
 	});
 </script>
 
-{#if rows.some(({ slide }) => slide.reasons[metric]?.startsWith('Partial reading metrics'))}
+{#if rows.some(({ slide }) => slide.reasons[metric]?.startsWith('Partial region metrics'))}
 	<p class="mt-3 text-xs leading-5 text-amber-900">
-		Some reading values are partial. Unassigned fixations and recording gaps are excluded; see exact
-		values for coverage.
+		Some region-based values are partial. Unassigned fixations and recording gaps are excluded; see
+		exact values for coverage.
 	</p>
 {/if}
 
