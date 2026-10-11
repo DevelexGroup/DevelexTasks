@@ -112,14 +112,51 @@ export function parseGazeSamplesCsv(csvText: string): GazeSampleDataEntry[] {
  * Expected columns: ID, Child ID, Session ID, Task, Slide Index, Stimulus ID,
  * Timestamp, Eye X, Eye Y, Duration, AOI, Fixation Index
  */
-export function parseFixationDataCsv(csvText: string): FixationDataEntry[] {
-	const lines = csvText.split('\n').filter((l) => l.trim());
-	if (lines.length < 2) return [];
+export interface I2mcFixationEntry extends FixationDataEntry {
+	endTimestamp?: number;
+	segment?: number;
+}
 
-	const entries: FixationDataEntry[] = [];
+export const parseFixationDataCsv = (csvText: string, strict = false): I2mcFixationEntry[] => {
+	const lines = csvText.split('\n').filter((l) => l.trim());
+	const headers = parseCsvLine(lines[0]?.trim() ?? '');
+
+	if (
+		strict &&
+		(headers[4] !== 'Slide Index' ||
+			headers[6] !== 'Timestamp' ||
+			headers[9] !== 'Duration' ||
+			headers[11] !== 'Fixation Index')
+	) {
+		throw new Error('Invalid I2MC fixation file header.');
+	}
+
+	if (lines.length < 2) {
+		return [];
+	}
+
+	const entries: I2mcFixationEntry[] = [];
+	const endColumn = headers.indexOf('End Timestamp');
+	const segmentColumn = headers.indexOf('Segment');
+
 	for (let i = 1; i < lines.length; i++) {
 		const cols = parseCsvLine(lines[i]);
-		if (cols.length < 12) continue;
+
+		if (
+			strict &&
+			(cols.length < 12 ||
+				!Number.isInteger(Number(cols[4])) ||
+				Number(cols[4]) < 0 ||
+				!Number.isFinite(Number(cols[9])) ||
+				Number(cols[9]) <= 0 ||
+				parseFormattedTimestamp(cols[6]) <= 0)
+		) {
+			throw new Error(`Invalid I2MC fixation row ${i + 1}.`);
+		}
+
+		if (cols.length < 12) {
+			continue;
+		}
 
 		entries.push({
 			child_id: cols[1],
@@ -132,12 +169,20 @@ export function parseFixationDataCsv(csvText: string): FixationDataEntry[] {
 			eyetracker_y: parseNullableNumber(cols[8]),
 			duration: parseNumber(cols[9]),
 			aoi: parsePipeArray(cols[10]),
-			fixation_index: parseInt(cols[11]) || 0
+			fixation_index: parseInt(cols[11]) || 0,
+			...(endColumn >= 0 && cols[endColumn]?.trim()
+				? { endTimestamp: parseFormattedTimestamp(cols[endColumn]) }
+				: {}),
+			...(segmentColumn >= 0 &&
+			cols[segmentColumn]?.trim() &&
+			Number.isFinite(Number(cols[segmentColumn]))
+				? { segment: Number(cols[segmentColumn]) }
+				: {})
 		});
 	}
 
 	return entries;
-}
+};
 
 /**
  * Parse a sessionScores CSV file back into SessionScoreDataEntry[].
@@ -181,14 +226,25 @@ export function parseSessionScoresCsv(csvText: string): SessionScoreDataEntry[] 
  * Bridge Timestamp, Device Timestamp, X, Y, Left X, Left Y, Left Validity,
  * Left Pupil Diameter, Right X, Right Y, Right Validity, Right Pupil Diameter
  */
-export function parseRawGazeDataCsv(csvText: string): RawGazeDataEntry[] {
+export const parseRawGazeDataCsv = (
+	csvText: string,
+	preserveMissing = false
+): RawGazeDataEntry[] => {
 	const lines = csvText.split('\n').filter((l) => l.trim());
-	if (lines.length < 2) return [];
+	const coordinate = preserveMissing ? (value: string) => parseFloat(value) : parseNumber;
+
+	if (lines.length < 2) {
+		return [];
+	}
 
 	const entries: RawGazeDataEntry[] = [];
+
 	for (let i = 1; i < lines.length; i++) {
 		const cols = parseCsvLine(lines[i]);
-		if (cols.length < 18) continue;
+
+		if (cols.length < 18) {
+			continue;
+		}
 
 		entries.push({
 			child_id: cols[1],
@@ -198,18 +254,18 @@ export function parseRawGazeDataCsv(csvText: string): RawGazeDataEntry[] {
 			timestamp: parseFormattedTimestamp(cols[5]),
 			bridgeTimeStamp: cols[6],
 			deviceTimeStamp: cols[7],
-			x: parseNumber(cols[8]),
-			y: parseNumber(cols[9]),
-			xL: parseNumber(cols[10]),
-			yL: parseNumber(cols[11]),
+			x: coordinate(cols[8]),
+			y: coordinate(cols[9]),
+			xL: coordinate(cols[10]),
+			yL: coordinate(cols[11]),
 			validityL: cols[12] === 'true',
 			pupilDiameterL: parseNumber(cols[13]),
-			xR: parseNumber(cols[14]),
-			yR: parseNumber(cols[15]),
+			xR: coordinate(cols[14]),
+			yR: coordinate(cols[15]),
 			validityR: cols[16] === 'true',
 			pupilDiameterR: parseNumber(cols[17])
 		});
 	}
 
 	return entries;
-}
+};

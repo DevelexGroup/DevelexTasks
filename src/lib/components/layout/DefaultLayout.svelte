@@ -19,14 +19,16 @@
 <main class="flex min-h-screen flex-col bg-gray-50 font-lexend">
 	<nav class="flex w-full bg-white px-4 py-4 shadow-xl">
 		<div
-			class="mx-auto flex w-full items-center justify-between {wide ? 'max-w-7xl' : 'max-w-5xl'}"
+			class="mx-auto flex w-full flex-wrap items-center justify-between gap-4 {wide
+				? 'max-w-7xl'
+				: 'max-w-5xl'}"
 		>
 			<button
 				class="cursor-pointer text-3xl font-black text-blue-600"
 				onclick={() => goto(resolve('/'))}>DeveLex</button
 			>
 
-			<div class="inline-flex items-center space-x-3">
+			<div class="inline-flex max-w-full flex-wrap items-center gap-3">
 				<button
 					class="inline-flex cursor-pointer items-center rounded-md bg-blue-100 px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-blue-200"
 					onclick={() => (showSettings = true)}

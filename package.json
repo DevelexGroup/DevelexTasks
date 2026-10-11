@@ -55,6 +55,7 @@
 	},
 	"dependencies": {
 		"@mars3d/heatmap.js": "^2.0.7",
+		"chart.js": "^4.5.1",
 		"dexie": "^4.2.1",
 		"jszip": "^3.10.1",
 		"modern-screenshot": "^4.7.0"
