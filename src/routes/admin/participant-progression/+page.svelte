@@ -401,7 +401,7 @@
 							>{item === 'reeducation'
 								? 'Reedukace'
 								: item === 'evaluation'
-									? 'Vyhodnocení'
+									? 'Evaluace'
 									: 'Intervence'}</option
 						>{/each}</select
 				>
