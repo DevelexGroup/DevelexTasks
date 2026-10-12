@@ -160,9 +160,19 @@ export const analyzeSession = async (
 	}
 
 	const distinctRaw = uniqueRows(raw).sort((a, b) => a.timestamp - b.timestamp);
-	const viewport =
-		geometry.find((item) => item.viewport.width > 0 && item.viewport.height > 0)?.viewport ??
-		meta?.viewport;
+	const geometryViewport = geometry.find(
+		(item) => item.viewport.width > 0 && item.viewport.height > 0
+	)?.viewport;
+	const viewport = geometryViewport ?? meta?.viewport;
+	const reconstructedViewport = meta?.recalculated?.items.includes(
+		geometryViewport ? 'aoiGeometry' : 'meta'
+	);
+	const viewportSource =
+		options.useRecordedViewport && viewport
+			? reconstructedViewport
+				? 'reconstructed viewport'
+				: 'recorded viewport'
+			: 'configured fallback';
 	const parameters = { ...options.parameters };
 
 	if (options.useRecordedViewport && viewport) {
@@ -248,12 +258,7 @@ export const analyzeSession = async (
 				: undefined);
 		const metrics =
 			entries && !error
-				? calculateMetrics(
-						uniqueRows(entries),
-						slideRaw,
-						geometry.filter((item) => item.slideIndex === slideIndex).flatMap((item) => item.aois),
-						samples.filter((sample) => sample.slide_index === slideIndex)
-					)
+				? calculateMetrics(uniqueRows(entries), slideRaw)
 				: { values: emptyMetrics(), reasons: {} };
 
 		return {
@@ -275,6 +280,6 @@ export const analyzeSession = async (
 		sessionId: session.id,
 		slides: assignSeries(slides),
 		warnings,
-		settingsDescription: `${parameters.xres} × ${parameters.yres} px (${options.useRecordedViewport && viewport ? 'recorded viewport' : 'configured fallback'}); ${parameters.freq ? `${parameters.freq} Hz` : 'automatic sampling rate'}; ${parameters.minFixDur} ms minimum fixation; ${parameters.gapSplitMs} ms gap split. Saved I2MC settings may differ.`
+		settingsDescription: `${parameters.xres} × ${parameters.yres} px (${viewportSource}); ${parameters.freq ? `${parameters.freq} Hz` : 'automatic sampling rate'}; ${parameters.minFixDur} ms minimum fixation; ${parameters.gapSplitMs} ms gap split. Saved I2MC settings may differ.${meta?.recalculated?.items.includes('aoiGeometry') ? ' Item geometry was reconstructed after recording and may differ from the original layout.' : ''}`
 	};
 };

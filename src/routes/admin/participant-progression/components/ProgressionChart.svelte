@@ -233,13 +233,6 @@
 	});
 </script>
 
-{#if rows.some(({ slide }) => slide.reasons[metric]?.startsWith('Partial region metrics'))}
-	<p class="mt-3 text-xs leading-5 text-amber-900">
-		Some region-based values are partial. Unassigned fixations and recording gaps are excluded; see
-		exact values for coverage.
-	</p>
-{/if}
-
 <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Visible slides">
 	{#each series as item (item.key)}
 		<button
