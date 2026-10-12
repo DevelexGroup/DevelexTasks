@@ -47,7 +47,7 @@
 					<Icon icon="material-symbols:monitoring" class="h-6 w-6 text-blue-700" />
 				</div>
 				<span class="mt-4 text-sm font-bold text-gray-800 group-hover:underline"
-					>Participant progression</span
+					>Vývoj účastníka</span
 				>
 			</a>
 		{/if}

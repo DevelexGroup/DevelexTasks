@@ -62,7 +62,7 @@
 	const hasValues = $derived(rows.some(({ slide }) => slide.values[metric] !== null));
 	const dateLabel = (session: TestSessionDTO, compact = false) =>
 		new Date(session.sessionStartTime).toLocaleString(
-			'en-GB',
+			'cs-CZ',
 			compact ? { day: 'numeric', month: 'short' } : { dateStyle: 'medium', timeStyle: 'short' }
 		);
 	const clearPoint = () => {
@@ -207,7 +207,7 @@
 								? [
 										slide.label,
 										`${formatMetric(slide.values[selectedMetric], selectedMetric)} ${METRICS[selectedMetric].unit}`.trim(),
-										slide.source === 'saved' ? 'Saved I2MC' : 'Calculated I2MC'
+										slide.source === 'saved' ? 'Uložené I2MC' : 'Vypočítané I2MC'
 									]
 								: '';
 						}
@@ -233,7 +233,7 @@
 	});
 </script>
 
-<div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Visible slides">
+<div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Viditelné snímky">
 	{#each series as item (item.key)}
 		<button
 			type="button"
@@ -276,22 +276,22 @@
 	{#if series.length > 1}<button
 			type="button"
 			class="rounded px-2 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
-			onclick={() => (hidden = new Set())}>Show all</button
+			onclick={() => (hidden = new Set())}>Zobrazit vše</button
 		>{/if}
 </div>
 
 <div class="relative mt-4 h-[300px] sm:h-[380px]" data-testid="progression-chart">
 	<canvas
 		bind:this={canvas}
-		aria-label={`${METRICS[metric].label} across selected sessions. Exact values are in the table below.`}
+		aria-label={`${METRICS[metric].label} napříč vybranými relacemi. Přesné hodnoty jsou v tabulce níže.`}
 	></canvas>
 	{#if !hasValues}<div
 			class="absolute inset-0 flex items-center justify-center bg-white/90 p-6 text-center"
 		>
 			<p class="max-w-sm text-sm leading-6 text-gray-600">
 				{series.length
-					? 'No values are available for this metric and the visible slides. See the table for details.'
-					: 'Analyze selected sessions to display their progression.'}
+					? 'Pro tuto metriku a viditelné snímky nejsou dostupné žádné hodnoty. Podrobnosti najdete v tabulce.'
+					: 'Pro zobrazení vývoje analyzujte vybrané relace.'}
 			</p>
 		</div>{/if}
 </div>
@@ -300,22 +300,19 @@
 	<details class="mt-6 border-t border-gray-100 pt-4" ontoggle={clearPoint}>
 		<summary
 			class="cursor-pointer rounded text-sm font-semibold text-gray-700 outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
-			>Exact values <span class="ml-1 font-normal text-gray-500">({rows.length})</span></summary
+			>Přesné hodnoty <span class="ml-1 font-normal text-gray-500">({rows.length})</span></summary
 		>
-		<p class="mt-3 text-xs text-gray-600">
-			Hover a row or focus its value to highlight the corresponding point in the chart.
-		</p>
 		<div class="mt-4 max-h-80 overflow-auto">
 			<table class="w-full text-left text-sm">
-				<caption class="sr-only">{METRICS[metric].label} by session and slide</caption>
+				<caption class="sr-only">{METRICS[metric].label} podle relace a snímku</caption>
 				<thead class="sticky top-0 bg-white"
 					><tr class="border-b border-gray-200 text-xs text-gray-600"
-						><th scope="col" class="py-3 pr-4 font-medium">Session</th><th
+						><th scope="col" class="py-3 pr-4 font-medium">Relace</th><th
 							scope="col"
-							class="py-3 pr-4 font-medium">Slide</th
+							class="py-3 pr-4 font-medium">Snímek</th
 						><th scope="col" class="py-3 pr-4 text-right font-medium"
 							>{METRICS[metric].label} {METRICS[metric].unit ? `(${METRICS[metric].unit})` : ''}</th
-						><th scope="col" class="py-3 font-medium">Source / availability</th></tr
+						><th scope="col" class="py-3 font-medium">Zdroj / dostupnost</th></tr
 					></thead
 				>
 				<tbody
@@ -336,7 +333,7 @@
 									<button
 										type="button"
 										class="rounded px-1 underline decoration-gray-300 decoration-dotted underline-offset-4 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
-										aria-label={`Highlight ${slide.label}, ${dateLabel(session)}: ${formatMetric(slide.values[metric], metric)} ${METRICS[metric].unit}`}
+										aria-label={`Zvýraznit ${slide.label}, ${dateLabel(session)}: ${formatMetric(slide.values[metric], metric)} ${METRICS[metric].unit}`}
 										onfocus={() => highlightPoint(session.id, slide.seriesKey)}
 										onblur={clearPoint}
 										onclick={() => highlightPoint(session.id, slide.seriesKey)}
@@ -346,7 +343,7 @@
 							><td class="max-w-80 py-3 text-xs leading-5 text-gray-600"
 								>{slide.error ??
 									slide.reasons[metric] ??
-									(slide.source === 'saved' ? 'Saved I2MC' : 'Calculated I2MC')}</td
+									(slide.source === 'saved' ? 'Uložené I2MC' : 'Vypočítané I2MC')}</td
 							></tr
 						>{/each}</tbody
 				>

@@ -35,7 +35,7 @@ export interface AnalysisOptions {
 }
 
 const messageOf = (error: unknown): string =>
-	error instanceof Error ? error.message : 'Could not load this recording.';
+	error instanceof Error ? error.message : 'Tento záznam se nepodařilo načíst.';
 const usableId = (value: string | undefined | null): string | null =>
 	value && value !== 'null' && value !== 'unknown' ? value : null;
 const uniqueRows = <T>(rows: T[]): T[] => [
@@ -49,7 +49,7 @@ export const analyzeSession = async (
 	const current = options.isCurrent ?? (() => true);
 	const checkCurrent = () => {
 		if (!current()) {
-			throw new Error('Analysis superseded by a new selection.');
+			throw new Error('Analýza byla nahrazena novým výběrem.');
 		}
 	};
 	const detail = await getTestSessionDetail(session.id);
@@ -107,7 +107,7 @@ export const analyzeSession = async (
 
 				if (fileSlide !== null) {
 					if (entries.some((entry) => entry.slide_index !== fileSlide)) {
-						throw new Error('Fixation slide indices do not match the file.');
+						throw new Error('Indexy snímků fixací neodpovídají souboru.');
 					}
 
 					groups.add(fileSlide);
@@ -170,9 +170,9 @@ export const analyzeSession = async (
 	const viewportSource =
 		options.useRecordedViewport && viewport
 			? reconstructedViewport
-				? 'reconstructed viewport'
-				: 'recorded viewport'
-			: 'configured fallback';
+				? 'rekonstruovaná zobrazovací plocha'
+				: 'zaznamenaná zobrazovací plocha'
+			: 'nastavené náhradní rozměry';
 	const parameters = { ...options.parameters };
 
 	if (options.useRecordedViewport && viewport) {
@@ -219,7 +219,7 @@ export const analyzeSession = async (
 					const entries = parseFixationDataCsv(output.content, true);
 
 					if (entries.some((entry) => entry.slide_index !== slide)) {
-						throw new Error('Calculated fixation slide indices do not match the output file.');
+						throw new Error('Indexy snímků vypočítaných fixací neodpovídají výstupnímu souboru.');
 					}
 
 					fixations.set(slide, entries);
@@ -251,10 +251,10 @@ export const analyzeSession = async (
 			errors.get(slideIndex) ??
 			(!entries
 				? slideRaw.length === 0
-					? 'Missing I2MC output and raw gaze data.'
+					? 'Chybí výstup I2MC a surová data pohledu.'
 					: !options.canCalculate
-						? 'Calculating missing fixations requires session management permission.'
-						: 'I2MC returned no output for this slide.'
+						? 'Výpočet chybějících fixací vyžaduje oprávnění ke správě relací.'
+						: 'I2MC nevrátil žádný výstup pro tento snímek.'
 				: undefined);
 		const metrics =
 			entries && !error
@@ -273,13 +273,15 @@ export const analyzeSession = async (
 	});
 
 	if (!slides.length) {
-		throw new Error(warnings.join(' ') || 'No recorded slides were found in this session.');
+		throw new Error(
+			warnings.join(' ') || 'V této relaci nebyly nalezeny žádné zaznamenané snímky.'
+		);
 	}
 
 	return {
 		sessionId: session.id,
 		slides: assignSeries(slides),
 		warnings,
-		settingsDescription: `${parameters.xres} × ${parameters.yres} px (${viewportSource}); ${parameters.freq ? `${parameters.freq} Hz` : 'automatic sampling rate'}; ${parameters.minFixDur} ms minimum fixation; ${parameters.gapSplitMs} ms gap split. Saved I2MC settings may differ.${meta?.recalculated?.items.includes('aoiGeometry') ? ' Item geometry was reconstructed after recording and may differ from the original layout.' : ''}`
+		settingsDescription: `${parameters.xres} × ${parameters.yres} px (${viewportSource}); ${parameters.freq ? `${parameters.freq} Hz` : 'automatická vzorkovací frekvence'}; ${parameters.minFixDur} ms minimální délka fixace; ${parameters.gapSplitMs} ms práh pro rozdělení při výpadku. Nastavení uložených fixací I2MC se může lišit.${meta?.recalculated?.items.includes('aoiGeometry') ? ' Geometrie položek byla rekonstruována po pořízení záznamu a může se lišit od původního rozložení.' : ''}`
 	};
 };

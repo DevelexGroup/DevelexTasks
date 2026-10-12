@@ -3,47 +3,46 @@ import type { I2mcFixationEntry } from '$lib/utils/csvParser';
 
 export const METRICS = {
 	meanDuration: {
-		label: 'Mean fixation duration',
+		label: 'Průměrná délka fixace',
 		unit: 'ms',
-		description: 'Average duration of the fixations on each recorded slide.'
+		description: 'Průměrná délka fixací na každém zaznamenaném snímku.'
 	},
 	count: {
-		label: 'Fixation count',
+		label: 'Počet fixací',
 		unit: '',
-		description: 'Number of detected fixations on each recorded slide.'
+		description: 'Počet detekovaných fixací na každém zaznamenaném snímku.'
 	},
 	medianDuration: {
-		label: 'Median fixation duration',
+		label: 'Medián délky fixace',
 		unit: 'ms',
-		description: 'The middle fixation duration, less influenced by unusually long fixations.'
+		description: 'Prostřední hodnota délky fixace, méně ovlivněná neobvykle dlouhými fixacemi.'
 	},
 	durationSd: {
-		label: 'Fixation duration variability',
+		label: 'Variabilita délky fixace',
 		unit: 'ms',
-		description: 'Population standard deviation of fixation durations.'
+		description: 'Populační směrodatná odchylka délek fixací.'
 	},
 	totalDuration: {
-		label: 'Total fixation time',
+		label: 'Celkový čas fixací',
 		unit: 'ms',
-		description: 'Sum of all fixation durations on the slide.'
+		description: 'Součet délek všech fixací na snímku.'
 	},
 	span: {
-		label: 'Fixation span',
+		label: 'Časový rozsah fixací',
 		unit: 'ms',
-		description:
-			'Elapsed time from the first fixation start to the last fixation end, including intervening gaps.'
+		description: 'Čas od začátku první fixace do konce poslední fixace včetně mezer mezi nimi.'
 	},
 	backward: {
-		label: 'Backward transitions',
+		label: 'Zpětné přechody',
 		unit: '',
 		description:
-			'Number of consecutive fixation pairs where the next X coordinate is lower. Equal X positions do not count. Includes leftward movements to the next line; no task regions are required.'
+			'Počet dvojic po sobě jdoucích fixací, u nichž je následující souřadnice X nižší. Shodné polohy X se nezapočítávají. Zahrnuje pohyby doleva na další řádek; nevyžaduje oblasti úlohy.'
 	},
 	dispersion: {
-		label: 'Within-fixation variability',
+		label: 'Variabilita v rámci fixace',
 		unit: 'px',
 		description:
-			'Mean sample-to-sample RMS displacement within fixations, calculated from valid raw gaze samples. Compare recordings made at the same resolution.'
+			'Průměrný RMS posun mezi vzorky v rámci fixací, vypočítaný z platných surových vzorků pohledu. Porovnávejte záznamy pořízené ve stejném rozlišení.'
 	}
 } as const;
 
@@ -205,7 +204,7 @@ export const calculateMetrics = (
 
 		if (skipped) {
 			values.backward = compared ? values.backward : null;
-			reasons.backward = `Compared ${compared} consecutive fixation pairs; skipped ${skipped} pairs with missing or invalid X coordinates.`;
+			reasons.backward = `Porovnané dvojice po sobě jdoucích fixací: ${compared}; vynechané dvojice s chybějícími nebo neplatnými souřadnicemi X: ${skipped}.`;
 		}
 	}
 
@@ -213,10 +212,10 @@ export const calculateMetrics = (
 		if (values[key] === null) {
 			reasons[key] ??=
 				fixations.length === 0
-					? 'No fixations were detected.'
+					? 'Nebyly detekovány žádné fixace.'
 					: key === 'dispersion'
-						? 'Not enough consecutive valid raw gaze samples within fixation boundaries.'
-						: 'No consecutive fixation pairs with valid X coordinates.';
+						? 'Nedostatek po sobě jdoucích platných surových vzorků pohledu v rámci fixací.'
+						: 'Žádné dvojice po sobě jdoucích fixací s platnými souřadnicemi X.';
 		}
 	}
 
@@ -230,12 +229,12 @@ export const assignSeries = (slides: ProgressionSlide[]): ProgressionSlide[] =>
 		.map((slide) => ({
 			...slide,
 			seriesKey: `slide:${slide.slideIndex}`,
-			label: `Slide ${slide.slideIndex}`
+			label: `Snímek ${slide.slideIndex}`
 		}));
 
 export const formatMetric = (value: number | null, key: MetricKey): string =>
 	value === null
-		? 'Unavailable'
-		: new Intl.NumberFormat('en-GB', { maximumFractionDigits: METRICS[key].unit ? 2 : 0 }).format(
+		? 'Nedostupné'
+		: new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: METRICS[key].unit ? 2 : 0 }).format(
 				value
 			);
