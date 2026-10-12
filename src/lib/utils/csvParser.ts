@@ -75,37 +75,73 @@ function parsePipeArray(value: string): string[] {
  * Expected columns: ID, Child ID, Session ID, Task, Slide Index, Stimulus ID,
  * Timestamp, Eye X, Eye Y, AOI, Mouse X, Mouse Y, Event, Sound, Mistake Type, Result
  */
-export function parseGazeSamplesCsv(csvText: string): GazeSampleDataEntry[] {
+export const parseGazeSamplesCsv = (csvText: string, strict = false): GazeSampleDataEntry[] => {
 	const lines = csvText.split('\n').filter((l) => l.trim());
-	if (lines.length < 2) return [];
+	const headers = parseCsvLine(lines[0]?.trim() ?? '').map((header) => header.trim());
+	const required = [
+		'Child ID',
+		'Session ID',
+		'Task',
+		'Slide Index',
+		'Stimulus ID',
+		'Timestamp',
+		'Eye X',
+		'Eye Y',
+		'AOI',
+		'Mouse X',
+		'Mouse Y',
+		'Event',
+		'Sound',
+		'Mistake Type',
+		'Result'
+	];
+
+	if (required.some((header) => !headers.includes(header))) {
+		if (strict) {
+			throw new Error('Invalid gaze sample file header.');
+		}
+
+		return [];
+	}
 
 	const entries: GazeSampleDataEntry[] = [];
+	const columns = new Map(headers.map((header, index) => [header, index]));
+
 	for (let i = 1; i < lines.length; i++) {
 		const cols = parseCsvLine(lines[i]);
-		if (cols.length < 17) continue;
+
+		if (cols.length < headers.length) {
+			if (strict) {
+				throw new Error(`Incomplete gaze sample row ${i + 1}.`);
+			}
+
+			continue;
+		}
+
+		const value = (header: string): string => cols[columns.get(header) ?? -1] ?? '';
 
 		entries.push({
-			child_id: cols[1],
-			session_id: String(parseFormattedTimestamp(cols[2])),
-			task_name: cols[3],
-			slide_index: parseInt(cols[4]) || 0,
-			stimulus_id: cols[5],
-			timestamp: parseFormattedTimestamp(cols[6]),
-			device_timestamp: cols[7],
-			eyetracker_x: parseNullableNumber(cols[8]),
-			eyetracker_y: parseNullableNumber(cols[9]),
-			aoi: parsePipeArray(cols[10]),
-			mouse_x: parseNumber(cols[11]),
-			mouse_y: parseNumber(cols[12]),
-			events: parsePipeArray(cols[13]),
-			sound_name: parsePipeArray(cols[14]),
-			mistake_type: parsePipeArray(cols[15]),
-			task_result: (cols[16] || null) as TaskResult | null
+			child_id: value('Child ID'),
+			session_id: String(parseFormattedTimestamp(value('Session ID'))),
+			task_name: value('Task'),
+			slide_index: parseInt(value('Slide Index')) || 0,
+			stimulus_id: value('Stimulus ID'),
+			timestamp: parseFormattedTimestamp(value('Timestamp')),
+			device_timestamp: value('Device Timestamp'),
+			eyetracker_x: parseNullableNumber(value('Eye X')),
+			eyetracker_y: parseNullableNumber(value('Eye Y')),
+			aoi: parsePipeArray(value('AOI')),
+			mouse_x: parseNumber(value('Mouse X')),
+			mouse_y: parseNumber(value('Mouse Y')),
+			events: parsePipeArray(value('Event')),
+			sound_name: parsePipeArray(value('Sound')),
+			mistake_type: parsePipeArray(value('Mistake Type')),
+			task_result: (value('Result').trim() || null) as TaskResult | null
 		});
 	}
 
 	return entries;
-}
+};
 
 /**
  * Parse a fixationData CSV file back into FixationDataEntry[].

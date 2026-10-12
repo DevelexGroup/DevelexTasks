@@ -264,7 +264,8 @@
 
 			try {
 				const cacheKey = `${session.id}:${key}`;
-				const result = (!retry && cache.get(cacheKey)) || (await analyzeSession(session, options));
+				cache.delete(cacheKey);
+				const result = await analyzeSession(session, options);
 
 				if (request !== generation) {
 					return;

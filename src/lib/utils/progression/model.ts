@@ -148,8 +148,12 @@ const regionMetrics = (
 	const samples = gazeSamples.slice().sort((a, b) => a.timestamp - b.timestamp);
 	let sampleStart = 0;
 	let recovered = 0;
+	let matchedSamples = 0;
+	let ambiguousFixations = 0;
 	const resolved = fixations.map((fixation) => {
-		const direct = resolveRegion(fixation, geometry).region;
+		const assignment = resolveRegion(fixation, geometry);
+		const direct = assignment.region;
+		ambiguousFixations += Number(assignment.ambiguous);
 
 		if (direct) {
 			return direct;
@@ -181,6 +185,7 @@ const regionMetrics = (
 
 			lastTimestamp = sample.timestamp;
 			total++;
+			matchedSamples++;
 			const ids = [...new Set(sample.aoi.filter((id) => orderedRegion(id)))];
 
 			if (ids.length === 1) {
@@ -201,7 +206,47 @@ const regionMetrics = (
 	const identified = resolved.filter((region) => region !== null).length;
 
 	if (!identified) {
-		return null;
+		const labels = new Set<string>();
+		let labeledFixations = 0;
+		let labeledSamples = 0;
+
+		for (const fixation of fixations) {
+			labeledFixations += Number(fixation.aoi.some((id) => orderedRegion(id)));
+
+			for (const id of fixation.aoi) {
+				labels.add(id);
+			}
+		}
+
+		for (const sample of samples) {
+			labeledSamples += Number(sample.aoi.some((id) => orderedRegion(id)));
+
+			for (const id of sample.aoi) {
+				labels.add(id);
+			}
+		}
+
+		for (const rect of geometry) {
+			labels.add(rect.id);
+		}
+
+		const regionCount = new Set(
+			geometry.filter((rect) => orderedRegion(rect.id)).map((rect) => rect.id)
+		).size;
+		const explanation =
+			labeledFixations || labeledSamples || regionCount
+				? 'Task regions were recorded, but no fixation could be assigned uniquely. Overlapping labels need usable recorded geometry or unambiguous gaze samples within fixation times.'
+				: 'No supported item regions were found. Word, syllable, or symbol-group regions are required; track and hint alone are insufficient.';
+		const examples =
+			[...labels]
+				.slice(0, 6)
+				.map((id) => id.slice(0, 80))
+				.join(', ') || 'none';
+
+		return {
+			values: null,
+			note: `${explanation} Recording details: ${labeledFixations}/${fixations.length} fixations with supported labels; ${ambiguousFixations} ambiguous fixations; ${regionCount} item regions in geometry; ${labeledSamples}/${samples.length} gaze samples with supported labels; ${matchedSamples} valid gaze samples within fixation times. Region IDs: ${examples}${labels.size > 6 ? ', …' : ''}.`
+		};
 	}
 
 	const firstVisits = new Map<string, number>();
@@ -391,20 +436,20 @@ export const calculateMetrics = (
 		values.dispersion = calculateDispersion(fixations, raw);
 		const regions = regionMetrics(fixations, geometry, gazeSamples);
 
-		if (regions) {
+		if (regions.values) {
 			Object.assign(values, regions.values);
+		}
 
-			if (regions.note) {
-				for (const key of ['backward', 'revisits', 'rereading', 'firstVisit'] as const) {
-					reasons[key] = regions.note;
-				}
+		if (regions.note) {
+			for (const key of ['backward', 'revisits', 'rereading', 'firstVisit'] as const) {
+				reasons[key] = regions.note;
 			}
 		}
 	}
 
 	for (const key of Object.keys(METRICS) as MetricKey[]) {
 		if (values[key] === null) {
-			reasons[key] =
+			reasons[key] ??=
 				fixations.length === 0
 					? 'No fixations were detected.'
 					: key === 'dispersion'

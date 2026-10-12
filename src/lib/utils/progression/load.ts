@@ -131,7 +131,7 @@ export const analyzeSession = async (
 			} else if (kind === 'sessionMeta') {
 				meta = parseSessionMetaJson(content);
 			} else if (kind === 'gazeSamples') {
-				for (const sample of parseGazeSamplesCsv(content)) {
+				for (const sample of parseGazeSamplesCsv(content, true)) {
 					samples.push(sample);
 				}
 			} else if (kind === 'rawGazeData') {
