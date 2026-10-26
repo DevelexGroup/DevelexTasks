@@ -93,6 +93,8 @@ export class SessionSimState {
 	private recomputeTimer: ReturnType<typeof setTimeout> | null = null;
 	private computedVersion = -1;
 	private loadPromise: Promise<LoadedSession> | null = null;
+	/** Correction adopted before the data arrived; applied once the viewport is known. */
+	private pendingCorrection: SpatialCorrection | null = null;
 	private readonly settings: SimSettings;
 
 	constructor(source: SessionSource, settings: SimSettings) {
@@ -169,7 +171,10 @@ export class SessionSimState {
 		this.recordedAois = view.recordedAois;
 		this.capturedAois = {};
 		this.slideOverrides = {};
-		this.sessionCorrection = identityCorrection(this.viewportWidth / 2, this.viewportHeight / 2);
+		this.sessionCorrection = this.pendingCorrection
+			? this.centred(this.pendingCorrection)
+			: identityCorrection(this.viewportWidth / 2, this.viewportHeight / 2);
+		this.pendingCorrection = null;
 		this.result = null;
 		this.scheduleRecompute();
 	}
@@ -227,12 +232,16 @@ export class SessionSimState {
 
 	/** Takes over another session's correction, re-centred on this viewport. */
 	adoptCorrection(correction: SpatialCorrection): void {
-		this.sessionCorrection = {
-			...correction,
-			centerX: this.viewportWidth / 2,
-			centerY: this.viewportHeight / 2
-		};
+		if (!this.session) {
+			this.pendingCorrection = correction;
+			return;
+		}
+		this.sessionCorrection = this.centred(correction);
 		this.scheduleRecompute();
+	}
+
+	private centred(correction: SpatialCorrection): SpatialCorrection {
+		return { ...correction, centerX: this.viewportWidth / 2, centerY: this.viewportHeight / 2 };
 	}
 
 	registerGeometry(slide: number, aois: AoiRect[]): void {

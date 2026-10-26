@@ -661,7 +661,7 @@
 								size="sm"
 								variant="outline"
 								class="w-full"
-								title="Zkopíruje korekci sezení (bez úprav slidů) do všech ostatních načtených sezení"
+								title="Zkopíruje korekci sezení (bez úprav slidů) do všech ostatních sezení"
 								onclick={() => workspace.applyCorrectionToAll()}
 							>
 								Použít na všechna sezení
@@ -952,8 +952,8 @@
 						<Card.Title>Export</Card.Title>
 						{#if workspace.slots.length > 1}
 							<Card.Description>
-								Neotevřená sezení se stáhnou a přepočítají bez korekce. ZIP má strukturu serverového
-								exportu.
+								Neotevřená sezení se stáhnou a přepočítají se společným nastavením. Korekci mají jen
+								ta, do kterých byla zkopírována. ZIP má strukturu serverového exportu.
 							</Card.Description>
 						{/if}
 					</Card.Header>
