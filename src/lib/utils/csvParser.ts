@@ -9,7 +9,7 @@ import type { TaskResult } from '$lib/types/task.types';
 /**
  * Parse a CSV line respecting quoted fields (handles commas inside quotes and escaped quotes)
  */
-function parseCsvLine(line: string): string[] {
+export function parseCsvLine(line: string): string[] {
 	const result: string[] = [];
 	let current = '';
 	let inQuotes = false;
@@ -47,7 +47,7 @@ function parseCsvLine(line: string): string[] {
  * Handles UTC ISO formats "YYYY-MM-DDTHH:MM:SSZ" and "YYYY-MM-DDTHH:MM:SS.sssZ"
  * produced by DatabaseExporter.formatTimestamp().
  */
-function parseFormattedTimestamp(formatted: string): number {
+export function parseFormattedTimestamp(formatted: string): number {
 	if (!formatted) return 0;
 	const ms = Date.parse(formatted);
 	if (!Number.isNaN(ms)) return ms;

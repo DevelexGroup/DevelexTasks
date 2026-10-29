@@ -16,9 +16,17 @@
 	import HeatmapOverlay, {
 		type ClickMarker,
 		type GazePoint,
+		type HeatmapLayer,
 		type HoverItem
 	} from './components/HeatmapOverlay.svelte';
+	import type { PostProcessor } from '$lib/api/test-sessions';
 	import type { FixationDataEntry } from '$lib/database/db.types';
+	import { readOutputRows } from '$lib/utils/postProcessing/outputs';
+	import {
+		layerColor,
+		layerColorName,
+		loadPostProcessors
+	} from '$lib/utils/postProcessing/registry';
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
 	import {
 		describeSession,
@@ -204,15 +212,13 @@
 	// A spot collecting about 4 % of the slide's samples saturates the gradient.
 	const heatMax = $derived(Math.min(100, Math.max(5, Math.round(heatPoints.length / 25))));
 
-
 	const gazePath = $derived.by((): GazePoint[] => {
 		const points: GazePoint[] = [];
 		for (const sample of windowSamples) {
 			if (heatSource === 'mouse') {
 				if (sample.mouse_x === null || sample.mouse_y === null) continue;
 				points.push({ x: sample.mouse_x, y: sample.mouse_y });
-			}
-			else if (heatSource === 'eyetracker') {
+			} else if (heatSource === 'eyetracker') {
 				if (sample.eyetracker_x === null || sample.eyetracker_y === null) continue;
 				points.push({ x: sample.eyetracker_x, y: sample.eyetracker_y });
 			}
@@ -224,8 +230,38 @@
 		return rows.filter((f) => f.slide_index === selectedSlide && inWindow(f.timestamp));
 	}
 	const fixations = $derived(session ? slideFixations(session.fixationData) : []);
-	const i2mcFixations = $derived(session ? slideFixations(session.i2mcFixationData) : []);
-	const hasI2mc = $derived((session?.i2mcFixationData.length ?? 0) > 0);
+
+	// ── Post-processing layers ──
+	let processors = $state<PostProcessor[]>([]);
+	let shownLayers = $state<Record<string, boolean>>({});
+	void loadPostProcessors().then((loaded) => (processors = loaded));
+
+	function layerIndex(processor: PostProcessor): number {
+		const index = processors.findIndex((candidate) => candidate.name === processor.name);
+		return index < 0 ? processors.length : index;
+	}
+
+	const displayableOutputs = $derived(
+		(session?.processorOutputs ?? []).filter((outputs) => outputs.processor.output)
+	);
+	const visibleLayers = $derived.by((): HeatmapLayer[] =>
+		displayableOutputs
+			.filter((outputs) => shownLayers[outputs.processor.name])
+			.map(({ processor, files }) => ({
+				key: processor.name,
+				label: processor.label,
+				color: layerColor(layerIndex(processor)),
+				fixations: files
+					.flatMap((file) => (processor.output ? readOutputRows(file, processor.output) : []))
+					.filter((row) => row.slide === selectedSlide && inWindow(row.time))
+					.sort((a, b) => a.time - b.time)
+					.flatMap((row) => {
+						const point = row.points[0];
+						if (!point) return [];
+						return [{ ...point, duration: row.duration, timestamp: row.time, aoi: row.aoi }];
+					})
+			}))
+	);
 
 	const clicks = $derived.by((): ClickMarker[] => {
 		const markers: ClickMarker[] = [];
@@ -288,7 +324,6 @@
 	let showHeatmap = $state(true);
 	let showPath = $state(false);
 	let showFixations = $state(true);
-	let showI2mc = $state(false);
 	let showClicks = $state(false);
 	let showAois = $state(false);
 
@@ -380,12 +415,11 @@
 		height={stageH}
 		{gazePath}
 		{fixations}
-		{i2mcFixations}
+		layers={visibleLayers}
 		{clicks}
 		{aois}
 		{showPath}
 		{showFixations}
-		showI2mc={showI2mc && hasI2mc}
 		{showClicks}
 		{showAois}
 		onHover={handleHover}
@@ -616,12 +650,16 @@
 							Fixace
 							<Switch bind:checked={showFixations} />
 						</label>
-						{#if hasI2mc}
-							<label class={switchRowClass} title="Referenční fixace ze serverového I2MC">
-								I2MC fixace (oranžově)
-								<Switch bind:checked={showI2mc} />
+						{#each displayableOutputs as { processor } (processor.name)}
+							<label class={switchRowClass} title={processor.description}>
+								{processor.label} ({layerColorName(layerIndex(processor))})
+								<Switch
+									checked={shownLayers[processor.name] ?? false}
+									onCheckedChange={(checked) =>
+										(shownLayers = { ...shownLayers, [processor.name]: checked })}
+								/>
 							</label>
-						{/if}
+						{/each}
 						<label class={switchRowClass} title="Události select_ na pozici myši">
 							Kliknutí
 							<Switch bind:checked={showClicks} />
@@ -709,11 +747,12 @@
 					<div>{item.click.event} · {offsetLabel(item.click.timestamp)}</div>
 				{:else}
 					<div class="font-semibold">
-						{item.kind === 'i2mc' ? 'I2MC fixace' : 'Fixace'}
+						{item.kind === 'layer' ? item.label : 'Fixace'}
 						{item.index + 1}
 					</div>
 					<div>
-						{Math.round(item.fixation.duration)} ms · {offsetLabel(item.fixation.timestamp)}
+						{item.fixation.duration === null ? '–' : Math.round(item.fixation.duration)} ms ·
+						{offsetLabel(item.fixation.timestamp)}
 					</div>
 					<div>AOI: {item.fixation.aoi.length > 0 ? item.fixation.aoi.join(', ') : '–'}</div>
 				{/if}

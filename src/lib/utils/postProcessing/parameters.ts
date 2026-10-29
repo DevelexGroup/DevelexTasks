@@ -1,4 +1,4 @@
-import type { PostProcessorParameter } from '$lib/api/test-sessions';
+import type { PostProcessorParameter, PostProcessorPrefill } from '$lib/api/test-sessions';
 
 /** Form state for a processor's parameters: each value as typed, empty = not set. */
 export type ParameterDraft = Record<string, string>;
@@ -65,4 +65,21 @@ export function resolveParameters(
 	}
 
 	return { values, errors };
+}
+
+export type PrefillValues = Partial<Record<PostProcessorPrefill, number>>;
+
+/** Fills prefilled parameters from the session; a missing value restores the default. */
+export function applyPrefill(
+	parameters: PostProcessorParameter[],
+	draft: ParameterDraft,
+	values: PrefillValues
+): ParameterDraft {
+	const next = { ...draft };
+	for (const parameter of parameters) {
+		if (!parameter.prefill) continue;
+		const value = values[parameter.prefill] ?? parameter.defaultValue;
+		next[parameter.key] = value == null ? '' : String(value);
+	}
+	return next;
 }

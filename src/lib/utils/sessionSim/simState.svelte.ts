@@ -1,9 +1,18 @@
-import type { FixationDataEntry } from '$lib/database/db.types';
+import type { PostProcessor } from '$lib/api/test-sessions';
+import { DatabaseExporter } from '$lib/utils/databaseExport';
+import {
+	readOutputRows,
+	shiftOutputFile,
+	slideOfOutputFile,
+	type ProcessorOutputFile,
+	type ShiftContext
+} from '$lib/utils/postProcessing/outputs';
 import { buildCorrections, buildGeometryMap } from './builders';
-import type { CorrectedExportMeta } from './export';
+import type { CorrectedExportMeta, ExportedProcessorOutput } from './export';
+import { correctionForSlide, shiftMapper, type CorrectionSnapshot } from './layers';
 import { createFluencyResolver } from './metrics/fluencyRegistry';
 import { runReplay } from './replay';
-import { identityCorrection } from './transform';
+import { identityCorrection, transformRawEntry } from './transform';
 import { describeSession } from './sessionView';
 import type { ParsedTaskName } from './taskName';
 import { resolveSlide, type ResolvedSlide } from './taskResolver';
@@ -16,6 +25,7 @@ import {
 	type FluencyResolver,
 	type LoadedSession,
 	type RebaseMode,
+	type RecordedSlideGeometry,
 	type ReplayResult,
 	type SessionSource,
 	type SlideGeometry,
@@ -46,6 +56,37 @@ export class SimSettings {
 }
 
 export type SessionLoadStatus = 'idle' | 'loading' | 'ready' | 'error';
+
+/** A processor's output recomputed on corrected raw data. */
+export interface ProcessorRerun {
+	processor: PostProcessor;
+	files: ProcessorOutputFile[];
+	/** The correction the input was transformed with. */
+	corrections: CorrectionSnapshot;
+	parameters: Record<string, unknown>;
+}
+
+/** A processor's output as shown, before shifting; computedUnder null = uncorrected data. */
+export interface ProcessorLayer {
+	processor: PostProcessor;
+	files: ProcessorOutputFile[];
+	source: 'stored' | 'rerun';
+	computedUnder: CorrectionSnapshot | null;
+}
+
+function layerSlides(layer: ProcessorLayer): number[] {
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	const slides = new Set<number>();
+	for (const file of layer.files) {
+		if (layer.processor.output) {
+			for (const row of readOutputRows(file, layer.processor.output)) slides.add(row.slide);
+		} else {
+			const slide = slideOfOutputFile(file, null);
+			if (slide !== null) slides.add(slide);
+		}
+	}
+	return [...slides];
+}
 
 export function sessionSourceLabel(source: SessionSource): string {
 	const date = source.sessionStartTime
@@ -86,6 +127,8 @@ export class SessionSimState {
 	/** AOI rects recorded during the live session; immutable, wins over capture. */
 	recordedAois = $state<Record<number, AoiRect[]>>({});
 	result = $state<ReplayResult | null>(null);
+	/** Processor results recomputed on corrected data, by processor name; they replace the stored output. */
+	reruns = $state<Record<string, ProcessorRerun>>({});
 	recomputeMs = $state<number | null>(null);
 	error = $state('');
 
@@ -175,14 +218,131 @@ export class SessionSimState {
 			? this.centred(this.pendingCorrection)
 			: identityCorrection(this.viewportWidth / 2, this.viewportHeight / 2);
 		this.pendingCorrection = null;
+		this.reruns = {};
 		this.result = null;
 		this.scheduleRecompute();
 	}
 
-	/** Replaces the I2MC reference fixations, e.g. with a headless server run. */
-	setI2mcFixationData(entries: FixationDataEntry[]): void {
-		if (!this.session) return;
-		this.session.i2mcFixationData = [...entries].sort((a, b) => a.timestamp - b.timestamp);
+	correctionSnapshot(): CorrectionSnapshot {
+		return $state.snapshot({
+			sessionCorrection: this.sessionCorrection,
+			slideOverrides: this.slideOverrides
+		});
+	}
+
+	/** Each processor's re-run result if any, else its stored output. */
+	get layers(): ProcessorLayer[] {
+		const layers: ProcessorLayer[] = (this.session?.processorOutputs ?? [])
+			.filter((stored) => !this.reruns[stored.processor.name])
+			.map((stored) => ({ ...stored, source: 'stored', computedUnder: null }));
+		for (const rerun of Object.values(this.reruns)) {
+			layers.push({
+				processor: rerun.processor,
+				files: rerun.files,
+				source: 'rerun',
+				computedUnder: rerun.corrections
+			});
+		}
+		return layers.sort((a, b) => a.processor.name.localeCompare(b.processor.name));
+	}
+
+	/** The layer's files moved from the correction they were computed under to the current one. */
+	shiftedFiles(layer: ProcessorLayer, onlySlide?: number): ProcessorOutputFile[] {
+		const schema = layer.processor.output;
+		if (!schema) return layer.files;
+		const mapper = shiftMapper(this.correctionSnapshot(), layer.computedUnder);
+		const geometry = this.buildGeometryMap();
+		const context: ShiftContext = {
+			mapperFor: (slide) => (onlySlide === undefined || slide === onlySlide ? mapper(slide) : null),
+			aoisFor: (slide) => geometry.get(slide)?.aois ?? null
+		};
+		return layer.files.map((file) => shiftOutputFile(file, schema, context));
+	}
+
+	/** True when the current correction differs from the one the layer was computed under on any of its slides. */
+	isShifted(layer: ProcessorLayer): boolean {
+		const mapper = shiftMapper(this.correctionSnapshot(), layer.computedUnder);
+		return layerSlides(layer).some((slide) => mapper(slide) !== null);
+	}
+
+	/** The sim can only feed processors that read raw gaze. */
+	canRerun(processor: PostProcessor): boolean {
+		return (
+			processor.inputFilePrefix === 'rawGazeData' && (this.session?.rawGazeData.length ?? 0) > 0
+		);
+	}
+
+	/**
+	 * Input files for re-running a processor on the corrected data, or null when
+	 * the sim cannot provide its main input. Raw timestamps stay as recorded.
+	 */
+	rerunInputs(
+		processor: PostProcessor,
+		corrections: CorrectionSnapshot = this.correctionSnapshot()
+	): { name: string; content: string }[] | null {
+		const session = this.session;
+		if (!session || !this.canRerun(processor)) return null;
+		const corrected = session.rawGazeData.map((row) =>
+			transformRawEntry(row, correctionForSlide(corrections, row.slide_index))
+		);
+		const files = [
+			{
+				name: 'rawGazeData.csv',
+				content: DatabaseExporter.createCsvContent(corrected, 'rawGazeData')
+			}
+		];
+		if (processor.auxiliaryInputFilePrefixes.includes('aoiGeometry')) {
+			for (const geometry of this.geometryFiles()) {
+				files.push({
+					name: `aoiGeometry_slide${geometry.slideIndex}.json`,
+					content: JSON.stringify(geometry)
+				});
+			}
+		}
+		return files;
+	}
+
+	/** Recorded geometry, plus captured geometry for slides that have none recorded. */
+	private geometryFiles(): RecordedSlideGeometry[] {
+		const files = [...(this.session?.recordedGeometry ?? [])];
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const recorded = new Set(files.map((geometry) => geometry.slideIndex));
+		for (const [slideKey, aois] of Object.entries(this.capturedAois)) {
+			const slide = Number(slideKey);
+			if (recorded.has(slide)) continue;
+			files.push({
+				slideIndex: slide,
+				stimulusId: this.stimulusBySlide[slide] ?? null,
+				viewport: { width: this.viewportWidth, height: this.viewportHeight },
+				aois: $state.snapshot(aois)
+			});
+		}
+		return files.sort((a, b) => a.slideIndex - b.slideIndex);
+	}
+
+	setRerun(rerun: ProcessorRerun): void {
+		this.reruns = { ...this.reruns, [rerun.processor.name]: rerun };
+	}
+
+	revertRerun(processorName: string): void {
+		const { [processorName]: _removed, ...rest } = this.reruns;
+		void _removed;
+		this.reruns = rest;
+	}
+
+	exportOutputs(): ExportedProcessorOutput[] {
+		return this.layers.map((layer) => {
+			const shifted = !!layer.processor.output && this.isShifted(layer);
+			const stale = !layer.processor.output && this.isShifted(layer);
+			return {
+				processor: layer.processor,
+				files: shifted ? this.shiftedFiles(layer) : layer.files,
+				source: layer.source,
+				shifted,
+				stale,
+				parameters: this.reruns[layer.processor.name]?.parameters ?? null
+			};
+		});
 	}
 
 	setViewport(width: number, height: number): void {

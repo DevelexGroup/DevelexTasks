@@ -1,5 +1,11 @@
 import JSZip from 'jszip';
+import type { PostProcessor } from '$lib/api/test-sessions';
 import { DatabaseExporter, type TableName } from '$lib/utils/databaseExport';
+import {
+	serializeOutputCsv,
+	slideOfOutputFile,
+	type ProcessorOutputFile
+} from '$lib/utils/postProcessing/outputs';
 import { sessionFolderStamp } from './loaders';
 import type {
 	AoiAttributionStrategy,
@@ -31,9 +37,23 @@ export interface CorrectedFile {
 	content: string;
 }
 
+/** One processor's output as exported; files keep their original names. */
+export interface ExportedProcessorOutput {
+	processor: PostProcessor;
+	files: ProcessorOutputFile[];
+	source: 'stored' | 'rerun';
+	/** Positions were moved to the export's correction. */
+	shifted: boolean;
+	/** The correction differs but the output declares no columns to move. */
+	stale: boolean;
+	/** Parameters of the re-run; null for stored output. */
+	parameters: Record<string, unknown> | null;
+}
+
 export interface ExportedSession {
 	result: ReplayResult;
 	meta: CorrectedExportMeta;
+	outputs?: ExportedProcessorOutput[];
 }
 
 export const CORRECTIONS_FILE_NAME = 'corrections.json';
@@ -61,7 +81,8 @@ function splitBySlide<T extends { slide_index: number }>(rows: T[]): Map<number,
  */
 export function buildCorrectedFiles(
 	result: ReplayResult,
-	meta: CorrectedExportMeta
+	meta: CorrectedExportMeta,
+	outputs: ExportedProcessorOutput[] = []
 ): CorrectedFile[] {
 	const files: CorrectedFile[] = [];
 
@@ -93,6 +114,16 @@ export function buildCorrectedFiles(
 		}
 	}
 
+	for (const output of outputs) {
+		for (const file of output.files) {
+			const slide = slideOfOutputFile(file, output.processor.output);
+			files.push({
+				name: `${slide === null ? 'meta' : `part_${slide}`}/${file.fileName}`,
+				content: serializeOutputCsv(file)
+			});
+		}
+	}
+
 	files.push({
 		name: `meta/${CORRECTIONS_FILE_NAME}`,
 		content: JSON.stringify(
@@ -114,6 +145,18 @@ export function buildCorrectedFiles(
 				rebaseRawTimestamps: meta.rebaseRawTimestamps,
 				synthesizeDwellArrow: meta.synthesizeDwellArrow,
 				synthesizeDwellEye: meta.synthesizeDwellEye,
+				postProcessing: Object.fromEntries(
+					outputs.map((output) => [
+						output.processor.name,
+						{
+							source: output.source,
+							shifted: output.shifted,
+							stale: output.stale,
+							notCorrected: output.shifted ? (output.processor.output?.spatialMetrics ?? []) : [],
+							parameters: output.parameters
+						}
+					])
+				),
 				warnings: result.warnings,
 				exportedAt: new Date().toISOString()
 			},
@@ -132,12 +175,12 @@ export function buildCorrectedFiles(
 export function buildUnifiedExportFiles(sessions: ExportedSession[]): CorrectedFile[] {
 	const usedFolders = new Set<string>();
 	const files: CorrectedFile[] = [];
-	for (const { result, meta } of sessions) {
+	for (const { result, meta, outputs } of sessions) {
 		const base = meta.session.exportFolder;
 		let folder = base;
 		for (let counter = 2; usedFolders.has(folder); counter++) folder = `${base}_${counter}`;
 		usedFolders.add(folder);
-		for (const file of buildCorrectedFiles(result, meta)) {
+		for (const file of buildCorrectedFiles(result, meta, outputs)) {
 			files.push({ name: `${folder}/${file.name}`, content: file.content });
 		}
 	}

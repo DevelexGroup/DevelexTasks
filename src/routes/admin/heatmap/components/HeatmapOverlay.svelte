@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { FixationDataEntry } from '$lib/database/db.types';
+	import type { LayerColor } from '$lib/utils/postProcessing/registry';
 	import type { AoiRect } from '$lib/utils/sessionSim/types';
 
 	export interface GazePoint {
@@ -14,8 +15,25 @@
 		timestamp: number;
 	}
 
+	/** One row of a post-processor's output, at its first declared point. */
+	export interface LayerFixation {
+		x: number;
+		y: number;
+		duration: number | null;
+		timestamp: number;
+		aoi: string[];
+	}
+
+	export interface HeatmapLayer {
+		key: string;
+		label: string;
+		color: LayerColor;
+		fixations: LayerFixation[];
+	}
+
 	export type HoverItem =
-		| { kind: 'fixation' | 'i2mc'; index: number; fixation: FixationDataEntry }
+		| { kind: 'fixation'; index: number; fixation: FixationDataEntry }
+		| { kind: 'layer'; label: string; index: number; fixation: LayerFixation }
 		| { kind: 'click'; index: number; click: ClickMarker };
 
 	interface Props {
@@ -23,12 +41,11 @@
 		height: number;
 		gazePath: GazePoint[];
 		fixations: FixationDataEntry[];
-		i2mcFixations: FixationDataEntry[];
+		layers: HeatmapLayer[];
 		clicks: ClickMarker[];
 		aois: AoiRect[];
 		showPath: boolean;
 		showFixations: boolean;
-		showI2mc: boolean;
 		showClicks: boolean;
 		showAois: boolean;
 		onHover?: (item: HoverItem | null, event: PointerEvent) => void;
@@ -39,12 +56,11 @@
 		height,
 		gazePath,
 		fixations,
-		i2mcFixations,
+		layers,
 		clicks,
 		aois,
 		showPath,
 		showFixations,
-		showI2mc,
 		showClicks,
 		showAois,
 		onHover
@@ -71,14 +87,47 @@
 		});
 	});
 
+	function layerItem(layer: HeatmapLayer, index: number, fixation: LayerFixation): HoverItem {
+		return { kind: 'layer', label: layer.label, index, fixation };
+	}
+
 	function fixationRadius(duration: number): number {
 		return Math.min(Math.max(duration / 25, 8), 40);
 	}
 </script>
 
+{#snippet layerMarkers(layer: HeatmapLayer)}
+	{#each layer.fixations as fixation, i (i)}
+		{@const item = layerItem(layer, i, fixation)}
+		<g
+			class="marker pointer-events-auto"
+			onpointerenter={(e) => onHover?.(item, e)}
+			onpointermove={(e) => onHover?.(item, e)}
+			onpointerleave={(e) => onHover?.(null, e)}
+		>
+			<circle
+				cx={fixation.x}
+				cy={fixation.y}
+				r={fixationRadius(fixation.duration ?? 0)}
+				fill="rgb({layer.color.rgb} / 0.25)"
+				stroke="rgb({layer.color.rgb} / 0.9)"
+				stroke-width="2"
+			/>
+			<text
+				x={fixation.x}
+				y={fixation.y + 5}
+				text-anchor="middle"
+				fill={layer.color.text}
+				class="text-[13px] font-bold"
+			>
+				{i + 1}
+			</text>
+		</g>
+	{/each}
+{/snippet}
+
 {#snippet fixationMarkers(
 	rows: FixationDataEntry[],
-	kind: 'fixation' | 'i2mc',
 	fill: string,
 	stroke: string,
 	textClass: string
@@ -87,8 +136,8 @@
 		{#if fixation.eyetracker_x !== null && fixation.eyetracker_y !== null}
 			<g
 				class="marker pointer-events-auto"
-				onpointerenter={(e) => onHover?.({ kind, index: i, fixation }, e)}
-				onpointermove={(e) => onHover?.({ kind, index: i, fixation }, e)}
+				onpointerenter={(e) => onHover?.({ kind: 'fixation', index: i, fixation }, e)}
+				onpointermove={(e) => onHover?.({ kind: 'fixation', index: i, fixation }, e)}
 				onpointerleave={(e) => onHover?.(null, e)}
 			>
 				<circle
@@ -156,22 +205,15 @@
 	{#if showFixations}
 		{@render fixationMarkers(
 			fixations,
-			'fixation',
 			'rgb(124 58 237 / 0.25)',
 			'rgb(124 58 237 / 0.9)',
 			'fill-violet-800'
 		)}
 	{/if}
 
-	{#if showI2mc}
-		{@render fixationMarkers(
-			i2mcFixations,
-			'i2mc',
-			'rgb(217 119 6 / 0.25)',
-			'rgb(217 119 6 / 0.9)',
-			'fill-amber-700'
-		)}
-	{/if}
+	{#each layers as layer (layer.key)}
+		{@render layerMarkers(layer)}
+	{/each}
 
 	{#if showClicks}
 		{#each clicks as click, i (`${click.timestamp}-${i}`)}

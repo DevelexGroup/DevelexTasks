@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PostProcessorParameter } from '$lib/api/test-sessions';
-import { draftFromDefaults, resolveParameters } from './parameters';
+import { applyPrefill, draftFromDefaults, resolveParameters } from './parameters';
 
 function parameter(overrides: Partial<PostProcessorParameter>): PostProcessorParameter {
 	return {
@@ -13,6 +13,7 @@ function parameter(overrides: Partial<PostProcessorParameter>): PostProcessorPar
 		min: null,
 		max: null,
 		options: null,
+		prefill: null,
 		...overrides
 	};
 }
@@ -92,5 +93,27 @@ describe('resolveParameters', () => {
 		const { errors } = resolveParameters(parameters, draft);
 		expect(errors.count).toBe('Nejvýše 10');
 		expect(errors.xres).toBe('Zadejte číslo');
+	});
+});
+
+describe('applyPrefill', () => {
+	const prefilled = [
+		parameter({ key: 'xres', defaultValue: 1920, prefill: 'VIEWPORT_WIDTH' }),
+		parameter({ key: 'freq', defaultValue: 0, prefill: 'SAMPLING_RATE' }),
+		parameter({ key: 'minFixDur', defaultValue: 40 })
+	];
+
+	it('fills prefilled parameters and leaves the rest as drafted', () => {
+		const draft = { xres: '1920', freq: '0', minFixDur: '60' };
+		expect(applyPrefill(prefilled, draft, { VIEWPORT_WIDTH: 1536, SAMPLING_RATE: 250 })).toEqual({
+			xres: '1536',
+			freq: '250',
+			minFixDur: '60'
+		});
+	});
+
+	it('restores the default when the session has no value', () => {
+		const draft = { xres: '1536', freq: '250', minFixDur: '40' };
+		expect(applyPrefill(prefilled, draft, { VIEWPORT_WIDTH: 1536 }).freq).toBe('0');
 	});
 });

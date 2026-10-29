@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { FixationDataEntry } from '$lib/database/db.types';
+	import type { LayerColor } from '$lib/utils/postProcessing/registry';
 	import type { AoiRect } from '$lib/utils/sessionSim/types';
 	import type { SlideTimeWindow } from '$lib/utils/scoreMetrics';
 
@@ -11,6 +12,20 @@
 	/** counted = inside the slide's effective window, i.e. part of the score. */
 	export type OverlayFixation = FixationDataEntry & { counted: boolean };
 
+	export interface LayerMarker {
+		x: number;
+		y: number;
+		duration: number | null;
+		counted: boolean;
+	}
+
+	/** One post-processor's output on the selected slide. */
+	export interface OverlayLayer {
+		key: string;
+		color: LayerColor;
+		markers: LayerMarker[];
+	}
+
 	interface Props {
 		width: number;
 		height: number;
@@ -18,14 +33,13 @@
 		gazeAfter: GazePoint[];
 		fixationsBefore: OverlayFixation[];
 		fixationsAfter: OverlayFixation[];
-		fixationsI2mc: OverlayFixation[];
+		layers: OverlayLayer[];
 		aois: AoiRect[];
 		/** Effective slide window; AOI intervals outside it render dimmed. */
 		timeWindow?: SlideTimeWindow | null;
 		showGaze: boolean;
 		showBefore: boolean;
 		showAfter: boolean;
-		showI2mc: boolean;
 		showAois: boolean;
 	}
 
@@ -36,13 +50,12 @@
 		gazeAfter,
 		fixationsBefore,
 		fixationsAfter,
-		fixationsI2mc,
+		layers,
 		aois,
 		timeWindow = null,
 		showGaze,
 		showBefore,
 		showAfter,
-		showI2mc,
 		showAois
 	}: Props = $props();
 
@@ -155,29 +168,28 @@
 		{/each}
 	{/if}
 
-	{#if showI2mc}
-		{#each fixationsI2mc as fixation, i (`${fixation.fixation_index}-${fixation.timestamp}`)}
-			{#if fixation.eyetracker_x !== null && fixation.eyetracker_y !== null}
-				<circle
-					cx={fixation.eyetracker_x}
-					cy={fixation.eyetracker_y}
-					r={fixationRadius(fixation.duration)}
-					fill="rgb(217 119 6 / {fixation.counted ? 0.25 : 0.1})"
-					stroke="rgb(217 119 6 / 0.9)"
-					stroke-width="2"
-					stroke-dasharray={fixation.counted ? undefined : '5 4'}
-				/>
-				<text
-					x={fixation.eyetracker_x}
-					y={fixation.eyetracker_y + 5}
-					text-anchor="middle"
-					class="fill-amber-700 text-[13px] font-bold"
-				>
-					{i + 1}
-				</text>
-			{/if}
+	{#each layers as layer (layer.key)}
+		{#each layer.markers as marker, i (i)}
+			<circle
+				cx={marker.x}
+				cy={marker.y}
+				r={fixationRadius(marker.duration ?? 0)}
+				fill="rgb({layer.color.rgb} / {marker.counted ? 0.25 : 0.1})"
+				stroke="rgb({layer.color.rgb} / 0.9)"
+				stroke-width="2"
+				stroke-dasharray={marker.counted ? undefined : '5 4'}
+			/>
+			<text
+				x={marker.x}
+				y={marker.y + 5}
+				text-anchor="middle"
+				fill={layer.color.text}
+				class="text-[13px] font-bold"
+			>
+				{i + 1}
+			</text>
 		{/each}
-	{/if}
+	{/each}
 
 	{#if showAfter}
 		{#each fixationsAfter as fixation, i (`${fixation.fixation_index}-${fixation.timestamp}`)}

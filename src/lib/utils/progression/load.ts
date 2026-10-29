@@ -34,6 +34,8 @@ export interface AnalysisOptions {
 	isCurrent?: () => boolean;
 }
 
+const I2MC_OUTPUT_PREFIX = 'I2MC_fixationData';
+
 const messageOf = (error: unknown): string =>
 	error instanceof Error ? error.message : 'Tento záznam se nepodařilo načíst.';
 const usableId = (value: string | undefined | null): string | null =>
@@ -84,7 +86,9 @@ export const analyzeSession = async (
 
 	for (const file of files.values()) {
 		checkCurrent();
-		const kind = classifyFileName(file.name);
+		const kind = file.name.startsWith(I2MC_OUTPUT_PREFIX)
+			? 'i2mcFixationData'
+			: classifyFileName(file.name);
 
 		if (!kind || kind === 'fixationData' || kind === 'sessionScores') {
 			continue;

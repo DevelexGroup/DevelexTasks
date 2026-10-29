@@ -4,6 +4,7 @@
 	import Icon from '@iconify/svelte';
 	import SessionPicker from '$lib/components/SessionPicker.svelte';
 	import type { TestSessionDTO } from '$lib/types/api.types';
+	import { loadPostProcessors } from '$lib/utils/postProcessing/registry';
 	import { loadRemoteSession, loadSessionsFromFiles } from '$lib/utils/sessionSim/loaders';
 	import { sessionSourceLabel } from '$lib/utils/sessionSim/simState.svelte';
 	import type { LoadedSession, SessionSource } from '$lib/utils/sessionSim/types';
@@ -56,7 +57,7 @@
 			username: session.username,
 			testType: session.testType,
 			sessionStartTime: new Date(session.sessionStartTime),
-			load: () => loadRemoteSession(session)
+			load: async () => loadRemoteSession(session, await loadPostProcessors())
 		};
 	}
 
@@ -83,7 +84,7 @@
 		isParsing = true;
 		error = '';
 		try {
-			fileSessions = await loadSessionsFromFiles(droppedFiles);
+			fileSessions = await loadSessionsFromFiles(droppedFiles, await loadPostProcessors());
 			if (droppedFiles.length > 0 && fileSessions.length === 0) {
 				error = 'V souborech nebyla nalezena žádná data sezení (rawGazeData/gazeSamples).';
 			}

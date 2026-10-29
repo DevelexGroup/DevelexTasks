@@ -11,7 +11,11 @@ import {
 	sessionFolderOf,
 	sessionFolderStamp
 } from './loaders';
-import { downloadTestSessionFile, getTestSessionDetail } from '$lib/api/test-sessions';
+import {
+	downloadTestSessionFile,
+	getTestSessionDetail,
+	type PostProcessor
+} from '$lib/api/test-sessions';
 
 vi.mock('$lib/api/test-sessions', () => ({
 	getTestSessionDetail: vi.fn(),
@@ -79,6 +83,29 @@ function textFile(name: string, content: string) {
 	return { name, text: () => Promise.resolve(content) };
 }
 
+const I2MC: PostProcessor = {
+	name: 'i2mc',
+	label: 'I2MC fixace',
+	description: '',
+	inputFilePrefix: 'rawGazeData',
+	auxiliaryInputFilePrefixes: ['aoiGeometry'],
+	outputFilePrefix: 'I2MC_fixationData',
+	parameters: [],
+	output: {
+		slideColumn: 'Slide Index',
+		timeColumn: 'Timestamp',
+		durationColumn: 'Duration',
+		points: [{ x: 'Eye X', y: 'Eye Y' }],
+		aoiColumn: 'AOI',
+		spatialMetrics: []
+	}
+};
+
+const I2MC_CSV = [
+	'Slide Index,Timestamp,Eye X,Eye Y,Duration,AOI',
+	'1,2024-08-11T12:00:00.150Z,100,200,120,'
+].join('\n');
+
 async function loadSingle(files: { name: string; text(): Promise<string> }[]) {
 	const sessions = await loadSessionsFromFiles(files);
 	expect(sessions).toHaveLength(1);
@@ -94,10 +121,9 @@ describe('classifyFileName', () => {
 		expect(classifyFileName('clientLogs.log')).toBeNull();
 	});
 
-	it('separates I2MC fixation files from ICT fixationData', () => {
-		expect(classifyFileName('I2MC_fixationData_slide1.csv')).toBe('i2mcFixationData');
-		expect(classifyFileName('I2MC_fixationData.csv')).toBe('i2mcFixationData');
-		expect(classifyFileName('i2mc_notes.csv')).toBeNull();
+	it('never reads processor outputs as ICT fixationData', () => {
+		expect(classifyFileName('I2MC_fixationData_slide1.csv')).toBeNull();
+		expect(classifyFileName('I2MC_fixationData.csv')).toBeNull();
 	});
 
 	it('routes recorded AOI geometry files', () => {
@@ -429,5 +455,78 @@ describe('loadRemoteSession', () => {
 		expect(session.rawGazeData).toHaveLength(2);
 		expect(session.gazeSamples).toHaveLength(1);
 		expect(session.exportFolder).toBe('child/2024-08-11_14-00-00_cibule-1');
+	});
+});
+
+describe('processor outputs', () => {
+	it('attaches outputs of known processors to a single-session folder', async () => {
+		const { rawCsv } = buildCsvs();
+		const sessions = await loadSessionsFromFiles(
+			[
+				textFile('child/2024-08-11_14-00-00_cibule-1/part_1/rawGazeData_slide1.csv', rawCsv),
+				textFile(
+					'child/2024-08-11_14-00-00_cibule-1/part_1/I2MC_fixationData_slide1.csv',
+					I2MC_CSV
+				),
+				textFile(
+					'child/2024-08-11_14-00-00_cibule-1/part_1/backup_20260902-101530_I2MC_fixationData_slide1.csv',
+					I2MC_CSV
+				)
+			],
+			[I2MC]
+		);
+
+		expect(sessions).toHaveLength(1);
+		expect(sessions[0].fixationData).toHaveLength(0);
+		expect(sessions[0].processorOutputs).toHaveLength(1);
+		expect(sessions[0].processorOutputs[0].processor.name).toBe('i2mc');
+		expect(sessions[0].processorOutputs[0].files.map((file) => file.fileName)).toEqual([
+			'I2MC_fixationData_slide1.csv'
+		]);
+	});
+
+	it('ignores outputs of processors it was not given', async () => {
+		const { rawCsv } = buildCsvs();
+		const session = await loadSingle([
+			textFile('rawGazeData_slide1.csv', rawCsv),
+			textFile('I2MC_fixationData_slide1.csv', I2MC_CSV)
+		]);
+		expect(session.processorOutputs).toEqual([]);
+		expect(session.fixationData).toHaveLength(0);
+	});
+
+	it('downloads processor outputs of a remote session', async () => {
+		const { rawCsv } = buildCsvs();
+		const filesById: Record<string, string> = { 'f-raw': rawCsv, 'f-i2mc': I2MC_CSV };
+		vi.mocked(getTestSessionDetail).mockResolvedValue({
+			id: 'remote-1',
+			testType: 'cibule-1',
+			parts: [
+				{
+					id: 'p1',
+					files: [
+						{ id: 'f-raw', fileName: 'rawGazeData_slide1.csv' },
+						{ id: 'f-i2mc', fileName: 'I2MC_fixationData_slide1.csv' }
+					]
+				}
+			]
+		} as never);
+		vi.mocked(downloadTestSessionFile).mockImplementation((_session, fileId) =>
+			Promise.resolve(new Blob([filesById[fileId as string] ?? '']))
+		);
+
+		const session = await loadRemoteSession(
+			{
+				id: 'remote-1',
+				username: 'child',
+				testType: 'cibule-1',
+				sessionStartTime: '2024-08-11T14:00:00'
+			},
+			[I2MC]
+		);
+
+		expect(session.processorOutputs[0].files[0].rows).toEqual([
+			['1', '2024-08-11T12:00:00.150Z', '100', '200', '120', '']
+		]);
 	});
 });

@@ -69,7 +69,7 @@ function buildSession(overrides: Partial<LoadedSession> = {}): LoadedSession {
 		taskName: 'cibule-1',
 		gazeSamples,
 		fixationData: [],
-		i2mcFixationData: [],
+		processorOutputs: [],
 		sessionScores: [],
 		rawGazeData,
 		recordedGeometry: [],
@@ -110,6 +110,58 @@ function meta(session: LoadedSession) {
 }
 
 describe('buildCorrectedFiles', () => {
+	it('writes processor outputs into their parts and flags them in corrections.json', () => {
+		const session = buildSession();
+		const processor = {
+			name: 'i2mc',
+			label: 'I2MC fixace',
+			description: '',
+			inputFilePrefix: 'rawGazeData',
+			auxiliaryInputFilePrefixes: [],
+			outputFilePrefix: 'I2MC_fixationData',
+			parameters: [],
+			output: {
+				slideColumn: 'Slide Index',
+				timeColumn: 'Timestamp',
+				durationColumn: 'Duration',
+				points: [{ x: 'Eye X', y: 'Eye Y' }],
+				aoiColumn: 'AOI',
+				spatialMetrics: ['RMSxy']
+			}
+		};
+		const files = buildCorrectedFiles(buildResult(session), meta(session), [
+			{
+				processor,
+				files: [
+					{
+						fileName: 'I2MC_fixationData_slide3.csv',
+						headers: ['Slide Index', 'Eye X'],
+						rows: [['3', '120']]
+					}
+				],
+				source: 'stored',
+				shifted: true,
+				stale: false,
+				parameters: null
+			}
+		]);
+
+		const output = files.find((f) => f.name === 'part_3/I2MC_fixationData_slide3.csv');
+		expect(output?.content).toBe(['Slide Index,Eye X', '3,120', ''].join('\n'));
+		const corrections = JSON.parse(
+			files.find((f) => f.name === 'meta/corrections.json')?.content ?? '{}'
+		);
+		expect(corrections.postProcessing).toEqual({
+			i2mc: {
+				source: 'stored',
+				shifted: true,
+				stale: false,
+				notCorrected: ['RMSxy'],
+				parameters: null
+			}
+		});
+	});
+
 	it('lays the session out like the server export with original file names', () => {
 		const session = buildSession();
 		const files = buildCorrectedFiles(buildResult(session), meta(session));

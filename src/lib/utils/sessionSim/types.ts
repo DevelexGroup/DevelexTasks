@@ -5,6 +5,7 @@ import type {
 	SessionScoreDataEntry,
 	SessionScoreMetrics
 } from '$lib/database/db.types';
+import type { ProcessorOutputs } from '$lib/utils/postProcessing/outputs';
 import type { SlideTimeWindow } from '$lib/utils/scoreMetrics';
 
 /** Row-major 4×4 homogeneous matrix in viewport pixels, applied to (x, y, 0, 1). */
@@ -50,12 +51,12 @@ export interface LoadedSession {
 	taskName: string;
 	gazeSamples: GazeSampleDataEntry[];
 	fixationData: FixationDataEntry[];
-	/** Server-side I2MC reference fixations (I2MC_fixationData_slideN.csv), if present. */
-	i2mcFixationData: FixationDataEntry[];
 	sessionScores: SessionScoreDataEntry[];
 	rawGazeData: RawGazeDataEntry[];
 	/** AOI geometry recorded during the session (aoiGeometry_slideN.json), if present. */
 	recordedGeometry: RecordedSlideGeometry[];
+	/** Stored outputs of the post-processors the loader was given; computed on uncorrected data. */
+	processorOutputs: ProcessorOutputs[];
 	/** Info extracted from the session's meta.json, if present. */
 	meta: RecordedSessionMeta | null;
 	/** Verbatim meta.json content, for lossless re-export. */

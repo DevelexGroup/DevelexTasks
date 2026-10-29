@@ -18,7 +18,7 @@
 		POST_PROCESS_STATUS_LABELS,
 		PostProcessRunner
 	} from '$lib/utils/postProcessing/runner.svelte';
-	import PostProcessorParameters from './PostProcessorParameters.svelte';
+	import PostProcessorParameters from '$lib/components/PostProcessorParameters.svelte';
 
 	interface Props {
 		open: boolean;

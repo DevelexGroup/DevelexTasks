@@ -5,19 +5,27 @@ import type {
 	RawGazeDataEntry,
 	SessionScoreDataEntry
 } from '$lib/database/db.types';
-import { downloadTestSessionFile, getTestSessionDetail } from '$lib/api/test-sessions';
+import {
+	downloadTestSessionFile,
+	getTestSessionDetail,
+	type PostProcessor
+} from '$lib/api/test-sessions';
 import {
 	parseFixationDataCsv,
 	parseGazeSamplesCsv,
 	parseRawGazeDataCsv,
 	parseSessionScoresCsv
 } from '$lib/utils/csvParser';
+import {
+	outputProcessorOf,
+	parseOutputCsv,
+	type ProcessorOutputs
+} from '$lib/utils/postProcessing/outputs';
 import type { AoiRect, LoadedSession, RecordedSessionMeta, RecordedSlideGeometry } from './types';
 
 type TableKind =
 	| 'gazeSamples'
 	| 'fixationData'
-	| 'i2mcFixationData'
 	| 'sessionScores'
 	| 'rawGazeData'
 	| 'aoiGeometry'
@@ -30,10 +38,10 @@ type TableRow = GazeSampleDataEntry | FixationDataEntry | SessionScoreDataEntry 
 interface SessionTables {
 	gazeSamples: GazeSampleDataEntry[];
 	fixationData: FixationDataEntry[];
-	i2mcFixationData: FixationDataEntry[];
 	sessionScores: SessionScoreDataEntry[];
 	rawGazeData: RawGazeDataEntry[];
 	recordedGeometry: RecordedSlideGeometry[];
+	processorOutputs: ProcessorOutputs[];
 	sessionMeta: RecordedSessionMeta | null;
 	sessionMetaRaw: string | null;
 }
@@ -51,28 +59,34 @@ export function isBackupFileName(fileName: string): boolean {
 	return fileName.toLowerCase().startsWith(BACKUP_FILE_PREFIX);
 }
 
+/** Matched by prefix, so processor outputs such as I2MC_fixationData never pass as tables. */
 export function classifyFileName(fileName: string): TableKind | null {
 	const lower = fileName.toLowerCase();
 	if (lower.startsWith(BACKUP_FILE_PREFIX)) return null;
 	if (lower === 'meta.json') return 'sessionMeta';
-	if (lower.includes('aoigeometry')) return 'aoiGeometry';
-	if (lower.includes('rawgazedata')) return 'rawGazeData';
-	if (lower.includes('gazesamples')) return 'gazeSamples';
-	// I2MC files contain "fixationdata" too, so this branch must come first
-	if (lower.includes('i2mc')) return lower.includes('fixationdata') ? 'i2mcFixationData' : null;
-	if (lower.includes('fixationdata')) return 'fixationData';
-	if (lower.includes('sessionscores')) return 'sessionScores';
+	if (lower.startsWith('aoigeometry')) return 'aoiGeometry';
+	if (lower.startsWith('rawgazedata')) return 'rawGazeData';
+	if (lower.startsWith('gazesamples')) return 'gazeSamples';
+	if (lower.startsWith('fixationdata')) return 'fixationData';
+	if (lower.startsWith('sessionscores')) return 'sessionScores';
 	return null;
+}
+
+type FileKind = TableKind | { processor: PostProcessor };
+
+function classifyInput(fileName: string, processors: PostProcessor[]): FileKind | null {
+	const processor = outputProcessorOf(fileName, processors);
+	return processor ? { processor } : classifyFileName(fileName);
 }
 
 function emptyTables(): SessionTables {
 	return {
 		gazeSamples: [],
 		fixationData: [],
-		i2mcFixationData: [],
 		sessionScores: [],
 		rawGazeData: [],
 		recordedGeometry: [],
+		processorOutputs: [],
 		sessionMeta: null,
 		sessionMetaRaw: null
 	};
@@ -168,7 +182,7 @@ export function parseAoiGeometryJson(jsonText: string): RecordedSlideGeometry | 
 
 function parseRows(kind: RowKind, text: string): TableRow[] {
 	if (kind === 'gazeSamples') return parseGazeSamplesCsv(text);
-	if (kind === 'fixationData' || kind === 'i2mcFixationData') return parseFixationDataCsv(text);
+	if (kind === 'fixationData') return parseFixationDataCsv(text);
 	if (kind === 'sessionScores') return parseSessionScoresCsv(text);
 	return parseRawGazeDataCsv(text);
 }
@@ -188,6 +202,22 @@ function parseAuxiliary(tables: SessionTables, kind: 'aoiGeometry' | 'sessionMet
 		tables.sessionMeta = parsed;
 		tables.sessionMetaRaw = text;
 	}
+}
+
+function addProcessorOutput(
+	tables: SessionTables,
+	processor: PostProcessor,
+	fileName: string,
+	text: string
+): void {
+	let outputs = tables.processorOutputs.find((entry) => entry.processor.name === processor.name);
+	if (!outputs) {
+		outputs = { processor, files: [] };
+		tables.processorOutputs.push(outputs);
+	}
+	// Overlapping exports repeat the same file
+	if (outputs.files.some((file) => file.fileName === fileName)) return;
+	outputs.files.push(parseOutputCsv(fileName, text));
 }
 
 interface SessionIdentity {
@@ -261,7 +291,6 @@ function finalizeSession(
 	};
 	tables.gazeSamples = dedupeTable(tables.gazeSamples);
 	tables.fixationData = dedupeTable(tables.fixationData);
-	tables.i2mcFixationData = dedupeTable(tables.i2mcFixationData);
 	tables.sessionScores = dedupeTable(tables.sessionScores);
 	tables.rawGazeData = dedupeTable(tables.rawGazeData);
 	if (removedDuplicates > 0) {
@@ -272,7 +301,6 @@ function finalizeSession(
 
 	byTimestamp(tables.gazeSamples);
 	byTimestamp(tables.fixationData);
-	byTimestamp(tables.i2mcFixationData);
 	byTimestamp(tables.rawGazeData);
 
 	const anyRow = tables.rawGazeData[0] ?? tables.gazeSamples[0] ?? tables.fixationData[0];
@@ -316,10 +344,15 @@ function finalizeSession(
 		taskName,
 		gazeSamples: tables.gazeSamples,
 		fixationData: tables.fixationData,
-		i2mcFixationData: tables.i2mcFixationData,
 		sessionScores: tables.sessionScores,
 		rawGazeData: tables.rawGazeData,
 		recordedGeometry: tables.recordedGeometry.sort((a, b) => a.slideIndex - b.slideIndex),
+		processorOutputs: tables.processorOutputs
+			.map((entry) => ({
+				...entry,
+				files: entry.files.sort((a, b) => a.fileName.localeCompare(b.fileName))
+			}))
+			.sort((a, b) => a.processor.name.localeCompare(b.processor.name)),
 		meta: tables.sessionMeta,
 		metaRaw: tables.sessionMetaRaw,
 		bridgeStamped: isBridgeStamped(tables.rawGazeData),
@@ -339,16 +372,22 @@ export interface RemoteSessionRef {
 
 /**
  * Downloads and parses all table CSVs of a remote test session, including the
- * rawGazeData files the heatmap loader skips.
+ * rawGazeData files the heatmap loader skips, plus the outputs of the given
+ * post-processors.
  */
-export async function loadRemoteSession(ref: RemoteSessionRef): Promise<LoadedSession> {
+export async function loadRemoteSession(
+	ref: RemoteSessionRef,
+	processors: PostProcessor[] = []
+): Promise<LoadedSession> {
 	const detail = await getTestSessionDetail(ref.id);
 
-	const csvFiles = new Map<string, { fileId: string; kind: TableKind }>();
+	const remoteFiles = new Map<string, { fileId: string; fileName: string; kind: FileKind }>();
 	const collect = (files: { id: string; fileName: string }[] | undefined) => {
 		for (const file of files ?? []) {
-			const kind = classifyFileName(file.fileName);
-			if (kind && !csvFiles.has(file.id)) csvFiles.set(file.id, { fileId: file.id, kind });
+			const kind = classifyInput(file.fileName, processors);
+			if (kind && !remoteFiles.has(file.id)) {
+				remoteFiles.set(file.id, { fileId: file.id, fileName: file.fileName, kind });
+			}
 		}
 	};
 	for (const part of detail.parts ?? []) collect(part.files);
@@ -356,13 +395,14 @@ export async function loadRemoteSession(ref: RemoteSessionRef): Promise<LoadedSe
 
 	const tables = emptyTables();
 	const downloads = await Promise.all(
-		[...csvFiles.values()].map(async ({ fileId, kind }) => {
+		[...remoteFiles.values()].map(async ({ fileId, fileName, kind }) => {
 			const blob = await downloadTestSessionFile(ref.id, fileId);
-			return { kind, text: await blob.text() };
+			return { kind, fileName, text: await blob.text() };
 		})
 	);
-	for (const { kind, text } of downloads) {
-		if (kind === 'aoiGeometry' || kind === 'sessionMeta') parseAuxiliary(tables, kind, text);
+	for (const { kind, fileName, text } of downloads) {
+		if (typeof kind === 'object') addProcessorOutput(tables, kind.processor, fileName, text);
+		else if (kind === 'aoiGeometry' || kind === 'sessionMeta') parseAuxiliary(tables, kind, text);
 		else pushRows(tables, kind, parseRows(kind, text));
 	}
 
@@ -379,11 +419,15 @@ export async function loadRemoteSession(ref: RemoteSessionRef): Promise<LoadedSe
 
 interface InputEntry {
 	path: string;
-	kind: TableKind;
+	kind: FileKind;
 	text(): Promise<string>;
 }
 
 const PART_FOLDER = /^(meta|part_-?\d+)$/i;
+
+function fileNameOf(path: string): string {
+	return path.split('/').pop() ?? path;
+}
 
 /**
  * Directory a file's session occupies: its path minus the file name and a
@@ -404,18 +448,21 @@ function exportFolderFromInput(folder: string, childId: string): string | undefi
 	return undefined;
 }
 
-async function expandInputs(files: NamedTextFile[]): Promise<InputEntry[]> {
+async function expandInputs(
+	files: NamedTextFile[],
+	processors: PostProcessor[]
+): Promise<InputEntry[]> {
 	const entries: InputEntry[] = [];
 	for (const file of files) {
 		if (file.name.toLowerCase().endsWith('.zip') && 'arrayBuffer' in file) {
 			const zip = await JSZip.loadAsync(await (file as unknown as Blob).arrayBuffer());
 			for (const entry of Object.values(zip.files)) {
 				if (entry.dir) continue;
-				const kind = classifyFileName(entry.name.split('/').pop() ?? entry.name);
+				const kind = classifyInput(fileNameOf(entry.name), processors);
 				if (kind) entries.push({ path: entry.name, kind, text: () => entry.async('string') });
 			}
 		} else {
-			const kind = classifyFileName(file.name);
+			const kind = classifyInput(fileNameOf(file.name), processors);
 			if (kind) entries.push({ path: file.name, kind, text: () => file.text() });
 		}
 	}
@@ -425,8 +472,8 @@ async function expandInputs(files: NamedTextFile[]): Promise<InputEntry[]> {
 /**
  * Loads every session found in one input directory. Table rows are keyed by
  * their own child/session id, so a flat folder holding several sessions still
- * splits; geometry and meta files are only attributed when the folder holds a
- * single session.
+ * splits; geometry, meta and processor output files are only attributed when
+ * the folder holds a single session.
  */
 async function loadFolderGroup(folder: string, entries: InputEntry[]): Promise<LoadedSession[]> {
 	const buckets = new Map<string, SessionTables>();
@@ -434,12 +481,17 @@ async function loadFolderGroup(folder: string, entries: InputEntry[]): Promise<L
 
 	for (const entry of entries) {
 		const text = await entry.text();
-		if (entry.kind === 'aoiGeometry' || entry.kind === 'sessionMeta') {
-			parseAuxiliary(auxiliary, entry.kind, text);
+		const kind = entry.kind;
+		if (typeof kind === 'object') {
+			addProcessorOutput(auxiliary, kind.processor, fileNameOf(entry.path), text);
+			continue;
+		}
+		if (kind === 'aoiGeometry' || kind === 'sessionMeta') {
+			parseAuxiliary(auxiliary, kind, text);
 			continue;
 		}
 		const byIdentity = new Map<string, TableRow[]>();
-		for (const row of parseRows(entry.kind, text)) {
+		for (const row of parseRows(kind, text)) {
 			const key = `${row.child_id}|${row.session_id}`;
 			const rows = byIdentity.get(key) ?? [];
 			rows.push(row);
@@ -447,12 +499,15 @@ async function loadFolderGroup(folder: string, entries: InputEntry[]): Promise<L
 		}
 		for (const [key, rows] of byIdentity) {
 			const tables = buckets.get(key) ?? emptyTables();
-			pushRows(tables, entry.kind, rows);
+			pushRows(tables, kind, rows);
 			buckets.set(key, tables);
 		}
 	}
 
-	const hasAuxiliary = auxiliary.recordedGeometry.length > 0 || auxiliary.sessionMeta !== null;
+	const hasAuxiliary =
+		auxiliary.recordedGeometry.length > 0 ||
+		auxiliary.sessionMeta !== null ||
+		auxiliary.processorOutputs.length > 0;
 	const sessions: LoadedSession[] = [];
 	for (const tables of buckets.values()) {
 		const warnings: string[] = [];
@@ -460,9 +515,10 @@ async function loadFolderGroup(folder: string, entries: InputEntry[]): Promise<L
 			tables.recordedGeometry = auxiliary.recordedGeometry;
 			tables.sessionMeta = auxiliary.sessionMeta;
 			tables.sessionMetaRaw = auxiliary.sessionMetaRaw;
+			tables.processorOutputs = auxiliary.processorOutputs;
 		} else if (hasAuxiliary) {
 			warnings.push(
-				'Soubory aoiGeometry/meta.json nelze přiřadit – vstup obsahuje více sezení ve stejné složce.'
+				'Soubory aoiGeometry/meta.json a výstupy zpracování nelze přiřadit – vstup obsahuje více sezení ve stejné složce.'
 			);
 		}
 		const anyRow = tables.rawGazeData[0] ?? tables.gazeSamples[0] ?? tables.fixationData[0];
@@ -482,9 +538,12 @@ async function loadFolderGroup(folder: string, entries: InputEntry[]): Promise<L
  * (`<username>/<session>/part_N/…`), local exports, flat ZIPs and loose CSVs,
  * in any combination.
  */
-export async function loadSessionsFromFiles(files: NamedTextFile[]): Promise<LoadedSession[]> {
+export async function loadSessionsFromFiles(
+	files: NamedTextFile[],
+	processors: PostProcessor[] = []
+): Promise<LoadedSession[]> {
 	const groups = new Map<string, InputEntry[]>();
-	for (const entry of await expandInputs(files)) {
+	for (const entry of await expandInputs(files, processors)) {
 		const folder = sessionFolderOf(entry.path);
 		const group = groups.get(folder) ?? [];
 		group.push(entry);
@@ -499,7 +558,8 @@ export async function loadSessionsFromFiles(files: NamedTextFile[]): Promise<Loa
 }
 
 export async function loadSessionsFromZip(
-	data: Blob | ArrayBuffer | Uint8Array
+	data: Blob | ArrayBuffer | Uint8Array,
+	processors: PostProcessor[] = []
 ): Promise<LoadedSession[]> {
 	const blob = data instanceof Blob ? data : new Blob([data as BlobPart]);
 	const file = {
@@ -507,5 +567,5 @@ export async function loadSessionsFromZip(
 		text: () => blob.text(),
 		arrayBuffer: () => blob.arrayBuffer()
 	};
-	return loadSessionsFromFiles([file]);
+	return loadSessionsFromFiles([file], processors);
 }

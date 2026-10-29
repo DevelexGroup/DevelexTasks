@@ -277,6 +277,20 @@ export interface PostProcessorParameter {
 	min: number | null;
 	max: number | null;
 	options: { value: string; label: string }[] | null;
+	/** Session value a client may fill in instead of the default. */
+	prefill: PostProcessorPrefill | null;
+}
+
+export type PostProcessorPrefill = 'VIEWPORT_WIDTH' | 'VIEWPORT_HEIGHT' | 'SAMPLING_RATE';
+
+/** Column layout of a processor's CSV output; points are viewport-pixel x/y pairs. */
+export interface PostProcessorOutput {
+	slideColumn: string;
+	timeColumn: string;
+	durationColumn: string | null;
+	points: { x: string; y: string }[];
+	aoiColumn: string | null;
+	spatialMetrics: string[];
 }
 
 export interface PostProcessor {
@@ -284,8 +298,10 @@ export interface PostProcessor {
 	label: string;
 	description: string;
 	inputFilePrefix: string;
+	auxiliaryInputFilePrefixes: string[];
 	outputFilePrefix: string;
 	parameters: PostProcessorParameter[];
+	output: PostProcessorOutput | null;
 }
 
 /** Enabled post-processors with the parameters they accept. */
@@ -357,10 +373,11 @@ export interface PostProcessingOutputFile {
 	content: string;
 }
 
-/** Runs I2MC over the given rawGazeData CSVs (plus optional aoiGeometry JSONs) and returns the fixation CSVs without storing anything. */
-export async function runI2mcHeadless(
+/** Runs a post-processor over the given input files and returns its output files without storing anything. */
+export async function runPostProcessorHeadless(
+	processor: string,
 	inputFiles: { name: string; content: string }[],
-	parameters: I2mcParameters
+	parameters: object
 ): Promise<PostProcessingOutputFile[]> {
 	const formData = new FormData();
 	for (const file of inputFiles) {
@@ -372,10 +389,17 @@ export async function runI2mcHeadless(
 		new Blob([JSON.stringify(parameters)], { type: 'application/json' })
 	);
 	const result = await apiClient<{ files: PostProcessingOutputFile[] }>(
-		'/test-sessions/post-processing/i2mc/run',
+		`/test-sessions/post-processing/${processor}/run`,
 		{ method: 'POST', body: formData }
 	);
 	return result.files;
+}
+
+export function runI2mcHeadless(
+	inputFiles: { name: string; content: string }[],
+	parameters: I2mcParameters
+): Promise<PostProcessingOutputFile[]> {
+	return runPostProcessorHeadless('i2mc', inputFiles, parameters);
 }
 
 export async function streamTestSessionFile(sessionId: string, fileId: string): Promise<Response> {

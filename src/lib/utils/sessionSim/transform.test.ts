@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import type { RawGazeDataEntry } from '$lib/database/db.types';
-import { applyCorrection, identityCorrection, isIdentity, transformRawEntry } from './transform';
-import type { SpatialCorrection } from './types';
+import {
+	applyCorrection,
+	correctionsEqual,
+	identityCorrection,
+	invertCorrection,
+	isIdentity,
+	transformRawEntry
+} from './transform';
+import type { CorrectionMatrix, SpatialCorrection } from './types';
 
 function raw(overrides: Partial<RawGazeDataEntry> = {}): RawGazeDataEntry {
 	return {
@@ -74,7 +81,6 @@ describe('applyCorrection', () => {
 		};
 		expect(applyCorrection(100, 200, correction)).toEqual({ x: 110, y: 200 });
 	});
-
 });
 
 describe('isIdentity', () => {
@@ -125,5 +131,55 @@ describe('transformRawEntry', () => {
 		const result = transformRawEntry(entry, offset);
 		expect(result).toEqual(entry);
 		expect(result).not.toBe(entry);
+	});
+});
+
+describe('invertCorrection', () => {
+	const roundTrip = (correction: SpatialCorrection) => {
+		const moved = applyCorrection(412, 733, correction);
+		const back = invertCorrection(moved.x, moved.y, correction);
+		expect(back?.x).toBeCloseTo(412, 6);
+		expect(back?.y).toBeCloseTo(733, 6);
+	};
+
+	it('undoes offset and scale around the centre', () => {
+		roundTrip({
+			...identityCorrection(960, 540),
+			offsetX: 25,
+			offsetY: -12,
+			scaleX: 1.1,
+			scaleY: 0.9
+		});
+	});
+
+	it('undoes affine and projective matrices', () => {
+		const affine: CorrectionMatrix = [
+			1.05, 0.02, 0, 14, -0.01, 0.97, 0, -8, 0, 0, 1, 0, 0, 0, 0, 1
+		];
+		roundTrip({ ...identityCorrection(), useMatrix: true, matrix: affine });
+		const projective: CorrectionMatrix = [
+			1, 0, 0, 5, 0, 1, 0, 3, 0, 0, 1, 0, 0.0001, 0.00005, 0, 1
+		];
+		roundTrip({ ...identityCorrection(), useMatrix: true, matrix: projective });
+	});
+
+	it('returns null for a singular matrix', () => {
+		const singular: CorrectionMatrix = [1, 2, 0, 0, 2, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+		expect(
+			invertCorrection(1, 1, { ...identityCorrection(), useMatrix: true, matrix: singular })
+		).toBeNull();
+	});
+});
+
+describe('correctionsEqual', () => {
+	it('treats every identity as equal regardless of centre', () => {
+		expect(correctionsEqual(identityCorrection(0, 0), identityCorrection(960, 540))).toBe(true);
+	});
+
+	it('ignores the centre for pure offsets but not for scaling', () => {
+		const offset = { ...identityCorrection(960, 540), offsetX: 10 };
+		expect(correctionsEqual(offset, { ...offset, centerX: 0 })).toBe(true);
+		const scaled = { ...offset, scaleX: 1.2 };
+		expect(correctionsEqual(scaled, { ...scaled, centerX: 0 })).toBe(false);
 	});
 });

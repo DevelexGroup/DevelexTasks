@@ -12,25 +12,42 @@
 	import SessionLoadDialog from '$lib/components/SessionLoadDialog.svelte';
 	import GazeOverlay, {
 		type GazePoint,
-		type OverlayFixation
+		type OverlayFixation,
+		type OverlayLayer
 	} from './components/GazeOverlay.svelte';
 	import ScoreComparison from './components/ScoreComparison.svelte';
+	import PostProcessorParameters from '$lib/components/PostProcessorParameters.svelte';
 	import { downloadBlob } from '$lib/utils/stimulusExport/capture';
 	import { DatabaseExporter } from '$lib/utils/databaseExport';
 	import {
-		runI2mcHeadless,
+		runPostProcessorHeadless,
 		snapToCommonRate,
-		I2MC_DEFAULT_PARAMETERS,
-		type I2mcParameters
+		type PostProcessor
 	} from '$lib/api/test-sessions';
-	import { parseFixationDataCsv } from '$lib/utils/csvParser';
 	import type { RawGazeDataEntry } from '$lib/database/db.types';
+	import { parseOutputCsv, readOutputRows } from '$lib/utils/postProcessing/outputs';
+	import {
+		applyPrefill,
+		draftFromDefaults,
+		resolveParameters,
+		type ParameterDraft,
+		type PrefillValues
+	} from '$lib/utils/postProcessing/parameters';
+	import {
+		layerColor,
+		layerColorName,
+		loadPostProcessors
+	} from '$lib/utils/postProcessing/registry';
 	import {
 		buildCorrectedZip,
 		correctedZipName,
 		type ExportedSession
 	} from '$lib/utils/sessionSim/export';
-	import { SessionWorkspace, type SessionSimState } from '$lib/utils/sessionSim/simState.svelte';
+	import {
+		SessionWorkspace,
+		type ProcessorLayer,
+		type SessionSimState
+	} from '$lib/utils/sessionSim/simState.svelte';
 	import { IDENTITY_MATRIX } from '$lib/utils/sessionSim/transform';
 	import {
 		DEFAULT_GAP_RESET_MS,
@@ -91,13 +108,7 @@
 	function syncInputsFrom(slot: SessionSimState) {
 		viewportW = slot.viewportWidth;
 		viewportH = slot.viewportHeight;
-		const measured = slot.session?.meta?.measuredFrequencyHz;
-		i2mcParams = {
-			...i2mcParams,
-			xres: slot.viewportWidth,
-			yres: slot.viewportHeight,
-			freq: measured ? snapToCommonRate(measured) : I2MC_DEFAULT_PARAMETERS.freq
-		};
+		prefillDrafts(slot);
 	}
 
 	function applyViewport(width = viewportW, height = viewportH) {
@@ -105,7 +116,7 @@
 		viewportW = width;
 		viewportH = height;
 		sim.setViewport(width, height);
-		i2mcParams = { ...i2mcParams, xres: width, yres: height };
+		prefillDrafts(sim);
 		void ensureGeometry(sim);
 	}
 
@@ -187,19 +198,32 @@
 		const counted = new Set(slideResult.fixations.map((f) => f.fixation_index));
 		return slideResult.allFixations.map((f) => ({ ...f, counted: counted.has(f.fixation_index) }));
 	});
-	const fixationsI2mc = $derived.by((): OverlayFixation[] => {
-		if (!sim?.session) return [];
-		return sim.session.i2mcFixationData
-			.filter((f) => f.slide_index === sim.selectedSlide)
-			.map((f) => ({
-				...f,
-				counted:
-					selectedWindow !== null &&
-					f.timestamp >= selectedWindow.startTime &&
-					f.timestamp <= selectedWindow.endTime
-			}));
+	const simLayers = $derived(sim?.layers ?? []);
+	const overlayLayers = $derived.by((): OverlayLayer[] => {
+		const slot = sim;
+		const slide = slot?.selectedSlide ?? null;
+		if (!slot || slide === null) return [];
+		const layers: OverlayLayer[] = [];
+		for (const layer of simLayers) {
+			const schema = layer.processor.output;
+			if (!schema || hiddenLayers[layer.processor.name]) continue;
+			const markers = slot
+				.shiftedFiles(layer, slide)
+				.flatMap((file) => readOutputRows(file, schema))
+				.sort((a, b) => a.time - b.time)
+				.flatMap((row) => {
+					const point = row.points[0];
+					if (row.slide !== slide || !point) return [];
+					const counted =
+						selectedWindow !== null &&
+						row.time >= selectedWindow.startTime &&
+						row.time <= selectedWindow.endTime;
+					return [{ x: point.x, y: point.y, duration: row.duration, counted }];
+				});
+			layers.push({ key: layer.processor.name, color: colorOf(layer.processor), markers });
+		}
+		return layers;
 	});
-	const hasI2mcData = $derived((sim?.session?.i2mcFixationData.length ?? 0) > 0);
 	const recordedScore = $derived(
 		sim?.session?.sessionScores.find((s) => s.slide_index === sim.selectedSlide) ?? null
 	);
@@ -222,7 +246,6 @@
 	let showGaze = $state(true);
 	let showBefore = $state(true);
 	let showAfter = $state(true);
-	let showI2mc = $state(true);
 	let showAois = $state(true);
 
 	// ── Input helpers ──
@@ -241,47 +264,137 @@
 		return Number.isFinite(ms) ? DatabaseExporter.formatTimestamp(ms, 'simple') : sessionId;
 	}
 
-	// ── Server I2MC ──
-	let i2mcParams = $state<I2mcParameters>({ ...I2MC_DEFAULT_PARAMETERS });
-	let i2mcScrW = $state<number | null>(null);
-	let i2mcScrH = $state<number | null>(null);
-	let i2mcRunning = $state(false);
-	let i2mcStatus = $state('');
-	let i2mcError = $state('');
+	// ── Post-processing ──
+	let processors = $state<PostProcessor[]>([]);
+	let selectedProcessorName = $state<string | null>(null);
+	let drafts = $state<Record<string, ParameterDraft>>({});
+	let parameterErrors = $state<Record<string, string>>({});
+	let hiddenLayers = $state<Record<string, boolean>>({});
+	let processing = $state(false);
+	let processingProgress = $state('');
+	let processingStatus = $state('');
+	let processingErrors = $state<string[]>([]);
 
-	function nullableNumberOf(event: Event): number | null {
-		const value = parseFloat((event.currentTarget as HTMLInputElement).value);
-		return Number.isFinite(value) ? value : null;
+	const selectedProcessor = $derived(
+		processors.find((processor) => processor.name === selectedProcessorName) ?? null
+	);
+	const selectedLayer = $derived(
+		simLayers.find((layer) => layer.processor.name === selectedProcessorName) ?? null
+	);
+
+	void loadPostProcessors().then((loaded) => {
+		processors = loaded;
+		selectedProcessorName = loaded[0]?.name ?? null;
+		drafts = Object.fromEntries(
+			loaded.map((processor) => [processor.name, draftFromDefaults(processor.parameters)])
+		);
+		if (sim?.session) prefillDrafts(sim);
+	});
+
+	function colorOf(processor: PostProcessor) {
+		const index = processors.findIndex((candidate) => candidate.name === processor.name);
+		return layerColor(index < 0 ? processors.length : index);
 	}
 
-	async function runServerI2mc() {
+	function colorNameOf(processor: PostProcessor): string {
+		const index = processors.findIndex((candidate) => candidate.name === processor.name);
+		return layerColorName(index < 0 ? processors.length : index);
+	}
+
+	function prefillValues(slot: SessionSimState): PrefillValues {
+		const measured = slot.session?.meta?.measuredFrequencyHz;
+		return {
+			VIEWPORT_WIDTH: slot.viewportWidth,
+			VIEWPORT_HEIGHT: slot.viewportHeight,
+			SAMPLING_RATE: measured ? snapToCommonRate(measured) : undefined
+		};
+	}
+
+	function prefillDrafts(slot: SessionSimState) {
+		const values = prefillValues(slot);
+		drafts = Object.fromEntries(
+			processors.map((processor) => [
+				processor.name,
+				applyPrefill(processor.parameters, drafts[processor.name] ?? {}, values)
+			])
+		);
+	}
+
+	/** Recomputes the processor on the slot's corrected raw gaze; the result replaces the stored output. */
+	async function rerun(
+		slot: SessionSimState,
+		processor: PostProcessor,
+		parameters: Record<string, unknown>
+	) {
+		const corrections = slot.correctionSnapshot();
+		const inputs = slot.rerunInputs(processor, corrections);
+		if (!inputs) throw new Error('Chybí surová data pohledu');
+		const outputs = await runPostProcessorHeadless(processor.name, inputs, parameters);
+		const files = outputs.map((output) => parseOutputCsv(output.fileName, output.content));
+		slot.setRerun({ processor, files, corrections, parameters });
+		return files.length;
+	}
+
+	function resolveDraft(
+		processor: PostProcessor,
+		draft: ParameterDraft
+	): Record<string, unknown> | null {
+		const { values, errors } = resolveParameters(processor.parameters, draft);
+		parameterErrors = errors;
+		return Object.keys(errors).length > 0 ? null : values;
+	}
+
+	async function rerunActive() {
 		const slot = sim;
-		if (!slot?.session || slot.session.rawGazeData.length === 0 || i2mcRunning) return;
-		i2mcRunning = true;
-		i2mcStatus = '';
-		i2mcError = '';
+		const processor = selectedProcessor;
+		if (!slot || !processor || processing) return;
+		const parameters = resolveDraft(processor, drafts[processor.name] ?? {});
+		if (!parameters) return;
+		processing = true;
+		processingStatus = '';
+		processingErrors = [];
 		try {
-			const csv = DatabaseExporter.createCsvContent([...slot.session.rawGazeData], 'rawGazeData');
-			const params: I2mcParameters = { ...i2mcParams };
-			if (i2mcScrW && i2mcScrH) {
-				params.scrWidthCm = i2mcScrW;
-				params.scrHeightCm = i2mcScrH;
-			}
-			const files = [{ name: 'rawGazeData.csv', content: csv }];
-			for (const geometry of slot.session.recordedGeometry) {
-				files.push({
-					name: `aoiGeometry_slide${geometry.slideIndex}.json`,
-					content: JSON.stringify(geometry)
-				});
-			}
-			const outputs = await runI2mcHeadless(files, params);
-			const entries = outputs.flatMap((file) => parseFixationDataCsv(file.content));
-			slot.setI2mcFixationData(entries);
-			i2mcStatus = `Načteno ${entries.length} fixací (${outputs.length} slidů).`;
+			const count = await rerun(slot, processor, parameters);
+			processingStatus = `Přepočteno na opravených datech (${count} souborů).`;
 		} catch (err) {
-			i2mcError = err instanceof Error ? err.message : 'Výpočet I2MC selhal';
+			processingErrors = [errorMessage(err)];
 		} finally {
-			i2mcRunning = false;
+			processing = false;
+		}
+	}
+
+	/** Runs every picked session in turn; prefilled parameters come from each session itself. */
+	async function rerunAll() {
+		const processor = selectedProcessor;
+		if (!processor || processing) return;
+		const draft = drafts[processor.name] ?? {};
+		if (!resolveDraft(processor, draft)) return;
+		processing = true;
+		processingStatus = '';
+		processingErrors = [];
+		let done = 0;
+		try {
+			const slots = workspace.slots;
+			for (const [index, slot] of slots.entries()) {
+				const prefix = `${index + 1}/${slots.length} ${slot.label}`;
+				try {
+					processingProgress = `${prefix}: stahuji…`;
+					await slot.ensureLoaded();
+					processingProgress = `${prefix}: geometrie…`;
+					await ensureGeometry(slot);
+					processingProgress = `${prefix}: počítám…`;
+					const sessionDraft = applyPrefill(processor.parameters, draft, prefillValues(slot));
+					const { values } = resolveParameters(processor.parameters, sessionDraft);
+					await rerun(slot, processor, values);
+					done++;
+				} catch (err) {
+					processingErrors = [...processingErrors, `${slot.label}: ${errorMessage(err)}`];
+				}
+			}
+			processingStatus = `Přepočteno ${done} z ${slots.length} sezení.`;
+		} finally {
+			processing = false;
+			processingProgress = '';
 		}
 	}
 
@@ -317,7 +430,11 @@
 					exportProgress = `${prefix}: přepočet…`;
 					slot.recomputeNow();
 					if (!slot.result) throw new Error(slot.error || 'Bez rawGazeData nelze přepočítat');
-					entries.push({ result: slot.result, meta: slot.exportMeta() });
+					entries.push({
+						result: slot.result,
+						meta: slot.exportMeta(),
+						outputs: slot.exportOutputs()
+					});
 				} catch (err) {
 					exportErrors = [...exportErrors, `${slot.label}: ${errorMessage(err)}`];
 				}
@@ -347,6 +464,41 @@
 	<title>Simulace sezení - DeveLex Tasks</title>
 </svelte:head>
 
+{#snippet layerStatus(processor: PostProcessor, layer: ProcessorLayer | null)}
+	{#if !layer}
+		<p class="text-xs text-gray-500">Sezení nemá uložený výstup.</p>
+	{:else}
+		<div class="flex items-center justify-between gap-2 text-xs">
+			{#if layer.source === 'rerun'}
+				<span class="rounded bg-emerald-100 px-1 py-0.5 text-emerald-700">
+					přesný výpočet na opravených datech
+				</span>
+				<Button size="sm" variant="ghost" onclick={() => sim?.revertRerun(processor.name)}>
+					Obnovit uložené
+				</Button>
+			{:else}
+				<span class="rounded bg-gray-100 px-1 py-0.5 text-gray-600">uložený výstup ze serveru</span>
+			{/if}
+		</div>
+		{#if sim?.isShifted(layer)}
+			{#if processor.output}
+				<div
+					class="rounded-md bg-blue-50 px-2 py-1.5 text-xs text-blue-700"
+					title={processor.output.spatialMetrics.length > 0
+						? `Nekorigováno: ${processor.output.spatialMetrics.join(', ')}`
+						: undefined}
+				>
+					Pozice posunuty podle aktuální korekce.
+				</div>
+			{:else}
+				<div class="rounded-md bg-amber-50 px-2 py-1.5 text-xs text-amber-700">
+					Výstup nelze posunout, neodpovídá aktuální korekci.
+				</div>
+			{/if}
+		{/if}
+	{/if}
+{/snippet}
+
 {#snippet overlay()}
 	<GazeOverlay
 		width={stageWidth}
@@ -355,13 +507,12 @@
 		{gazeAfter}
 		{fixationsBefore}
 		{fixationsAfter}
-		{fixationsI2mc}
+		layers={overlayLayers}
 		aois={stageAois}
 		timeWindow={selectedWindow}
 		{showGaze}
 		{showBefore}
 		{showAfter}
-		showI2mc={showI2mc && hasI2mcData}
 		{showAois}
 	/>
 {/snippet}
@@ -835,115 +986,73 @@
 					</Card.Content>
 				</Card.Root>
 
-				<Card.Root class="gap-3">
-					<Card.Header>
-						<Card.Title>I2MC (server)</Card.Title>
-						<Card.Description>Referenční fixace z kanonického detektoru.</Card.Description>
-					</Card.Header>
-					<Card.Content class="space-y-3">
-						<div class="grid grid-cols-2 gap-2 text-sm">
-							<label class="space-y-1">
-								<span class="text-xs text-gray-500">Šířka okna (px)</span>
-								<input
-									type="number"
+				{#if selectedProcessor}
+					{@const processor = selectedProcessor}
+					<Card.Root class="gap-3">
+						<Card.Header>
+							<Card.Title>Zpracování (server)</Card.Title>
+							<Card.Description>{processor.description}</Card.Description>
+						</Card.Header>
+						<Card.Content class="space-y-3">
+							{#if processors.length > 1}
+								<select
 									class={inputClass}
-									value={i2mcParams.xres}
-									oninput={(e) => (i2mcParams.xres = numberOf(e, I2MC_DEFAULT_PARAMETERS.xres))}
+									value={selectedProcessorName}
+									onchange={(e) => {
+										selectedProcessorName = e.currentTarget.value;
+										parameterErrors = {};
+									}}
+								>
+									{#each processors as option (option.name)}
+										<option value={option.name}>{option.label}</option>
+									{/each}
+								</select>
+							{/if}
+							{@render layerStatus(processor, selectedLayer)}
+							{#if drafts[processor.name]}
+								<PostProcessorParameters
+									parameters={processor.parameters}
+									bind:draft={drafts[processor.name]}
+									errors={parameterErrors}
 								/>
-							</label>
-							<label class="space-y-1">
-								<span class="text-xs text-gray-500">Výška okna (px)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={i2mcParams.yres}
-									oninput={(e) => (i2mcParams.yres = numberOf(e, I2MC_DEFAULT_PARAMETERS.yres))}
-								/>
-							</label>
-							<label class="space-y-1" title="0 = odhad z časových razítek zařízení">
-								<span class="text-xs text-gray-500">Frekvence (Hz)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={i2mcParams.freq}
-									oninput={(e) => (i2mcParams.freq = numberOf(e, 0))}
-								/>
-							</label>
-							<label class="space-y-1">
-								<span class="text-xs text-gray-500">Min. délka fixace (ms)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={i2mcParams.minFixDur}
-									oninput={(e) =>
-										(i2mcParams.minFixDur = numberOf(e, I2MC_DEFAULT_PARAMETERS.minFixDur))}
-								/>
-							</label>
-							<label class="space-y-1" title="Rozdělení segmentů při mezeře v datech; 0 = vypnuto">
-								<span class="text-xs text-gray-500">Mezera (ms)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={i2mcParams.gapSplitMs}
-									oninput={(e) =>
-										(i2mcParams.gapSplitMs = numberOf(e, I2MC_DEFAULT_PARAMETERS.gapSplitMs))}
-								/>
-							</label>
-							<label class="space-y-1" title="0 = vypne statistiky ve stupních">
-								<span class="text-xs text-gray-500">Vzdálenost (cm)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={i2mcParams.dist}
-									oninput={(e) => (i2mcParams.dist = numberOf(e, I2MC_DEFAULT_PARAMETERS.dist))}
-								/>
-							</label>
-							<label class="space-y-1" title="Prázdné = 53,13 cm (24&quot; 16:9 monitor)">
-								<span class="text-xs text-gray-500">Šířka obrazovky (cm)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={i2mcScrW ?? ''}
-									oninput={(e) => (i2mcScrW = nullableNumberOf(e))}
-								/>
-							</label>
-							<label class="space-y-1" title="Prázdné = 29,89 cm (24&quot; 16:9 monitor)">
-								<span class="text-xs text-gray-500">Výška obrazovky (cm)</span>
-								<input
-									type="number"
-									class={inputClass}
-									value={i2mcScrH ?? ''}
-									oninput={(e) => (i2mcScrH = nullableNumberOf(e))}
-								/>
-							</label>
-						</div>
-						<label class="block space-y-1 text-sm">
-							<span class="text-xs text-gray-500">Oči</span>
-							<select
-								class={inputClass}
-								value={i2mcParams.eyes}
-								onchange={(e) => (i2mcParams.eyes = e.currentTarget.value as 'both' | 'average')}
+							{/if}
+							<Button
+								class="w-full"
+								disabled={processing || !sim.canRerun(processor)}
+								title={sim.canRerun(processor)
+									? 'Spočítá výstup na opravených surových datech; nic se neukládá'
+									: 'Simulace umí přepočítat jen zpracování surových dat pohledu'}
+								onclick={() => rerunActive()}
 							>
-								<option value="both">Obě zvlášť</option>
-								<option value="average">Průměr</option>
-							</select>
-						</label>
-						<Button
-							class="w-full"
-							disabled={sim.session.rawGazeData.length === 0 || i2mcRunning}
-							onclick={() => runServerI2mc()}
-						>
-							<Icon icon="material-symbols:calculate" class="mr-1 h-4 w-4" />
-							{i2mcRunning ? 'Počítám…' : 'Spustit I2MC'}
-						</Button>
-						{#if i2mcStatus}
-							<p class="text-xs text-emerald-700">{i2mcStatus}</p>
-						{/if}
-						{#if i2mcError}
-							<p class="text-xs text-red-600">{i2mcError}</p>
-						{/if}
-					</Card.Content>
-				</Card.Root>
+								<Icon icon="material-symbols:calculate" class="mr-1 h-4 w-4" />
+								{processing ? 'Počítám…' : 'Přepočítat přesně'}
+							</Button>
+							{#if workspace.slots.length > 1}
+								<Button
+									size="sm"
+									variant="outline"
+									class="w-full"
+									disabled={processing}
+									title="Rozlišení a frekvence se doplní z každého sezení"
+									onclick={() => rerunAll()}
+								>
+									Přepočítat všechna sezení ({workspace.slots.length})
+								</Button>
+							{/if}
+							{#if processingProgress}
+								<p class="text-xs text-blue-600">{processingProgress}</p>
+							{/if}
+							{#if processingStatus}
+								<p class="text-xs text-emerald-700">{processingStatus}</p>
+							{/if}
+							{#each processingErrors as processingError (processingError)}
+								<div class="rounded-md bg-red-50 px-2 py-1.5 text-xs text-red-600">
+									{processingError}
+								</div>
+							{/each}
+						</Card.Content>
+					</Card.Root>
+				{/if}
 			{/if}
 
 			{#if workspace.slots.length > 0}
@@ -1000,15 +1109,21 @@
 							Přepočtená data (barevně)
 							<Switch bind:checked={showAfter} />
 						</label>
-						{#if hasI2mcData}
-							<label
-								class="flex items-center justify-between text-sm text-gray-700"
-								title="Referenční fixace ze serverového I2MC (I2MC_fixationData_slideN.csv)"
-							>
-								I2MC fixace (oranžově)
-								<Switch bind:checked={showI2mc} />
-							</label>
-						{/if}
+						{#each simLayers as layer (layer.processor.name)}
+							{#if layer.processor.output}
+								<label
+									class="flex items-center justify-between text-sm text-gray-700"
+									title={layer.processor.description}
+								>
+									{layer.processor.label} ({colorNameOf(layer.processor)})
+									<Switch
+										checked={!hiddenLayers[layer.processor.name]}
+										onCheckedChange={(checked) =>
+											(hiddenLayers = { ...hiddenLayers, [layer.processor.name]: !checked })}
+									/>
+								</label>
+							{/if}
+						{/each}
 						<label class="flex items-center justify-between text-sm text-gray-700">
 							AOI oblasti
 							<Switch bind:checked={showAois} />
